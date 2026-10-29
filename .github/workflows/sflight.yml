@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 env:
   SFLIGHT_REPO: https://github.com/SAP-samples/cap-sflight.git
@@ -65,6 +66,14 @@ jobs:
       - name: Job summary
         if: always()
         run: node .github/scripts/summary.js out >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post the summary on the PR
+        if: always() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node .github/scripts/summary.js out > out/summary.md
+          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body-file out/summary.md --edit-last --create-if-none
 
       - uses: actions/upload-artifact@v4
         if: always()
