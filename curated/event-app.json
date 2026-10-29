@@ -1,0 +1,11 @@
+{
+ "META": { "title": "Event Registration Discovery Atlas", "app": "SAP-samples/ui5-cap-event-app", "url": "https://github.com/SAP-samples/ui5-cap-event-app", "license": "Apache-2.0" },
+ "RISKS": [
+  { "id": "A1", "t": "Email can be changed by PATCH, and Email decides row ownership", "i": 4, "l": 2, "lay": "Service", "ev": "srv/eventregistration-service.cds:22",
+    "d": "Rows are filtered by where Email = $user.id, but Email is a plain writable element (no @readonly, no @Core.Computed) and the handler only sets it on CREATE. An Employee who edits their own draft can set Email to another address and hand the row to someone else, or take over nothing but lose access to their own. Verify on a running app.",
+    "test": "As employee@test.com edit own Person, PATCH Email to employee2@test.com, SAVE; expect 400 or Email unchanged.", "reviewer": "agent deep read 2026-10-29" },
+  { "id": "A2", "t": "Editing an existing registration depends on a commented-out UPDATE grant", "i": 3, "l": 3, "lay": "Service", "ev": "srv/eventregistration-service.cds:13",
+    "d": "The source says UPDATE is needed to override an existing entity with a draft but leaves it out on purpose (FIXME). Employees get UPDATE only through the where-filtered grant, so EDIT then SAVE on an own row works or fails depending on how CAP applies the filter during draft activation.",
+    "test": "As employee@test.com: EDIT own Person, PATCH FirstName, draftActivate; expect 200. Same on another user's Person; expect 403/404.", "reviewer": "agent deep read 2026-10-29" }
+ ]
+}
