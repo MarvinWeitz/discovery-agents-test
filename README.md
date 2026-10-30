@@ -24,6 +24,16 @@ The app needs no `npm install`; the toolkit compiles the model with its own `@sa
 
 `.github/workflows/sflight.yml` checks out `SAP-samples/cap-sflight` at a pinned commit, installs it the way its own CI does, runs `bin/pipeline.js` on it, then copies the generated cds.test files into the app and runs them with the app's Jest. The job summary lists every generated test with its result; the atlas, the run and the Jest reports are uploaded as the `sflight-discovery` artifact. SFlight's own `test/odata.test.ts` runs too, as a baseline.
 
+## Run discovery on any repo
+
+`.github/workflows/discover.yml` ("Run discovery" in the Actions tab) takes a repo URL, and optionally a branch, the CAP app folder and UI5 folders (all detected when empty). It clones the repo, installs it, runs `bin/pipeline.js`, starts the app under cds.test (in-memory SQLite) and runs the generated tests; if the app does not start (for example it needs HANA), the runtime tests are skipped and the atlas is still built. The atlas goes to GitHub Pages at `<pages>/<owner>-<repo>/` (HTML plus the Markdown files, generated tests and Jest reports), with an index of every app at the Pages root (`index.html`, `index.md`, `runs.json`). The whole output is also kept as the run's `discovery-<slug>` artifact. If `curated/*.json` has a file whose `META.app` names the repo, its agent findings are merged.
+
+Pages has to be switched on once: Settings → Pages → Source: Deploy from a branch → `gh-pages` / root.
+
+Private repos: add a `DISCOVERY_REPO_TOKEN` secret (fine-grained, Contents: read on the target). Private targets are never published to Pages, and the workflow refuses them while this repo is public, because the logs and artifacts of a public repo are public.
+
+On pull requests the workflow runs on the pilot apps as a check and builds the Pages site as the `pages-preview` artifact without publishing.
+
 ## Agentic deep dive
 
 ```sh
