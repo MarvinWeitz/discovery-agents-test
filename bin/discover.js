@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Phase 1 skeleton map: node bin/discover.js <app-root> <out-dir>
+// Step 2–6 · Walkthrough: docs/walkthrough/README.md
 const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
@@ -36,19 +37,19 @@ async function main() {
 
   cds.root = root
   const g = new Graph(run)
-  const csn = await extractModel(cds, root, g)
-  const handlers = (regex ? extractHandlers : extractHandlersAst)(root, g, csn)
-  const uiRules = reflexionUi(root, g, csn)
-  extractUI5(root, g, uiDirs)
-  const config = extractConfig(root, g)
-  config.auth = extractAuth(root, g, cds)
-  config.cdsDeps = extractCdsDeps(root, g, csn)
-  config.native = extractNative(root, g)
-  extractTests(root, g)
-  const lint = extractLint(root, g, uiDirs)
-  const history = extractHistory(root)
+  const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
+  const handlers = (regex ? extractHandlers : extractHandlersAst)(root, g, csn) // 3   handlers, rules, reads/writes, events
+  const uiRules = reflexionUi(root, g, csn)                                   // 4   UI annotations vs handler rules
+  extractUI5(root, g, uiDirs)                                                 // 5a  UI5 apps, routes, views
+  const config = extractConfig(root, g)                                       // 5b  remote services, brokers, HDI files
+  config.auth = extractAuth(root, g, cds)                                     // 5c  mock users, roles
+  config.cdsDeps = extractCdsDeps(root, g, csn)                               // 5f  CDS file layers
+  config.native = extractNative(root, g)                                      // 5g  HANA-native objects
+  extractTests(root, g)                                                       // 5d  existing tests
+  const lint = extractLint(root, g, uiDirs)                                   // 5h  cds lint, ui5 lint
+  const history = extractHistory(root)                                        // 5e  git churn
 
-  const slices = splitSlices(g, rank(g, cutSlices(g), history))
+  const slices = splitSlices(g, rank(g, cutSlices(g), history))               // 6   slices ranked by risk
   const cov = coverage(g)
   const classes = deriveClasses(g)
 

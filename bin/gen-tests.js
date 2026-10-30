@@ -4,6 +4,7 @@
 //   - a characterization test that pins what the app does today (passes now), and
 //   - when the design expects something else, a spec test (it.skip) to enable once fixed.
 // Files are syntax-checked with node --check; they are meant to run in the app repo (jest or mocha).
+// Step 10 · Walkthrough: docs/walkthrough/10-generated-tests.md
 const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
@@ -28,6 +29,7 @@ function main() {
     const i = row ? row.c.findIndex((c, k) => c.v === 'y' && !td.auth.users[k].anon) : -1
     return i >= 0 ? td.auth.users[i].id : (td.auth.users.find(u => !u.anon) || {}).id
   }
+  // every action parameter gets 10 (fits numeric parameters); open fix F9
   const bodyFor = req => {
     const m = req.path.match(/\/(\w+)\.(\w+)$/); if (!m) return {}
     const a = g.byType('Action').find(x => x.props.name === m[2])

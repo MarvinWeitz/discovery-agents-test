@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Generates the slice dossier from the merged graph and merge log: node bin/dossier.js <run-dir> <slice-id>
 // The dossier is never written by hand; re-run after every merge.
+// Step 12 · Walkthrough: docs/walkthrough/12-ai-loop.md
 const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice } = require('../lib/load')

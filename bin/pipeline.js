@@ -4,6 +4,7 @@
 // out-dir/run      knowledge graph, metrics, slices, report (discover)
 // out-dir/run/tests/generated   cds.test suites (gen-tests)
 // out-dir/atlas    README.md + topics/*.md + images/*.png + index.html (atlas-facts + atlas)
+// Walkthrough: docs/walkthrough/README.md
 const path = require('path')
 const { execFileSync } = require('child_process')
 
@@ -15,6 +16,7 @@ if (!root || !out) { console.error('usage: pipeline <app-root> <out-dir> [--ui d
 const bin = f => path.join(__dirname, f)
 const step = (name, file, a) => { const t = Date.now(); const o = execFileSync(process.execPath, [bin(file), ...a], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], timeout: 600000 }); console.log(`[${name}] ${o.trim().split('\n').pop()} (${((Date.now() - t) / 1000).toFixed(1)}s)`) }
 const run = path.join(out, 'run'), facts = path.join(out, 'atlas-data.json')
+// pieces 2-6: graph, slices, report  ·  7-9 + 11: atlas facts  ·  10: test files  ·  11: Markdown, HTML, PNG
 step('discover', 'discover.js', [root, run, ...(opt('--ui') ? ['--ui', opt('--ui')] : [])])
 step('facts', 'atlas-facts.js', [run, facts, ...(opt('--base') ? ['--base', path.resolve(opt('--base'))] : [])])
 step('tests', 'gen-tests.js', [run])

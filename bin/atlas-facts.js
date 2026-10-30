@@ -2,6 +2,7 @@
 // Writes atlas-data.json from a discovery run: node bin/atlas-facts.js <run-dir> <out.json> [--base curated.json]
 // Every section is generated from the graph, the CSN and the app's files. The optional curated base
 // adds agent findings (risks) and can override META texts; risks a rule now detects are dropped from it.
+// Step 11 · Walkthrough: docs/walkthrough/11-atlas-and-addons.md
 const fs = require('fs')
 const path = require('path')
 const cds = require('@sap/cds')

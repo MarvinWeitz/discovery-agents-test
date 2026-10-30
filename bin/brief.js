@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Writes the brief a Phase 3 agent team starts from: node bin/brief.js <run-dir> <app-root> <slice-id>
 // The brief is the agents' whole context besides the source files it lists.
+// Step 12 · Walkthrough: docs/walkthrough/12-ai-loop.md
 const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice } = require('../lib/load')

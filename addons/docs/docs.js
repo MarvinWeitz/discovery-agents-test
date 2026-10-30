@@ -36,6 +36,7 @@ function sentence(c, g) {
   if (c.id.startsWith('CMB:')) return null
   return { biz: `${c.name}: ${c.expected}.`, dev: `${c.name}: ${c.expected}${c.input ? ` (input: ${typeof c.input === 'object' ? JSON.stringify(c.input) : c.input})` : ''}.` }
 }
+// strips cap-sflight names (travel., TravelStatusCode.); open fix F3 in docs/walkthrough/00-assumptions.md
 function plain(guard) { return String(guard || '').replace(/!succeeded && /g, '').replace(/===?/g, 'is').replace(/!==?/g, 'is not').replace(/==\s*null/g, 'is empty').replace(/\btravel\./g, '').replace(/TravelStatusCode\./g, '') }
 
 // facts time: sentences with their class and slice; no test results yet

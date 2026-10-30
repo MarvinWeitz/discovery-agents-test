@@ -2,6 +2,7 @@
 // A rule module exports { key, title, status: 'draft' | 'accepted', from, i, l, lay, test, detect(ctx) }
 // where detect returns [{ ev: 'file:line', t, d }]. ctx = { root, files: [{ path, text }], g, csn }.
 // Only accepted rules feed the atlas risks; drafts are reported next to them until a reviewer accepts.
+// Step 9c · Walkthrough: docs/walkthrough/09-patterns-risks-rules.md
 const fs = require('fs')
 const path = require('path')
 
