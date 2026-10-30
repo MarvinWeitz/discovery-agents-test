@@ -196,7 +196,8 @@ jobs:
           has jest || pkgs+=("jest@29")
           echo "cds major $major, adding: ${pkgs[*]:-nothing}"
           if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
-          if has jest && [ "${{ steps.detect.outputs.jest }}" = true ]; then echo "jest=npx jest" >> "$GITHUB_OUTPUT"
+          # the app's own Jest (declared or hoisted) keeps its config; otherwise the one added above
+          if has jest; then echo "jest=node $(node -p "try { require.resolve('jest/bin/jest', { paths: [process.cwd()] }) } catch { require.resolve('jest/bin/jest.js', { paths: [process.cwd()] }) }")" >> "$GITHUB_OUTPUT"
           else echo "jest=node $shim/node_modules/jest/bin/jest.js --config '{\"testEnvironment\":\"node\"}' --rootDir ." >> "$GITHUB_OUTPUT"; fi
 
       - name: Run the discovery pipeline
@@ -264,6 +265,14 @@ jobs:
           name: discovery-${{ steps.target.outputs.slug }}
           path: out/
           if-no-files-found: ignore
+
+      # The pilots are known to start and to pass their generated tests, so on a pull request either
+      # failing is a regression in the toolkit or this workflow.
+      - name: Fail the pull request check if a pilot regressed
+        if: github.event_name == 'pull_request' && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
+        run: |
+          echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}. See the job summary."
+          exit 1
 
   publish:
     needs: discover
