@@ -4,7 +4,7 @@
 const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice } = require('../lib/load')
-const { renderDiagrams } = require('../lib/render-diagrams')
+const { renderDiagrams } = require('../lib/report/render-diagrams')
 const { QUESTIONS } = require('./brief-questions')
 
 const mid = id => id.replace(/[^A-Za-z0-9]/g, '_')

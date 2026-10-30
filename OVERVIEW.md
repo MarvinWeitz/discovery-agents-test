@@ -16,17 +16,17 @@ D = deterministic (same input, same output, no LLM). A = agentic (LLM agent, rev
 | # | Step | Kind | Tool / module | Output |
 | --- | --- | --- | --- | --- |
 | 0 | Pick app root, extra UI5 folders, curated file | H | `bin/pipeline.js` arguments | |
-| 1 | Compile CDS to CSN with locations | D | `@sap/cds` → `extract-model.js` | services, entities, associations, constraints, actions, grants |
-| 2 | Parse handlers on the syntax tree | D | `typescript` → `extract-handlers-ast.js` | handlers, helpers, rejections, derivations, CQL reads/writes |
-| 3 | UI promises vs server (reflexion) | D | `reflexion-ui.js` | UiRule verdicts |
-| 4 | UI5 apps, mock users, roles, tests, churn | D | `extract-app.js`, `git` | apps, routes, users, tests and the users they run as |
-| 5 | CDS file dependencies and layer rules | D | `extract-cds-deps.js` | uses / annotates / extends with ok, skip, bad |
+| 1 | Compile CDS to CSN with locations | D | `@sap/cds` → `lib/extract/model.js` | services, entities, associations, constraints, actions, grants |
+| 2 | Parse handlers on the syntax tree | D | `typescript` → `lib/extract/handlers/` | handlers, helpers, rejections, derivations, CQL reads/writes |
+| 3 | UI promises vs server (reflexion) | D | `lib/analyse/reflexion-ui.js` | UiRule verdicts |
+| 4 | UI5 apps, mock users, roles, tests, churn | D | `lib/extract/{ui5,config,auth,tests,history}.js`, `git` | apps, routes, users, tests and the users they run as |
+| 5 | CDS file dependencies and layer rules | D | `lib/extract/cds-deps.js` | uses / annotates / extends with ok, skip, bad |
 | 6 | Lint | D | `@sap/eslint-plugin-cds`, `@ui5/linter` | findings |
-| 7 | Slices and risk ranking | D | `slices.js` | slice catalogue |
-| 8 | Authorization matrix | D | `authz.js` | user × operation, draft inheritance, row-level filters |
-| 9 | Test design | D | `test-design.js` (+ CSV seeds) | 7 categories, equivalence classes, seeded all-pairs, concrete requests |
-| 10 | Pattern detection | D | `patterns.js` (32 detectors) | patterns with health |
-| 11 | Risk rules | D | `risks.js` (10 rules) | scored risks with the test that catches each |
+| 7 | Slices and risk ranking | D | `lib/analyse/slices.js` | slice catalogue |
+| 8 | Authorization matrix | D | `lib/analyse/authz.js` | user × operation, draft inheritance, row-level filters |
+| 9 | Test design | D | `lib/analyse/test-design.js` (+ CSV seeds) | 7 categories, equivalence classes, seeded all-pairs, concrete requests |
+| 10 | Pattern detection | D | `lib/analyse/patterns.js` | patterns with health |
+| 11 | Risk rules | D | `lib/analyse/risks.js` | scored risks with the test that catches each |
 | 12 | Generate cds.test suites | D | `bin/gen-tests.js` | `today:` tests and `it.skip` `spec:` tests, syntax-checked |
 | 13 | Render atlas | D | `bin/atlas.js`, Playwright, d3 | Markdown, PNG, interactive HTML |
 | 14 | Slice brief | D | `bin/brief.js` | per-slice context with 10 fixed questions |
@@ -59,8 +59,9 @@ On SFlight the generated facts reproduce the earlier hand analysis: 9 of the 12 
 | Part | Kind | Purpose |
 | --- | --- | --- |
 | `bin/pipeline.js` | CLI | runs steps 1 to 13 |
-| `bin/discover.js`, `lib/extract-*.js`, `lib/reflexion-ui.js` | extractors | knowledge graph with evidence |
-| `lib/authz.js`, `lib/test-design.js`, `lib/patterns.js`, `lib/risks.js`, `lib/atlas-facts.js` | analysers | matrix, classes, patterns, risks, atlas facts |
+| `lib/project/` | layout | every folder and config assumption, read from the app's own CAP config |
+| `bin/discover.js`, `lib/extract/`, `lib/analyse/reflexion-ui.js` | extractors | knowledge graph with evidence |
+| `lib/analyse/` (authz, test-design, patterns, risks, slices, classes), `lib/atlas/` | analysers | matrix, classes, patterns, risks, atlas facts |
 | `bin/gen-tests.js` | generator | cds.test suites |
 | `bin/atlas.js`, `atlas/template.html` | renderer | atlas in three formats, 26 views |
 | `bin/brief.js`, `bin/merge.js`, `bin/dossier.js`, `schema/facts.md` | agent harness | briefs, evidence gate, dossiers |

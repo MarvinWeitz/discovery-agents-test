@@ -30,7 +30,7 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | --- | --- | --- |
 | Murphy, Notkin, Sullivan: software reflexion models (1995) | paper | intended model (UI annotations) vs extracted model (handlers) → UIS verdicts |
 | CodeWiki / layered documentation | paper | wide map first, then per-slice deep dives, layered depth in the atlas |
-| Microsoft PICT | MIT | greedy all-pairs generation, reimplemented in `lib/test-design.js` |
+| Microsoft PICT | MIT | greedy all-pairs generation, reimplemented in `lib/analyse/test-design.js` |
 | dependency-cruiser, ArchUnitTS | MIT | layer rules and dependency matrix for `extract-cds-deps.js` |
 | wshobson/agents C4 plugin | MIT | agent role split and Markdown-first output |
 | SAP/codeql-sap-js queries | MIT | list of CAP security patterns to check (row-level filters, open services); not executed |

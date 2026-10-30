@@ -12,6 +12,7 @@ const fs = require('fs')
 const path = require('path')
 const http = require('http')
 const { spawn } = require('child_process')
+const { layout } = require('../../lib/project/layout')
 
 const ROOT = path.join(__dirname, '..', '..')
 const args = process.argv.slice(2)
@@ -43,7 +44,7 @@ async function serve() {
 
 // where the server mounts a UI5 app: cds-plugin-ui5 uses the app id, CAP's static serving the folder under app/
 async function mount(app) {
-  for (const m of [`/${app.id}`, '/' + path.relative(path.join(root, 'app'), path.join(root, app.webapp)).split(path.sep).join('/')])
+  for (const m of [`/${app.id}`, '/' + path.relative(path.join(root, layout(root).app), path.join(root, app.webapp)).split(path.sep).join('/')])
     if (await get(`${url}${m}/index.html`) === 200) return m
   return null
 }

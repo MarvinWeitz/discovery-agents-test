@@ -47,20 +47,25 @@ node bin/dossier.js <out>/run <slice-id>              # slice dossier
 
 ## What is generated
 
-| Module | From | Produces |
+Code is grouped by task. Each step has a walkthrough in [docs/walkthrough/](docs/walkthrough/README.md) with every decision and every hard-coded assumption; [00-assumptions.md](docs/walkthrough/00-assumptions.md) lists them all in one table.
+
+| Folder / module | From | Produces |
 | --- | --- | --- |
-| `extract-model.js` | CDS compiler (CSN with locations) | services, entities, projections, associations, compositions, constraints, actions, `@requires` / `@restrict` grants incl. `where` |
-| `extract-handlers-ast.js` | TypeScript compiler API on `srv/**/*.js|ts` | handler registrations, helpers, rejections with guard and HTTP status, derivations, CQL reads and writes with where and set, `next()`; the service of split implementation files (`require('./x')(this)`), handlers on connected services (`cds.connect.to` + `on`/`prepend`), event subscriptions, calls to other and remote services, native SQL strings, branches on the database kind |
-| `extract-native.js` | `db/src` HDI artifacts, `package.json` | calculation views, procedures, sequences linked to `@cds.persistence.exists` entities, to the tables they read and to the code that calls them; database model per profile |
-| `reflexion-ui.js` | UI annotations vs handlers | `UiRule` verdicts: enforced, consistent, framework, partial, stricter, ui-only |
-| `extract-app.js` | manifests, `package.json`, `.cdsrc.json`, `xs-security.json`, tests, git | UI5 apps and routes, mock users (merged with CAP defaults), roles, tests and the users they run as, churn |
-| `extract-cds-deps.js` | CDS sources | file dependencies (`using`, `annotate`, `extend`) with layer verdicts |
-| `extract-lint.js` | `@sap/eslint-plugin-cds`, `@ui5/linter` | findings |
-| `authz.js` | graph | user × operation matrix incl. draft inheritance and row-level filters |
-| `test-design.js` | graph + CSV seed data | 7 test categories, seeded all-pairs (PICT-style), concrete requests |
-| `patterns.js` | CSN + graph + sources | 43 fixed pattern detectors with health |
-| `risks.js` | graph | 16 risk rules with impact, likelihood, evidence and the test that catches each (incl. HANA-only paths, native SQL, database branches, model per profile, remote systems without a test double, untested event subscriptions) |
-| `atlas-facts.js` | all of the above | the atlas fact file |
+| `lib/project/` (`layout`, `config`, `files`, `sources`, `detect`) | the app's own CAP config (`cds.env`) | where things are: db/srv/app folders, config files, seed data, HDI sources, ignored folders; the app folder in a cloned repo. Every folder assumption lives here |
+| `lib/extract/model.js` | CDS compiler (CSN with locations) | services, entities, projections, associations, compositions, constraints, actions, `@requires` / `@restrict` grants incl. `where` |
+| `lib/extract/handlers/` | TypeScript compiler API on the srv folder (`*.js|ts`) | `binding` (which service a file implements, split implementations), `names` (constants, `cds.connect.to`, aliases), `registrations` (before/on/after), `body` (rejections with guard and HTTP status, derivations, CQL reads and writes, events, remote calls, native SQL, helpers), `file-scan` (remote calls, native SQL, database branches); the CAP words it knows are in `vocabulary.js` |
+| `lib/extract/native.js` | HDI artifacts, `package.json` | calculation views, procedures, sequences linked to `@cds.persistence.exists` entities, to the tables they read and to the code that calls them; database model per profile |
+| `lib/extract/ui5.js`, `config.js`, `auth.js`, `tests.js`, `history.js` | manifests, `package.json`, `.cdsrc.json`, `xs-security.json`, tests, git | UI5 apps and routes, remote services and brokers, mock users (merged with CAP defaults), roles, tests and the users they run as, churn |
+| `lib/extract/cds-deps.js` | CDS sources | file dependencies (`using`, `annotate`, `extend`) with layer verdicts |
+| `lib/extract/lint.js` | `@sap/eslint-plugin-cds`, `@ui5/linter` | findings |
+| `lib/analyse/reflexion-ui.js` | UI annotations vs handlers | `UiRule` verdicts: enforced, consistent, framework, partial, stricter, ui-only |
+| `lib/analyse/slices.js`, `classes.js` | graph | vertical slices ranked by risk; equivalence-class seeds |
+| `lib/analyse/authz.js` | graph | user × operation matrix incl. draft inheritance and row-level filters |
+| `lib/analyse/test-design.js` | graph + CSV seed data | 7 test categories, seeded all-pairs (PICT-style), concrete requests |
+| `lib/analyse/patterns.js` | CSN + graph + sources | 43 fixed pattern detectors with health |
+| `lib/analyse/risks.js` | graph | 16 risk rules with impact, likelihood, evidence and the test that catches each (incl. HANA-only paths, native SQL, database branches, model per profile, remote systems without a test double, untested event subscriptions) |
+| `lib/atlas/` (`index.js`, `sections/<code>.js`) | all of the above | the atlas fact file, one builder per section |
+| `lib/report/` | graph | the Markdown discovery report and its rendered Mermaid diagrams |
 
 Licences of every tool are tracked in [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
 

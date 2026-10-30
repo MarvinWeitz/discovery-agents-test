@@ -5,6 +5,8 @@
 const fs = require('fs')
 const path = require('path')
 
+const { layout } = require('../../lib/project/layout')
+
 const LIB = path.join(__dirname, 'library')
 
 function sources(root) {
@@ -18,7 +20,8 @@ function sources(root) {
       else if (/\.(cds|js|ts)$/.test(e.name) && !/\.d\.ts$|\.test\./.test(e.name)) out.push({ path: r, text: fs.readFileSync(p, 'utf8') })
     }
   }
-  for (const d of ['srv', 'db', 'app']) walk(path.join(root, d), d)
+  const L = layout(root)
+  for (const d of [L.srv, L.db, L.app]) walk(path.join(root, d), d)
   return out
 }
 

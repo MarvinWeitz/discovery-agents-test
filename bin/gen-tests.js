@@ -8,8 +8,8 @@ const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
 const { loadRun } = require('../lib/load')
-const { design } = require('../lib/test-design')
-const { short } = require('../lib/authz')
+const { design } = require('../lib/analyse/test-design')
+const { short } = require('../lib/analyse/authz')
 
 const q = s => JSON.stringify(s)
 const kind = v => v === 'success' || (+v >= 200 && +v < 300) ? 'ok' : 'err'

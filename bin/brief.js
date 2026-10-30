@@ -4,7 +4,8 @@
 const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice } = require('../lib/load')
-const { walk } = require('../lib/extract-handlers')
+const { walk } = require('../lib/project/files')
+const { layout } = require('../lib/project/layout')
 
 const { QUESTIONS } = require('./brief-questions')
 
@@ -17,10 +18,11 @@ function main() {
 
   // Annotation files: CDS files that annotate any service entity of the slice
   const names = members.filter(n => n.type === 'ServiceEntity').map(n => n.props.name.split('.').pop())
-  const annotationFiles = walk(root, p => p.endsWith('.cds') && !p.includes(`${path.sep}xmpls${path.sep}`))
+  const ignored = layout(root).ignored
+  const annotationFiles = walk(root, p => p.endsWith('.cds') && !ignored.some(d => p.includes(`${path.sep}${d}${path.sep}`)))
     .filter(f => new RegExp(`annotate\\s+[\\w.]*\\b(${names.join('|')})\\b`).test(fs.readFileSync(f, 'utf8')))
     .map(f => path.relative(root, f))
-  const files = [...new Set([...slice.files, ...annotationFiles])].filter(f => !f.startsWith('xmpls/'))
+  const files = [...new Set([...slice.files, ...annotationFiles])].filter(f => !ignored.some(d => f.startsWith(d + '/')))
 
   const out = []
   out.push(`# Slice brief ${slice.id}: ${slice.name}`, '')
