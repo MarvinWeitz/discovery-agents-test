@@ -10,6 +10,8 @@
 //   typer      true when the app uses @cap-js/cds-typer
 //   jest       true when the app brings its own Jest
 //   curated    curated/<file>.json whose META.app names this repo, if any
+//   mockauth   true when the app only configures token auth (xsuaa, ias, jwt) and so cannot start in a test
+//              without a bound instance; the workflow then runs the tests with CAP's mocked users
 const fs = require('fs')
 const path = require('path')
 
@@ -83,6 +85,13 @@ for (const f of fs.readdirSync(path.join(__dirname, '../../curated')).filter(f =
   if (owner && String(c?.META?.app).toLowerCase() === `${owner}/${name}`.toLowerCase()) curated = `curated/${f}`
 }
 
+// cds.requires.auth in package.json or .cdsrc.json, ignoring [profile] sections that set their own
+const rc = readJson(path.join(app, '.cdsrc.json'))
+const req = { ...pj?.cds?.requires, ...rc?.requires }
+const kindOf = a => typeof a === 'string' ? a : a?.kind
+const devAuth = ['[development]', '[test]'].some(p => kindOf(req[p]?.auth) || req.auth?.[p])
+const mockauth = /^(xsuaa|ias|jwt)$/.test(kindOf(req.auth) || '') && !devAuth
+
 const out = {
   app: path.relative(repo, app) || '.',
   ui: ui.join(','),
@@ -91,6 +100,7 @@ const out = {
   ts: String(ts),
   typer: String('@cap-js/cds-typer' in d),
   jest: String('jest' in d),
-  curated
+  curated,
+  mockauth: String(mockauth)
 }
 for (const [k, v] of Object.entries(out)) console.log(`${k}=${v}`)

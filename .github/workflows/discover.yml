@@ -235,7 +235,11 @@ jobs:
         id: startup
         continue-on-error: true
         working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        env:
+          # token auth only (xsuaa, ias, jwt): test with CAP's mocked users, as its [development] profile would
+          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
         run: |
+          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
           mkdir -p test/discovery-startup
           cat > test/discovery-startup/startup.test.js <<'EOF'
           // Written by the Run discovery workflow: does the app start in-process with an in-memory database?
@@ -245,17 +249,30 @@ jobs:
             if (!Object.values(cds.services).some(s => s instanceof cds.ApplicationService)) throw new Error('no application service served')
           })
           EOF
-          ${{ steps.shim.outputs.jest }} test/discovery-startup --ci --forceExit --testTimeout 120000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-startup.json"
+          # Jest's module sandbox breaks some apps (cds 10, SAP Cloud SDK loggers): then Node's own runner, same tests
+          echo "runner=jest" >> "$GITHUB_OUTPUT"
+          if ! ${{ steps.shim.outputs.jest }} test/discovery-startup --ci --forceExit --testTimeout 120000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-startup.json"; then
+            echo "::warning::The app does not start under Jest; retrying with Node's test runner."
+            echo "runner=node" >> "$GITHUB_OUTPUT"
+            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/discovery-startup --outputFile "$GITHUB_WORKSPACE/out/jest-startup.json"
+          fi
 
       - name: Run the generated tests
         id: generated
         if: steps.startup.outcome == 'success'
         continue-on-error: true
         working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        env:
+          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
         run: |
+          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
           mkdir -p test/generated
           cp "$GITHUB_WORKSPACE"/out/${{ steps.target.outputs.slug }}/run/tests/generated/*.test.js test/generated/
-          ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+          if [ "${{ steps.startup.outputs.runner }}" = node ]; then
+            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/generated --outputFile "$GITHUB_WORKSPACE/out/jest-generated.json"
+          else
+            ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+          fi
 
       # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
       - name: Addons after tests
