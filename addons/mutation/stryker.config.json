@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stryker-mutator/stryker-js/master/packages/core/schema/stryker-schema.json",
+  "packageManager": "npm",
+  "testRunner": "jest",
+  "jest": { "projectType": "custom", "enableFindRelatedTests": false },
+  "mutate": ["srv/**/*.ts", "srv/**/*.js", "!srv/**/*.d.ts", "!srv/**/*.test.*", "!srv/src/**"],
+  "coverageAnalysis": "perTest",
+  "ignoreStatic": true,
+  "checkers": [],
+  "concurrency": 2,
+  "timeoutMS": 30000,
+  "reporters": ["json", "clear-text", "progress"],
+  "jsonReporter": { "fileName": "reports/mutation/mutation.json" },
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": true
+}

@@ -1,0 +1,109 @@
+# Mutation testing (nightly): Stryker changes SFlight's handler code in small ways and reruns the
+# generated and the existing tests. The score says whether the tests would catch real bugs; the
+# survivors become test targets. Also runs on PRs that change the mutation addon itself.
+# Switch: "mutation" in discovery.config.json. Remove: delete this file and addons/mutation.
+name: Mutation testing
+
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'addons/mutation/**'
+      - '.github/workflows/mutation.yml'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  SFLIGHT_REPO: https://github.com/SAP-samples/cap-sflight.git
+  SFLIGHT_COMMIT: 7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1
+  PLAYWRIGHT_VERSION: 1.63.0
+  STRYKER_VERSION: 10.0.0
+
+jobs:
+  mutation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Is the mutation addon on?
+        id: flag
+        run: node bin/addon.js enabled mutation && echo "on=true" >> "$GITHUB_OUTPUT" || echo "on=false" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: steps.flag.outputs.on == 'true'
+        with:
+          node-version: 22.x
+
+      - name: Install toolkit
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          npm ci --ignore-scripts --legacy-peer-deps
+          npm i --no-save --legacy-peer-deps playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium
+
+      - name: Check out and install SFlight
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          git clone --quiet "$SFLIGHT_REPO" ../cap-sflight
+          git -C ../cap-sflight checkout --quiet "$SFLIGHT_COMMIT"
+          cd ../cap-sflight
+          npm i -g @sap/cds-dk typescript tsx
+          npm ci
+          npx cds-typer "*"
+          npm i --no-save @stryker-mutator/core@${STRYKER_VERSION} @stryker-mutator/jest-runner@${STRYKER_VERSION}
+
+      - name: Run the discovery pipeline
+        if: steps.flag.outputs.on == 'true'
+        run: node bin/pipeline.js ../cap-sflight out/cap-sflight --base curated/cap-sflight.json
+
+      - name: Run Stryker on the generated and existing tests
+        if: steps.flag.outputs.on == 'true'
+        id: stryker
+        continue-on-error: true
+        working-directory: ../cap-sflight
+        run: |
+          mkdir -p test/generated
+          cp "$GITHUB_WORKSPACE"/out/cap-sflight/run/tests/generated/*.test.js test/generated/
+          cp "$GITHUB_WORKSPACE/addons/mutation/stryker.config.json" .
+          npx stryker run stryker.config.json
+          cp reports/mutation/mutation.json "$GITHUB_WORKSPACE/out/mutation.json"
+
+      - name: Score, survivors and atlas section
+        if: steps.flag.outputs.on == 'true' && steps.stryker.outcome == 'success'
+        run: |
+          node addons/mutation/cli.js out/mutation.json out/cap-sflight
+          node bin/atlas.js out/cap-sflight/atlas-data.json out/cap-sflight/atlas
+          { echo "## Mutation testing on SFlight"; echo; tail -n +1 out/cap-sflight/mutation.md; } > out/mutation-comment.md
+          cat out/mutation-comment.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report a failed Stryker run
+        if: steps.flag.outputs.on == 'true' && steps.stryker.outcome != 'success'
+        run: |
+          printf '## Mutation testing on SFlight\n\nStryker did not finish; see the job log.\n' > out/mutation-comment.md
+          cat out/mutation-comment.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post on the PR
+        if: steps.flag.outputs.on == 'true' && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: .github/scripts/sticky-comment.sh discovery:mutation out/mutation-comment.md
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.flag.outputs.on == 'true'
+        with:
+          name: mutation-sflight
+          path: |
+            out/mutation.json
+            out/cap-sflight/mutation.md
+            out/cap-sflight/mutation-summary.json
+            out/cap-sflight/atlas
+
+      - name: Fail if Stryker failed
+        if: steps.flag.outputs.on == 'true' && steps.stryker.outcome != 'success'
+        run: exit 1

@@ -42,3 +42,11 @@ Nodes whose id carries a line number (rules, handlers) are matched by content, s
 - **In this repo** a PR changes the toolkit, so `discovery-diff.yml` runs the base and the head toolkit on the same SFlight commit ("what this PR changes in the findings"). A collapsed **Demo** section also applies `addons/diff/demo/sflight-risky-change.patch` (opens a PII projection, widens a grant, deletes a guard) to show what an app PR gets.
 - **In an app repo**: check out the app at base and head, then `addons/diff/run.sh <toolkit> <app-base> out/base`, the same for head, and `node addons/diff/cli.js out/base out/head out/report`. `--fail-on-new` makes it a blocking check.
 - **Files**: `addons/diff/` (`diff.js` compare, `report.js` Markdown + Mermaid, `cli.js`, `run.sh`, `demo/`), `.github/workflows/discovery-diff.yml`, `.github/scripts/sticky-comment.sh` (shared).
+
+## mutation: mutation testing as the quality score
+
+Passing tests only prove that tests exist. Stryker (Apache-2.0) makes small changes to the app's handler code (flips `>` to `>=`, empties a block with a `req.reject`, swaps a string) and reruns the generated and existing tests. A mutant no test notices "survived".
+
+- **Outputs**: mutation score per app (and per file), score per equivalence class (mutants reached by the class's generated tests vs killed by them, via `manifest.json`), survivors tied to the rule or handler they sit in ("emptying this block in rejection … has been approved already"), atlas section `MUT` (survivor cards, class bars), `mutation.md`, `mutation-summary.json`, KPI "mutation score".
+- **When**: nightly at 02:30 UTC and on demand (`.github/workflows/mutation.yml`); also on PRs that change `addons/mutation/`. Runs take minutes to an hour, so not on every push.
+- **Files**: `addons/mutation/` (`stryker.config.json` copied into the app, `mutation.js` analysis, `cli.js`, `view.js`), `.github/workflows/mutation.yml`.
