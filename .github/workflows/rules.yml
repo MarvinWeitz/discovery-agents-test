@@ -1,0 +1,32 @@
+# Unit tests of the rules library (agent findings promoted to deterministic rules).
+# Switch: "rules" in discovery.config.json. Remove: delete this file and addons/rules.
+name: Rules library
+
+on:
+  pull_request:
+    paths:
+      - 'addons/rules/**'
+      - '.github/workflows/rules.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Is the rules addon on?
+        id: flag
+        run: node bin/addon.js enabled rules && echo "on=true" >> "$GITHUB_OUTPUT" || echo "on=false" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v4
+        if: steps.flag.outputs.on == 'true'
+        with:
+          node-version: 22.x
+      - name: Install toolkit
+        if: steps.flag.outputs.on == 'true'
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: Rule tests
+        if: steps.flag.outputs.on == 'true'
+        run: node --test 'addons/rules/library/*.test.js'

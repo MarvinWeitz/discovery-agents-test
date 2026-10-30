@@ -63,3 +63,22 @@ When today's behaviour differs from the intended one (for example the server acc
 
 - **Outputs**: `<out>/docs/README.md` (index, counts per feature) and one file per feature slice with three levels: **For business** (confirmed behaviour in plain words), **For developers** (mechanism and `file:line`), **For testers** (class, test, status, gaps); `pr/docs.md`; KPI "doc statements verified". The pipeline writes them without results (all unverified); `bin/after-tests.js` rewrites them with the CI results.
 - **Files**: `addons/docs/` (`docs.js` sentences, backing and Markdown, `index.js` hooks). Uses the coverage addon's request matches when it is on; works without it.
+
+## rules: agent findings promoted into rules
+
+When an agent finds something no rule sees, it also drafts a deterministic rule that would find it, plus a unit test. Rules are reviewed and accepted like code, so the paid, slow AI part shrinks while the free, repeatable part grows.
+
+- **Library**: `addons/rules/library/<key>.js` + `<key>.test.js`. A rule exports `{ key, title, status, from, i, l, lay, test, detect(ctx) }`; `ctx` has the app's sources, the knowledge graph and the CSN.
+- **Status**: `draft` rules only report (atlas section `RLS`, `pr/rules.md`), next to the agent finding they reproduce (same file, ±2 lines). Changing a rule to `accepted` in a reviewed PR makes its hits atlas risks and retires the agent finding automatically.
+- **First five drafts** (by the `rule-drafter` agent, `agents/rule-drafter.md`), all reproduce their source finding:
+
+| Rule | From | Fires on |
+| --- | --- | --- |
+| `null-deref-in-guard` | SFlight A7 (404 path crashes) | `srv/travel-service.ts:105` |
+| `max-plus-one-id` | SFlight A8 (max + 1 race) | `srv/travel-service.ts:18` |
+| `hard-coded-currency` | SFlight A12 (USD in analytics) | `srv/analytics-service.cds:24` |
+| `commented-out-grant` | event app A2 (UPDATE grant behind FIXME) | event app `srv/eventregistration-service.cds:12`; also SFlight's commented-out `@restrict` (A3) |
+| `writable-owner-field` | event app A1 (Email decides ownership, writable) | event app `srv/eventregistration-service.cds:4` |
+
+- **Tests**: `node --test 'addons/rules/library/*.test.js'` (14 tests: the finding, a variant, near misses), in `.github/workflows/rules.yml`.
+- **Files**: `addons/rules/` (`engine.js`, `index.js`, `view.js`, `library/`), `agents/rule-drafter.md`, `.github/workflows/rules.yml`.
