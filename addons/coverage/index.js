@@ -27,7 +27,7 @@ function facts(D, { g, td, root, runDir }) {
   apply(D)
 }
 
-// after CI ran the tests: re-classify with the Jest results, write coverage.md next to the atlas
+// after CI ran the tests: re-classify with the Jest results, write pr/coverage.md for the PR comment
 function afterTests({ out, results }) {
   const file = path.join(out, 'atlas-data.json')
   const D = readJson(file); if (!D?.COVERAGE) return false
@@ -36,7 +36,8 @@ function afterTests({ out, results }) {
   D.COVERAGE = { ...summarize(classes, D.RISKS, !!results.generated), classes }
   apply(D)
   fs.writeFileSync(file, JSON.stringify(D, null, 1))
-  fs.writeFileSync(path.join(out, 'coverage.md'), summaryMd(D.COVERAGE))
+  fs.mkdirSync(path.join(out, 'pr'), { recursive: true })
+  fs.writeFileSync(path.join(out, 'pr', 'coverage.md'), summaryMd(D.COVERAGE))
   return true
 }
 

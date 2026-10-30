@@ -22,7 +22,7 @@ async function main() {
   const csn = await cds.load(['db', 'srv', 'app'].map(d => path.join(root, d)), { locations: true })
   const { g } = loadRun(runDir)
   const { D, td } = buildAtlas({ g, csn, root, metrics, curated })
-  for (const a of addons.list()) if (a.facts) await a.facts(D, { g, td, csn, root, metrics, runDir })
+  for (const a of addons.list()) if (a.facts) await a.facts(D, { g, td, csn, root, metrics, runDir, out: path.dirname(path.resolve(outFile)) })
   fs.writeFileSync(outFile, JSON.stringify(D, null, 1))
   const s = D.META.sources
   console.log(`atlas facts written: ${outFile} (${D.SECTIONS.length} sections; ${Object.entries(s).map(([k, v]) => `${k} ${v}`).join(', ')}; ${D.RISKS.length} risks, ${D.PATTERNS.length} patterns, ${D.TESTCATS.reduce((a, c) => a + c.cls, 0)} classes)`)

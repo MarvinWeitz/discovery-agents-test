@@ -23,7 +23,7 @@ Line coverage says which code ran. This says which business cases are tested: ev
 
 - **Sources**, strongest first: a generated cds.test built for that class (via `manifest.json` and the Jest results), a request in an existing test to the same entity and operation as a user of the class (parsed from the test file), a test name that mentions it (approximate).
 - **Statuses**: tested · generated, not run yet · spec only (today's behaviour pinned, the intended one waits as `it.skip`) · likely (approximate) · test fails · untested.
-- **Outputs**: atlas section `COV` with a heatmap (entity · operation × state, click a cell for its classes and tests), status bars per category and a ranked "test next" list; `topics/NN-cov-coverage-by-class.md`; `coverage.md` (summary, also in the job summary and the PR comment); KPI "classes tested".
+- **Outputs**: atlas section `COV` with a heatmap (entity · operation × state, click a cell for its classes and tests), status bars per category and a ranked "test next" list; `topics/NN-cov-coverage-by-class.md`; `pr/coverage.md` (summary for the job summary and the PR comment; every addon puts its PR snippet in `<out>/pr/`); KPI "classes tested".
 - **Files**: `addons/coverage/` (`coverage.js` logic, `index.js` hooks, `view.js` atlas views). CI step: "Addons after tests" in `.github/workflows/sflight.yml`.
 
 ## diff: diff mode as a PR check
@@ -50,3 +50,16 @@ Passing tests only prove that tests exist. Stryker (Apache-2.0) makes small chan
 - **Outputs**: mutation score per app (and per file), score per equivalence class (mutants reached by the class's generated tests vs killed by them, via `manifest.json`), survivors tied to the rule or handler they sit in ("emptying this block in rejection … has been approved already"), atlas section `MUT` (survivor cards, class bars), `mutation.md`, `mutation-summary.json`, KPI "mutation score".
 - **When**: nightly at 02:30 UTC and on demand (`.github/workflows/mutation.yml`); also on PRs that change `addons/mutation/`. Runs take minutes to an hour, so not on every push.
 - **Files**: `addons/mutation/` (`stryker.config.json` copied into the app, `mutation.js` analysis, `cli.js`, `view.js`), `.github/workflows/mutation.yml`.
+
+## docs: documentation only from test-backed facts
+
+Every documentation statement is generated from one equivalence class and the graph fact behind it (a grant, a UI promise, a status transition, a rejection or derivation in a handler), and shows what backs it:
+
+- ✅ **verified**: a generated test for exactly this class passed in CI (numbered `T-n` in the order of `manifest.json`)
+- ◐ **exercised**: an existing test sends this request, but its assertions are not tied to the statement
+- ⬜ **unverified**: no test yet ❌ **broken**: its test fails
+
+When today's behaviour differs from the intended one (for example the server accepts an action the UI hides), the statement says so and names the waiting spec test. If behaviour changes, the test fails and the statement loses its ✅.
+
+- **Outputs**: `<out>/docs/README.md` (index, counts per feature) and one file per feature slice with three levels: **For business** (confirmed behaviour in plain words), **For developers** (mechanism and `file:line`), **For testers** (class, test, status, gaps); `pr/docs.md`; KPI "doc statements verified". The pipeline writes them without results (all unverified); `bin/after-tests.js` rewrites them with the CI results.
+- **Files**: `addons/docs/` (`docs.js` sentences, backing and Markdown, `index.js` hooks). Uses the coverage addon's request matches when it is on; works without it.
