@@ -32,7 +32,7 @@ Pages has to be switched on once: Settings → Pages → Source: Deploy from a b
 
 Private repos: add a `DISCOVERY_REPO_TOKEN` secret (fine-grained, Contents: read on the target). Private targets are never published to Pages, and the workflow refuses them while this repo is public, because the logs and artifacts of a public repo are public.
 
-On pull requests the workflow runs on the pilot apps as a check and builds the Pages site as the `pages-preview` artifact without publishing.
+On pull requests the workflow runs on the pilot apps as a check and builds the Pages site as the `pages-preview` artifact without publishing. Pilots: incidents-app, ui5-cap-event-app, cap-sflight (gating), plus HANA CodeJam (calc view, procedure, xsuaa), capire/samples bookstore (reuse services, events, workspace with submodules) and Poetry Slam Manager (split handlers, S/4HANA, ByD and B1 APIs, HANA sequence), which report but do not fail the check yet (`"gate": false` in `PILOTS`). What each of them taught the extractors: [PILOTS.md](PILOTS.md).
 
 ## Agentic deep dive
 
@@ -50,15 +50,16 @@ node bin/dossier.js <out>/run <slice-id>              # slice dossier
 | Module | From | Produces |
 | --- | --- | --- |
 | `extract-model.js` | CDS compiler (CSN with locations) | services, entities, projections, associations, compositions, constraints, actions, `@requires` / `@restrict` grants incl. `where` |
-| `extract-handlers-ast.js` | TypeScript compiler API on `srv/**/*.js|ts` | handler registrations, helpers, rejections with guard and HTTP status, derivations, CQL reads and writes with where and set, `next()` |
+| `extract-handlers-ast.js` | TypeScript compiler API on `srv/**/*.js|ts` | handler registrations, helpers, rejections with guard and HTTP status, derivations, CQL reads and writes with where and set, `next()`; the service of split implementation files (`require('./x')(this)`), handlers on connected services (`cds.connect.to` + `on`/`prepend`), event subscriptions, calls to other and remote services, native SQL strings, branches on the database kind |
+| `extract-native.js` | `db/src` HDI artifacts, `package.json` | calculation views, procedures, sequences linked to `@cds.persistence.exists` entities, to the tables they read and to the code that calls them; database model per profile |
 | `reflexion-ui.js` | UI annotations vs handlers | `UiRule` verdicts: enforced, consistent, framework, partial, stricter, ui-only |
 | `extract-app.js` | manifests, `package.json`, `.cdsrc.json`, `xs-security.json`, tests, git | UI5 apps and routes, mock users (merged with CAP defaults), roles, tests and the users they run as, churn |
 | `extract-cds-deps.js` | CDS sources | file dependencies (`using`, `annotate`, `extend`) with layer verdicts |
 | `extract-lint.js` | `@sap/eslint-plugin-cds`, `@ui5/linter` | findings |
 | `authz.js` | graph | user × operation matrix incl. draft inheritance and row-level filters |
 | `test-design.js` | graph + CSV seed data | 7 test categories, seeded all-pairs (PICT-style), concrete requests |
-| `patterns.js` | CSN + graph + sources | 32 fixed pattern detectors with health |
-| `risks.js` | graph | 10 risk rules with impact, likelihood, evidence and the test that catches each |
+| `patterns.js` | CSN + graph + sources | 43 fixed pattern detectors with health |
+| `risks.js` | graph | 16 risk rules with impact, likelihood, evidence and the test that catches each (incl. HANA-only paths, native SQL, database branches, model per profile, remote systems without a test double, untested event subscriptions) |
 | `atlas-facts.js` | all of the above | the atlas fact file |
 
 Licences of every tool are tracked in [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).

@@ -1,0 +1,27 @@
+# Unit tests of the extractors (test/*.test.js): fixtures for split service implementations, handlers on
+# connected services, event subscriptions, remote calls, native SQL and HANA-native artifacts.
+name: Extractor unit tests
+
+on:
+  pull_request:
+    paths:
+      - 'lib/**'
+      - 'test/**'
+      - '.github/workflows/unit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: Install toolkit
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: Unit tests
+        run: node --test 'test/*.test.js'

@@ -45,10 +45,15 @@ permissions:
 
 env:
   PLAYWRIGHT_VERSION: 1.63.0
+  # gate: false = the pilot runs and reports on pull requests, but its startup and generated tests do
+  # not fail the check yet (the harder pilots: HANA-native objects, xsuaa-only auth, reuse packages, S/4 calls)
   PILOTS: >-
     [{"repo":"cap-js/incidents-app"},
      {"repo":"SAP-samples/ui5-cap-event-app"},
-     {"repo":"SAP-samples/cap-sflight","ref":"7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1"}]
+     {"repo":"SAP-samples/cap-sflight","ref":"7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1"},
+     {"repo":"SAP-samples/cap-hana-exercises-codejam","ref":"b3daa04e39e432d9c0e13f25f689ae2207429fa0","app":"solution/MyHANAApp","gate":false},
+     {"repo":"capire/samples","ref":"5a89af673a0c5b24ee1e4dfb8898a7052dcd1b02","app":"bookstore","ui":"-","gate":false},
+     {"repo":"SAP-samples/partner-reference-application","ref":"63ecfe4e0289c4013fdb2f82e87d8d0d499333fe","gate":false}]
 
 jobs:
   plan:
@@ -137,6 +142,8 @@ jobs:
           dir="$(dirname "$GITHUB_WORKSPACE")/targets/$name"
           git "${auth[@]}" clone --quiet --filter=blob:none "$url" "$dir"
           if [ -n "$REF" ]; then git -C "$dir" checkout --quiet "$REF"; fi
+          # monorepos built from submodules (capire/samples)
+          if [ -f "$dir/.gitmodules" ]; then git "${auth[@]}" -C "$dir" submodule update --init --quiet --recursive || echo "::warning::some submodules could not be checked out"; fi
           commit=$(git -C "$dir" rev-parse HEAD)
 
           case "$PUBLISH_INPUT/$visibility/$GITHUB_EVENT_NAME" in
@@ -287,7 +294,7 @@ jobs:
       # The pilots are known to start and to pass their generated tests, so on a pull request either
       # failing is a regression in the toolkit or this workflow.
       - name: Fail the pull request check if a pilot regressed
-        if: github.event_name == 'pull_request' && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
+        if: github.event_name == 'pull_request' && matrix.target.gate != false && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
         run: |
           echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}. See the job summary."
           exit 1

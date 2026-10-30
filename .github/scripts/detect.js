@@ -2,7 +2,8 @@
 // app-path and ui-paths are relative to the repo root; empty means "detect".
 // Prints key=value lines for $GITHUB_OUTPUT:
 //   app        CAP project folder, relative to the repo root ('.' for the root)
-//   ui         UI5 project folders outside <app>/app, relative to the app folder (comma list, for --ui)
+//   ui         UI5 project folders outside <app>/app, relative to the app folder (comma list, for --ui);
+//              ui-paths "-" means none
 //   install    folder to run the package manager in (nearest lockfile at or above the app)
 //   pm         npm | yarn | pnpm
 //   ts         true when the app has TypeScript handlers
@@ -47,20 +48,27 @@ if (appArg) {
   app = caps[0]
 }
 
-let ui
-if (uiArg) ui = uiArg.split(',').map(s => s.trim()).filter(Boolean).map(u => path.relative(app, path.resolve(repo, u)))
-else {
-  // UI5 projects the pipeline would not find on its own (it scans <app>/app)
-  const own = path.join(app, 'app') + path.sep
-  ui = dirs.filter(d => fs.existsSync(path.join(d, 'webapp', 'manifest.json')) && !(d + path.sep).startsWith(own))
-    .map(d => path.relative(app, d))
-}
-
 let install = app
 for (let d = app; d.startsWith(repo); d = path.dirname(d)) {
   if (['package-lock.json', 'yarn.lock', 'pnpm-lock.yaml', 'npm-shrinkwrap.json'].some(f => fs.existsSync(path.join(d, f)))) { install = d; break }
+  // npm/yarn workspaces root that includes the app (monorepo without a lockfile, e.g. capire/samples)
+  const ws = readJson(path.join(d, 'package.json'))?.workspaces
+  const globs = Array.isArray(ws) ? ws : ws?.packages || []
+  if (d !== app && globs.some(g => { const rel = path.relative(d, app); return g === rel || g === '*' && !rel.includes(path.sep) || (g.endsWith('/*') && path.dirname(rel) === g.slice(0, -2)) })) { install = d; break }
   if (d === repo) break
 }
+
+let ui
+if (uiArg === '-') ui = []
+else if (uiArg) ui = uiArg.split(',').map(s => s.trim()).filter(Boolean).map(u => path.relative(app, path.resolve(repo, u)))
+else {
+  // UI5 projects the pipeline would not find on its own (it scans <app>/app)
+  const own = path.join(app, 'app') + path.sep
+  // only inside the project that gets installed: a repo of exercises holds many unrelated UIs
+  ui = dirs.filter(d => fs.existsSync(path.join(d, 'webapp', 'manifest.json')) && !(d + path.sep).startsWith(own) && (d + path.sep).startsWith(install + path.sep))
+    .map(d => path.relative(app, d))
+}
+
 const pm = fs.existsSync(path.join(install, 'pnpm-lock.yaml')) ? 'pnpm' : fs.existsSync(path.join(install, 'yarn.lock')) ? 'yarn' : 'npm'
 
 const pj = readJson(path.join(app, 'package.json'))
