@@ -32,7 +32,7 @@ Pages has to be switched on once: Settings → Pages → Source: Deploy from a b
 
 Private repos: add a `DISCOVERY_REPO_TOKEN` secret (fine-grained, Contents: read on the target). Private targets are never published to Pages, and the workflow refuses them while this repo is public, because the logs and artifacts of a public repo are public.
 
-On pull requests the workflow runs on the pilot apps as a check and builds the Pages site as the `pages-preview` artifact without publishing. Pilots: incidents-app, ui5-cap-event-app, cap-sflight (gating), plus HANA CodeJam (calc view, procedure, xsuaa), capire/samples bookstore (reuse services, events, workspace with submodules) and Poetry Slam Manager (split handlers, S/4HANA, ByD and B1 APIs, HANA sequence), which report but do not fail the check yet (`"gate": false` in `PILOTS`). What each of them taught the extractors: [PILOTS.md](PILOTS.md).
+On pull requests the workflow runs on the pilot apps as a check and builds the Pages site as the `pages-preview` artifact without publishing. Pilots, all gating: incidents-app, ui5-cap-event-app, cap-sflight, HANA CodeJam (calc view, procedure, xsuaa), capire/samples bookstore (reuse services, events, workspace with submodules) and Poetry Slam Manager (split handlers, S/4HANA, ByD and B1 APIs, HANA sequence). A pilot that should only report gets `"gate": false` in `PILOTS`. What each of them taught the extractors: [PILOTS.md](PILOTS.md).
 
 ## Agentic deep dive
 

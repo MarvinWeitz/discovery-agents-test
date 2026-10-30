@@ -1,15 +1,15 @@
 # Pilot apps
 
-Discovery is tuned against six public SAP samples. The first three gate every pull request; the last three are harder and report without failing the check until their runtime tests are green (`"gate": false` in `PILOTS`, `.github/workflows/discover.yml`).
+Discovery is tuned against six public SAP samples. All six gate every pull request: each must start under `cds.test` and pass its generated tests. A pilot that should only report gets `"gate": false` in `PILOTS` (`.github/workflows/discover.yml`).
 
 | Pilot | Commit | What it stresses | Gate |
 | --- | --- | --- | --- |
 | [cap-js/incidents-app](https://github.com/cap-js/incidents-app) | default branch | basics: draft, `@restrict`, one handler file | yes |
 | [SAP-samples/cap-sflight](https://github.com/SAP-samples/cap-sflight) | `7f42e85` | TypeScript + cds-typer, status machine, many UI rules | yes |
 | [SAP-samples/ui5-cap-event-app](https://github.com/SAP-samples/ui5-cap-event-app) | default branch | monorepo, freestyle UI5 projects next to the server | yes |
-| [SAP-samples/cap-hana-exercises-codejam](https://github.com/SAP-samples/cap-hana-exercises-codejam) `solution/MyHANAApp` | `b3daa04` | calculation view behind `@cds.persistence.exists`, stored procedure called with `db.run`, xsuaa-only auth | no |
-| [capire/samples](https://github.com/capire/samples) `bookstore` | `5a89af6` | reuse packages from a workspace with submodules, handlers on other services, events between services, model per database profile | no |
-| [SAP-samples/partner-reference-application](https://github.com/SAP-samples/partner-reference-application) (Poetry Slam Manager, branch `main-multi-tenant-features`) | `63ecfe4` | implementation split over 6 files, S/4HANA, ByD and B1 APIs, HANA sequence with a SQLite fallback | no |
+| [SAP-samples/cap-hana-exercises-codejam](https://github.com/SAP-samples/cap-hana-exercises-codejam) `solution/MyHANAApp` | `b3daa04` | calculation view behind `@cds.persistence.exists`, stored procedure called with `db.run`, xsuaa-only auth | yes |
+| [capire/samples](https://github.com/capire/samples) `bookstore` | `5a89af6` | reuse packages from a workspace with submodules, handlers on other services, events between services, model per database profile | yes |
+| [SAP-samples/partner-reference-application](https://github.com/SAP-samples/partner-reference-application) (Poetry Slam Manager, branch `main-multi-tenant-features`) | `63ecfe4` | implementation split over 6 files, S/4HANA, ByD and B1 APIs, HANA sequence with a SQLite fallback | yes |
 
 ## What the harder pilots exposed, and the fix
 
@@ -50,7 +50,7 @@ Each harder pilot failed to start in CI for its own reason. The workflow now rep
 | bookstore | a workspace package pins `@cap-js/sqlite` 2, npm nests a second `@sap/cds` 9 next to cds 10, handlers see no model | `repair-install.js` links nested `@sap/cds` copies to the app's |
 | bookstore | reuse services required as `odata` with no credentials | `cds.test(..., '--with-mocks')`, as `cds watch` does; services with credentials stay remote |
 
-Locally: Poetry Slam 29 of 29 generated tests pass, bookstore 2 of 2, CodeJam 3 of 3 (CI).
+In CI: Poetry Slam 29 of 29 generated tests pass, bookstore 2 of 2, CodeJam 3 of 3.
 
 ## Still open
 
