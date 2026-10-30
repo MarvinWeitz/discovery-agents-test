@@ -3,7 +3,7 @@
 Optional modules on top of the discovery pipeline. Each one lives in its own folder under `addons/`, has its own switch in `discovery.config.json`, and can be removed without touching the others.
 
 ```json
-{ "addons": { "coverage": true, "diff": true, "mutation": true, "docs": true, "rules": true } }
+{ "addons": { "coverage": true, "diff": true, "mutation": true, "docs": true, "rules": true, "nextsteps": true }, "atlas": { "layout": "pages" } }
 ```
 
 | Want to | Do |
@@ -13,7 +13,7 @@ Optional modules on top of the discovery pipeline. Each one lives in its own fol
 | Remove it for good | delete `addons/<name>/` (and its workflow, if it has one; listed below) |
 | Check from a workflow | `node bin/addon.js enabled <name>` exits 0 when on |
 
-The core calls addons at three hooks only (`lib/addons.js` documents them): `facts` in `bin/atlas-facts.js`, `afterTests` in `bin/after-tests.js` (CI, after Jest ran), and `topics` / `views` in `bin/atlas.js` (Markdown and HTML for an addon's atlas section). With every addon off, the pipeline's output is the same as before addons existed.
+The core calls addons at three places only (`lib/addons.js` documents the hooks): `facts` in `bin/atlas-facts.js`, `afterTests` in `bin/after-tests.js` (CI, after Jest ran), and `prepare` / `topics` / `topicAppend` / `views` in `bin/atlas.js` (data derived from the final facts, Markdown and HTML). With every addon off, the pipeline's output is the same as before addons existed.
 
 Shared, addon-neutral helpers the core now writes: a `dim` (entity, operation, state) and `fact` (graph node) on every equivalence class, and `run/tests/generated/manifest.json` mapping each generated test title to its class.
 
@@ -82,3 +82,17 @@ When an agent finds something no rule sees, it also drafts a deterministic rule 
 
 - **Tests**: `node --test 'addons/rules/library/*.test.js'` (14 tests: the finding, a variant, near misses), in `.github/workflows/rules.yml`.
 - **Files**: `addons/rules/` (`engine.js`, `index.js`, `view.js`, `library/`), `agents/rule-drafter.md`, `.github/workflows/rules.yml`.
+
+## nextsteps: ranked next steps with AI prompts
+
+Every section's findings become next steps, ranked on the risk scale (impact × likelihood, 1–5 each): **P1** ≥ 16 do now, **P2** ≥ 9 next, **P3** later. Each step has a kind (Fix, Test, Verify, Review), its `file:line` evidence, and a prompt block for a coding agent.
+
+- **Sources**: risks; UI promises the server does not enforce (UIS); roles that reach data they should not (AUT); status transitions where UI and server disagree (STA); unhealthy coding patterns (PAT); layer violations (DEP); actions without a handler (API); untested equivalence classes (COV / TST, from the coverage addon when on) and the all-pairs suite; mutation survivors (MUT, when the nightly run added them); draft rules that fire (RLS). A fact that cites the same `file:line` as a risk joins that risk, so one finding is one step, listed in every section that points at it.
+- **On the page**: a "Next steps" panel under every section, "Start here" (P1 + P2) on the overview, a NXT section with a filterable ranked list, a priority matrix and counts per section, and badges in the sidebar. Tick steps anywhere; a bar at the bottom combines them into one prompt: header (repo, commit, atlas link) + one block per step + a closing instruction for **Plan** (no code), **Implement** (one commit per step, tests named under "Done when") or **Tests only** (cds.test, `it.skip` for intended behaviour). "Copy" on a single step does the same for that step. The selection is kept in the browser.
+- **Outputs**: `NEXT` in `atlas/atlas-data.json`, `topics/01-nxt-next-steps.md` (ranked table plus every prompt block), a "Next steps" table at the end of each topic file, KPI "P1 next steps".
+- **When**: in `bin/atlas.js` (`prepare` hook), so it always reflects the latest facts, including coverage results after CI and a later mutation run.
+- **Files**: `addons/nextsteps/` (`nextsteps.js` ranking and prompt text, `index.js` hooks, `view.js` page panels, tray and NXT views).
+
+## Atlas layout (core switch, not an addon)
+
+`"atlas": { "layout": "pages" }` (default) shows a sidebar grouped by question (Start, Structure, Behaviour, Security and risk, Testing), the overview with KPIs and section cards as the home page, one section per page with previous / next links, and URLs like `index.html#rsk`. `"single"` is the earlier long page. `DISCOVERY_ATLAS_LAYOUT=single` sets it for one run, and readers can switch with the button at the top right (remembered in their browser). All display variants per section stay as tabs; the "keep this view" picker is gone.

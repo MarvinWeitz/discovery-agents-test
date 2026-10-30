@@ -16,7 +16,7 @@ node bin/pipeline.js <app-root> <out-dir> [--ui ../ui-a,../ui-b] [--base curated
 | 1 discover | `bin/discover.js <app-root> <out>/run [--ui dirs]` | knowledge graph `graph/*.jsonl`, `metrics.json`, `slices/catalog.json`, `discovery-report.md` |
 | 2 facts | `bin/atlas-facts.js <out>/run <out>/atlas-data.json [--base curated.json]` | every atlas section, generated from the graph; agent risks merged from the curated file |
 | 3 tests | `bin/gen-tests.js <out>/run` | `run/tests/generated/*.test.js` (cds.test, syntax-checked) |
-| 4 atlas | `bin/atlas.js <out>/atlas-data.json <out>/atlas` | `README.md`, `topics/*.md`, `images/*.png`, `index.html` |
+| 4 atlas | `bin/atlas.js <out>/atlas-data.json <out>/atlas` | `README.md`, `topics/*.md`, `images/*.png`, `index.html` (one page per section with a sidebar, or one long page: `"atlas": { "layout" }` in `discovery.config.json`; ranked next steps with copyable AI prompts from the `nextsteps` addon, see [ADDONS.md](ADDONS.md)) |
 
 The app needs no `npm install`; the toolkit compiles the model with its own `@sap/cds`. If the app imports `@sap/cds/common`, make the toolkit's `node_modules` resolvable from the app (for example a symlink named `node_modules` in the app's parent folder). The toolkit never runs the app or its tests.
 
