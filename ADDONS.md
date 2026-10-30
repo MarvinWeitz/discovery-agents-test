@@ -25,3 +25,20 @@ Line coverage says which code ran. This says which business cases are tested: ev
 - **Statuses**: tested · generated, not run yet · spec only (today's behaviour pinned, the intended one waits as `it.skip`) · likely (approximate) · test fails · untested.
 - **Outputs**: atlas section `COV` with a heatmap (entity · operation × state, click a cell for its classes and tests), status bars per category and a ranked "test next" list; `topics/NN-cov-coverage-by-class.md`; `coverage.md` (summary, also in the job summary and the PR comment); KPI "classes tested".
 - **Files**: `addons/coverage/` (`coverage.js` logic, `index.js` hooks, `view.js` atlas views). CI step: "Addons after tests" in `.github/workflows/sflight.yml`.
+
+## diff: diff mode as a PR check
+
+Runs the pipeline on the base and the head of a PR and posts what changed as **one sticky PR comment** (updated on every push, marker `discovery:diff`):
+
+- 🔴 new risks (rule or agent), ✅ resolved ones, changed scores
+- 🟠 pattern breaks: a coding pattern that is new and unhealthy, or got worse (idiomatic → wrong place → defect)
+- 🟡 equivalence classes that lost their test (status from the coverage addon when on; otherwise from the test design)
+- 🔓 authorization cells that changed, bold when they became open without a role
+- UI-vs-server verdict changes, new classes without a test, changed KPIs
+- **Changed nodes graph** as a Mermaid block (GitHub renders it): green added, red removed, amber changed, grey one ring of context
+
+Nodes whose id carries a line number (rules, handlers) are matched by content, so inserting a line above a rule is not reported as a change.
+
+- **In this repo** a PR changes the toolkit, so `discovery-diff.yml` runs the base and the head toolkit on the same SFlight commit ("what this PR changes in the findings"). A collapsed **Demo** section also applies `addons/diff/demo/sflight-risky-change.patch` (opens a PII projection, widens a grant, deletes a guard) to show what an app PR gets.
+- **In an app repo**: check out the app at base and head, then `addons/diff/run.sh <toolkit> <app-base> out/base`, the same for head, and `node addons/diff/cli.js out/base out/head out/report`. `--fail-on-new` makes it a blocking check.
+- **Files**: `addons/diff/` (`diff.js` compare, `report.js` Markdown + Mermaid, `cli.js`, `run.sh`, `demo/`), `.github/workflows/discovery-diff.yml`, `.github/scripts/sticky-comment.sh` (shared).
