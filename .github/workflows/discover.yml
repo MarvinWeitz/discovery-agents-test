@@ -192,6 +192,16 @@ jobs:
           npm i -g @sap/cds-dk typescript tsx
           if [ "${{ steps.detect.outputs.typer }}" = true ]; then npx cds-typer "*"; fi
 
+      # SAP Cloud SDK clients that the app generates from OpenAPI specs before its own build (gitignored):
+      # run the app's own openapi-generator commands from its package.json scripts
+      - name: Generate API clients
+        continue-on-error: true
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        run: |
+          node -e "for (const s of Object.values(require('./package.json').scripts || {})) for (const c of s.split(/&&|;/)) if (/\bopenapi-generator\b/.test(c)) console.log(c.trim())" | sort -u | while read -r cmd; do
+            echo "\$ $cmd"; eval "$cmd"
+          done
+
       # Jest, SQLite and (if the install failed) @sap/cds go into a node_modules folder above the clone,
       # so the app resolves them without its own package.json being touched.
       - name: Add test runtime next to the app
@@ -207,6 +217,9 @@ jobs:
           # since cds 9, cds.test lives in @cap-js/cds-test
           [ "$major" -ge 9 ] && ! has @cap-js/cds-test && pkgs+=("@cap-js/cds-test")
           has jest || pkgs+=("jest@29")
+          # one @sap/cds instance, and dependencies a broken lockfile left out (see repair-install.js)
+          mapfile -t missing < <(node "$GITHUB_WORKSPACE/.github/scripts/repair-install.js" . "${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.install }}")
+          pkgs+=("${missing[@]}")
           echo "cds major $major, adding: ${pkgs[*]:-nothing}"
           if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
           # packages added here peer-depend on @sap/cds: let them find the app's own copy (Node follows the
@@ -244,7 +257,7 @@ jobs:
           cat > test/discovery-startup/startup.test.js <<'EOF'
           // Written by the Run discovery workflow: does the app start in-process with an in-memory database?
           const cds = require('@sap/cds')
-          cds.test(__dirname + '/../..')
+          cds.test(__dirname + '/../..', '--with-mocks') // required services without credentials as local mocks
           it('app starts and serves its services', () => {
             if (!Object.values(cds.services).some(s => s instanceof cds.ApplicationService)) throw new Error('no application service served')
           })
