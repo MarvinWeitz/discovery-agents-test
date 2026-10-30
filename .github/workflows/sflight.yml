@@ -1,0 +1,88 @@
+# Runs the discovery pipeline on SAP-samples/cap-sflight and executes the generated cds.test suites in the app.
+name: Discover SFlight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  SFLIGHT_REPO: https://github.com/SAP-samples/cap-sflight.git
+  SFLIGHT_COMMIT: 7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1
+  PLAYWRIGHT_VERSION: 1.63.0
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install toolkit
+        run: |
+          npm ci --ignore-scripts --legacy-peer-deps
+          npm i --no-save --legacy-peer-deps playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium
+
+      - name: Check out SFlight at the pinned commit
+        run: |
+          git clone --quiet "$SFLIGHT_REPO" ../cap-sflight
+          git -C ../cap-sflight checkout --quiet "$SFLIGHT_COMMIT"
+
+      # Same setup as SFlight's own CI (.github/workflows/node.js.yml)
+      - name: Install SFlight
+        working-directory: ../cap-sflight
+        run: |
+          npm i -g @sap/cds-dk typescript tsx
+          npm ci
+          npx cds-typer "*"
+
+      - name: Run the discovery pipeline
+        run: node bin/pipeline.js ../cap-sflight out/cap-sflight --base curated/cap-sflight.json
+
+      - name: Run SFlight's own tests (baseline)
+        id: baseline
+        continue-on-error: true
+        working-directory: ../cap-sflight
+        run: npx jest test/odata.test.ts --ci --json --outputFile="$GITHUB_WORKSPACE/out/jest-baseline.json"
+
+      - name: Run the generated tests
+        id: generated
+        continue-on-error: true
+        working-directory: ../cap-sflight
+        run: |
+          mkdir -p test/generated
+          cp "$GITHUB_WORKSPACE"/out/cap-sflight/run/tests/generated/*.test.js test/generated/
+          npx jest test/generated --ci --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+
+      - name: Job summary
+        if: always()
+        run: node .github/scripts/summary.js out >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post the summary on the PR
+        if: always() && github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node .github/scripts/summary.js out > out/summary.md
+          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body-file out/summary.md --edit-last --create-if-none
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sflight-discovery
+          path: out/
+
+      - name: Fail if generated tests failed
+        if: steps.generated.outcome != 'success'
+        run: |
+          echo "Generated tests failed: the pipeline predicted a status the app does not return. See the job summary."
+          exit 1

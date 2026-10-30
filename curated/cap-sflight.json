@@ -1,0 +1,152 @@
+{
+ "META": {
+  "title": "SFlight Discovery Atlas",
+  "app": "SAP-samples/cap-sflight",
+  "url": "https://github.com/SAP-samples/cap-sflight",
+  "license": "Apache-2.0",
+  "lede": "One travel-booking app, read end to end: two Fiori elements apps, one CDS model and a CAP Node.js backend in TypeScript. The repo also ships a Java backend; it is out of scope and ignored here."
+ },
+ "RISKS": [
+  {
+   "id": "A1",
+   "t": "Passenger PII open to any caller",
+   "i": 4,
+   "l": 4,
+   "lay": "Model",
+   "ev": "db/master-data.cds:5",
+   "d": "Master data is @cds.autoexpose without @restrict, so /processor/Passenger and /analytics/Passenger return names, street, phone and e-mail. With no service-level @requires this includes unauthenticated calls (verify behind the approuter).",
+   "test": "GET /processor/Passenger and /analytics/Passenger as anonymous and as role-less user rose, expect 401/403.",
+   "gen": "pii-open:Passenger",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A2",
+   "t": "Status rules live in the UI only",
+   "i": 4,
+   "l": 3,
+   "lay": "Node",
+   "ev": "srv/travel-service.ts:86",
+   "d": "Node checks only the draft lock before accept/reject. A cancelled travel can be accepted and an accepted one rejected by a direct OData call. The UI hides these buttons via OperationAvailable.",
+   "test": "POST acceptTravel on a cancelled (X) travel, expect 400.",
+   "gen": "ui-only:actions",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A3",
+   "t": "AnalyticsService has no authorization",
+   "i": 3,
+   "l": 4,
+   "lay": "Service",
+   "ev": "srv/analytics-service.cds:5",
+   "d": "The @restrict block is commented out, so every booking with prices and customer names is readable without a role.",
+   "test": "GET /analytics/Bookings as anonymous, expect 401.",
+   "gen": "open-svc:AnalyticsService",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A4",
+   "t": "Read-only after accept is UI-only",
+   "i": 3,
+   "l": 3,
+   "lay": "UI",
+   "ev": "app/travel_processor/field-control.cds:29",
+   "d": "15 @Common.FieldControl annotations make an accepted travel read-only in Fiori. No handler enforces it, so an edit draft on an accepted travel can still change BookingFee (verify).",
+   "test": "draftEdit + PATCH BookingFee on an accepted travel, expect rejection.",
+   "gen": "ui-only:fields",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A5",
+   "t": "Bookings editable on closed travels",
+   "i": 3,
+   "l": 3,
+   "lay": "UI",
+   "ev": "app/travel_processor/field-control.cds:60",
+   "d": "Create/DeleteHidden hide booking changes unless the travel is Open. The server has no matching check (verify).",
+   "test": "POST a Booking into the draft of an accepted travel, expect rejection.",
+   "gen": "ui-only:fields",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A6",
+   "t": "deductDiscount works on cancelled travels",
+   "i": 2,
+   "l": 3,
+   "lay": "Node",
+   "ev": "srv/travel-service.ts:99",
+   "d": "The UI offers the action only for Open; the UPDATE excludes only Accepted, so a cancelled travel still gets discounted.",
+   "test": "deductDiscount on an X travel, expect 400.",
+   "gen": "partial:uirule:TravelService.Travel.deductDiscount:available",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A7",
+   "t": "deductDiscount 404 path crashes",
+   "i": 2,
+   "l": 3,
+   "lay": "Node",
+   "ev": "srv/travel-service.ts:105",
+   "d": "When the travel is gone, the error message reads travel.ID from undefined: a TypeError and a 500 instead of a 404.",
+   "test": "deductDiscount on a deleted TravelUUID, expect 404 with message.",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A8",
+   "t": "TravelID = max + 1 race",
+   "i": 3,
+   "l": 2,
+   "lay": "Node",
+   "ev": "srv/travel-service.ts:17",
+   "d": "max(TravelID) is read and incremented on CREATE. Two parallel activations can get the same ID.",
+   "test": "Activate two drafts in parallel, assert distinct TravelIDs.",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A9",
+   "t": "No authorization tests",
+   "i": 3,
+   "l": 5,
+   "lay": "Tests",
+   "ev": "test/odata.test.ts:7",
+   "d": "All 9 OData tests run as alice (a CAP default admin). No test exercises reviewer, processor or a role-less user.",
+   "test": "Role x operation matrix test (see TST).",
+   "gen": "tests-one-user",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A10",
+   "t": "createTravelByTemplate has no handler",
+   "i": 2,
+   "l": 2,
+   "lay": "Service",
+   "ev": "srv/travel-service.cds:12",
+   "d": "Declared and granted to processor and admin, but not implemented: calls fail with 501.",
+   "test": "Call the action, expect a created travel, or remove it from the model.",
+   "gen": "noimpl:createTravelByTemplate",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A11",
+   "t": "Service annotates domain entities",
+   "i": 1,
+   "l": 5,
+   "lay": "Model",
+   "ev": "srv/analytics-service.cds:76",
+   "d": "AnalyticsService annotates my.Airport and my.FlightConnection directly, so its labels leak into TravelService too.",
+   "test": "Architecture rule: srv/*.cds may only annotate its own projections.",
+   "gen": "layering",
+   "reviewer": "agent deep read 2026-10-29"
+  },
+  {
+   "id": "A12",
+   "t": "Hard-coded USD in analytics",
+   "i": 2,
+   "l": 3,
+   "lay": "Service",
+   "ev": "srv/analytics-service.cds:24",
+   "d": "All FlightPrices are summed as USD regardless of their currency.",
+   "test": "Seed a EUR booking, assert aggregation either converts or groups by currency.",
+   "reviewer": "agent deep read 2026-10-29"
+  }
+ ]
+}

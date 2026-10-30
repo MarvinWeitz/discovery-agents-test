@@ -1,0 +1,28 @@
+{
+  "name": "cap-discovery-toolkit",
+  "version": "1.0.0",
+  "description": "Discovery pipeline for CAP Node.js + UI5 apps: knowledge graph, atlas, test design",
+  "scripts": {
+    "discover": "node bin/discover.js",
+    "pipeline": "node bin/pipeline.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@sap/cds": "^9.9.4",
+    "@sap/cds-compiler": "^7.2.1",
+    "@sap/eslint-plugin-cds": "^4.2.5",
+    "@ui5/linter": "^1.23.7",
+    "eslint": "^9.39.5",
+    "mermaid": "^10.9.1",
+    "d3": "7.9.0",
+    "d3-sankey": "0.12.3",
+    "typescript": "5.9.3"
+  },
+  "private": true,
+  "bin": {
+    "discover": "bin/discover.js",
+    "cap-discovery": "bin/pipeline.js"
+  }
+}
