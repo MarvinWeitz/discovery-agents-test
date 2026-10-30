@@ -3,7 +3,7 @@
 Optional modules on top of the discovery pipeline. Each one lives in its own folder under `addons/`, has its own switch in `discovery.config.json`, and can be removed without touching the others.
 
 ```json
-{ "addons": { "coverage": true, "diff": true, "mutation": true, "docs": true, "rules": true, "nextsteps": true }, "atlas": { "layout": "pages" } }
+{ "addons": { "coverage": true, "diff": true, "mutation": true, "docs": true, "rules": true, "nextsteps": true, "uitests": true }, "atlas": { "layout": "pages" } }
 ```
 
 | Want to | Do |
@@ -92,6 +92,17 @@ Every section's findings become next steps, ranked on the risk scale (impact × 
 - **Outputs**: `NEXT` in `atlas/atlas-data.json`, `topics/01-nxt-next-steps.md` (ranked table plus every prompt block), a "Next steps" table at the end of each topic file, KPI "P1 next steps".
 - **When**: in `bin/atlas.js` (`prepare` hook), so it always reflects the latest facts, including coverage results after CI and a later mutation run.
 - **Files**: `addons/nextsteps/` (`nextsteps.js` ranking and prompt text, `index.js` hooks, `view.js` page panels, tray and NXT views).
+
+## uitests: UI tests for what the UI promises
+
+The backend tests show the server accepts what the UI hides. This addon tests the other lock: does the Fiori elements UI actually hide, disable or lock what its annotations say? Every UI promise from the UIS section becomes one check per state of the record (an equivalence class), run in the real app in headless Chromium.
+
+- **Generated from**: `@Core.OperationAvailable` (header action enabled / disabled, display mode), `@Common.FieldControl` (fields editable / read-only, edit mode, also on child object pages), `@readonly` (read-only in edit mode), `@UI.CreateHidden` / `@UI.DeleteHidden` (table Create / Delete button shown / hidden in the parent's edit mode, also for tables in custom sections). Records come from the CSV seed data, the expected state from the annotation (the field-control `case` expression is evaluated per status). Side effects, `@mandatory` and `@assert.range` are listed as not generated, with the reason (the backend tests cover them).
+- **Tests**: OPA5 journeys with `sap.fe.test`, the API SAP's own Fiori elements samples use, in `run/tests/ui/<app-id>/uitests.qunit.{html,js}`. Checks on the same record and mode share one app start ("visit"); a marker assertion `[UIT:…]` after each check ties results to classes. Edit-mode visits create the draft through OData (`draftEdit`) and discard it afterwards.
+- **Runner**: `node addons/uitests/run.js <out> <app-root> [--baseline] [--filter V4] [--url http://localhost:4004]` copies the journeys to `<webapp>/test/discovery/`, starts the app with `npx cds-serve` (in-memory SQLite, mocked auth, `cds-plugin-ui5` for the UI), runs the page in Playwright Chromium, screenshots failures, writes `run/tests/ui/results.json`, exits 1 on a failed check. `--baseline` also runs the app's own OPA pages (`webapp/test/integration/*.qunit.html`), reported apart. `UI5_CDN_MIRROR=http://host:port` serves ui5.sap.com from a mirror when the CDN is not reachable.
+- **Outputs**: atlas section `UIT` with **Two locks** (per promise and state: UI and server block it / UI only / server only / allowed, plus the test result), **Test runs** and **Not generated**; `topics/NN-uit-ui-tests.md`; `pr/uitests.md`; KPI "UI checks passed"; a failed check becomes a P2 Fix in next steps.
+- **SFlight**: 22 checks in 9 app starts (about 2.5 minutes), all pass; 9 states are guarded by the UI only. Breaking two annotations (acceptTravel always available, Create Booking never hidden) fails exactly those two checks. SFlight's own OPA journey passes 5 of 9 tests at the pinned commit.
+- **Files**: `addons/uitests/` (`plan.js` cases from the graph, CSN, manifests and seed data; `opa.js` journey writer; `run.js` runner; `index.js` hooks; `view.js` atlas views). CI step: "Run the generated UI tests" in `.github/workflows/sflight.yml`.
 
 ## Atlas layout (core switch, not an addon)
 

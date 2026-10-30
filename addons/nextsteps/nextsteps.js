@@ -83,6 +83,9 @@ function items(D) {
 
   for (const r of D.RULES?.rules || []) if (r.status === 'draft' && r.hits.length) add({ sec: 'RLS', ref: r.key, kind: 'review', title: `Review draft rule ${r.key}`, why: `${r.title}. Fires ${r.hits.length} time(s) here: ${r.hits.map(h => h.t).join('; ')}.`, ev: r.hits.map(h => h.ev), i: 2, l: 2, join: false, done: 'The rule is set to "accepted" or deleted in addons/rules/library, with the reason in the PR.' })
 
+  // UI checks from the uitests addon that failed in the running app: the UI does not do what its annotations promise
+  for (const c of D.UITESTS?.cases || []) if (c.status === 'failed') add({ sec: 'UIT', also: ['UIS'], ref: c.id.replace(/^UIT:/, ''), kind: 'fix', title: `UI breaks its promise: ${c.title}`, why: `${D.UITESTS.visits.find(v => v.id === c.visit)?.record || ''}: ${c.msg || 'the generated UI check failed'}.`, ev: c.ev, i: 3, l: 4, join: false, done: `The generated UI check ${c.id} passes (node addons/uitests/run.js <out> <app>).` })
+
   const order = ['fix', 'verify', 'review', 'test']
   return out.sort((a, b) => b.score - a.score || order.indexOf(a.kind) - order.indexOf(b.kind) || a.id.localeCompare(b.id))
 }

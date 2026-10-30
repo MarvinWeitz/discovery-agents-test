@@ -5,7 +5,8 @@
     "mutation": true,
     "docs": true,
     "rules": true,
-    "nextsteps": true
+    "nextsteps": true,
+    "uitests": true
   },
   "atlas": {
     "layout": "pages"

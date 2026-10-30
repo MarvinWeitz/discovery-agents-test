@@ -63,6 +63,17 @@ jobs:
           cp "$GITHUB_WORKSPACE"/out/cap-sflight/run/tests/generated/*.test.js test/generated/
           npx jest test/generated --ci --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
 
+      # Addon uitests: generated OPA5 journeys for the UI promises, run in the Fiori app in headless Chromium
+      - name: Run the generated UI tests
+        id: uitests
+        continue-on-error: true
+        run: |
+          if node bin/addon.js enabled uitests; then
+            node addons/uitests/run.js out/cap-sflight ../cap-sflight --baseline
+          else
+            echo "uitests addon is off"
+          fi
+
       # Addons (discovery.config.json) that need the test results, e.g. coverage by class; rebuilds the atlas
       - name: Addons after tests
         if: always()
@@ -90,7 +101,7 @@ jobs:
           path: out/
 
       - name: Fail if generated tests failed
-        if: steps.generated.outcome != 'success'
+        if: steps.generated.outcome != 'success' || steps.uitests.outcome == 'failure'
         run: |
-          echo "Generated tests failed: the pipeline predicted a status the app does not return. See the job summary."
+          echo "Generated tests failed (backend: ${{ steps.generated.outcome }}, UI: ${{ steps.uitests.outcome }}): the app does not do what the pipeline derived. See the job summary."
           exit 1

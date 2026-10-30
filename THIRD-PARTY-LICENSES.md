@@ -16,7 +16,8 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | `@stryker-mutator/core`, `@stryker-mutator/jest-runner` | 10.0.0 | Apache-2.0 | Mutation addon: installed in CI into the analysed app (`--no-save`), not bundled | OK |
 | `d3` | 7.9.0 | ISC | Atlas page: force graph, treemap | OK; loaded from cdnjs on the page |
 | `d3-sankey` | 0.12.3 | BSD-3-Clause | Atlas page: data-flow Sankey | OK; loaded from jsDelivr on the page |
-| `playwright` | pre-installed | Apache-2.0 | Headless Chromium renders atlas images and diagrams | OK; downloads Chromium (BSD-style + bundled third-party licences) |
+| `playwright` | pre-installed | Apache-2.0 | Headless Chromium renders atlas images and diagrams; uitests addon drives the generated OPA5 journeys | OK; downloads Chromium (BSD-style + bundled third-party licences) |
+| OPA5, `sap.fe.test`, QUnit 2 | the app's UI5 version | SAPUI5: SAP Developer License (`sap.fe.test`, `sap.fe.*`); OpenUI5 (`sap.ui.test`): Apache-2.0; QUnit: MIT | uitests addon: generated journeys load them from the app's own UI5 bootstrap URL (ui5.sap.com in CI) | Review needed for `sap.fe.test`: never bundled, the app's own UI5 is used. UI5 tooling warns that `sap.fe.test` is "restricted for SAP internal projects" when declared as a framework dependency; we do not declare it, the app's CDN bootstrap serves it, as SAP's own samples (SFlight) do |
 | `git` | system | GPL-2.0 | Commit hash and churn (CLI only, not linked) | OK as a separate tool |
 
 ## Installed during the session, not used by the toolkit
