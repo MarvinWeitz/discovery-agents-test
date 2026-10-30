@@ -1,0 +1,9 @@
+{
+  "addons": {
+    "coverage": true,
+    "diff": true,
+    "mutation": true,
+    "docs": true,
+    "rules": true
+  }
+}

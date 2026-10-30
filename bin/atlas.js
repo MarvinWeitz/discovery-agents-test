@@ -9,6 +9,7 @@ const path = require('path')
 
 const ROOT = path.join(__dirname, '..')
 const NM = path.join(ROOT, 'node_modules')
+const addons = require('../lib/addons').list()
 const PW = fs.existsSync(path.join(NM, 'playwright')) ? path.join(NM, 'playwright') : '/opt/node-tools/node_modules/playwright'
 
 // ---------- Markdown helpers ----------
@@ -71,7 +72,8 @@ function buildHtml(D) {
   const m = D.META
   return t.replace(/\{\{TITLE\}\}/g, m.title).replace('{{EYEBROW}}', `Discovery run · ${m.app} · ${m.license} · ${m.scope} · ${m.run}`)
     .replace('{{LEDE}}', m.lede).replace('{{URL}}', m.url).replace('{{APP}}', m.app.replace(/^/, 'github.com/'))
-    .replace('/*ATLAS_DATA*/null', JSON.stringify(D).replace(/</g, '\\u003c'))
+    .replace('/*ADDON_VIEWS*/', () => addons.filter(a => a.views).map(a => fs.readFileSync(a.views, 'utf8')).join('\n'))
+    .replace('/*ATLAS_DATA*/null', () => JSON.stringify(D).replace(/</g, '\\u003c'))
 }
 
 // ---------- images: one PNG per view, plus extras the Markdown needs ----------
@@ -137,7 +139,7 @@ async function main() {
     files.push([s, file])
     const views = s.views.flatMap(v => [`**${s.code}-${v.k} ${v.label}**`, '', img(s.code, v.k, v.label), '', ...(s.code === 'STA' && v.k === 'A' ? ['Same machine, Node layer (red = differs from the UI):', '', `![STA-A Node layer](../images/STA-A-node.png)`, ''] : [])])
     const out = ['---', `app: ${m.app}`, `scope: ${m.scope}`, `run: ${m.run}`, `topic: ${s.code}`, `title: ${s.name}`, `views: [${s.views.map(v => s.code + '-' + v.k).join(', ')}]`, 'source: atlas-data.json', `facts: ${(m.sources || {})[s.code] || 'curated'}`, '---', '',
-      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || 'curated from the deep read (not yet generated)'}._`, '', TOPICS[s.code](D, extra), '', '## Views', '', ...views,
+      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || 'curated from the deep read (not yet generated)'}._`, '', (TOPICS[s.code] || addons.find(a => a.topics?.[s.code])?.topics[s.code] || (() => '_No Markdown generator for this topic._'))(D, extra), '', '## Views', '', ...views,
       `[Back to the index](../README.md)`, '']
     fs.writeFileSync(path.join(outDir, 'topics', file), out.join('\n'))
   })

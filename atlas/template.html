@@ -206,8 +206,11 @@ const PATTERNS=D.PATTERNS
 const LAYERS=D.LAYERS
 const TESTCATS=D.TESTCATS
 
+/* ---------- addon views: each enabled addon view.js, injected by bin/atlas.js ---------- */
+const ADDON_RENDER={}
+/*ADDON_VIEWS*/
 /* ---------- sections ---------- */
-const RENDER={'ARC-A':arcMap,'ARC-B':arcLayers,'DAT-A':datTree,'DAT-B':datForce,'DAT-C':datMatrix,'DEP-A':depGraph,'DEP-B':depDsm,'FLW-A':flwSankey,'FLW-B':flwSwim,'FLW-C':flwHooks,'STA-A':staMachine,'STA-B':staTable,'AUT-A':autHeat,'AUT-B':autPii,'AUT-C':autChain,'PAT-A':patCards,'PAT-B':patGrid,'UIS-A':parMatrix,'UIS-B':parBars,'RSK-A':rskHeat,'RSK-B':rskCards,'TST-A':tstTree,'TST-B':tstPairwise,'TST-C':tstBars,'API-A':apiMap,'API-B':apiList}
+const RENDER={...ADDON_RENDER,'ARC-A':arcMap,'ARC-B':arcLayers,'DAT-A':datTree,'DAT-B':datForce,'DAT-C':datMatrix,'DEP-A':depGraph,'DEP-B':depDsm,'FLW-A':flwSankey,'FLW-B':flwSwim,'FLW-C':flwHooks,'STA-A':staMachine,'STA-B':staTable,'AUT-A':autHeat,'AUT-B':autPii,'AUT-C':autChain,'PAT-A':patCards,'PAT-B':patGrid,'UIS-A':parMatrix,'UIS-B':parBars,'RSK-A':rskHeat,'RSK-B':rskCards,'TST-A':tstTree,'TST-B':tstPairwise,'TST-C':tstBars,'API-A':apiMap,'API-B':apiList}
 /*SECTIONS-AT-END*/const SECTIONS=D.SECTIONS.map(x=>({...x,views:x.views.map(v=>({...v,r:RENDER[x.code+'-'+v.k]}))}))
 
 /* ---------- ARC ---------- */

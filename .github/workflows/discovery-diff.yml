@@ -1,0 +1,105 @@
+# Diff mode: runs the discovery pipeline on the PR's base and head and posts what changed as one
+# sticky PR comment (new risks, pattern breaks, classes that lost their test, authorization changes,
+# a graph of the changed nodes). Switch: "diff" in discovery.config.json. Remove: delete this file and addons/diff.
+#
+# In this repo the PR changes the toolkit, so base and head toolkits run on the same SFlight commit.
+# A demo section applies addons/diff/demo/sflight-risky-change.patch to SFlight to show what an app PR
+# would get. In an app repo, run addons/diff/run.sh on the app's base and head checkouts instead.
+name: Discovery diff
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  SFLIGHT_REPO: https://github.com/SAP-samples/cap-sflight.git
+  SFLIGHT_COMMIT: 7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: head
+
+      - name: Is the diff addon on?
+        id: flag
+        run: node head/bin/addon.js enabled diff && echo "on=true" >> "$GITHUB_OUTPUT" || echo "on=false" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        if: steps.flag.outputs.on == 'true'
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: base
+
+      - uses: actions/setup-node@v4
+        if: steps.flag.outputs.on == 'true'
+        with:
+          node-version: 22.x
+
+      - name: Install both toolkits
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          (cd head && npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund) &
+          (cd base && npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund) &
+          wait
+
+      - name: Check out SFlight
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          mkdir -p apps
+          git clone --quiet "$SFLIGHT_REPO" apps/cap-sflight
+          git -C apps/cap-sflight checkout --quiet "$SFLIGHT_COMMIT"
+          # the toolkit compiles the model with its own @sap/cds; make @sap/cds/common resolvable from the app
+          ln -s "$PWD/head/node_modules" apps/node_modules
+          cp -r apps/cap-sflight apps/sflight-demo
+          git -C apps/sflight-demo apply "$PWD/head/addons/diff/demo/sflight-risky-change.patch"
+
+      - name: Run base and head toolkits on SFlight
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          head/addons/diff/run.sh base apps/cap-sflight out/base "$PWD/base/curated/cap-sflight.json"
+          head/addons/diff/run.sh head apps/cap-sflight out/head "$PWD/head/curated/cap-sflight.json"
+          head/addons/diff/run.sh head apps/sflight-demo out/demo "$PWD/head/curated/cap-sflight.json"
+
+      - name: Diff
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          node head/addons/diff/cli.js out/base out/head out/report --title "Discovery diff: what this PR changes in the SFlight findings" \
+            --note "Same SFlight commit, base toolkit vs head toolkit."
+          node head/addons/diff/cli.js out/head out/demo out/demo-report --title "Demo: what an app PR with a risky change would get" \
+            --note "SFlight with addons/diff/demo/sflight-risky-change.patch applied (opens a PII projection, widens the reviewer grant, deletes a guard)."
+          {
+            cat out/report/diff.md
+            echo
+            echo "<details><summary><b>Demo</b> · $(sed -n 3p out/demo-report/diff.md | sed "s/\*\*//g")</summary>"
+            echo
+            tail -n +2 out/demo-report/diff.md | sed 's/^## /### /'
+            echo
+            echo "</details>"
+            echo
+            echo "<sub>Discovery diff addon · switch: <code>diff</code> in discovery.config.json · full JSON in the <code>discovery-diff</code> artifact</sub>"
+          } > out/comment.md
+          cat out/comment.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post the diff on the PR
+        if: steps.flag.outputs.on == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: head/.github/scripts/sticky-comment.sh discovery:diff out/comment.md
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.flag.outputs.on == 'true'
+        with:
+          name: discovery-diff
+          path: |
+            out/report
+            out/demo-report
+            out/comment.md
