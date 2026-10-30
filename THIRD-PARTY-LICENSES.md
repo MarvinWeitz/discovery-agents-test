@@ -13,6 +13,7 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | `eslint` | 9.x | MIT | Runner for the cds lint rules | OK |
 | `typescript` | 5.9.3 | Apache-2.0 | Compiler API parses handler files (JS and TS) | OK |
 | `mermaid` | 10.9.1 | MIT | Diagrams in `discovery-report.md` | OK |
+| `@stryker-mutator/core`, `@stryker-mutator/jest-runner` | 10.0.0 | Apache-2.0 | Mutation addon: installed in CI into the analysed app (`--no-save`), not bundled | OK |
 | `d3` | 7.9.0 | ISC | Atlas page: force graph, treemap | OK; loaded from cdnjs on the page |
 | `d3-sankey` | 0.12.3 | BSD-3-Clause | Atlas page: data-flow Sankey | OK; loaded from jsDelivr on the page |
 | `playwright` | pre-installed | Apache-2.0 | Headless Chromium renders atlas images and diagrams | OK; downloads Chromium (BSD-style + bundled third-party licences) |

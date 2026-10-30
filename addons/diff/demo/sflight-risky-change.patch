@@ -1,0 +1,35 @@
+diff --git a/srv/travel-service.cds b/srv/travel-service.cds
+index cdb00c5..f45fb42 100644
+--- a/srv/travel-service.cds
++++ b/srv/travel-service.cds
+@@ -4,7 +4,7 @@ service TravelService @(path:'/processor') {
+ 
+   @(restrict: [
+     { grant: 'READ', to: 'authenticated-user'},
+-    { grant: ['rejectTravel','acceptTravel','deductDiscount'], to: 'reviewer'},
++    { grant: ['*'], to: 'reviewer'},
+     { grant: ['*'], to: 'processor'},
+     { grant: ['*'], to: 'admin'}
+   ])
+@@ -15,6 +15,9 @@ service TravelService @(path:'/processor') {
+     action deductDiscount( percent: Percentage not null ) returns Travel;
+   };
+ 
++  // quick lookup for the new booking dialog
++  entity Customers as projection on my.Passenger;
++
+ }
+ 
+ type Percentage : Integer @assert.range: [1,100];
+diff --git a/srv/travel-service.ts b/srv/travel-service.ts
+index 15c3594..acd35b4 100644
+--- a/srv/travel-service.ts
++++ b/srv/travel-service.ts
+@@ -103,7 +103,6 @@ export class TravelService extends cds.ApplicationService { init() {
+     if (!succeeded) { //> let's find out why...
+       let travel = await SELECT.one `TravelID as ID, TravelStatus.code as status, BookingFee` .from (req.subject)
+       if (!travel) throw req.reject (404, `Travel "${travel.ID}" does not exist; may have been deleted meanwhile.`)
+-      if (travel.status === TravelStatusCode.Accepted) throw req.reject (400, `Travel "${travel.ID}" has been approved already.`)
+       if (travel.BookingFee == null) throw req.reject (404, `No discount possible, as travel "${travel.ID}" does not yet have a booking fee added.`)
+     } else return SELECT(req.subject)
+   })
