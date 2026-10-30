@@ -1,0 +1,381 @@
+# One-button discovery: Actions tab → "Run discovery" → paste a repo URL.
+# Clones the repo, runs bin/pipeline.js on its CAP Node.js app, starts the app under cds.test and runs
+# the generated tests, then publishes the atlas to GitHub Pages (<pages>/<owner>-<repo>/) with an index
+# of all runs. Everything (atlas Markdown + HTML, graph, Jest reports) is also kept as a run artifact.
+#
+# Private repos: add a DISCOVERY_REPO_TOKEN secret (fine-grained token, Contents: read on the target).
+# Private targets are never published to Pages, and they only run when this repo itself is private,
+# because the logs and artifacts of a public repo are public.
+#
+# On pull requests the workflow runs on the pilot apps as a check and builds the Pages site without
+# publishing it.
+name: Run discovery
+run-name: ${{ github.event_name == 'workflow_dispatch' && format('Discover {0}', inputs.repo_url) || 'Discover pilot apps' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_url:
+        description: Repo to analyse (https://github.com/owner/repo or owner/repo)
+        required: true
+      ref:
+        description: Branch, tag or commit (empty = default branch)
+        default: ''
+      app_path:
+        description: CAP project folder inside the repo (empty = detect)
+        default: ''
+      ui_paths:
+        description: UI5 project folders, comma separated (empty = detect)
+        default: ''
+      publish:
+        description: Where the atlas goes. auto = Pages for public repos, never for private ones
+        type: choice
+        options: [auto, pages, none]
+        default: auto
+  pull_request:
+    paths:
+      - .github/workflows/discover.yml
+      - .github/scripts/**
+      - bin/**
+      - lib/**
+      - atlas/**
+
+permissions:
+  contents: read
+
+env:
+  PLAYWRIGHT_VERSION: 1.63.0
+  PILOTS: >-
+    [{"repo":"cap-js/incidents-app"},
+     {"repo":"SAP-samples/ui5-cap-event-app"},
+     {"repo":"SAP-samples/cap-sflight","ref":"7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1"}]
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      targets: ${{ steps.plan.outputs.targets }}
+    steps:
+      - id: plan
+        env:
+          REPO_URL: ${{ inputs.repo_url }}
+          REF: ${{ inputs.ref }}
+          APP_PATH: ${{ inputs.app_path }}
+          UI_PATHS: ${{ inputs.ui_paths }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            repo=$(printf '%s' "$REPO_URL" | sed -E 's#^[[:space:]]+##; s#[[:space:]]+$##; s#^(https?://)?(www\.)?github\.com/##; s#\.git$##; s#/+$##; s#^([^/]+/[^/]+)/(tree|blob)/.*#\1#')
+            if ! printf '%s' "$repo" | grep -Eq '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$'; then
+              echo "::error::'$REPO_URL' is not a GitHub repo. Use https://github.com/owner/repo or owner/repo."
+              exit 1
+            fi
+            targets=$(jq -cn --arg repo "$repo" --arg ref "$REF" --arg app "$APP_PATH" --arg ui "$UI_PATHS" '[{repo:$repo, ref:$ref, app:$app, ui:$ui}]')
+          else
+            targets=$(printf '%s' "$PILOTS" | jq -c .)
+          fi
+          echo "targets=$targets" >> "$GITHUB_OUTPUT"
+          echo "$targets" | jq .
+
+  discover:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.plan.outputs.targets) }}
+    name: discover ${{ matrix.target.repo }}
+    env:
+      REPO: ${{ matrix.target.repo }}
+      REF: ${{ matrix.target.ref }}
+      APP_PATH: ${{ matrix.target.app }}
+      UI_PATHS: ${{ matrix.target.ui }}
+      PUBLISH_INPUT: ${{ inputs.publish || 'auto' }}
+      THIS_REPO_PRIVATE: ${{ github.event.repository.private }}
+    steps:
+      # The target's install scripts run in this job, so it holds no write token and no stored credentials.
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install toolkit
+        run: |
+          npm ci --ignore-scripts --legacy-peer-deps
+          npm i --no-save --legacy-peer-deps playwright@${PLAYWRIGHT_VERSION}
+          npx playwright install --with-deps chromium
+
+      - name: Check out the target repo
+        id: target
+        env:
+          REPO_TOKEN: ${{ secrets.DISCOVERY_REPO_TOKEN }}
+        run: |
+          export GIT_TERMINAL_PROMPT=0
+          url="https://github.com/$REPO.git"
+          auth=()
+          if git ls-remote "$url" HEAD >/dev/null 2>&1; then
+            visibility=public
+          elif [ -n "$REPO_TOKEN" ]; then
+            header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$REPO_TOKEN" | base64 -w0)"
+            echo "::add-mask::$header"
+            auth=(-c "http.extraheader=$header")
+            git "${auth[@]}" ls-remote "$url" HEAD >/dev/null || { echo "::error::$REPO not found, or DISCOVERY_REPO_TOKEN has no read access to it."; exit 1; }
+            visibility=private
+          else
+            echo "::error::$REPO not found or private. Private repos need a DISCOVERY_REPO_TOKEN secret (see the comment at the top of discover.yml)."
+            exit 1
+          fi
+          if [ "$visibility" = private ] && [ "$THIS_REPO_PRIVATE" != true ]; then
+            echo "::error::$REPO is private, but this repo is public, so its run logs and artifacts are public too. Run private repos from a private copy of this workflow."
+            exit 1
+          fi
+
+          name=${REPO#*/}
+          slug=$(printf '%s' "$REPO${REF:+-$REF}" | tr 'A-Z/' 'a-z-' | tr -c 'a-z0-9.\n_-' '-' | cut -c1-80)
+          dir="$(dirname "$GITHUB_WORKSPACE")/targets/$name"
+          git "${auth[@]}" clone --quiet --filter=blob:none "$url" "$dir"
+          if [ -n "$REF" ]; then git -C "$dir" checkout --quiet "$REF"; fi
+          commit=$(git -C "$dir" rev-parse HEAD)
+
+          case "$PUBLISH_INPUT/$visibility/$GITHUB_EVENT_NAME" in
+            */*/pull_request) publish=preview; note="pull request check: the Pages site is built as the pages-preview artifact, not published" ;;
+            none/*)           publish=none;    note="not published (publish = none); download the bundle from the run" ;;
+            */private/*)      publish=none;    note="not published: private repos never go to the public Pages site; download the bundle from the run" ;;
+            *)                publish=pages;   note="" ;;
+          esac
+          owner=$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr 'A-Z' 'a-z')
+          {
+            echo "dir=$dir"; echo "slug=$slug"; echo "commit=$commit"; echo "visibility=$visibility"
+            echo "publish=$publish"; echo "note=$note"
+            echo "atlas_url=https://$owner.github.io/${GITHUB_REPOSITORY#*/}/$slug/"
+          } >> "$GITHUB_OUTPUT"
+          echo "$REPO ($visibility) at $commit → $slug, publish: $publish"
+
+      - name: Find the CAP app and UI5 projects
+        id: detect
+        run: |
+          node .github/scripts/detect.js "${{ steps.target.outputs.dir }}" "$APP_PATH" "$UI_PATHS" "$REPO" | tee -a "$GITHUB_OUTPUT"
+
+      # Same setup the pilots use in their own CI. Failures are tolerated: the pipeline reads the sources
+      # with the toolkit's own @sap/cds, only the runtime tests need an installed app.
+      - name: Install the app
+        id: install
+        continue-on-error: true
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.install }}
+        env:
+          PM: ${{ steps.detect.outputs.pm }}
+        run: |
+          case "$PM" in
+            pnpm) corepack enable && (pnpm install --frozen-lockfile || pnpm install) ;;
+            yarn) corepack enable && (yarn install --frozen-lockfile || yarn install) ;;
+            *)    if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then npm ci --no-audit --no-fund || npm install --no-audit --no-fund; else npm install --no-audit --no-fund; fi ;;
+          esac
+          # Repos that set ignore-scripts (e.g. in .npmrc) skip SQLite's native build; run just that one.
+          if [ -d node_modules/better-sqlite3 ] && ! node -e "new (require('better-sqlite3'))(':memory:')" 2>/dev/null; then
+            npm rebuild better-sqlite3 --ignore-scripts=false
+          fi
+
+      - name: Generate cds-typer models
+        if: steps.detect.outputs.typer == 'true' || steps.detect.outputs.ts == 'true'
+        continue-on-error: true
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        run: |
+          npm i -g @sap/cds-dk typescript tsx
+          if [ "${{ steps.detect.outputs.typer }}" = true ]; then npx cds-typer "*"; fi
+
+      # Jest, SQLite and (if the install failed) @sap/cds go into a node_modules folder above the clone,
+      # so the app resolves them without its own package.json being touched.
+      - name: Add test runtime next to the app
+        id: shim
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        run: |
+          shim="$(dirname "${{ steps.target.outputs.dir }}")"
+          has() { node -e "require.resolve('$1/package.json', { paths: [process.cwd()] })" 2>/dev/null; }
+          pkgs=()
+          if has @sap/cds; then major=$(node -p "require(require.resolve('@sap/cds/package.json', { paths: [process.cwd()] })).version.split('.')[0]")
+          else major=9; pkgs+=("@sap/cds@9"); fi
+          has @cap-js/sqlite || pkgs+=("@cap-js/sqlite@$([ "$major" -ge 9 ] && echo 2 || echo 1)")
+          # since cds 9, cds.test lives in @cap-js/cds-test
+          [ "$major" -ge 9 ] && ! has @cap-js/cds-test && pkgs+=("@cap-js/cds-test")
+          has jest || pkgs+=("jest@29")
+          echo "cds major $major, adding: ${pkgs[*]:-nothing}"
+          if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
+          # packages added here peer-depend on @sap/cds: let them find the app's own copy (Node follows the
+          # link to its real path, so app and test runtime share one cds instance)
+          if [ -z "$(printf '%s\n' "${pkgs[@]}" | grep '^@sap/cds@')" ] && [ ${#pkgs[@]} -gt 0 ]; then
+            cds_dir=$(dirname "$(node -p "require.resolve('@sap/cds/package.json', { paths: [process.cwd()] })")")
+            mkdir -p "$shim/node_modules/@sap" && ln -sfn "$cds_dir" "$shim/node_modules/@sap/cds"
+          fi
+          # the app's own Jest (declared or hoisted) keeps its config; otherwise the one added above
+          if has jest; then echo "jest=node $(node -p "try { require.resolve('jest/bin/jest', { paths: [process.cwd()] }) } catch { require.resolve('jest/bin/jest.js', { paths: [process.cwd()] }) }")" >> "$GITHUB_OUTPUT"
+          else echo "jest=node $shim/node_modules/jest/bin/jest.js --config '{\"testEnvironment\":\"node\"}' --rootDir ." >> "$GITHUB_OUTPUT"; fi
+
+      - name: Run the discovery pipeline
+        env:
+          APP_DIR: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+          UI: ${{ steps.detect.outputs.ui }}
+          CURATED: ${{ steps.detect.outputs.curated }}
+          SLUG: ${{ steps.target.outputs.slug }}
+        run: |
+          args=("$APP_DIR" "out/$SLUG")
+          [ -n "$UI" ] && args+=(--ui "$UI")
+          [ -n "$CURATED" ] && args+=(--base "$CURATED")
+          node bin/pipeline.js "${args[@]}"
+
+      - name: Start the app under cds.test
+        id: startup
+        continue-on-error: true
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        run: |
+          mkdir -p test/discovery-startup
+          cat > test/discovery-startup/startup.test.js <<'EOF'
+          // Written by the Run discovery workflow: does the app start in-process with an in-memory database?
+          const cds = require('@sap/cds')
+          cds.test(__dirname + '/../..')
+          it('app starts and serves its services', () => {
+            if (!Object.values(cds.services).some(s => s instanceof cds.ApplicationService)) throw new Error('no application service served')
+          })
+          EOF
+          ${{ steps.shim.outputs.jest }} test/discovery-startup --ci --forceExit --testTimeout 120000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-startup.json"
+
+      - name: Run the generated tests
+        id: generated
+        if: steps.startup.outcome == 'success'
+        continue-on-error: true
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        run: |
+          mkdir -p test/generated
+          cp "$GITHUB_WORKSPACE"/out/${{ steps.target.outputs.slug }}/run/tests/generated/*.test.js test/generated/
+          ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+
+      # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
+      - name: Addons after tests
+        if: always() && steps.target.outputs.slug
+        continue-on-error: true
+        run: node bin/after-tests.js "out/${{ steps.target.outputs.slug }}" --generated out/jest-generated.json
+
+      - name: Job summary
+        if: always()
+        env:
+          RUN_REPO: ${{ env.REPO }}
+          RUN_SLUG: ${{ steps.target.outputs.slug }}
+          RUN_REF: ${{ env.REF }}
+          RUN_COMMIT: ${{ steps.target.outputs.commit }}
+          RUN_APP: ${{ steps.detect.outputs.app }}
+          RUN_UI: ${{ steps.detect.outputs.ui }}
+          RUN_CURATED: ${{ steps.detect.outputs.curated }}
+          RUN_VISIBILITY: ${{ steps.target.outputs.visibility }}
+          RUN_PUBLISH: ${{ steps.target.outputs.publish }}
+          RUN_PUBLISH_NOTE: ${{ steps.target.outputs.note }}
+          RUN_ATLAS_URL: ${{ steps.target.outputs.atlas_url }}
+          RUN_STARTUP: ${{ steps.startup.outcome == 'success' && 'ok' || steps.startup.outcome == 'failure' && 'failed' || 'not run' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          mkdir -p out
+          node .github/scripts/result.js out "$RUN_SLUG"
+          node .github/scripts/summary.js out "$RUN_SLUG" "Discovery: $RUN_REPO" >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.target.outputs.slug
+        with:
+          name: discovery-${{ steps.target.outputs.slug }}
+          path: out/
+          if-no-files-found: ignore
+
+      # The pilots are known to start and to pass their generated tests, so on a pull request either
+      # failing is a regression in the toolkit or this workflow.
+      - name: Fail the pull request check if a pilot regressed
+        if: github.event_name == 'pull_request' && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
+        run: |
+          echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}. See the job summary."
+          exit 1
+
+  publish:
+    needs: discover
+    if: always() && needs.discover.result != 'cancelled'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: discovery-pages
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: discovery-*
+          path: results
+
+      - name: Check out the Pages branch
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/$GITHUB_REPOSITORY.git"
+          if git ls-remote --exit-code --heads "$url" gh-pages >/dev/null; then
+            git clone --quiet --depth 1 --branch gh-pages "$url" site
+          else
+            git init --quiet site && git -C site checkout --quiet --orphan gh-pages && git -C site remote add origin "$url"
+          fi
+          touch site/.nojekyll
+
+      - name: Add the atlases
+        id: add
+        run: |
+          shopt -s nullglob
+          added=()
+          for r in results/*/result.json; do
+            dir=$(dirname "$r")
+            read -r slug publish atlas <<<"$(jq -r '[.slug, .publish, .atlas] | @tsv' "$r")"
+            [ "$atlas" = true ] || { echo "$slug: no atlas, skipped"; continue; }
+            case "$publish" in pages|preview) ;; *) echo "$slug: publish=$publish, skipped"; continue ;; esac
+            rm -rf "site/$slug" && mkdir -p "site/$slug/tests"
+            cp -r "$dir/$slug/atlas/." "site/$slug/"
+            cp "$dir/$slug/atlas-data.json" "site/$slug/"
+            cp "$dir/$slug/run/discovery-report.md" "site/$slug/" 2>/dev/null || true
+            cp "$dir/$slug"/run/tests/generated/* "site/$slug/tests/" 2>/dev/null || true
+            cp "$dir"/jest-*.json "site/$slug/tests/" 2>/dev/null || true
+            [ -d "$dir/$slug/docs" ] && cp -r "$dir/$slug/docs" "site/$slug/docs"
+            added+=("$r")
+          done
+          if [ ${#added[@]} -eq 0 ]; then echo "count=0" >> "$GITHUB_OUTPUT"; echo "Nothing to publish."; exit 0; fi
+          node .github/scripts/pages-index.js site "${added[@]}"
+          echo "count=${#added[@]}" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to GitHub Pages
+        if: steps.add.outputs.count != '0' && github.event_name == 'workflow_dispatch'
+        run: |
+          cd site
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit --quiet -m "Discovery: $(jq -r '[.[].slug] | join(", ")' ../results/*/result.json 2>/dev/null | head -1) (run $GITHUB_RUN_ID)" || { echo "No changes."; exit 0; }
+          git push --quiet origin gh-pages
+          owner=$(printf '%s' "$GITHUB_REPOSITORY_OWNER" | tr 'A-Z' 'a-z')
+          index="https://$owner.github.io/${GITHUB_REPOSITORY#*/}/"
+          # Pages has to be switched on once; the workflow token may not be allowed to do it.
+          if ! gh api "repos/$GITHUB_REPOSITORY/pages" >/dev/null 2>&1; then
+            gh api -X POST "repos/$GITHUB_REPOSITORY/pages" -f "source[branch]=gh-pages" -f "source[path]=/" >/dev/null 2>&1 || true
+          fi
+          {
+            echo "## Published"
+            if gh api "repos/$GITHUB_REPOSITORY/pages" >/dev/null 2>&1; then
+              echo "Index of all runs: $index (Pages takes a minute or two to update)"
+            else
+              echo "The atlas is on the gh-pages branch, but GitHub Pages is not switched on yet."
+              echo "Once: Settings → Pages → Build and deployment → Source: Deploy from a branch → gh-pages / (root). Then it appears at $index"
+            fi
+            for r in ../results/*/result.json; do jq -r 'select(.publish == "pages") | "- \(.title): \(.atlas_url)"' "$r"; done
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the site as an artifact (pull request check)
+        if: steps.add.outputs.count != '0' && github.event_name != 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-preview
+          path: |
+            site/
+            !site/.git
