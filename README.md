@@ -22,7 +22,7 @@ The app needs no `npm install`; the toolkit compiles the model with its own `@sa
 
 ## CI on a public sample
 
-`.github/workflows/sflight.yml` checks out `SAP-samples/cap-sflight` at a pinned commit, installs it the way its own CI does, runs `bin/pipeline.js` on it, then copies the generated cds.test files into the app and runs them with the app's Jest. The job summary lists every generated test with its result; the atlas, the run and the Jest reports are uploaded as the `sflight-discovery` artifact. SFlight's own `test/odata.test.ts` runs too, as a baseline.
+`.github/workflows/sflight.yml` checks out `SAP-samples/cap-sflight` at a pinned commit, installs it the way its own CI does, runs `bin/pipeline.js` on it, then copies the generated cds.test files into the app and runs them with the app's Jest. With the `uitests` addon it also runs generated OPA5 UI tests for the UI promises in SFlight's Fiori app (headless Chromium, see [ADDONS.md](ADDONS.md)). The job summary lists every generated test with its result; the atlas, the run and the Jest reports are uploaded as the `sflight-discovery` artifact. SFlight's own `test/odata.test.ts` runs too, as a baseline.
 
 ## Run discovery on any repo
 
