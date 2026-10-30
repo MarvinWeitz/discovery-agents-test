@@ -1,0 +1,139 @@
+{
+ "run": "2026-10-30T08:06Z",
+ "commit": "7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1",
+ "tests": [
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+   "kind": "today",
+   "title": "today: GET /analytics/TravelAgency as rose → 200",
+   "full": "Authorization (generated) today: GET /analytics/TravelAgency as rose → 200"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+   "kind": "spec",
+   "title": "spec: GET /analytics/TravelAgency as rose → 403",
+   "full": "Authorization (generated) spec: GET /analytics/TravelAgency as rose → 403"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+   "kind": "today",
+   "title": "today: GET /analytics/Passenger as rose → 200",
+   "full": "Authorization (generated) today: GET /analytics/Passenger as rose → 200"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+   "kind": "spec",
+   "title": "spec: GET /analytics/Passenger as rose → 403",
+   "full": "Authorization (generated) spec: GET /analytics/Passenger as rose → 403"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Travel READ:n",
+   "kind": "today",
+   "title": "today: GET /processor/Travel as anonymous → 401",
+   "full": "Authorization (generated) today: GET /processor/Travel as anonymous → 401"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Travel READ:y",
+   "kind": "today",
+   "title": "today: GET /processor/Travel as rose → 200",
+   "full": "Authorization (generated) today: GET /processor/Travel as rose → 200"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+   "kind": "today",
+   "title": "today: GET /processor/TravelAgency as rose → 200",
+   "full": "Authorization (generated) today: GET /processor/TravelAgency as rose → 200"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+   "kind": "spec",
+   "title": "spec: GET /processor/TravelAgency as rose → 403",
+   "full": "Authorization (generated) spec: GET /processor/TravelAgency as rose → 403"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y",
+   "kind": "today",
+   "title": "today: GET /processor/TravelAgency as amy → 200",
+   "full": "Authorization (generated) today: GET /processor/TravelAgency as amy → 200"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+   "kind": "today",
+   "title": "today: GET /processor/Passenger as rose → 200",
+   "full": "Authorization (generated) today: GET /processor/Passenger as rose → 200"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+   "kind": "spec",
+   "title": "spec: GET /processor/Passenger as rose → 403",
+   "full": "Authorization (generated) spec: GET /processor/Passenger as rose → 403"
+  },
+  {
+   "file": "authorization.test.js",
+   "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y",
+   "kind": "today",
+   "title": "today: GET /processor/Passenger as amy → 200",
+   "full": "Authorization (generated) today: GET /processor/Passenger as amy → 200"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:rejectTravel:X",
+   "kind": "today",
+   "title": "today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
+   "full": "UI vs server rules (generated) today: rejectTravel on TravelStatus = X (UI hides it) as martha → success"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:rejectTravel:X",
+   "kind": "spec",
+   "title": "spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+   "full": "UI vs server rules (generated) spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:acceptTravel:A",
+   "kind": "today",
+   "title": "today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
+   "full": "UI vs server rules (generated) today: acceptTravel on TravelStatus = A (UI hides it) as martha → success"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:acceptTravel:A",
+   "kind": "spec",
+   "title": "spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection",
+   "full": "UI vs server rules (generated) spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:deductDiscount:X",
+   "kind": "today",
+   "title": "today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
+   "full": "UI vs server rules (generated) today: deductDiscount on TravelStatus = X (UI hides it) as martha → success"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:deductDiscount:X",
+   "kind": "spec",
+   "title": "spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+   "full": "UI vs server rules (generated) spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection"
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "cls": "UIS:deductDiscount:A",
+   "kind": "today",
+   "title": "today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
+   "full": "UI vs server rules (generated) today: deductDiscount on TravelStatus = A (UI hides it) as martha → error"
+  }
+ ]
+}

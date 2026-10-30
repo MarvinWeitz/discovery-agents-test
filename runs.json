@@ -1,0 +1,76 @@
+[
+ {
+  "repo": "SAP-samples/cap-sflight",
+  "slug": "sap-samples-cap-sflight",
+  "ref": "",
+  "commit": "7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1",
+  "app": ".",
+  "ui": "",
+  "visibility": "public",
+  "publish": "pages",
+  "atlas_url": "https://marvinweitz.github.io/discovery-agents-test/sap-samples-cap-sflight/",
+  "publish_note": "",
+  "run_url": "https://github.com/MarvinWeitz/discovery-agents-test/actions/runs/41024134826",
+  "date": "2026-10-30T08:16Z",
+  "title": "SFlight Discovery Atlas",
+  "curated": true,
+  "atlas": true,
+  "kpis": [
+   {
+    "label": "UI5 apps",
+    "value": "2"
+   },
+   {
+    "label": "OData services",
+    "value": "2"
+   },
+   {
+    "label": "entities",
+    "value": "13"
+   },
+   {
+    "label": "Node handlers",
+    "value": "13"
+   },
+   {
+    "label": "coding patterns",
+    "value": "32"
+   },
+   {
+    "label": "layer violations",
+    "value": "3"
+   },
+   {
+    "label": "UI rules the server skips",
+    "value": "7 / 16"
+   },
+   {
+    "label": "risks with evidence",
+    "value": "15"
+   },
+   {
+    "label": "equivalence classes",
+    "value": "108"
+   },
+   {
+    "label": "covered today",
+    "value": "12"
+   },
+   {
+    "label": "classes tested",
+    "value": "15%"
+   },
+   {
+    "label": "doc statements verified",
+    "value": "12 / 89"
+   }
+  ],
+  "startup": "ok",
+  "tests": {
+   "passed": 12,
+   "failed": 0,
+   "skipped": 7,
+   "total": 19
+  }
+ }
+]

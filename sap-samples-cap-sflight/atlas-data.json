@@ -1,0 +1,8442 @@
+{
+ "ARC": {
+  "zones": [
+   {
+    "label": "UI · app/*/webapp",
+    "boxes": [
+     {
+      "id": "ui5app:sap.fe.cap.travel_analytics",
+      "t": "travel_analytics",
+      "lines": [
+       "ListReport + ObjectPage"
+      ],
+      "cls": "ac"
+     },
+     {
+      "id": "ui5app:sap.fe.cap.travel",
+      "t": "travel",
+      "lines": [
+       "ListReport + ObjectPage",
+       "§2 extension views"
+      ],
+      "cls": "ac"
+     }
+    ]
+   },
+   {
+    "label": "ODATA SERVICES · srv/*.cds",
+    "boxes": [
+     {
+      "id": "service:AnalyticsService",
+      "t": "AnalyticsService /analytics",
+      "lines": [
+       "10 entity sets · 0 actions",
+       "§no @requires / @restrict"
+      ],
+      "cls": "cr"
+     },
+     {
+      "id": "service:TravelService",
+      "t": "TravelService /processor",
+      "lines": [
+       "13 entity sets · draft · 4 actions",
+       "§4 grants"
+      ],
+      "cls": ""
+     }
+    ]
+   },
+   {
+    "label": "RUNTIME · CAP NODE.JS",
+    "boxes": [
+     {
+      "id": "file:srv/travel-service.ts",
+      "t": "srv/travel-service.ts",
+      "lines": [
+       "13 handlers · 11 rules",
+       "§cds-typer · TypeScript"
+      ],
+      "cls": "ac"
+     },
+     {
+      "id": "generic:service:AnalyticsService",
+      "t": "AnalyticsService: generic",
+      "lines": [
+       "CAP default handlers only"
+      ],
+      "cls": "sk"
+     }
+    ]
+   },
+   {
+    "label": "PERSISTENCE · mta.yaml",
+    "boxes": [
+     {
+      "id": "model",
+      "t": "CDS model db/",
+      "lines": [
+       "13 entities · 20 CSV seeds"
+      ],
+      "cls": "sk"
+     },
+     {
+      "id": "db:hana",
+      "t": "SAP HANA (HDI)",
+      "lines": [
+       "0 native artifacts"
+      ]
+     },
+     {
+      "id": "db:sqlite",
+      "t": "SQLite",
+      "lines": [
+       "local dev + tests"
+      ],
+      "cls": "sk"
+     }
+    ]
+   }
+  ],
+  "links": [
+   [
+    "ui5app:sap.fe.cap.travel_analytics",
+    "service:AnalyticsService",
+    "OData V4"
+   ],
+   [
+    "ui5app:sap.fe.cap.travel",
+    "service:TravelService",
+    "OData V4"
+   ],
+   [
+    "service:AnalyticsService",
+    "generic:service:AnalyticsService",
+    ""
+   ],
+   [
+    "service:TravelService",
+    "file:srv/travel-service.ts",
+    ""
+   ],
+   [
+    "file:srv/travel-service.ts",
+    "db:hana",
+    ""
+   ],
+   [
+    "generic:service:AnalyticsService",
+    "db:hana",
+    ""
+   ]
+  ]
+ },
+ "ARC_LAYERS": [
+  [
+   "UI",
+   "app/*/webapp",
+   [
+    "2 UI5 apps",
+    "5 routes",
+    "2 extension views",
+    "2 OPA journeys"
+   ],
+   [
+    "cr:9 UI5 lint errors",
+    "wn:26 UI5 lint warnings"
+   ]
+  ],
+  [
+   "Annotations",
+   "app/**/*.cds · 1,128 lines",
+   [
+    "annotations 405",
+    "value-helps 269",
+    "layouts 234",
+    "labels 103",
+    "field-control 96",
+    "common 8"
+   ],
+   [
+    "cr:annotates built-in cds.UUID for the whole model",
+    "cr:extends domain TravelStatus"
+   ]
+  ],
+  [
+   "Services",
+   "srv/*.cds",
+   [
+    "AnalyticsService",
+    "TravelService",
+    "23 entity sets",
+    "4 actions"
+   ],
+   [
+    "cr:TravelAgency PII open",
+    "cr:Passenger PII open",
+    "cr:TravelAgency PII open",
+    "cr:Passenger PII open"
+   ]
+  ],
+  [
+   "Logic",
+   "srv/travel-service.ts",
+   [
+    "ac:13 handlers",
+    "11 rules",
+    "2 helpers"
+   ],
+   [
+    "wn:7 UI-only rules",
+    "wn:1 partial"
+   ]
+  ],
+  [
+   "Domain",
+   "db/*.cds",
+   [
+    "1 draft documents",
+    "9 master data",
+    "3 code lists"
+   ],
+   [
+    "cr:Passenger PII",
+    "cr:TravelAgency PII"
+   ]
+  ],
+  [
+   "Persistence",
+   "db/data",
+   [
+    "SAP HANA (HDI)",
+    "SQLite",
+    "20 CSV seeds"
+   ],
+   []
+  ],
+  [
+   "Platform",
+   "mta.yaml",
+   [
+    "[production] xsuaa",
+    "[development] mocked-auth"
+   ],
+   []
+  ]
+ ],
+ "ENT": [
+  [
+   "Airline",
+   "md",
+   4,
+   null,
+   0,
+   [
+    "AirlineID",
+    "Name",
+    "CurrencyCode"
+   ]
+  ],
+  [
+   "Airport",
+   "md",
+   4,
+   null,
+   0,
+   [
+    "AirportID",
+    "Name",
+    "City"
+   ]
+  ],
+  [
+   "Supplement",
+   "md",
+   11,
+   null,
+   0,
+   [
+    "SupplementID",
+    "Price",
+    "Type"
+   ]
+  ],
+  [
+   "Flight",
+   "md",
+   10,
+   null,
+   0,
+   [
+    "AirlineID",
+    "FlightDate",
+    "ConnectionID"
+   ]
+  ],
+  [
+   "FlightConnection",
+   "md",
+   9,
+   null,
+   0,
+   [
+    "ConnectionID",
+    "AirlineID",
+    "DepartureAirport"
+   ]
+  ],
+  [
+   "Passenger",
+   "md",
+   14,
+   "PII",
+   1,
+   [
+    "CustomerID",
+    "FirstName",
+    "LastName"
+   ]
+  ],
+  [
+   "TravelAgency",
+   "md",
+   9,
+   "PII",
+   1,
+   [
+    "AgencyID",
+    "Name",
+    "Street"
+   ]
+  ],
+  [
+   "SupplementType",
+   "cl",
+   5,
+   null,
+   0,
+   [
+    "name",
+    "descr",
+    "code"
+   ]
+  ],
+  [
+   "Travel",
+   "tx",
+   14,
+   "draft root",
+   0,
+   [
+    "TravelID",
+    "BeginDate",
+    "EndDate"
+   ]
+  ],
+  [
+   "Booking",
+   "tx",
+   14,
+   "composition",
+   0,
+   [
+    "BookingID",
+    "BookingDate",
+    "ConnectionID"
+   ]
+  ],
+  [
+   "BookingSupplement",
+   "tx",
+   11,
+   "composition",
+   0,
+   [
+    "BookingSupplementID",
+    "Price",
+    "CurrencyCode"
+   ]
+  ],
+  [
+   "BookingStatus",
+   "cl",
+   5,
+   null,
+   0,
+   [
+    "name",
+    "descr",
+    "code"
+   ]
+  ],
+  [
+   "TravelStatus",
+   "cl",
+   6,
+   null,
+   0,
+   [
+    "name",
+    "descr",
+    "code"
+   ]
+  ]
+ ],
+ "REL": [
+  [
+   "Supplement",
+   "SupplementType",
+   "as",
+   "Type"
+  ],
+  [
+   "Flight",
+   "Airline",
+   "as",
+   "to_Airline"
+  ],
+  [
+   "Flight",
+   "FlightConnection",
+   "as",
+   "to_Connection"
+  ],
+  [
+   "FlightConnection",
+   "Airport",
+   "as",
+   "DepartureAirport"
+  ],
+  [
+   "FlightConnection",
+   "Airline",
+   "as",
+   "to_Airline"
+  ],
+  [
+   "Travel",
+   "TravelStatus",
+   "as",
+   "TravelStatus"
+  ],
+  [
+   "Travel",
+   "TravelAgency",
+   "as",
+   "to_Agency"
+  ],
+  [
+   "Travel",
+   "Passenger",
+   "as",
+   "to_Customer"
+  ],
+  [
+   "Travel",
+   "Booking",
+   "comp",
+   "to_Booking"
+  ],
+  [
+   "Booking",
+   "BookingStatus",
+   "as",
+   "BookingStatus"
+  ],
+  [
+   "Booking",
+   "BookingSupplement",
+   "comp",
+   "to_BookSupplement"
+  ],
+  [
+   "Booking",
+   "Airline",
+   "as",
+   "to_Carrier"
+  ],
+  [
+   "Booking",
+   "Passenger",
+   "as",
+   "to_Customer"
+  ],
+  [
+   "Booking",
+   "Travel",
+   "as",
+   "to_Travel"
+  ],
+  [
+   "Booking",
+   "Flight",
+   "as",
+   "to_Flight"
+  ],
+  [
+   "BookingSupplement",
+   "Booking",
+   "as",
+   "to_Booking"
+  ],
+  [
+   "BookingSupplement",
+   "Travel",
+   "as",
+   "to_Travel"
+  ],
+  [
+   "BookingSupplement",
+   "Supplement",
+   "as",
+   "to_Supplement"
+  ]
+ ],
+ "DAT_ROWS": [
+  [
+   "Travel",
+   "tx",
+   "y",
+   "AnalyticsService, TravelService",
+   "y",
+   "n",
+   "4",
+   "4133"
+  ],
+  [
+   "Booking",
+   "tx",
+   "n",
+   "AnalyticsService, TravelService (auto)",
+   "a",
+   "n",
+   "3",
+   "9153"
+  ],
+  [
+   "BookingSupplement",
+   "tx",
+   "n",
+   "TravelService (auto)",
+   "a",
+   "n",
+   "3",
+   "16189"
+  ],
+  [
+   "Airline",
+   "md",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "5"
+  ],
+  [
+   "Airport",
+   "md",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "47"
+  ],
+  [
+   "Supplement",
+   "md",
+   "n",
+   "TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "49"
+  ],
+  [
+   "Flight",
+   "md",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "41"
+  ],
+  [
+   "FlightConnection",
+   "md",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "20"
+  ],
+  [
+   "Passenger",
+   "md",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "r",
+   "r",
+   "0",
+   "728"
+  ],
+  [
+   "TravelAgency",
+   "md",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "r",
+   "r",
+   "0",
+   "50"
+  ],
+  [
+   "SupplementType",
+   "cl",
+   "n",
+   "TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "4"
+  ],
+  [
+   "BookingStatus",
+   "cl",
+   "n",
+   "AnalyticsService, TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "3"
+  ],
+  [
+   "TravelStatus",
+   "cl",
+   "n",
+   "AnalyticsService (auto), TravelService (auto)",
+   "n",
+   "n",
+   "0",
+   "3"
+  ]
+ ],
+ "FILES": [
+  [
+   "app/common.cds",
+   "app/common.cds",
+   "app",
+   0
+  ],
+  [
+   "app/labels.cds",
+   "app/labels.cds",
+   "app",
+   1
+  ],
+  [
+   "app/services.cds",
+   "app/services.cds",
+   "app",
+   2
+  ],
+  [
+   "app/travel_analytics/annotations.cds",
+   "app/travel_analytics/annotations.cds",
+   "app",
+   3
+  ],
+  [
+   "app/travel_processor/capabilities.cds",
+   "app/travel_processor/capabilities.cds",
+   "app",
+   4
+  ],
+  [
+   "app/travel_processor/field-control.cds",
+   "app/travel_processor/field-control.cds",
+   "app",
+   5
+  ],
+  [
+   "app/travel_processor/layouts.cds",
+   "app/travel_processor/layouts.cds",
+   "app",
+   6
+  ],
+  [
+   "app/value-helps.cds",
+   "app/value-helps.cds",
+   "app",
+   7
+  ],
+  [
+   "srv/analytics-service.cds",
+   "srv/analytics-service.cds",
+   "srv",
+   0
+  ],
+  [
+   "srv/travel-service.cds",
+   "srv/travel-service.cds",
+   "srv",
+   1
+  ],
+  [
+   "db/common.cds",
+   "db/common.cds",
+   "db",
+   0
+  ],
+  [
+   "db/master-data.cds",
+   "db/master-data.cds",
+   "db",
+   1
+  ],
+  [
+   "db/schema.cds",
+   "db/schema.cds",
+   "db",
+   2
+  ],
+  [
+   "@sap/cds (built-in)",
+   "@sap/cds (built-in)",
+   "ext",
+   0
+  ],
+  [
+   "@sap/cds/common",
+   "@sap/cds/common",
+   "ext",
+   1
+  ]
+ ],
+ "DEPS": [
+  [
+   "app/common.cds",
+   "db/common.cds",
+   "ok",
+   null,
+   "app/common.cds:1"
+  ],
+  [
+   "app/common.cds",
+   "@sap/cds (built-in)",
+   "bad",
+   "annotates built-in cds.UUID for the whole model",
+   "app/common.cds:5"
+  ],
+  [
+   "app/common.cds",
+   "@sap/cds/common",
+   "ok",
+   null,
+   "app/common.cds:7"
+  ],
+  [
+   "app/labels.cds",
+   "db/schema.cds",
+   "skip",
+   "annotates domain",
+   "app/labels.cds:7"
+  ],
+  [
+   "app/labels.cds",
+   "db/master-data.cds",
+   "skip",
+   "annotates domain",
+   "app/labels.cds:55"
+  ],
+  [
+   "app/services.cds",
+   "app/travel_processor/capabilities.cds",
+   "ok",
+   null,
+   "app/services.cds:1"
+  ],
+  [
+   "app/services.cds",
+   "app/travel_processor/field-control.cds",
+   "ok",
+   null,
+   "app/services.cds:2"
+  ],
+  [
+   "app/services.cds",
+   "app/travel_processor/layouts.cds",
+   "ok",
+   null,
+   "app/services.cds:3"
+  ],
+  [
+   "app/services.cds",
+   "app/travel_analytics/annotations.cds",
+   "ok",
+   null,
+   "app/services.cds:5"
+  ],
+  [
+   "app/travel_analytics/annotations.cds",
+   "srv/analytics-service.cds",
+   "ok",
+   null,
+   "app/travel_analytics/annotations.cds:1"
+  ],
+  [
+   "app/travel_processor/capabilities.cds",
+   "srv/travel-service.cds",
+   "ok",
+   null,
+   "app/travel_processor/capabilities.cds:1"
+  ],
+  [
+   "app/travel_processor/field-control.cds",
+   "srv/travel-service.cds",
+   "ok",
+   null,
+   "app/travel_processor/field-control.cds:1"
+  ],
+  [
+   "app/travel_processor/field-control.cds",
+   "db/schema.cds",
+   "bad",
+   "extends domain TravelStatus",
+   "app/travel_processor/field-control.cds:12"
+  ],
+  [
+   "app/travel_processor/layouts.cds",
+   "srv/travel-service.cds",
+   "ok",
+   null,
+   "app/travel_processor/layouts.cds:1"
+  ],
+  [
+   "app/value-helps.cds",
+   "db/schema.cds",
+   "skip",
+   "annotates domain",
+   "app/value-helps.cds:7"
+  ],
+  [
+   "app/value-helps.cds",
+   "db/master-data.cds",
+   "skip",
+   "annotates domain",
+   "app/value-helps.cds:165"
+  ],
+  [
+   "srv/analytics-service.cds",
+   "db/schema.cds",
+   "ok",
+   null,
+   "srv/analytics-service.cds:1"
+  ],
+  [
+   "srv/analytics-service.cds",
+   "db/master-data.cds",
+   "bad",
+   "annotates domain Airport",
+   "srv/analytics-service.cds:76"
+  ],
+  [
+   "srv/travel-service.cds",
+   "db/schema.cds",
+   "ok",
+   null,
+   "srv/travel-service.cds:1"
+  ],
+  [
+   "db/common.cds",
+   "@sap/cds/common",
+   "ok",
+   null,
+   "db/common.cds:1"
+  ],
+  [
+   "db/master-data.cds",
+   "db/common.cds",
+   "ok",
+   null,
+   "db/master-data.cds:1"
+  ],
+  [
+   "db/schema.cds",
+   "db/common.cds",
+   "ok",
+   null,
+   "db/schema.cds:1"
+  ],
+  [
+   "db/schema.cds",
+   "db/master-data.cds",
+   "ok",
+   null,
+   "db/schema.cds:2"
+  ]
+ ],
+ "SANKEY_NODES": [
+  "POST Travel",
+  "before · travel-service.ts:16",
+  "Travel: TravelID, TreesPlanted, GreenFee, …",
+  "POST Booking (draft)",
+  "before · travel-service.ts:21",
+  "Booking: BookingID, BookingDate",
+  "POST BookingSupplement (draft)",
+  "before · travel-service.ts:27",
+  "BookingSupplement: BookingSupplementID",
+  "PATCH Travel (draft)",
+  "on · travel-service.ts:45",
+  "PATCH Booking (draft)",
+  "on · travel-service.ts:46",
+  "PATCH BookingSupplement (draft)",
+  "on · travel-service.ts:47",
+  "DELETE Booking (draft)",
+  "on · travel-service.ts:48",
+  "DELETE BookingSupplement (draft)",
+  "on · travel-service.ts:49",
+  "acceptTravel on Travel",
+  "on · travel-service.ts:95",
+  "rejectTravel on Travel",
+  "on · travel-service.ts:96",
+  "deductDiscount on Travel",
+  "on · travel-service.ts:97",
+  "SideEffects re-read"
+ ],
+ "SANKEY_LINKS": [
+  [
+   0,
+   1,
+   1
+  ],
+  [
+   1,
+   2,
+   1
+  ],
+  [
+   3,
+   4,
+   2
+  ],
+  [
+   4,
+   5,
+   2
+  ],
+  [
+   6,
+   7,
+   1
+  ],
+  [
+   7,
+   8,
+   1
+  ],
+  [
+   9,
+   10,
+   3
+  ],
+  [
+   10,
+   2,
+   3
+  ],
+  [
+   11,
+   12,
+   3
+  ],
+  [
+   12,
+   2,
+   3
+  ],
+  [
+   13,
+   14,
+   3
+  ],
+  [
+   14,
+   2,
+   3
+  ],
+  [
+   15,
+   16,
+   3
+  ],
+  [
+   16,
+   2,
+   3
+  ],
+  [
+   17,
+   18,
+   3
+  ],
+  [
+   18,
+   2,
+   3
+  ],
+  [
+   19,
+   20,
+   1
+  ],
+  [
+   20,
+   2,
+   1
+  ],
+  [
+   21,
+   22,
+   1
+  ],
+  [
+   22,
+   2,
+   1
+  ],
+  [
+   23,
+   24,
+   2
+  ],
+  [
+   24,
+   2,
+   2
+  ],
+  [
+   2,
+   25,
+   7
+  ]
+ ],
+ "SWIM": {
+  "title": "on deductDiscount Travel",
+  "handler": "on deductDiscount",
+  "ev": "travel-service.ts:97",
+  "lanes": [
+   "Fiori UI",
+   "SideEffects",
+   "TravelService · Node",
+   "Database"
+  ],
+  "steps": [
+   {
+    "a": 0,
+    "b": 2,
+    "t": "POST Travel(…)/deductDiscount",
+    "c": "ac"
+   },
+   {
+    "a": 2,
+    "b": 3,
+    "t": "write only if TravelStatus.code != 'A' and BookingFee != null",
+    "sub": "srv/travel-service.ts:99"
+   },
+   {
+    "a": 2,
+    "b": 3,
+    "t": "UPDATE Travel SET BookingFee, TotalPrice",
+    "sub": "srv/travel-service.ts:99"
+   },
+   {
+    "a": 2,
+    "b": 0,
+    "t": "if !succeeded && !travel: reject 404 \"Travel \"${travel.ID}\" does no…\"",
+    "sub": "srv/travel-service.ts:105",
+    "c": "cr"
+   },
+   {
+    "a": 2,
+    "b": 0,
+    "t": "if !succeeded && travel.status === TravelStatu…: reject 400 \"Travel \"${travel.ID}\" has bee…\"",
+    "sub": "srv/travel-service.ts:106",
+    "c": "cr"
+   },
+   {
+    "a": 2,
+    "b": 0,
+    "t": "if !succeeded && travel.BookingFee == null: reject 404 \"No discount possible, as trav…\"",
+    "sub": "srv/travel-service.ts:107",
+    "c": "cr"
+   },
+   {
+    "a": 2,
+    "b": 0,
+    "t": "200 OK"
+   },
+   {
+    "a": 0,
+    "b": 1,
+    "t": "SideEffects: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+    "sub": "app/travel_processor/field-control.cds:20",
+    "c": "wn"
+   },
+   {
+    "a": 0,
+    "b": 2,
+    "t": "GET Travel(…) re-read targets",
+    "c": "ac"
+   }
+  ]
+ },
+ "HOOK_EVENTS": [
+  "NEW draft",
+  "PATCH draft",
+  "DELETE",
+  "SAVE (activate)",
+  "CREATE / UPDATE",
+  "Actions"
+ ],
+ "HOOK_NODE": [
+  [
+   [
+    "before NEW Booking",
+    "travel-service.ts:21"
+   ],
+   [
+    "before NEW BookingSupplement",
+    "travel-service.ts:27"
+   ]
+  ],
+  [
+   [
+    "on UPDATE Travel",
+    "travel-service.ts:45"
+   ],
+   [
+    "on UPDATE Booking",
+    "travel-service.ts:46"
+   ],
+   [
+    "on UPDATE BookingSupplement",
+    "travel-service.ts:47"
+   ]
+  ],
+  [
+   [
+    "on DELETE Booking",
+    "travel-service.ts:48"
+   ],
+   [
+    "on DELETE BookingSupplement",
+    "travel-service.ts:49"
+   ]
+  ],
+  [
+   [
+    "before SAVE Travel",
+    "travel-service.ts:34"
+   ]
+  ],
+  [
+   [
+    "before CREATE Travel",
+    "travel-service.ts:16"
+   ]
+  ],
+  [
+   [
+    "before acceptTravel/rejectTravel Travel",
+    "travel-service.ts:86"
+   ],
+   [
+    "on acceptTravel Travel",
+    "travel-service.ts:95"
+   ],
+   [
+    "on rejectTravel Travel",
+    "travel-service.ts:96"
+   ],
+   [
+    "on deductDiscount Travel",
+    "travel-service.ts:97"
+   ]
+  ]
+ ],
+ "HOOK_UI": [
+  [
+   [
+    "hidden when to_Travel.TravelStatus.code != #Open",
+    "field-control.cds:60",
+    1
+   ]
+  ],
+  [
+   [
+    "5 fields controlled by TravelStatus.fieldControl",
+    "field-control.cds:29",
+    1
+   ],
+   [
+    "BookingFee → re-read TotalPrice, GreenFee, Trees",
+    "field-control.cds:20",
+    0
+   ],
+   [
+    "GoGreen → re-read TotalPrice, GreenFee, TreesPla",
+    "field-control.cds:20",
+    0
+   ],
+   [
+    "to_Booking → re-read TotalPrice",
+    "field-control.cds:51",
+    0
+   ],
+   [
+    "6 fields controlled by to_Travel.TravelStatus.fi",
+    "field-control.cds:65",
+    1
+   ],
+   [
+    "4 fields controlled by to_Travel.TravelStatus.fi",
+    "field-control.cds:29",
+    1
+   ]
+  ],
+  [
+   [
+    "hidden when to_Travel.TravelStatus.code != #Open",
+    "field-control.cds:61",
+    1
+   ]
+  ],
+  [
+   [
+    "BeginDate, EndDate, to_Agency, to_Customer",
+    "schema.cds:15",
+    0
+   ],
+   [
+    "ConnectionID, FlightDate, FlightPrice, BookingSt",
+    "schema.cds:37",
+    0
+   ],
+   [
+    "Price, to_Supplement",
+    "schema.cds:22",
+    0
+   ]
+  ],
+  [
+   [
+    "TravelID, TotalPrice, TravelStatus, GreenFee, Tr",
+    "schema.cds:14",
+    0
+   ]
+  ],
+  [
+   [
+    "rejectTravel: TravelStatus != X",
+    "field-control.cds:37",
+    1
+   ],
+   [
+    "acceptTravel: TravelStatus != A",
+    "field-control.cds:41",
+    1
+   ],
+   [
+    "deductDiscount: TravelStatus = O",
+    "field-control.cds:45",
+    0
+   ],
+   [
+    "percent in [1, 100]",
+    "travel-service.cds:20",
+    0
+   ]
+  ]
+ ],
+ "TR": [
+  {
+   "f": "X",
+   "t": "X",
+   "a": "rejectTravel",
+   "ui": 0,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:37",
+    "srv/travel-service.ts:86",
+    "srv/travel-service.ts:96"
+   ]
+  },
+  {
+   "f": "A",
+   "t": "X",
+   "a": "rejectTravel",
+   "ui": 1,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:37",
+    "srv/travel-service.ts:86",
+    "srv/travel-service.ts:96"
+   ]
+  },
+  {
+   "f": "O",
+   "t": "X",
+   "a": "rejectTravel",
+   "ui": 1,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:37",
+    "srv/travel-service.ts:86",
+    "srv/travel-service.ts:96"
+   ]
+  },
+  {
+   "f": "X",
+   "t": "A",
+   "a": "acceptTravel",
+   "ui": 1,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:41",
+    "srv/travel-service.ts:86",
+    "srv/travel-service.ts:95"
+   ]
+  },
+  {
+   "f": "A",
+   "t": "A",
+   "a": "acceptTravel",
+   "ui": 0,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:41",
+    "srv/travel-service.ts:86",
+    "srv/travel-service.ts:95"
+   ]
+  },
+  {
+   "f": "O",
+   "t": "A",
+   "a": "acceptTravel",
+   "ui": 1,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:41",
+    "srv/travel-service.ts:86",
+    "srv/travel-service.ts:95"
+   ]
+  },
+  {
+   "f": "X",
+   "t": "X",
+   "a": "deductDiscount",
+   "ui": 0,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:45",
+    "srv/travel-service.ts:99",
+    "srv/travel-service.ts:106",
+    "srv/travel-service.ts:97"
+   ]
+  },
+  {
+   "f": "A",
+   "t": "A",
+   "a": "deductDiscount",
+   "ui": 0,
+   "node": 0,
+   "ev": [
+    "app/travel_processor/field-control.cds:45",
+    "srv/travel-service.ts:99",
+    "srv/travel-service.ts:106",
+    "srv/travel-service.ts:97"
+   ]
+  },
+  {
+   "f": "O",
+   "t": "O",
+   "a": "deductDiscount",
+   "ui": 1,
+   "node": 1,
+   "ev": [
+    "app/travel_processor/field-control.cds:45",
+    "srv/travel-service.ts:99",
+    "srv/travel-service.ts:106",
+    "srv/travel-service.ts:97"
+   ]
+  }
+ ],
+ "STATES": {
+  "field": "TravelStatus",
+  "entity": "Travel",
+  "codes": [
+   "X",
+   "A",
+   "O"
+  ],
+  "names": {
+   "O": "Open",
+   "A": "Accepted",
+   "X": "Canceled"
+  },
+  "default": "O"
+ },
+ "ROLES": [
+  [
+   "anonymous",
+   "anonymous"
+  ],
+  [
+   "rose",
+   "rose · no role"
+  ],
+  [
+   "martha",
+   "martha · reviewer"
+  ],
+  [
+   "amy",
+   "amy · processor"
+  ],
+  [
+   "admin",
+   "admin · admin"
+  ],
+  [
+   "alice",
+   "alice · admin · tests"
+  ]
+ ],
+ "AUTH": [
+  {
+   "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "svc": "AnalyticsService",
+   "ev": "db/master-data.cds:86",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "r",
+    "r",
+    "r"
+   ]
+  },
+  {
+   "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+   "svc": "AnalyticsService",
+   "ev": "db/master-data.cds:73",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "r",
+    "r",
+    "r"
+   ]
+  },
+  {
+   "op": "/analytics: 8 other entities READ",
+   "svc": "AnalyticsService",
+   "ev": "srv/analytics-service.cds:9",
+   "c": [
+    "a",
+    "y",
+    "y",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "Travel READ",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "y",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel create / edit / delete",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "n",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel createTravelByTemplate",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": "granted, not implemented",
+   "c": [
+    "n",
+    "n",
+    "n",
+    "a",
+    "a",
+    {
+     "v": "a",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel rejectTravel",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel acceptTravel",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel deductDiscount",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Booking / BookingSupplement (via Travel draft)",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": "inherits from the draft root? verify",
+   "c": [
+    "n",
+    "a",
+    "a",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "svc": "TravelService",
+   "ev": "db/master-data.cds:86",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+   "svc": "TravelService",
+   "ev": "db/master-data.cds:73",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "/processor: 8 other entities READ",
+   "svc": "TravelService",
+   "ev": "db/schema.cds:82",
+   "c": [
+    "a",
+    "y",
+    "y",
+    "y",
+    "y",
+    "y"
+   ]
+  }
+ ],
+ "PIIREACH": {
+  "users": [
+   "anonymous",
+   "rose · no role",
+   "martha · reviewer",
+   "amy · processor",
+   "admin · admin",
+   "alice · admin · tests"
+  ],
+  "endpoints": [
+   {
+    "path": "/analytics/TravelAgency",
+    "ent": "TravelAgency",
+    "via": "direct",
+    "c": [
+     "r",
+     "r",
+     "r",
+     "r",
+     "r",
+     "r"
+    ]
+   },
+   {
+    "path": "/analytics/Passenger",
+    "ent": "Passenger",
+    "via": "direct",
+    "c": [
+     "r",
+     "r",
+     "r",
+     "r",
+     "r",
+     "r"
+    ]
+   },
+   {
+    "path": "/processor/Travel?$expand=to_Agency",
+    "ent": "TravelAgency",
+    "via": "expand",
+    "c": [
+     "n",
+     "y",
+     "y",
+     "y",
+     "y",
+     "y"
+    ]
+   },
+   {
+    "path": "/processor/Travel?$expand=to_Customer",
+    "ent": "Passenger",
+    "via": "expand",
+    "c": [
+     "n",
+     "y",
+     "y",
+     "y",
+     "y",
+     "y"
+    ]
+   },
+   {
+    "path": "/processor/TravelAgency",
+    "ent": "TravelAgency",
+    "via": "direct",
+    "c": [
+     "r",
+     "r",
+     "r",
+     "y",
+     "y",
+     "y"
+    ]
+   },
+   {
+    "path": "/processor/Passenger",
+    "ent": "Passenger",
+    "via": "direct",
+    "c": [
+     "r",
+     "r",
+     "r",
+     "y",
+     "y",
+     "y"
+    ]
+   }
+  ],
+  "entities": [
+   [
+    "TravelAgency",
+    [
+     "Street",
+     "PhoneNumber",
+     "EMailAddress"
+    ]
+   ],
+   [
+    "Passenger",
+    [
+     "FirstName",
+     "LastName",
+     "Street",
+     "PhoneNumber",
+     "EMailAddress"
+    ]
+   ]
+  ]
+ },
+ "CHAIN": {
+  "users": [
+   [
+    "rose",
+    [],
+    0
+   ],
+   [
+    "martha",
+    [
+     "reviewer"
+    ],
+    0
+   ],
+   [
+    "amy",
+    [
+     "processor"
+    ],
+    0
+   ],
+   [
+    "admin",
+    [
+     "admin"
+    ],
+    0
+   ],
+   [
+    "alice",
+    [
+     "admin"
+    ],
+    1
+   ]
+  ],
+  "roles": [
+   "reviewer",
+   "processor",
+   "admin"
+  ],
+  "grants": [
+   [
+    "READ Travel",
+    [
+     "authenticated-user"
+    ]
+   ],
+   [
+    "rejectTravel · acceptTravel · deductDiscount Travel",
+    [
+     "reviewer"
+    ]
+   ],
+   [
+    "all ops Travel",
+    [
+     "processor",
+     "admin"
+    ]
+   ],
+   [
+    "6 operations need no role",
+    [
+     "any"
+    ]
+   ]
+  ]
+ },
+ "PARITY": [
+  [
+   "rejectTravel offered only if TravelStatus != X",
+   "TravelStatus != X",
+   "no rule on this field",
+   "ui-only",
+   "app/travel_processor/field-control.cds:37"
+  ],
+  [
+   "acceptTravel offered only if TravelStatus != A",
+   "TravelStatus != A",
+   "no rule on this field",
+   "ui-only",
+   "app/travel_processor/field-control.cds:41"
+  ],
+  [
+   "Travel: 5 fields controlled by TravelStatus.fieldControl",
+   "5 fields controlled by TravelStatus.fieldControl",
+   "no update handler checks it",
+   "ui-only",
+   "app/travel_processor/field-control.cds:29"
+  ],
+  [
+   "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl",
+   "6 fields controlled by to_Travel.TravelStatus.fieldControl",
+   "no update handler checks it",
+   "ui-only",
+   "app/travel_processor/field-control.cds:65"
+  ],
+  [
+   "New Booking hidden when to_Travel.TravelStatus.code != #Open",
+   "hidden when to_Travel.TravelStatus.code != #Open",
+   "no before CREATE/NEW rejection",
+   "ui-only",
+   "app/travel_processor/field-control.cds:60"
+  ],
+  [
+   "Delete Booking hidden when to_Travel.TravelStatus.code != #Open",
+   "hidden when to_Travel.TravelStatus.code != #Open",
+   "no before DELETE rejection",
+   "ui-only",
+   "app/travel_processor/field-control.cds:61"
+  ],
+  [
+   "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl",
+   "4 fields controlled by to_Travel.TravelStatus.fieldControl",
+   "no update handler checks it",
+   "ui-only",
+   "app/travel_processor/field-control.cds:29"
+  ],
+  [
+   "deductDiscount offered only if TravelStatus = O",
+   "TravelStatus = O",
+   "allows TravelStatus in {X, O}; also X",
+   "partial",
+   "app/travel_processor/field-control.cds:45 · srv/travel-service.ts:99 · srv/travel-service.ts:106"
+  ],
+  [
+   "deductDiscount: percent in [1, 100]",
+   "percent in [1, 100]",
+   "CAP generic handler",
+   "framework",
+   "srv/travel-service.cds:20"
+  ],
+  [
+   "Travel: read-only TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+   "TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+   "CAP generic handler",
+   "framework",
+   "db/schema.cds:14"
+  ],
+  [
+   "Travel: required BeginDate, EndDate, to_Agency, to_Customer",
+   "BeginDate, EndDate, to_Agency, to_Customer",
+   "CAP generic handler",
+   "framework",
+   "db/schema.cds:15"
+  ],
+  [
+   "Booking: required ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+   "ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+   "CAP generic handler",
+   "framework",
+   "db/schema.cds:37"
+  ],
+  [
+   "BookingSupplement: required Price, to_Supplement",
+   "Price, to_Supplement",
+   "CAP generic handler",
+   "framework",
+   "db/schema.cds:22"
+  ],
+  [
+   "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+   "BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+   "recomputed by 3 handler(s)",
+   "consistent",
+   "app/travel_processor/field-control.cds:20 · srv/travel-service.ts:45 · srv/travel-service.ts:48"
+  ],
+  [
+   "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+   "GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+   "recomputed by 3 handler(s)",
+   "consistent",
+   "app/travel_processor/field-control.cds:20 · srv/travel-service.ts:45 · srv/travel-service.ts:48"
+  ],
+  [
+   "Travel: to_Booking → re-read TotalPrice",
+   "to_Booking → re-read TotalPrice",
+   "recomputed by 5 handler(s)",
+   "consistent",
+   "app/travel_processor/field-control.cds:51 · srv/travel-service.ts:45 · srv/travel-service.ts:46"
+  ]
+ ],
+ "PV": {
+  "enforced": [
+   "=",
+   "y",
+   "server enforces it"
+  ],
+  "consistent": [
+   "=",
+   "y",
+   "server recomputes it"
+  ],
+  "framework": [
+   "⚙",
+   "y",
+   "CAP enforces it"
+  ],
+  "stricter": [
+   "≈",
+   "a",
+   "server stricter than UI"
+  ],
+  "partial": [
+   "≈",
+   "a",
+   "server enforces part"
+  ],
+  "ui-only": [
+   "✕",
+   "r",
+   "UI promise, server open"
+  ]
+ },
+ "TESTCATS": [
+  {
+   "n": "Authorization",
+   "k": "role × operation",
+   "cls": 25,
+   "cov": 6,
+   "why": "13 operations × 6 users, grouped by outcome"
+  },
+  {
+   "n": "UI vs server rules",
+   "k": "reflexion",
+   "cls": 17,
+   "cov": 3,
+   "why": "one class per UI promise; ui-only and partial ones are negative tests"
+  },
+  {
+   "n": "Status transitions",
+   "k": "state machine",
+   "cls": 9,
+   "cov": 1,
+   "why": "each action from each state"
+  },
+  {
+   "n": "Handler rules",
+   "k": "decision table",
+   "cls": 18,
+   "cov": 1,
+   "why": "each rejection: guard true and false; each derivation and conditional write: condition true and false"
+  },
+  {
+   "n": "Framework constraints",
+   "k": "boundary",
+   "cls": 17,
+   "cov": 0,
+   "why": "@mandatory missing/present, @readonly ignored, @assert.range below/min/max/above"
+  },
+  {
+   "n": "Draft lifecycle",
+   "k": "state × user",
+   "cls": 3,
+   "cov": 1,
+   "why": "new → activate, edit → discard, edit while another user holds the draft"
+  },
+  {
+   "n": "deductDiscount combinations",
+   "k": "combinatorial",
+   "cls": 19,
+   "cov": 0,
+   "why": "all pairs over 5 factors (216 full)"
+  }
+ ],
+ "CLASSES": [
+  [
+   "Authorization",
+   "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+   "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha/amy/admin/alice",
+   "user rose",
+   "403 (today 200: open)",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+   "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha/amy/admin/alice",
+   "user rose",
+   "403 (today 200: open)",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:/analytics: 8 other entities READ:a",
+   "/analytics: 8 other entities READ as anonymous",
+   "user anonymous",
+   "verify",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:/analytics: 8 other entities READ:y",
+   "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+   "user rose",
+   "200",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel READ:n",
+   "Travel READ as anonymous",
+   "user anonymous",
+   "401",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:Travel READ:y",
+   "Travel READ as rose/martha/amy/admin/alice",
+   "user rose",
+   "200",
+   "",
+   "existing test (same user + entity)",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:Travel create / edit / delete:n",
+   "Travel create / edit / delete as anonymous/rose/martha",
+   "user rose",
+   "403",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel create / edit / delete:y",
+   "Travel create / edit / delete as amy/admin/alice",
+   "user amy",
+   "200",
+   "",
+   "existing test (same user + entity)",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel createTravelByTemplate:n",
+   "Travel createTravelByTemplate as anonymous/rose/martha",
+   "user rose",
+   "403",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel createTravelByTemplate:a",
+   "Travel createTravelByTemplate as amy/admin/alice",
+   "user amy",
+   "verify",
+   "",
+   "existing test (same user + entity)",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel rejectTravel:n",
+   "Travel rejectTravel as anonymous/rose",
+   "user rose",
+   "403",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel rejectTravel:y",
+   "Travel rejectTravel as martha/amy/admin/alice",
+   "user martha",
+   "200",
+   "",
+   "existing test (same user + entity)",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel acceptTravel:n",
+   "Travel acceptTravel as anonymous/rose",
+   "user rose",
+   "403",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel acceptTravel:y",
+   "Travel acceptTravel as martha/amy/admin/alice",
+   "user martha",
+   "200",
+   "",
+   "existing test (same user + entity)",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel deductDiscount:n",
+   "Travel deductDiscount as anonymous/rose",
+   "user rose",
+   "403",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Travel deductDiscount:y",
+   "Travel deductDiscount as martha/amy/admin/alice",
+   "user martha",
+   "200",
+   "",
+   "existing test (same user + entity)",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Booking / BookingSupplement (via Travel draft):n",
+   "Booking / BookingSupplement (via Travel draft) as anonymous",
+   "user anonymous",
+   "401",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Booking / BookingSupplement (via Travel draft):a",
+   "Booking / BookingSupplement (via Travel draft) as rose/martha",
+   "user rose",
+   "verify",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:Booking / BookingSupplement (via Travel draft):y",
+   "Booking / BookingSupplement (via Travel draft) as amy/admin/alice",
+   "user amy",
+   "200",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+   "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha",
+   "user rose",
+   "403 (today 200: open)",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y",
+   "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as amy/admin/alice",
+   "user amy",
+   "200",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+   "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha",
+   "user rose",
+   "403 (today 200: open)",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y",
+   "Passenger READ (PII: FirstName, LastName, Street, …) as amy/admin/alice",
+   "user amy",
+   "200",
+   "",
+   "",
+   "yes"
+  ],
+  [
+   "Authorization",
+   "AUT:/processor: 8 other entities READ:a",
+   "/processor: 8 other entities READ as anonymous",
+   "user anonymous",
+   "verify",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Authorization",
+   "AUT:/processor: 8 other entities READ:y",
+   "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+   "user rose",
+   "200",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:rejectTravel:X",
+   "rejectTravel on TravelStatus = X (UI hides it)",
+   "Travel \"56657221A8E4645C17002DF03754AB66\"",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   "yes"
+  ],
+  [
+   "UI vs server rules",
+   "UIS:acceptTravel:A",
+   "acceptTravel on TravelStatus = A (UI hides it)",
+   "Travel \"59657221A8E4645C17002DF03754AB66\"",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   "yes"
+  ],
+  [
+   "UI vs server rules",
+   "UIS:deductDiscount:X",
+   "deductDiscount on TravelStatus = X (UI hides it)",
+   "Travel \"56657221A8E4645C17002DF03754AB66\"",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+   "yes"
+  ],
+  [
+   "UI vs server rules",
+   "UIS:deductDiscount:A",
+   "deductDiscount on TravelStatus = A (UI hides it)",
+   "Travel \"59657221A8E4645C17002DF03754AB66\"",
+   "4xx rejection",
+   "rejected",
+   "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+   "yes"
+  ],
+  [
+   "UI vs server rules",
+   "UIS:field-control:Travel",
+   "Travel: 5 fields controlled by TravelStatus.fieldControl — bypass via OData",
+   "PATCH/POST on a non-open instance",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:side-effects:Travel:5",
+   "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+   "side-effects",
+   "targets recomputed",
+   "",
+   "test/odata.test.ts: \"re-calculates totals after booking fee changed\"",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:side-effects:Travel:6",
+   "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+   "side-effects",
+   "targets recomputed",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:side-effects:Travel:7",
+   "Travel: to_Booking → re-read TotalPrice",
+   "side-effects",
+   "targets recomputed",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:assert.range:Travel:8",
+   "Travel: percent in [1, 100]",
+   "assert.range",
+   "CAP rejects / ignores",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:readonly:Travel:9",
+   "Travel: TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+   "readonly",
+   "CAP rejects / ignores",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:mandatory:Travel:10",
+   "Travel: BeginDate, EndDate, to_Agency, to_Customer",
+   "mandatory",
+   "CAP rejects / ignores",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:field-control:Booking",
+   "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+   "PATCH/POST on a non-open instance",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:CreateHidden:Booking",
+   "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData",
+   "PATCH/POST on a non-open instance",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:DeleteHidden:Booking",
+   "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData",
+   "PATCH/POST on a non-open instance",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:mandatory:Booking:14",
+   "Booking: ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+   "mandatory",
+   "CAP rejects / ignores",
+   "",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:field-control:BookingSupplement",
+   "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+   "PATCH/POST on a non-open instance",
+   "4xx rejection",
+   "accepted (UI-only rule)",
+   "",
+   ""
+  ],
+  [
+   "UI vs server rules",
+   "UIS:mandatory:BookingSupplement:16",
+   "BookingSupplement: Price, to_Supplement",
+   "mandatory",
+   "CAP rejects / ignores",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:rejectTravel:X",
+   "rejectTravel from X",
+   "TravelStatus=X",
+   "rejected",
+   "→ X",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:rejectTravel:A",
+   "rejectTravel from A",
+   "TravelStatus=A",
+   "→ X",
+   "→ X",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:rejectTravel:O",
+   "rejectTravel from O",
+   "TravelStatus=O",
+   "→ X",
+   "→ X",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:acceptTravel:X",
+   "acceptTravel from X",
+   "TravelStatus=X",
+   "→ A",
+   "→ A",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:acceptTravel:A",
+   "acceptTravel from A",
+   "TravelStatus=A",
+   "rejected",
+   "→ A",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:acceptTravel:O",
+   "acceptTravel from O",
+   "TravelStatus=O",
+   "→ A",
+   "→ A",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:deductDiscount:X",
+   "deductDiscount from X",
+   "TravelStatus=X",
+   "rejected",
+   "→ X",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:deductDiscount:A",
+   "deductDiscount from A",
+   "TravelStatus=A",
+   "rejected",
+   "rejected",
+   "",
+   ""
+  ],
+  [
+   "Status transitions",
+   "STA:deductDiscount:O",
+   "deductDiscount from O",
+   "TravelStatus=O",
+   "→ O",
+   "→ O",
+   "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:18:t",
+   "before CREATE Travel: derive TravelID",
+   "always",
+   "TravelID = ++maxID",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:23:t",
+   "before NEW Booking: derive BookingID",
+   "always",
+   "BookingID = ++maxID",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:24:t",
+   "before NEW Booking: derive BookingDate",
+   "always",
+   "BookingDate = today()",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:29:t",
+   "before NEW BookingSupplement: derive BookingSupplementID",
+   "always",
+   "BookingSupplementID = ++maxID",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:36:t",
+   "before SAVE Travel: Begin Date must not be before today.",
+   "BeginDate < today()",
+   "400 \"Begin Date must not be before today.\"",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:36:f",
+   "before SAVE Travel: guard false",
+   "!(BeginDate < today())",
+   "passes",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:37:t",
+   "before SAVE Travel: End Date must be after Begin Date.",
+   "BeginDate > EndDate",
+   "400 \"End Date must be after Begin Date.\"",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:37:f",
+   "before SAVE Travel: guard false",
+   "!(BeginDate > EndDate)",
+   "passes",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:93:t",
+   "before acceptTravel/rejectTravel Travel: The travel is locked by ${existingDraft.InProcessByUser}.",
+   "!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id",
+   "423 \"The travel is locked by ${existingDraft.InProcessByUser}.\"",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:93:f",
+   "before acceptTravel/rejectTravel Travel: guard false",
+   "!(!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id)",
+   "passes",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:99:t",
+   "on deductDiscount Travel: write when TravelStatus.code != 'A' and BookingFee != null",
+   "TravelStatus.code != 'A' and BookingFee != null",
+   "row updated",
+   "",
+   "app/travel_processor/webapp/test/integration/OpaJourney.js: \"#3: List report: Create travel\"",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:99:f",
+   "on deductDiscount Travel: no write",
+   "!(TravelStatus.code != 'A' and BookingFee != null)",
+   "nothing updated, error explains why",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:105:t",
+   "on deductDiscount Travel: Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+   "!succeeded && !travel",
+   "404 \"Travel \"${travel.ID}\" does not exist; may have been deleted \"",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:105:f",
+   "on deductDiscount Travel: guard false",
+   "!(!succeeded && !travel)",
+   "passes",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:106:t",
+   "on deductDiscount Travel: Travel \"${travel.ID}\" has been approved already.",
+   "!succeeded && travel.status === TravelStatusCode.Accepted",
+   "400 \"Travel \"${travel.ID}\" has been approved already.\"",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:106:f",
+   "on deductDiscount Travel: guard false",
+   "!(!succeeded && travel.status === TravelStatusCode.Accepted)",
+   "passes",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:107:t",
+   "on deductDiscount Travel: No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+   "!succeeded && travel.BookingFee == null",
+   "404 \"No discount possible, as travel \"${travel.ID}\" does not yet \"",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Handler rules",
+   "RUL:rule:srv/travel-service.ts:107:f",
+   "on deductDiscount Travel: guard false",
+   "!(!succeeded && travel.BookingFee == null)",
+   "passes",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:deductDiscount:below min",
+   "deductDiscount: percent below min",
+   "below min",
+   "400 out of range",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:deductDiscount:min",
+   "deductDiscount: percent min",
+   "min",
+   "accepted",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:deductDiscount:max",
+   "deductDiscount: percent max",
+   "max",
+   "accepted",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:deductDiscount:above max",
+   "deductDiscount: percent above max",
+   "above max",
+   "400 out of range",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Travel:ro",
+   "Travel: write TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+   "client sends read-only fields",
+   "values ignored",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Travel:BeginDate",
+   "Travel: save without BeginDate",
+   "BeginDate missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Travel:EndDate",
+   "Travel: save without EndDate",
+   "EndDate missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Travel:to_Agency",
+   "Travel: save without to_Agency",
+   "to_Agency missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Travel:to_Customer",
+   "Travel: save without to_Customer",
+   "to_Customer missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Booking:ConnectionID",
+   "Booking: save without ConnectionID",
+   "ConnectionID missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Booking:FlightDate",
+   "Booking: save without FlightDate",
+   "FlightDate missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Booking:FlightPrice",
+   "Booking: save without FlightPrice",
+   "FlightPrice missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Booking:BookingStatus",
+   "Booking: save without BookingStatus",
+   "BookingStatus missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Booking:to_Carrier",
+   "Booking: save without to_Carrier",
+   "to_Carrier missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.Booking:to_Customer",
+   "Booking: save without to_Customer",
+   "to_Customer missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.BookingSupplement:Price",
+   "BookingSupplement: save without Price",
+   "Price missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Framework constraints",
+   "FW:TravelService.BookingSupplement:to_Supplement",
+   "BookingSupplement: save without to_Supplement",
+   "to_Supplement missing",
+   "400 on activate",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Draft lifecycle",
+   "DRF:TravelService.Travel:new-activate",
+   "Travel: new → activate",
+   "new-activate",
+   "active row created",
+   "",
+   "app/travel_processor/webapp/test/integration/OpaJourney.js: \"#3: List report: Create travel\"",
+   ""
+  ],
+  [
+   "Draft lifecycle",
+   "DRF:TravelService.Travel:edit-discard",
+   "Travel: edit → discard",
+   "edit-discard",
+   "active row unchanged",
+   "",
+   "",
+   ""
+  ],
+  [
+   "Draft lifecycle",
+   "DRF:TravelService.Travel:foreign-lock",
+   "Travel: foreign → lock",
+   "foreign-lock",
+   "423 / locked",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:1",
+   "percent=null, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "percent=null, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:2",
+   "percent=null, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+   "percent=null, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:3",
+   "percent=null, TravelStatus=O, BookingFee=> 0, target=active, repeat=again",
+   "percent=null, TravelStatus=O, BookingFee=> 0, target=active, repeat=again",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:4",
+   "percent=0, TravelStatus=X, BookingFee=> 0, target=draft, repeat=first",
+   "percent=0, TravelStatus=X, BookingFee=> 0, target=draft, repeat=first",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:5",
+   "percent=0, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+   "percent=0, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:6",
+   "percent=0, TravelStatus=O, BookingFee=null, target=draft, repeat=again",
+   "percent=0, TravelStatus=O, BookingFee=null, target=draft, repeat=again",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:7",
+   "percent=1, TravelStatus=X, BookingFee=0, target=active, repeat=again",
+   "percent=1, TravelStatus=X, BookingFee=0, target=active, repeat=again",
+   "accepted today; UI hides it",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:8",
+   "percent=1, TravelStatus=A, BookingFee=null, target=draft, repeat=first",
+   "percent=1, TravelStatus=A, BookingFee=null, target=draft, repeat=first",
+   "rejected (status)",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:9",
+   "percent=1, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+   "percent=1, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+   "success",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:10",
+   "percent=51, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "percent=51, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "4xx precondition",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:11",
+   "percent=51, TravelStatus=A, BookingFee=> 0, target=draft, repeat=again",
+   "percent=51, TravelStatus=A, BookingFee=> 0, target=draft, repeat=again",
+   "rejected (status)",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:12",
+   "percent=51, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+   "percent=51, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+   "success",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:13",
+   "percent=100, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "percent=100, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "4xx precondition",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:14",
+   "percent=100, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+   "percent=100, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+   "rejected (status)",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:15",
+   "percent=100, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+   "percent=100, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+   "success",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:16",
+   "percent=101, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "percent=101, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:17",
+   "percent=101, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+   "percent=101, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:18",
+   "percent=101, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+   "percent=101, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+   "400 invalid parameter",
+   "",
+   "",
+   ""
+  ],
+  [
+   "deductDiscount combinations",
+   "CMB:deductDiscount:19",
+   "percent=1, TravelStatus=X, BookingFee=> 0, target=active, repeat=first",
+   "percent=1, TravelStatus=X, BookingFee=> 0, target=active, repeat=first",
+   "accepted today; UI hides it",
+   "",
+   "",
+   ""
+  ]
+ ],
+ "DD": {
+  "action": "deductDiscount",
+  "factors": [
+   [
+    "percent",
+    [
+     "null",
+     "0",
+     "1",
+     "51",
+     "100",
+     "101"
+    ]
+   ],
+   [
+    "TravelStatus",
+    [
+     "X",
+     "A",
+     "O"
+    ]
+   ],
+   [
+    "BookingFee",
+    [
+     "null",
+     "0",
+     "> 0"
+    ]
+   ],
+   [
+    "target",
+    [
+     "active",
+     "draft"
+    ]
+   ],
+   [
+    "repeat",
+    [
+     "first",
+     "again"
+    ]
+   ]
+  ],
+  "invalid": {
+   "percent": [
+    "null",
+    "0",
+    "101"
+   ],
+   "TravelStatus": [
+    "A"
+   ],
+   "BookingFee": [
+    "null"
+   ]
+  },
+  "boundary": {
+   "percent": [
+    "1",
+    "100"
+   ]
+  },
+  "rules": [
+   {
+    "when": {
+     "percent": "null"
+    },
+    "expect": "400 invalid parameter",
+    "tone": "r"
+   },
+   {
+    "when": {
+     "percent": "0"
+    },
+    "expect": "400 invalid parameter",
+    "tone": "r"
+   },
+   {
+    "when": {
+     "percent": "101"
+    },
+    "expect": "400 invalid parameter",
+    "tone": "r"
+   },
+   {
+    "when": {
+     "TravelStatus": "A"
+    },
+    "expect": "rejected (status)",
+    "tone": "a"
+   },
+   {
+    "when": {
+     "BookingFee": "null"
+    },
+    "expect": "4xx precondition",
+    "tone": "a"
+   },
+   {
+    "when": {
+     "TravelStatus": "X"
+    },
+    "expect": "accepted today; UI hides it",
+    "tone": "r"
+   }
+  ],
+  "fallback": [
+   "success",
+   "y"
+  ],
+  "full": 216,
+  "rows": [
+   [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    1,
+    1,
+    1,
+    1
+   ],
+   [
+    0,
+    2,
+    2,
+    0,
+    1
+   ],
+   [
+    1,
+    0,
+    2,
+    1,
+    0
+   ],
+   [
+    1,
+    1,
+    1,
+    0,
+    0
+   ],
+   [
+    1,
+    2,
+    0,
+    1,
+    1
+   ],
+   [
+    2,
+    0,
+    1,
+    0,
+    1
+   ],
+   [
+    2,
+    1,
+    0,
+    1,
+    0
+   ],
+   [
+    2,
+    2,
+    1,
+    0,
+    0
+   ],
+   [
+    3,
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    3,
+    1,
+    2,
+    1,
+    1
+   ],
+   [
+    3,
+    2,
+    1,
+    0,
+    0
+   ],
+   [
+    4,
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    4,
+    1,
+    1,
+    1,
+    1
+   ],
+   [
+    4,
+    2,
+    2,
+    0,
+    0
+   ],
+   [
+    5,
+    0,
+    0,
+    0,
+    0
+   ],
+   [
+    5,
+    1,
+    1,
+    1,
+    1
+   ],
+   [
+    5,
+    2,
+    2,
+    0,
+    0
+   ],
+   [
+    2,
+    0,
+    2,
+    0,
+    0
+   ]
+  ]
+ },
+ "TEST_NOTE": "Existing suite: 15 service tests in 1 files (users: alice), 12 OPA5 steps in 2 journeys.",
+ "API": [
+  {
+   "root": "/analytics",
+   "svc": "AnalyticsService",
+   "sets": [
+    [
+     "Passenger",
+     "GET",
+     "open",
+     "PII: FirstName, LastName, Street, PhoneNumber, EMailAddress · auto-exposed"
+    ],
+    [
+     "TravelAgency",
+     "GET",
+     "open",
+     "PII: Street, PhoneNumber, EMailAddress · auto-exposed"
+    ],
+    [
+     "Airline",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Airport",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Bookings",
+     "GET",
+     "open",
+     ""
+    ],
+    [
+     "BookingStatus",
+     "GET",
+     "open",
+     ""
+    ],
+    [
+     "Flight",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "FlightConnection",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Travels",
+     "GET",
+     "open",
+     ""
+    ],
+    [
+     "TravelStatus",
+     "GET",
+     "open",
+     "auto-exposed"
+    ]
+   ],
+   "acts": []
+  },
+  {
+   "root": "/processor",
+   "svc": "TravelService",
+   "sets": [
+    [
+     "Passenger",
+     "GET",
+     "open",
+     "PII: FirstName, LastName, Street, PhoneNumber, EMailAddress · auto-exposed"
+    ],
+    [
+     "TravelAgency",
+     "GET",
+     "open",
+     "PII: Street, PhoneNumber, EMailAddress · auto-exposed"
+    ],
+    [
+     "Airline",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Airport",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Booking",
+     "via Travel draft",
+     "auth?",
+     ""
+    ],
+    [
+     "BookingStatus",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "BookingSupplement",
+     "via Travel draft",
+     "auth?",
+     ""
+    ],
+    [
+     "Flight",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "FlightConnection",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Supplement",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "SupplementType",
+     "GET",
+     "open",
+     "auto-exposed"
+    ],
+    [
+     "Travel",
+     "GET POST PATCH DELETE",
+     "auth",
+     "draft"
+    ],
+    [
+     "TravelStatus",
+     "GET",
+     "open",
+     "auto-exposed"
+    ]
+   ],
+   "acts": [
+    [
+     "createTravelByTemplate",
+     "processor, admin",
+     "no handler",
+     "Travel"
+    ],
+    [
+     "rejectTravel",
+     "reviewer, processor, admin",
+     "",
+     "Travel"
+    ],
+    [
+     "acceptTravel",
+     "reviewer, processor, admin",
+     "",
+     "Travel"
+    ],
+    [
+     "deductDiscount",
+     "reviewer, processor, admin",
+     "",
+     "Travel"
+    ]
+   ]
+  }
+ ],
+ "PATTERNS": [
+  {
+   "h": "gd",
+   "n": "Draft root with compositions",
+   "w": "Travel ▸ Booking ▸ BookingSupplement",
+   "ev": "srv/travel-service.cds:11",
+   "k": 3,
+   "L": [
+    "ann",
+    "srv",
+    "node"
+   ]
+  },
+  {
+   "h": "cr",
+   "n": "Auto-exposed master data",
+   "w": "@cds.autoexpose on 10 entities",
+   "ev": "db/master-data.cds:5",
+   "k": 10,
+   "x": "also exposes personal data (Passenger, TravelAgency)",
+   "L": [
+    "db"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Aspect managed",
+   "w": "Supplement, Passenger, Travel, Booking, …",
+   "ev": "db/master-data.cds:25",
+   "k": 5,
+   "L": [
+    "db"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Code lists (sap.common.CodeList)",
+   "w": "SupplementType, BookingStatus, TravelStatus",
+   "ev": "db/master-data.cds:103",
+   "k": 3,
+   "L": [
+    "db"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Localized texts",
+   "w": "Supplement, SupplementType, BookingStatus, TravelStatus",
+   "ev": "db/master-data.cds:25",
+   "k": 4,
+   "L": [
+    "db"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Enum types on elements",
+   "w": "SupplementType.code, TravelStatus.fieldControl",
+   "ev": "app/travel_processor/field-control.cds:14",
+   "k": 2,
+   "L": [
+    "db"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Service projections on the domain",
+   "w": "4 entity sets in 2 services",
+   "ev": "srv/analytics-service.cds:3",
+   "k": 4,
+   "L": [
+    "srv"
+   ]
+  },
+  {
+   "h": "wn",
+   "n": "Declarative authorization (@requires / @restrict)",
+   "w": "4 grants on 1 targets",
+   "ev": "srv/travel-service.cds:11",
+   "k": 4,
+   "x": "AnalyticsService without any grant",
+   "L": [
+    "srv"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "@readonly service entities",
+   "w": "Bookings, Travels",
+   "ev": "srv/analytics-service.cds:9",
+   "k": 2,
+   "L": [
+    "srv"
+   ]
+  },
+  {
+   "h": "wn",
+   "n": "Bound actions",
+   "w": "createTravelByTemplate, rejectTravel, acceptTravel, deductDiscount",
+   "ev": "srv/travel-service.cds:12",
+   "k": 4,
+   "x": "createTravelByTemplate has no handler",
+   "L": [
+    "srv",
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Analytical annotations",
+   "w": "@Aggregation / @Analytics",
+   "ev": "app/travel_analytics/annotations.cds:9",
+   "k": 23,
+   "L": [
+    "ann",
+    "srv"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Value helps",
+   "w": "@Common.ValueList",
+   "ev": "app/travel_analytics/annotations.cds:171",
+   "k": 162,
+   "L": [
+    "ann"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Fiori elements layout annotations",
+   "w": "@UI.LineItem / Facets / HeaderInfo",
+   "ev": "app/travel_analytics/annotations.cds:81",
+   "k": 28,
+   "L": [
+    "ann"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "SideEffects re-read after a change",
+   "w": "Travel",
+   "ev": "app/travel_processor/field-control.cds:20",
+   "k": 3,
+   "L": [
+    "ann",
+    "node"
+   ]
+  },
+  {
+   "h": "wn",
+   "n": "State rules in UI annotations",
+   "w": "OperationAvailable · FieldControl · Create/DeleteHidden",
+   "ev": "app/travel_processor/field-control.cds:37",
+   "k": 8,
+   "x": "7 not enforced by the server",
+   "L": [
+    "ann"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Labels and titles in CDS",
+   "w": "@title / @Common.Label",
+   "ev": "app/labels.cds:7",
+   "k": 357,
+   "L": [
+    "ann",
+    "db"
+   ]
+  },
+  {
+   "h": "cr",
+   "n": "Annotations placed outside their layer",
+   "w": "annotates built-in cds.UUID for the whole model; extends domain TravelStatus; annotates domain Airport; annotates domain FlightConnection",
+   "ev": "app/common.cds:5",
+   "k": 4,
+   "x": "changes a model another layer owns",
+   "L": [
+    "ann",
+    "db"
+   ]
+  },
+  {
+   "h": "wn",
+   "n": "UI annotations directly on domain entities",
+   "w": "11 domain entities annotated from app/",
+   "ev": "app/labels.cds:7",
+   "k": 17,
+   "x": "bypasses the service layer",
+   "L": [
+    "ann",
+    "db"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Class-based service (extends cds.ApplicationService)",
+   "w": "srv/travel-service.ts",
+   "ev": "srv/travel-service.ts:6",
+   "k": 1,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "before-handlers",
+   "w": "CREATE, NEW, SAVE, acceptTravel, rejectTravel",
+   "ev": "srv/travel-service.ts:16",
+   "k": 5,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "on-handlers",
+   "w": "UPDATE, DELETE, acceptTravel, rejectTravel, deductDiscount",
+   "ev": "srv/travel-service.ts:45",
+   "k": 8,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Handlers on draft tables",
+   "w": "Booking, BookingSupplement, Travel",
+   "ev": "srv/travel-service.ts:21",
+   "k": 8,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "cds-typer generated types",
+   "w": "#cds-models imports",
+   "ev": "srv/travel-service.ts:2",
+   "k": 1,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Shared helper called from handlers",
+   "w": "update_totals, update_totalsGreen",
+   "ev": "srv/travel-service.ts:52",
+   "k": 10,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "wn",
+   "n": "Raw SQL via cds.run",
+   "w": "Travel, Booking, BookingSupplement",
+   "ev": "srv/travel-service.ts:57",
+   "k": 15,
+   "x": "bypasses CQL and draft handling; check projections",
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Validation with req.reject / req.error",
+   "w": "400, 400, 423, 404, 400, 404",
+   "ev": "srv/travel-service.ts:36",
+   "k": 6,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Derived fields set in before-handlers",
+   "w": "TravelID, BookingID, BookingDate, BookingSupplementID",
+   "ev": "srv/travel-service.ts:18",
+   "k": 4,
+   "L": [
+    "node"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "Fiori elements apps",
+   "w": "travel_analytics, travel",
+   "ev": "app/travel_analytics/webapp/manifest.json:1",
+   "k": 2,
+   "L": [
+    "ui"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "UI extensions (fragments, controller ext)",
+   "w": "CustomSection.fragment.xml, Trees4Tickets.fragment.xml",
+   "ev": "app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml:1",
+   "k": 2,
+   "L": [
+    "ui"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "CSV seed data",
+   "w": "db/data",
+   "ev": "db/data/sap.common-Countries.csv:1",
+   "k": 20,
+   "L": [
+    "db",
+    "cfg"
+   ]
+  },
+  {
+   "h": "wn",
+   "n": "Service tests (cds.test)",
+   "w": "test/odata.test.ts",
+   "ev": "test/odata.test.ts:1",
+   "k": 15,
+   "x": "all as alice",
+   "L": [
+    "node",
+    "cfg"
+   ]
+  },
+  {
+   "h": "gd",
+   "n": "OPA5 journeys",
+   "w": "travel_analytics, travel_processor",
+   "ev": "app/travel_analytics/webapp/test/integration/OpaJourney.js:1",
+   "k": 12,
+   "L": [
+    "ui"
+   ]
+  }
+ ],
+ "LAYERS": [
+  [
+   "ui",
+   "UI5 apps"
+  ],
+  [
+   "ann",
+   "Annotations"
+  ],
+  [
+   "srv",
+   "Services"
+  ],
+  [
+   "node",
+   "Node logic"
+  ],
+  [
+   "db",
+   "Domain / DB"
+  ],
+  [
+   "cfg",
+   "Config / tests"
+  ]
+ ],
+ "RISKS": [
+  {
+   "src": "rule",
+   "key": "pii-open:Passenger",
+   "t": "Passenger personal data open to any caller",
+   "i": 4,
+   "l": 4,
+   "lay": "Model",
+   "ev": "db/master-data.cds:73",
+   "d": "/analytics/Passenger and /processor/Passenger return FirstName, LastName, Street, PhoneNumber, EMailAddress without a role check; with no service-level @requires this may include unauthenticated calls (verify behind the approuter).",
+   "test": "GET /analytics/Passenger, /processor/Passenger as anonymous and as a user without roles, expect 401/403.",
+   "id": "G1"
+  },
+  {
+   "src": "rule",
+   "key": "pii-open:TravelAgency",
+   "t": "TravelAgency personal data open to any caller",
+   "i": 4,
+   "l": 4,
+   "lay": "Model",
+   "ev": "db/master-data.cds:86",
+   "d": "/analytics/TravelAgency and /processor/TravelAgency return Street, PhoneNumber, EMailAddress without a role check; with no service-level @requires this may include unauthenticated calls (verify behind the approuter).",
+   "test": "GET /analytics/TravelAgency, /processor/TravelAgency as anonymous and as a user without roles, expect 401/403.",
+   "id": "G2"
+  },
+  {
+   "src": "rule",
+   "key": "ui-only:actions",
+   "t": "rejectTravel, acceptTravel callable in states the UI hides",
+   "i": 3,
+   "l": 4,
+   "lay": "Node",
+   "ev": "app/travel_processor/field-control.cds:37",
+   "d": "@Core.OperationAvailable hides rejectTravel when TravelStatus != X; acceptTravel when TravelStatus != A, but no handler checks the status, so a direct POST still changes it.",
+   "test": "POST each action on an instance in the hidden state, expect 4xx.",
+   "id": "G3"
+  },
+  {
+   "src": "rule",
+   "key": "open-svc:AnalyticsService",
+   "t": "AnalyticsService has no @requires or @restrict",
+   "i": 3,
+   "l": 3,
+   "lay": "Service",
+   "ev": "srv/analytics-service.cds:3",
+   "d": "Every entity under /analytics is readable by any caller (CAP default restrict_all_services: false).",
+   "test": "GET /analytics/$metadata and one entity set as anonymous.",
+   "id": "G4"
+  },
+  {
+   "src": "rule",
+   "key": "partial:uirule:TravelService.Travel.deductDiscount:available",
+   "t": "deductDiscount enforced only partly",
+   "i": 3,
+   "l": 3,
+   "lay": "Node",
+   "ev": "app/travel_processor/field-control.cds:45",
+   "d": "UI: TravelStatus = O. Server: allows TravelStatus in {X, O}; also X. The server lets X through.",
+   "test": "Call deductDiscount in the states the UI hides, expect 4xx.",
+   "id": "G5"
+  },
+  {
+   "src": "rule",
+   "key": "tests-one-user",
+   "t": "Tests run as one user only (alice)",
+   "i": 3,
+   "l": 3,
+   "lay": "Tests",
+   "ev": "test/odata.test.ts:1",
+   "d": "4 grants exist, but no existing test runs as a user who should be denied, so a broken @restrict would pass.",
+   "test": "Role × operation tests from the authorization matrix (generated).",
+   "id": "G6"
+  },
+  {
+   "src": "rule",
+   "key": "ui-only:fields",
+   "t": "Read-only and hidden-create rules exist only in the UI (5)",
+   "i": 3,
+   "l": 3,
+   "lay": "UI",
+   "ev": "app/travel_processor/field-control.cds:29",
+   "d": "Travel: 5 fields controlled by TravelStatus.fieldControl; Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl; Booking: hidden when to_Travel.TravelStatus.code != #Open; Booking: hidden when to_Travel.TravelStatus.code != #Open; BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl. OData clients can still PATCH, POST or DELETE.",
+   "test": "PATCH a locked field and POST/DELETE a child on a non-open instance, expect 4xx.",
+   "id": "G7"
+  },
+  {
+   "src": "rule",
+   "key": "global:cds.UUID",
+   "t": "Global annotation on built-in cds.UUID",
+   "i": 2,
+   "l": 3,
+   "lay": "Model",
+   "ev": "app/common.cds:5",
+   "d": "app/common.cds annotates built-in cds.UUID for the whole model: every element of that type in every service changes, including ones the author never saw.",
+   "test": "Check $metadata of each service for the annotation on unrelated cds.UUID fields.",
+   "id": "G8"
+  },
+  {
+   "src": "rule",
+   "key": "noimpl:createTravelByTemplate",
+   "t": "createTravelByTemplate declared and granted, no handler",
+   "i": 2,
+   "l": 3,
+   "lay": "Service",
+   "ev": "srv/travel-service.cds:12",
+   "d": "The action is in the service and reachable through OData, but no Node handler implements it; CAP answers with an error at runtime.",
+   "test": "POST createTravelByTemplate as an authorised user, expect a defined error or remove the action.",
+   "id": "G9"
+  },
+  {
+   "src": "rule",
+   "key": "inherit:TravelService.Booking",
+   "t": "Booking / BookingSupplement: access inherited from the draft root",
+   "i": 2,
+   "l": 2,
+   "lay": "Service",
+   "ev": "srv/travel-service.cds:11",
+   "d": "Composition children carry no own @restrict. Access through the root is checked; direct requests to the child set need a test.",
+   "test": "PATCH a child as a user without write access on the root, expect 403.",
+   "id": "G10"
+  },
+  {
+   "src": "rule",
+   "key": "layering",
+   "t": "3 CDS files change models of another layer",
+   "i": 2,
+   "l": 2,
+   "lay": "Model",
+   "ev": "app/travel_processor/field-control.cds:12",
+   "d": "app/travel_processor/field-control.cds: extends domain TravelStatus; srv/analytics-service.cds: annotates domain Airport; srv/analytics-service.cds: annotates domain FlightConnection.",
+   "test": "Architecture test on the CDS dependency graph (fails on new violations).",
+   "id": "G11"
+  },
+  {
+   "src": "rule",
+   "key": "ui5-errors",
+   "t": "9 UI5 lint errors",
+   "i": 2,
+   "l": 2,
+   "lay": "UI",
+   "ev": "app/travel_analytics/webapp/manifest.json:2",
+   "d": "no-outdated-manifest-version, no-deprecated-api. These break with the next UI5 major release.",
+   "test": "Run @ui5/linter in CI and fail on errors.",
+   "id": "G12"
+  },
+  {
+   "id": "A7",
+   "t": "deductDiscount 404 path crashes",
+   "i": 2,
+   "l": 3,
+   "lay": "Node",
+   "ev": "srv/travel-service.ts:105",
+   "d": "When the travel is gone, the error message reads travel.ID from undefined: a TypeError and a 500 instead of a 404.",
+   "test": "deductDiscount on a deleted TravelUUID, expect 404 with message.",
+   "reviewer": "agent deep read 2026-10-29",
+   "src": "agent"
+  },
+  {
+   "id": "A8",
+   "t": "TravelID = max + 1 race",
+   "i": 3,
+   "l": 2,
+   "lay": "Node",
+   "ev": "srv/travel-service.ts:17",
+   "d": "max(TravelID) is read and incremented on CREATE. Two parallel activations can get the same ID.",
+   "test": "Activate two drafts in parallel, assert distinct TravelIDs.",
+   "reviewer": "agent deep read 2026-10-29",
+   "src": "agent"
+  },
+  {
+   "id": "A12",
+   "t": "Hard-coded USD in analytics",
+   "i": 2,
+   "l": 3,
+   "lay": "Service",
+   "ev": "srv/analytics-service.cds:24",
+   "d": "All FlightPrices are summed as USD regardless of their currency.",
+   "test": "Seed a EUR booking, assert aggregation either converts or groups by currency.",
+   "reviewer": "agent deep read 2026-10-29",
+   "src": "agent"
+  }
+ ],
+ "KPIS": [
+  [
+   "2",
+   "UI5 apps"
+  ],
+  [
+   "2",
+   "OData services"
+  ],
+  [
+   "13",
+   "entities"
+  ],
+  [
+   "13",
+   "Node handlers"
+  ],
+  [
+   "32",
+   "coding patterns"
+  ],
+  [
+   "3",
+   "layer violations",
+   "w"
+  ],
+  [
+   "7 / 16",
+   "UI rules the server skips",
+   "c"
+  ],
+  [
+   "15",
+   "risks with evidence",
+   "c"
+  ],
+  [
+   "108",
+   "equivalence classes"
+  ],
+  [
+   "12",
+   "covered today",
+   "w"
+  ],
+  [
+   "15%",
+   "classes tested",
+   "w"
+  ],
+  [
+   "12 / 89",
+   "doc statements verified",
+   "w"
+  ]
+ ],
+ "SECTIONS": [
+  {
+   "code": "ARC",
+   "name": "Architecture",
+   "take": "2 UI5 apps on 2 OData services, served by one CAP Node.js process with 13 handlers. <b>7 business rules are promised by UI annotations only</b>, not enforced by the server.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Container map"
+    },
+    {
+     "k": "B",
+     "label": "Layer stack"
+    }
+   ]
+  },
+  {
+   "code": "DAT",
+   "name": "Data model",
+   "take": "13 entities: 3 in draft documents, 7 master data, 3 code lists. Personal data in <b>Passenger, TravelAgency</b>.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Composition tree"
+    },
+    {
+     "k": "B",
+     "label": "Force graph"
+    },
+    {
+     "k": "C",
+     "label": "Entity matrix"
+    }
+   ]
+  },
+  {
+   "code": "DEP",
+   "name": "Dependencies",
+   "take": "15 CDS files, 23 file-to-file dependencies. <b>3 reach past their layer</b>, 4 put UI annotations straight on the domain.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Layered graph"
+    },
+    {
+     "k": "B",
+     "label": "Dependency matrix"
+    }
+   ]
+  },
+  {
+   "code": "FLW",
+   "name": "Data flow & events",
+   "take": "3 entities get fields written by handlers; the busiest handler is <b>on deductDiscount Travel</b> (travel-service.ts:97). 6 lifecycle events carry server or UI hooks.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Sankey"
+    },
+    {
+     "k": "B",
+     "label": "Swimlane: on deductDiscount Travel"
+    },
+    {
+     "k": "C",
+     "label": "Hook timeline"
+    }
+   ]
+  },
+  {
+   "code": "STA",
+   "name": "TravelStatus lifecycle",
+   "take": "3 states, 9 action × state pairs. The UI allows 5, the Node server 8; <b>3 disagree</b>.",
+   "views": [
+    {
+     "k": "A",
+     "label": "State machine"
+    },
+    {
+     "k": "B",
+     "label": "Transition table"
+    }
+   ]
+  },
+  {
+   "code": "AUT",
+   "name": "Authorization",
+   "take": "6 users (anonymous plus mock users) × 13 operations. <b>4 operations expose personal data without a role.</b> 6 cells are exercised by existing tests.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Role heatmap"
+    },
+    {
+     "k": "B",
+     "label": "PII reach"
+    },
+    {
+     "k": "C",
+     "label": "Role chain"
+    }
+   ]
+  },
+  {
+   "code": "PAT",
+   "name": "Coding patterns",
+   "take": "32 patterns found by fixed detectors. 2 cause a defect or exposure, 6 work but sit in the wrong place.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Pattern cards"
+    },
+    {
+     "k": "B",
+     "label": "Pattern × layer"
+    }
+   ]
+  },
+  {
+   "code": "UIS",
+   "name": "UI promises vs server",
+   "take": "16 rules the UI promises, read from the annotations. 8 are enforced by the server or by CAP, 1 only partly; <b>7 exist only in the UI</b> and can be bypassed with a plain OData call.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Reflexion matrix"
+    },
+    {
+     "k": "B",
+     "label": "Verdict bars"
+    }
+   ]
+  },
+  {
+   "code": "RSK",
+   "name": "Risks",
+   "take": "15 risks: 12 found by rules, 3 by agent review. Highest: <b>Passenger personal data open to any caller</b> (score 16).",
+   "views": [
+    {
+     "k": "A",
+     "label": "Impact × likelihood"
+    },
+    {
+     "k": "B",
+     "label": "Ranked cards"
+    }
+   ]
+  },
+  {
+   "code": "RLS",
+   "name": "Rules from agent findings",
+   "take": "5 rules drafted from agent findings: 0 accepted, 5 waiting for review. 4 drafts fire on this app, reproducing agent findings <b>A12, A8, A7</b> without AI.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Rule cards"
+    }
+   ]
+  },
+  {
+   "code": "TST",
+   "name": "Test design",
+   "take": "108 equivalence classes in 7 categories; <b>12 covered by existing tests</b>. deductDiscount: 19 all-pairs cases instead of 216.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Coverage treemap"
+    },
+    {
+     "k": "B",
+     "label": "deductDiscount classes"
+    },
+    {
+     "k": "C",
+     "label": "Coverage bars"
+    }
+   ]
+  },
+  {
+   "code": "COV",
+   "name": "Coverage by class",
+   "take": "16 of 108 classes tested (<b>15%</b>) by tests that ran in CI; 7 pin today's behaviour with the intended one waiting as a spec test, 0 generated but not run yet, 39 likely (approximate match), <b>46 untested</b>.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Heatmap"
+    },
+    {
+     "k": "B",
+     "label": "Status per category"
+    },
+    {
+     "k": "C",
+     "label": "Test next"
+    }
+   ]
+  },
+  {
+   "code": "API",
+   "name": "Interfaces",
+   "take": "2 service roots, 23 entity sets, 4 actions. <b>20 sets need no role</b>, including personal data.",
+   "views": [
+    {
+     "k": "A",
+     "label": "Endpoint map"
+    },
+    {
+     "k": "B",
+     "label": "Interface list"
+    }
+   ]
+  }
+ ],
+ "META": {
+  "title": "SFlight Discovery Atlas",
+  "app": "SAP-samples/cap-sflight",
+  "url": "https://github.com/SAP-samples/cap-sflight",
+  "license": "Apache-2.0",
+  "scope": "CAP Node.js only",
+  "run": "2026-10-30",
+  "commit": "7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1",
+  "lede": "One travel-booking app, read end to end: two Fiori elements apps, one CDS model and a CAP Node.js backend in TypeScript. The repo also ships a Java backend; it is out of scope and ignored here.",
+  "sources": {
+   "ARC": "generated",
+   "DAT": "generated",
+   "DEP": "generated",
+   "FLW": "generated",
+   "STA": "generated",
+   "AUT": "generated",
+   "PAT": "generated",
+   "UIS": "generated",
+   "TST": "generated",
+   "API": "generated",
+   "RSK": "generated + agent",
+   "COV": "generated + test results",
+   "RLS": "generated (rules library)"
+  }
+ },
+ "COVERAGE": {
+  "ran": true,
+  "counts": {
+   "tested": 16,
+   "gen": 0,
+   "spec": 7,
+   "likely": 39,
+   "fail": 0,
+   "none": 46
+  },
+  "total": 108,
+  "tested": 16,
+  "pct": 15,
+  "cats": [
+   {
+    "n": "Authorization",
+    "tested": 8,
+    "gen": 0,
+    "spec": 4,
+    "likely": 2,
+    "fail": 0,
+    "none": 11
+   },
+   {
+    "n": "UI vs server rules",
+    "tested": 1,
+    "gen": 0,
+    "spec": 3,
+    "likely": 1,
+    "fail": 0,
+    "none": 12
+   },
+   {
+    "n": "Status transitions",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 6,
+    "fail": 0,
+    "none": 3
+   },
+   {
+    "n": "Handler rules",
+    "tested": 7,
+    "gen": 0,
+    "spec": 0,
+    "likely": 6,
+    "fail": 0,
+    "none": 5
+   },
+   {
+    "n": "Framework constraints",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 4,
+    "fail": 0,
+    "none": 13
+   },
+   {
+    "n": "Draft lifecycle",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 1,
+    "fail": 0,
+    "none": 2
+   },
+   {
+    "n": "deductDiscount combinations",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 19,
+    "fail": 0,
+    "none": 0
+   }
+  ],
+  "next": [
+   {
+    "id": "AUT:/analytics: 8 other entities READ:a",
+    "name": "/analytics: 8 other entities READ as anonymous",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:/analytics: 8 other entities READ:y",
+    "name": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:a",
+    "name": "/processor: 8 other entities READ as anonymous",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:y",
+    "name": "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel acceptTravel:n",
+    "name": "Travel acceptTravel as anonymous/rose",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel acceptTravel:y",
+    "name": "Travel acceptTravel as martha/amy/admin/alice",
+    "cat": "Authorization",
+    "st": "likely",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel create / edit / delete:n",
+    "name": "Travel create / edit / delete as anonymous/rose/martha",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:a",
+    "name": "Travel createTravelByTemplate as amy/admin/alice",
+    "cat": "Authorization",
+    "st": "likely",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:n",
+    "name": "Travel createTravelByTemplate as anonymous/rose/martha",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel deductDiscount:n",
+    "name": "Travel deductDiscount as anonymous/rose",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel rejectTravel:n",
+    "name": "Travel rejectTravel as anonymous/rose",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "STA:acceptTravel:A",
+    "name": "acceptTravel from A",
+    "cat": "Status transitions",
+    "st": "none",
+    "score": 42
+   },
+   {
+    "id": "STA:acceptTravel:O",
+    "name": "acceptTravel from O",
+    "cat": "Status transitions",
+    "st": "none",
+    "score": 42
+   },
+   {
+    "id": "STA:acceptTravel:X",
+    "name": "acceptTravel from X",
+    "cat": "Status transitions",
+    "st": "none",
+    "score": 42
+   },
+   {
+    "id": "STA:deductDiscount:A",
+    "name": "deductDiscount from A",
+    "cat": "Status transitions",
+    "st": "likely",
+    "score": 42
+   }
+  ],
+  "heat": {
+   "rows": [
+    "/analytics · READ",
+    "/processor · READ",
+    "Booking · CREATE",
+    "Booking · CreateHidden",
+    "Booking · DeleteHidden",
+    "Booking · NEW",
+    "Booking · field-control",
+    "Booking · mandatory",
+    "BookingSupplement · NEW",
+    "BookingSupplement · field-control",
+    "BookingSupplement · mandatory",
+    "Passenger · READ",
+    "Travel · CREATE",
+    "Travel · READ",
+    "Travel · SAVE",
+    "Travel · acceptTravel",
+    "Travel · acceptTravel/rejectTravel",
+    "Travel · assert.range",
+    "Travel · createTravelByTemplate",
+    "Travel · deductDiscount",
+    "Travel · draft",
+    "Travel · field-control",
+    "Travel · mandatory",
+    "Travel · readonly",
+    "Travel · rejectTravel",
+    "Travel · side-effects",
+    "TravelAgency · READ"
+   ],
+   "cols": [
+    "A",
+    "O",
+    "X",
+    "edit-discard",
+    "foreign-lock",
+    "new-activate",
+    "any"
+   ],
+   "cells": [
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:/analytics: 8 other entities READ:a",
+      "AUT:/analytics: 8 other entities READ:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:/processor: 8 other entities READ:a",
+      "AUT:/processor: 8 other entities READ:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Booking / BookingSupplement (via Travel draft):n",
+      "AUT:Booking / BookingSupplement (via Travel draft):a",
+      "AUT:Booking / BookingSupplement (via Travel draft):y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:CreateHidden:Booking"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:DeleteHidden:Booking"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:23:t",
+      "RUL:rule:srv/travel-service.ts:24:t"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:field-control:Booking"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:mandatory:Booking:14",
+      "FW:TravelService.Booking:ConnectionID",
+      "FW:TravelService.Booking:FlightDate",
+      "FW:TravelService.Booking:FlightPrice",
+      "FW:TravelService.Booking:BookingStatus",
+      "FW:TravelService.Booking:to_Carrier",
+      "FW:TravelService.Booking:to_Customer"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:29:t"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:field-control:BookingSupplement"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:mandatory:BookingSupplement:16",
+      "FW:TravelService.BookingSupplement:Price",
+      "FW:TravelService.BookingSupplement:to_Supplement"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+      "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+      "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel create / edit / delete:n",
+      "AUT:Travel create / edit / delete:y",
+      "RUL:rule:srv/travel-service.ts:18:t"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel READ:n",
+      "AUT:Travel READ:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:36:t",
+      "RUL:rule:srv/travel-service.ts:36:f",
+      "RUL:rule:srv/travel-service.ts:37:t",
+      "RUL:rule:srv/travel-service.ts:37:f"
+     ]
+    ],
+    [
+     [
+      "UIS:acceptTravel:A",
+      "STA:acceptTravel:A"
+     ],
+     [
+      "STA:acceptTravel:O"
+     ],
+     [
+      "STA:acceptTravel:X"
+     ],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel acceptTravel:n",
+      "AUT:Travel acceptTravel:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:93:t",
+      "RUL:rule:srv/travel-service.ts:93:f"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:assert.range:Travel:8"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel createTravelByTemplate:n",
+      "AUT:Travel createTravelByTemplate:a"
+     ]
+    ],
+    [
+     [
+      "UIS:deductDiscount:A",
+      "STA:deductDiscount:A",
+      "CMB:deductDiscount:2",
+      "CMB:deductDiscount:5",
+      "CMB:deductDiscount:8",
+      "CMB:deductDiscount:11",
+      "CMB:deductDiscount:14",
+      "CMB:deductDiscount:17"
+     ],
+     [
+      "STA:deductDiscount:O",
+      "CMB:deductDiscount:3",
+      "CMB:deductDiscount:6",
+      "CMB:deductDiscount:9",
+      "CMB:deductDiscount:12",
+      "CMB:deductDiscount:15",
+      "CMB:deductDiscount:18"
+     ],
+     [
+      "UIS:deductDiscount:X",
+      "STA:deductDiscount:X",
+      "CMB:deductDiscount:1",
+      "CMB:deductDiscount:4",
+      "CMB:deductDiscount:7",
+      "CMB:deductDiscount:10",
+      "CMB:deductDiscount:13",
+      "CMB:deductDiscount:16",
+      "CMB:deductDiscount:19"
+     ],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel deductDiscount:n",
+      "AUT:Travel deductDiscount:y",
+      "RUL:rule:srv/travel-service.ts:99:t",
+      "RUL:rule:srv/travel-service.ts:99:f",
+      "RUL:rule:srv/travel-service.ts:105:t",
+      "RUL:rule:srv/travel-service.ts:105:f",
+      "RUL:rule:srv/travel-service.ts:106:t",
+      "RUL:rule:srv/travel-service.ts:106:f",
+      "RUL:rule:srv/travel-service.ts:107:t",
+      "RUL:rule:srv/travel-service.ts:107:f",
+      "FW:deductDiscount:below min",
+      "FW:deductDiscount:min",
+      "FW:deductDiscount:max",
+      "FW:deductDiscount:above max"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [
+      "DRF:TravelService.Travel:edit-discard"
+     ],
+     [
+      "DRF:TravelService.Travel:foreign-lock"
+     ],
+     [
+      "DRF:TravelService.Travel:new-activate"
+     ],
+     []
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:field-control:Travel"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:mandatory:Travel:10",
+      "FW:TravelService.Travel:BeginDate",
+      "FW:TravelService.Travel:EndDate",
+      "FW:TravelService.Travel:to_Agency",
+      "FW:TravelService.Travel:to_Customer"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:readonly:Travel:9",
+      "FW:TravelService.Travel:ro"
+     ]
+    ],
+    [
+     [
+      "STA:rejectTravel:A"
+     ],
+     [
+      "STA:rejectTravel:O"
+     ],
+     [
+      "UIS:rejectTravel:X",
+      "STA:rejectTravel:X"
+     ],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel rejectTravel:n",
+      "AUT:Travel rejectTravel:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:side-effects:Travel:5",
+      "UIS:side-effects:Travel:6",
+      "UIS:side-effects:Travel:7"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+      "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+      "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y"
+     ]
+    ]
+   ]
+  },
+  "label": {
+   "tested": "tested",
+   "gen": "generated, not run yet",
+   "spec": "spec only (today pinned)",
+   "likely": "likely (approximate match)",
+   "fail": "test fails",
+   "none": "untested"
+  },
+  "classes": [
+   {
+    "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+    "cat": "Authorization",
+    "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha/amy/admin/alice",
+    "entity": "TravelAgency",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+    "cat": "Authorization",
+    "name": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha/amy/admin/alice",
+    "entity": "Passenger",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Passenger READ (PII: FirstName, LastName, Street, …)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "AUT:/analytics: 8 other entities READ:a",
+    "cat": "Authorization",
+    "name": "/analytics: 8 other entities READ as anonymous",
+    "entity": "/analytics",
+    "op": "READ",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/analytics: 8 other entities READ",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:/analytics: 8 other entities READ:y",
+    "cat": "Authorization",
+    "name": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+    "entity": "/analytics",
+    "op": "READ",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/analytics: 8 other entities READ",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Travel READ:n",
+    "cat": "Authorization",
+    "name": "Travel READ as anonymous",
+    "entity": "Travel",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel READ",
+    "tests": [
+     {
+      "title": "today: GET /processor/Travel as anonymous → 401",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:Travel READ:y",
+    "cat": "Authorization",
+    "name": "Travel READ as rose/martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:52",
+     "test/odata.test.ts:76",
+     "test/odata.test.ts:85"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel READ",
+    "tests": [
+     {
+      "title": "today: GET /processor/Travel as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:Travel create / edit / delete:n",
+    "cat": "Authorization",
+    "name": "Travel create / edit / delete as anonymous/rose/martha",
+    "entity": "Travel",
+    "op": "CREATE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel create / edit / delete",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Travel create / edit / delete:y",
+    "cat": "Authorization",
+    "name": "Travel create / edit / delete as amy/admin/alice",
+    "entity": "Travel",
+    "op": "CREATE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117",
+     "test/odata.test.ts:121",
+     "test/odata.test.ts:148"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel create / edit / delete",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:n",
+    "cat": "Authorization",
+    "name": "Travel createTravelByTemplate as anonymous/rose/martha",
+    "entity": "Travel",
+    "op": "createTravelByTemplate",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel createTravelByTemplate",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:a",
+    "cat": "Authorization",
+    "name": "Travel createTravelByTemplate as amy/admin/alice",
+    "entity": "Travel",
+    "op": "createTravelByTemplate",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel createTravelByTemplate",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "AUT:Travel rejectTravel:n",
+    "cat": "Authorization",
+    "name": "Travel rejectTravel as anonymous/rose",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel rejectTravel",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Travel rejectTravel:y",
+    "cat": "Authorization",
+    "name": "Travel rejectTravel as martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel rejectTravel",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:Travel acceptTravel:n",
+    "cat": "Authorization",
+    "name": "Travel acceptTravel as anonymous/rose",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel acceptTravel",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Travel acceptTravel:y",
+    "cat": "Authorization",
+    "name": "Travel acceptTravel as martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel acceptTravel",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "AUT:Travel deductDiscount:n",
+    "cat": "Authorization",
+    "name": "Travel deductDiscount as anonymous/rose",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel deductDiscount",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Travel deductDiscount:y",
+    "cat": "Authorization",
+    "name": "Travel deductDiscount as martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel deductDiscount",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:Booking / BookingSupplement (via Travel draft):n",
+    "cat": "Authorization",
+    "name": "Booking / BookingSupplement (via Travel draft) as anonymous",
+    "entity": "Booking",
+    "op": "CREATE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Booking / BookingSupplement (via Travel draft)",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Booking / BookingSupplement (via Travel draft):a",
+    "cat": "Authorization",
+    "name": "Booking / BookingSupplement (via Travel draft) as rose/martha",
+    "entity": "Booking",
+    "op": "CREATE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Booking / BookingSupplement (via Travel draft)",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:Booking / BookingSupplement (via Travel draft):y",
+    "cat": "Authorization",
+    "name": "Booking / BookingSupplement (via Travel draft) as amy/admin/alice",
+    "entity": "Booking",
+    "op": "CREATE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:155"
+    ],
+    "name_match": null,
+    "fact": "auth:Booking / BookingSupplement (via Travel draft)",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+    "cat": "Authorization",
+    "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha",
+    "entity": "TravelAgency",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y",
+    "cat": "Authorization",
+    "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as amy/admin/alice",
+    "entity": "TravelAgency",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "tests": [
+     {
+      "title": "today: GET /processor/TravelAgency as amy → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+    "cat": "Authorization",
+    "name": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha",
+    "entity": "Passenger",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Passenger READ (PII: FirstName, LastName, Street, …)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y",
+    "cat": "Authorization",
+    "name": "Passenger READ (PII: FirstName, LastName, Street, …) as amy/admin/alice",
+    "entity": "Passenger",
+    "op": "READ",
+    "state": null,
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Passenger READ (PII: FirstName, LastName, Street, …)",
+    "tests": [
+     {
+      "title": "today: GET /processor/Passenger as amy → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested"
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:a",
+    "cat": "Authorization",
+    "name": "/processor: 8 other entities READ as anonymous",
+    "entity": "/processor",
+    "op": "READ",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/processor: 8 other entities READ",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:y",
+    "cat": "Authorization",
+    "name": "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+    "entity": "/processor",
+    "op": "READ",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/processor: 8 other entities READ",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:rejectTravel:X",
+    "cat": "UI vs server rules",
+    "name": "rejectTravel on TravelStatus = X (UI hides it)",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "X",
+    "req": true,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [
+     {
+      "title": "today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "UIS:acceptTravel:A",
+    "cat": "UI vs server rules",
+    "name": "acceptTravel on TravelStatus = A (UI hides it)",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "A",
+    "req": true,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [
+     {
+      "title": "today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "UIS:deductDiscount:X",
+    "cat": "UI vs server rules",
+    "name": "deductDiscount on TravelStatus = X (UI hides it)",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": true,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [
+     {
+      "title": "today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec"
+   },
+   {
+    "id": "UIS:deductDiscount:A",
+    "cat": "UI vs server rules",
+    "name": "deductDiscount on TravelStatus = A (UI hides it)",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": true,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [
+     {
+      "title": "today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested"
+   },
+   {
+    "id": "UIS:field-control:Travel",
+    "cat": "UI vs server rules",
+    "name": "Travel: 5 fields controlled by TravelStatus.fieldControl — bypass via OData",
+    "entity": "Travel",
+    "op": "field-control",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:fieldcontrol:TravelStatus.fieldControl",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:side-effects:Travel:5",
+    "cat": "UI vs server rules",
+    "name": "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "side-effects",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": "test/odata.test.ts: \"re-calculates totals after booking fee changed\"",
+    "fact": "uirule:TravelService.Travel:sideeffects",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "UIS:side-effects:Travel:6",
+    "cat": "UI vs server rules",
+    "name": "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "side-effects",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:sideeffects#GoGreen",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:side-effects:Travel:7",
+    "cat": "UI vs server rules",
+    "name": "Travel: to_Booking → re-read TotalPrice",
+    "entity": "Travel",
+    "op": "side-effects",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:assert.range:Travel:8",
+    "cat": "UI vs server rules",
+    "name": "Travel: percent in [1, 100]",
+    "entity": "Travel",
+    "op": "assert.range",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:readonly:Travel:9",
+    "cat": "UI vs server rules",
+    "name": "Travel: TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "readonly",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:readonly",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:mandatory:Travel:10",
+    "cat": "UI vs server rules",
+    "name": "Travel: BeginDate, EndDate, to_Agency, to_Customer",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:field-control:Booking",
+    "cat": "UI vs server rules",
+    "name": "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+    "entity": "Booking",
+    "op": "field-control",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:CreateHidden:Booking",
+    "cat": "UI vs server rules",
+    "name": "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData",
+    "entity": "Booking",
+    "op": "CreateHidden",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:CreateHidden",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:DeleteHidden:Booking",
+    "cat": "UI vs server rules",
+    "name": "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData",
+    "entity": "Booking",
+    "op": "DeleteHidden",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:DeleteHidden",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:mandatory:Booking:14",
+    "cat": "UI vs server rules",
+    "name": "Booking: ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:field-control:BookingSupplement",
+    "cat": "UI vs server rules",
+    "name": "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+    "entity": "BookingSupplement",
+    "op": "field-control",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "UIS:mandatory:BookingSupplement:16",
+    "cat": "UI vs server rules",
+    "name": "BookingSupplement: Price, to_Supplement",
+    "entity": "BookingSupplement",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "STA:rejectTravel:X",
+    "cat": "Status transitions",
+    "name": "rejectTravel from X",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "STA:rejectTravel:A",
+    "cat": "Status transitions",
+    "name": "rejectTravel from A",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "STA:rejectTravel:O",
+    "cat": "Status transitions",
+    "name": "rejectTravel from O",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "STA:acceptTravel:X",
+    "cat": "Status transitions",
+    "name": "acceptTravel from X",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "STA:acceptTravel:A",
+    "cat": "Status transitions",
+    "name": "acceptTravel from A",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "STA:acceptTravel:O",
+    "cat": "Status transitions",
+    "name": "acceptTravel from O",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "STA:deductDiscount:X",
+    "cat": "Status transitions",
+    "name": "deductDiscount from X",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "STA:deductDiscount:A",
+    "cat": "Status transitions",
+    "name": "deductDiscount from A",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "STA:deductDiscount:O",
+    "cat": "Status transitions",
+    "name": "deductDiscount from O",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:18:t",
+    "cat": "Handler rules",
+    "name": "before CREATE Travel: derive TravelID",
+    "entity": "Travel",
+    "op": "CREATE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117",
+     "test/odata.test.ts:121",
+     "test/odata.test.ts:148"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:18",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:23:t",
+    "cat": "Handler rules",
+    "name": "before NEW Booking: derive BookingID",
+    "entity": "Booking",
+    "op": "NEW",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:23",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:24:t",
+    "cat": "Handler rules",
+    "name": "before NEW Booking: derive BookingDate",
+    "entity": "Booking",
+    "op": "NEW",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:24",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:29:t",
+    "cat": "Handler rules",
+    "name": "before NEW BookingSupplement: derive BookingSupplementID",
+    "entity": "BookingSupplement",
+    "op": "NEW",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:29",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:36:t",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: Begin Date must not be before today.",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:36",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:36:f",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: guard false",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:36",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:37:t",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: End Date must be after Begin Date.",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:37",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:37:f",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: guard false",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:37",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:93:t",
+    "cat": "Handler rules",
+    "name": "before acceptTravel/rejectTravel Travel: The travel is locked by ${existingDraft.InProcessByUser}.",
+    "entity": "Travel",
+    "op": "acceptTravel/rejectTravel",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:93",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:93:f",
+    "cat": "Handler rules",
+    "name": "before acceptTravel/rejectTravel Travel: guard false",
+    "entity": "Travel",
+    "op": "acceptTravel/rejectTravel",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:93",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:99:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: write when TravelStatus.code != 'A' and BookingFee != null",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "app/travel_processor/webapp/test/integration/OpaJourney.js: \"#3: List report: Create travel\"",
+    "fact": "rule:srv/travel-service.ts:99",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:99:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: no write",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:99",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:105:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:105",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:105:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: guard false",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:105",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:106:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: Travel \"${travel.ID}\" has been approved already.",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:106",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:106:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: guard false",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:106",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:107:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:107",
+    "tests": [],
+    "st": "tested"
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:107:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: guard false",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:107",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "FW:deductDiscount:below min",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent below min",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "FW:deductDiscount:min",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent min",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "FW:deductDiscount:max",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent max",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "FW:deductDiscount:above max",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent above max",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "FW:TravelService.Travel:ro",
+    "cat": "Framework constraints",
+    "name": "Travel: write TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "readonly",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:readonly",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Travel:BeginDate",
+    "cat": "Framework constraints",
+    "name": "Travel: save without BeginDate",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Travel:EndDate",
+    "cat": "Framework constraints",
+    "name": "Travel: save without EndDate",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Travel:to_Agency",
+    "cat": "Framework constraints",
+    "name": "Travel: save without to_Agency",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Travel:to_Customer",
+    "cat": "Framework constraints",
+    "name": "Travel: save without to_Customer",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Booking:ConnectionID",
+    "cat": "Framework constraints",
+    "name": "Booking: save without ConnectionID",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Booking:FlightDate",
+    "cat": "Framework constraints",
+    "name": "Booking: save without FlightDate",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Booking:FlightPrice",
+    "cat": "Framework constraints",
+    "name": "Booking: save without FlightPrice",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Booking:BookingStatus",
+    "cat": "Framework constraints",
+    "name": "Booking: save without BookingStatus",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Booking:to_Carrier",
+    "cat": "Framework constraints",
+    "name": "Booking: save without to_Carrier",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.Booking:to_Customer",
+    "cat": "Framework constraints",
+    "name": "Booking: save without to_Customer",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.BookingSupplement:Price",
+    "cat": "Framework constraints",
+    "name": "BookingSupplement: save without Price",
+    "entity": "BookingSupplement",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "FW:TravelService.BookingSupplement:to_Supplement",
+    "cat": "Framework constraints",
+    "name": "BookingSupplement: save without to_Supplement",
+    "entity": "BookingSupplement",
+    "op": "mandatory",
+    "state": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:mandatory",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "DRF:TravelService.Travel:new-activate",
+    "cat": "Draft lifecycle",
+    "name": "Travel: new → activate",
+    "entity": "Travel",
+    "op": "draft",
+    "state": "new-activate",
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": "app/travel_processor/webapp/test/integration/OpaJourney.js: \"#3: List report: Create travel\"",
+    "fact": "svcentity:TravelService.Travel",
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "DRF:TravelService.Travel:edit-discard",
+    "cat": "Draft lifecycle",
+    "name": "Travel: edit → discard",
+    "entity": "Travel",
+    "op": "draft",
+    "state": "edit-discard",
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "svcentity:TravelService.Travel",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "DRF:TravelService.Travel:foreign-lock",
+    "cat": "Draft lifecycle",
+    "name": "Travel: foreign → lock",
+    "entity": "Travel",
+    "op": "draft",
+    "state": "foreign-lock",
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "svcentity:TravelService.Travel",
+    "tests": [],
+    "st": "none"
+   },
+   {
+    "id": "CMB:deductDiscount:1",
+    "cat": "deductDiscount combinations",
+    "name": "percent=null, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:2",
+    "cat": "deductDiscount combinations",
+    "name": "percent=null, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:3",
+    "cat": "deductDiscount combinations",
+    "name": "percent=null, TravelStatus=O, BookingFee=> 0, target=active, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:4",
+    "cat": "deductDiscount combinations",
+    "name": "percent=0, TravelStatus=X, BookingFee=> 0, target=draft, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:5",
+    "cat": "deductDiscount combinations",
+    "name": "percent=0, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:6",
+    "cat": "deductDiscount combinations",
+    "name": "percent=0, TravelStatus=O, BookingFee=null, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:7",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=X, BookingFee=0, target=active, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:8",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=A, BookingFee=null, target=draft, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:9",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:10",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:11",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=A, BookingFee=> 0, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:12",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:13",
+    "cat": "deductDiscount combinations",
+    "name": "percent=100, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:14",
+    "cat": "deductDiscount combinations",
+    "name": "percent=100, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:15",
+    "cat": "deductDiscount combinations",
+    "name": "percent=100, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:16",
+    "cat": "deductDiscount combinations",
+    "name": "percent=101, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:17",
+    "cat": "deductDiscount combinations",
+    "name": "percent=101, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:18",
+    "cat": "deductDiscount combinations",
+    "name": "percent=101, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   },
+   {
+    "id": "CMB:deductDiscount:19",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=X, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely"
+   }
+  ]
+ },
+ "DOCS": {
+  "sentences": [
+   {
+    "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "TravelAgency",
+    "biz": "Anonymous callers, rose, martha, amy, admin and alice can, without any role, read TravelAgency.",
+    "dev": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha/amy/admin/alice: allowed although the data needs a role by @requires / @restrict.",
+    "intended": "should be denied (403)",
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-1",
+      "title": "today: GET /analytics/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     },
+     {
+      "n": "T-7",
+      "title": "today: GET /processor/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": {
+     "n": "T-2",
+     "title": "spec: GET /analytics/TravelAgency as rose → 403"
+    }
+   },
+   {
+    "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "Passenger",
+    "biz": "Anonymous callers, rose, martha, amy, admin and alice can, without any role, read Passenger.",
+    "dev": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha/amy/admin/alice: allowed although the data needs a role by @requires / @restrict.",
+    "intended": "should be denied (403)",
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-3",
+      "title": "today: GET /analytics/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     },
+     {
+      "n": "T-10",
+      "title": "today: GET /processor/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": {
+     "n": "T-4",
+     "title": "spec: GET /analytics/Passenger as rose → 403"
+    }
+   },
+   {
+    "cls": "AUT:/analytics: 8 other entities READ:a",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "/analytics",
+    "biz": "Anonymous callers may (not decidable from the model) read the other entities under /analytics.",
+    "dev": "/analytics: 8 other entities READ as anonymous: unclear from annotations by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:/analytics: 8 other entities READ:y",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "/analytics",
+    "biz": "Rose, martha, amy, admin and alice can read the other entities under /analytics.",
+    "dev": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel READ:n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Anonymous callers cannot read Travel.",
+    "dev": "Travel READ as anonymous: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-5",
+      "title": "today: GET /processor/Travel as anonymous → 401",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel READ:y",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Rose, martha, amy, admin and alice can read Travel.",
+    "dev": "Travel READ as rose/martha/amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-6",
+      "title": "today: GET /processor/Travel as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [
+     "test/odata.test.ts:52",
+     "test/odata.test.ts:76",
+     "test/odata.test.ts:85"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel create / edit / delete:n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Anonymous callers, rose and martha cannot create, edit and delete Travel.",
+    "dev": "Travel create / edit / delete as anonymous/rose/martha: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel create / edit / delete:y",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Amy, admin and alice can create, edit and delete Travel.",
+    "dev": "Travel create / edit / delete as amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:117",
+     "test/odata.test.ts:121",
+     "test/odata.test.ts:148"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel createTravelByTemplate:n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Anonymous callers, rose and martha cannot call createTravelByTemplate on Travel.",
+    "dev": "Travel createTravelByTemplate as anonymous/rose/martha: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel createTravelByTemplate:a",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Amy, admin and alice may (not decidable from the model) call createTravelByTemplate on Travel.",
+    "dev": "Travel createTravelByTemplate as amy/admin/alice: unclear from annotations by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel rejectTravel:n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Anonymous callers and rose cannot call rejectTravel on Travel.",
+    "dev": "Travel rejectTravel as anonymous/rose: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel rejectTravel:y",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Martha, amy, admin and alice can call rejectTravel on Travel.",
+    "dev": "Travel rejectTravel as martha/amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:147"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel acceptTravel:n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Anonymous callers and rose cannot call acceptTravel on Travel.",
+    "dev": "Travel acceptTravel as anonymous/rose: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel acceptTravel:y",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Martha, amy, admin and alice can call acceptTravel on Travel.",
+    "dev": "Travel acceptTravel as martha/amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel deductDiscount:n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Anonymous callers and rose cannot call deductDiscount on Travel.",
+    "dev": "Travel deductDiscount as anonymous/rose: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Travel deductDiscount:y",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Martha, amy, admin and alice can call deductDiscount on Travel.",
+    "dev": "Travel deductDiscount as martha/amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Booking / BookingSupplement (via Travel draft):n",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Anonymous callers cannot create, edit and delete Booking.",
+    "dev": "Booking / BookingSupplement (via Travel draft) as anonymous: denied (401/403) by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Booking / BookingSupplement (via Travel draft):a",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Rose and martha may (not decidable from the model) create, edit and delete Booking.",
+    "dev": "Booking / BookingSupplement (via Travel draft) as rose/martha: unclear from annotations by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Booking / BookingSupplement (via Travel draft):y",
+    "cat": "Authorization",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Amy, admin and alice can create, edit and delete Booking.",
+    "dev": "Booking / BookingSupplement (via Travel draft) as amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:155"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "TravelAgency",
+    "biz": "Anonymous callers, rose and martha can, without any role, read TravelAgency.",
+    "dev": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha: allowed although the data needs a role by @requires / @restrict.",
+    "intended": "should be denied (403)",
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-1",
+      "title": "today: GET /analytics/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     },
+     {
+      "n": "T-7",
+      "title": "today: GET /processor/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": {
+     "n": "T-2",
+     "title": "spec: GET /analytics/TravelAgency as rose → 403"
+    }
+   },
+   {
+    "cls": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "TravelAgency",
+    "biz": "Amy, admin and alice can read TravelAgency.",
+    "dev": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-9",
+      "title": "today: GET /processor/TravelAgency as amy → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "Passenger",
+    "biz": "Anonymous callers, rose and martha can, without any role, read Passenger.",
+    "dev": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha: allowed although the data needs a role by @requires / @restrict.",
+    "intended": "should be denied (403)",
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-3",
+      "title": "today: GET /analytics/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     },
+     {
+      "n": "T-10",
+      "title": "today: GET /processor/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": {
+     "n": "T-4",
+     "title": "spec: GET /analytics/Passenger as rose → 403"
+    }
+   },
+   {
+    "cls": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "Passenger",
+    "biz": "Amy, admin and alice can read Passenger.",
+    "dev": "Passenger READ (PII: FirstName, LastName, Street, …) as amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-12",
+      "title": "today: GET /processor/Passenger as amy → 200",
+      "file": "authorization.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:/processor: 8 other entities READ:a",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "/processor",
+    "biz": "Anonymous callers may (not decidable from the model) read the other entities under /processor.",
+    "dev": "/processor: 8 other entities READ as anonymous: unclear from annotations by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "AUT:/processor: 8 other entities READ:y",
+    "cat": "Authorization",
+    "slice": "S00",
+    "sliceName": "Cross-cutting",
+    "entity": "/processor",
+    "biz": "Rose, martha, amy, admin and alice can read the other entities under /processor.",
+    "dev": "/processor: 8 other entities READ as rose/martha/amy/admin/alice: allowed by @requires / @restrict.",
+    "intended": null,
+    "ev": null,
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:rejectTravel:X",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "The app hides \"rejectTravel\" for a Travel in status X; the server still accepts it when called directly.",
+    "dev": "@Core.OperationAvailable hides rejectTravel for X; no handler checks the status.",
+    "intended": "server should reject it (4xx)",
+    "ev": "app/travel_processor/field-control.cds:37",
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-13",
+      "title": "today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [
+     "test/odata.test.ts:147"
+    ],
+    "spec": {
+     "n": "T-14",
+     "title": "spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection"
+    }
+   },
+   {
+    "cls": "UIS:acceptTravel:A",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "The app hides \"acceptTravel\" for a Travel in status A; the server still accepts it when called directly.",
+    "dev": "@Core.OperationAvailable hides acceptTravel for A; no handler checks the status.",
+    "intended": "server should reject it (4xx)",
+    "ev": "app/travel_processor/field-control.cds:41",
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-15",
+      "title": "today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [],
+    "spec": {
+     "n": "T-16",
+     "title": "spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection"
+    }
+   },
+   {
+    "cls": "UIS:deductDiscount:X",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "The app hides \"deductDiscount\" for a Travel in status X; the server still accepts it when called directly.",
+    "dev": "@Core.OperationAvailable hides deductDiscount for X; no handler checks the status.",
+    "intended": "server should reject it (4xx)",
+    "ev": "app/travel_processor/field-control.cds:45",
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-17",
+      "title": "today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": {
+     "n": "T-18",
+     "title": "spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection"
+    }
+   },
+   {
+    "cls": "UIS:deductDiscount:A",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "The app hides \"deductDiscount\" for a Travel in status A; the server also rejects it.",
+    "dev": "@Core.OperationAvailable hides deductDiscount for A; a handler rejects it.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:45",
+    "back": "verified",
+    "tests": [
+     {
+      "n": "T-19",
+      "title": "today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
+      "file": "ui-vs-server-rules.test.js",
+      "status": "passed"
+     }
+    ],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "UIS:field-control:Travel",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: 5 fields controlled by TravelStatus.fieldControl — bypass via OData: 4xx rejection.",
+    "dev": "Travel: 5 fields controlled by TravelStatus.fieldControl — bypass via OData: 4xx rejection (input: PATCH/POST on a non-open instance).",
+    "ev": "app/travel_processor/field-control.cds:29",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:side-effects:Travel:5",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted: targets recomputed.",
+    "dev": "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted: targets recomputed (input: side-effects).",
+    "ev": "app/travel_processor/field-control.cds:20",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:side-effects:Travel:6",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted: targets recomputed.",
+    "dev": "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted: targets recomputed (input: side-effects).",
+    "ev": "app/travel_processor/field-control.cds:20",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:side-effects:Travel:7",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: to_Booking → re-read TotalPrice: targets recomputed.",
+    "dev": "Travel: to_Booking → re-read TotalPrice: targets recomputed (input: side-effects).",
+    "ev": "app/travel_processor/field-control.cds:51",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:assert.range:Travel:8",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: percent in [1, 100]: CAP rejects / ignores.",
+    "dev": "Travel: percent in [1, 100]: CAP rejects / ignores (input: assert.range).",
+    "ev": "srv/travel-service.cds:20",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:readonly:Travel:9",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted: CAP rejects / ignores.",
+    "dev": "Travel: TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted: CAP rejects / ignores (input: readonly).",
+    "ev": "db/schema.cds:14",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:mandatory:Travel:10",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: BeginDate, EndDate, to_Agency, to_Customer: CAP rejects / ignores.",
+    "dev": "Travel: BeginDate, EndDate, to_Agency, to_Customer: CAP rejects / ignores (input: mandatory).",
+    "ev": "db/schema.cds:15",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:field-control:Booking",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData: 4xx rejection.",
+    "dev": "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData: 4xx rejection (input: PATCH/POST on a non-open instance).",
+    "ev": "app/travel_processor/field-control.cds:65",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:CreateHidden:Booking",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData: 4xx rejection.",
+    "dev": "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData: 4xx rejection (input: PATCH/POST on a non-open instance).",
+    "ev": "app/travel_processor/field-control.cds:60",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:DeleteHidden:Booking",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData: 4xx rejection.",
+    "dev": "Booking: hidden when to_Travel.TravelStatus.code != #Open — bypass via OData: 4xx rejection (input: PATCH/POST on a non-open instance).",
+    "ev": "app/travel_processor/field-control.cds:61",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:mandatory:Booking:14",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer: CAP rejects / ignores.",
+    "dev": "Booking: ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer: CAP rejects / ignores (input: mandatory).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:field-control:BookingSupplement",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "BookingSupplement",
+    "biz": "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData: 4xx rejection.",
+    "dev": "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData: 4xx rejection (input: PATCH/POST on a non-open instance).",
+    "ev": "app/travel_processor/field-control.cds:29",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "UIS:mandatory:BookingSupplement:16",
+    "cat": "UI vs server rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "BookingSupplement",
+    "biz": "BookingSupplement: Price, to_Supplement: CAP rejects / ignores.",
+    "dev": "BookingSupplement: Price, to_Supplement: CAP rejects / ignores (input: mandatory).",
+    "ev": "db/schema.cds:22",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "STA:rejectTravel:X",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"rejectTravel\" on a Travel in status X: moves it to X.",
+    "dev": "State machine: rejectTravel from X → X; UI expects rejected.",
+    "intended": "UI expects rejected",
+    "ev": "app/travel_processor/field-control.cds:37",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:147"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "STA:rejectTravel:A",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"rejectTravel\" on a Travel in status A: moves it to X.",
+    "dev": "State machine: rejectTravel from A → X; UI expects → X.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:37",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:147"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "STA:rejectTravel:O",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"rejectTravel\" on a Travel in status O: moves it to X.",
+    "dev": "State machine: rejectTravel from O → X; UI expects → X.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:37",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:147"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "STA:acceptTravel:X",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"acceptTravel\" on a Travel in status X: moves it to A.",
+    "dev": "State machine: acceptTravel from X → A; UI expects → A.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:41",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "STA:acceptTravel:A",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"acceptTravel\" on a Travel in status A: moves it to A.",
+    "dev": "State machine: acceptTravel from A → A; UI expects rejected.",
+    "intended": "UI expects rejected",
+    "ev": "app/travel_processor/field-control.cds:41",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "STA:acceptTravel:O",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"acceptTravel\" on a Travel in status O: moves it to A.",
+    "dev": "State machine: acceptTravel from O → A; UI expects → A.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:41",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "STA:deductDiscount:X",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"deductDiscount\" on a Travel in status X: moves it to X.",
+    "dev": "State machine: deductDiscount from X → X; UI expects rejected.",
+    "intended": "UI expects rejected",
+    "ev": "app/travel_processor/field-control.cds:45",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "STA:deductDiscount:A",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"deductDiscount\" on a Travel in status A: refused.",
+    "dev": "State machine: deductDiscount from A rejected; UI expects rejected.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:45",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "STA:deductDiscount:O",
+    "cat": "Status transitions",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "\"deductDiscount\" on a Travel in status O: moves it to O.",
+    "dev": "State machine: deductDiscount from O → O; UI expects → O.",
+    "intended": null,
+    "ev": "app/travel_processor/field-control.cds:45",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:18:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "The server fills Travel.TravelID itself.",
+    "dev": "TravelID = `++maxID`.",
+    "ev": "srv/travel-service.ts:18",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:117",
+     "test/odata.test.ts:121",
+     "test/odata.test.ts:148"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:23:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "The server fills Booking.BookingID itself.",
+    "dev": "BookingID = `++maxID`.",
+    "ev": "srv/travel-service.ts:23",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:24:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "The server fills Booking.BookingDate itself.",
+    "dev": "BookingDate = `today()`.",
+    "ev": "srv/travel-service.ts:24",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:29:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "BookingSupplement",
+    "biz": "The server fills BookingSupplement.BookingSupplementID itself.",
+    "dev": "BookingSupplementID = `++maxID`.",
+    "ev": "srv/travel-service.ts:29",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:36:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Save on Travel is refused when BeginDate < today(): \"Begin Date must not be before today.\".",
+    "dev": "before SAVE Travel: Begin Date must not be before today.: `if (BeginDate < today())` → reject 400.",
+    "ev": "srv/travel-service.ts:36",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:117"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:36:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Save on Travel goes through when \"Begin Date must not be before today.\" does not apply.",
+    "dev": "before SAVE Travel: guard false: guard `BeginDate < today()` false → passes.",
+    "ev": "srv/travel-service.ts:36",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:117"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:37:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Save on Travel is refused when BeginDate > EndDate: \"End Date must be after Begin Date.\".",
+    "dev": "before SAVE Travel: End Date must be after Begin Date.: `if (BeginDate > EndDate)` → reject 400.",
+    "ev": "srv/travel-service.ts:37",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:117"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:37:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Save on Travel goes through when \"End Date must be after Begin Date.\" does not apply.",
+    "dev": "before SAVE Travel: guard false: guard `BeginDate > EndDate` false → passes.",
+    "ev": "srv/travel-service.ts:37",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:117"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:93:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Accepttravel/rejecttravel on Travel is refused when !isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !is req.user.id: \"The travel is locked by ….\".",
+    "dev": "before acceptTravel/rejectTravel Travel: The travel is locked by ${existingDraft.InProcessByUser}.: `if (!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id)` → reject 423.",
+    "ev": "srv/travel-service.ts:93",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:93:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Accepttravel/rejecttravel on Travel goes through when \"The travel is locked by ${existingDraft.InProcessByUser}.\" does not apply.",
+    "dev": "before acceptTravel/rejectTravel Travel: guard false: guard `!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id` false → passes.",
+    "ev": "srv/travel-service.ts:93",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:99:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "on deductDiscount Travel: write when TravelStatus.code != 'A' and BookingFee != null.",
+    "dev": "on deductDiscount Travel: write when TravelStatus.code != 'A' and BookingFee != null: row updated.",
+    "ev": "srv/travel-service.ts:99",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:99:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "on deductDiscount Travel: no write.",
+    "dev": "on deductDiscount Travel: no write: nothing updated, error explains why.",
+    "ev": "srv/travel-service.ts:99",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:105:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Deductdiscount on Travel is refused when !travel: \"Travel \"…\" does not exist; may have been deleted meanwhile.\".",
+    "dev": "on deductDiscount Travel: Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.: `if (!succeeded && !travel)` → reject 404.",
+    "ev": "srv/travel-service.ts:105",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:105:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Deductdiscount on Travel goes through when \"Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.\" does not apply.",
+    "dev": "on deductDiscount Travel: guard false: guard `!succeeded && !travel` false → passes.",
+    "ev": "srv/travel-service.ts:105",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:106:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Deductdiscount on Travel is refused when status is Accepted: \"Travel \"…\" has been approved already.\".",
+    "dev": "on deductDiscount Travel: Travel \"${travel.ID}\" has been approved already.: `if (!succeeded && travel.status === TravelStatusCode.Accepted)` → reject 400.",
+    "ev": "srv/travel-service.ts:106",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:106:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Deductdiscount on Travel goes through when \"Travel \"${travel.ID}\" has been approved already.\" does not apply.",
+    "dev": "on deductDiscount Travel: guard false: guard `!succeeded && travel.status === TravelStatusCode.Accepted` false → passes.",
+    "ev": "srv/travel-service.ts:106",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:107:t",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Deductdiscount on Travel is refused when BookingFee is null: \"No discount possible, as travel \"…\" does not yet have a booking fee added.\".",
+    "dev": "on deductDiscount Travel: No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.: `if (!succeeded && travel.BookingFee == null)` → reject 404.",
+    "ev": "srv/travel-service.ts:107",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "RUL:rule:srv/travel-service.ts:107:f",
+    "cat": "Handler rules",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Deductdiscount on Travel goes through when \"No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.\" does not apply.",
+    "dev": "on deductDiscount Travel: guard false: guard `!succeeded && travel.BookingFee == null` false → passes.",
+    "ev": "srv/travel-service.ts:107",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "FW:deductDiscount:below min",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "deductDiscount: percent below min: 400 out of range.",
+    "dev": "deductDiscount: percent below min: 400 out of range (input: below min).",
+    "ev": "srv/travel-service.cds:20",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "FW:deductDiscount:min",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "deductDiscount: percent min: accepted.",
+    "dev": "deductDiscount: percent min: accepted (input: min).",
+    "ev": "srv/travel-service.cds:20",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "FW:deductDiscount:max",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "deductDiscount: percent max: accepted.",
+    "dev": "deductDiscount: percent max: accepted (input: max).",
+    "ev": "srv/travel-service.cds:20",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "FW:deductDiscount:above max",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "deductDiscount: percent above max: 400 out of range.",
+    "dev": "deductDiscount: percent above max: 400 out of range (input: above max).",
+    "ev": "srv/travel-service.cds:20",
+    "back": "exercised",
+    "tests": [],
+    "exercise": [
+     "test/odata.test.ts:214"
+    ],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Travel:ro",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: write TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted: values ignored.",
+    "dev": "Travel: write TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted: values ignored (input: client sends read-only fields).",
+    "ev": "db/schema.cds:14",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Travel:BeginDate",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: save without BeginDate: 400 on activate.",
+    "dev": "Travel: save without BeginDate: 400 on activate (input: BeginDate missing).",
+    "ev": "db/schema.cds:15",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Travel:EndDate",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: save without EndDate: 400 on activate.",
+    "dev": "Travel: save without EndDate: 400 on activate (input: EndDate missing).",
+    "ev": "db/schema.cds:15",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Travel:to_Agency",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: save without to_Agency: 400 on activate.",
+    "dev": "Travel: save without to_Agency: 400 on activate (input: to_Agency missing).",
+    "ev": "db/schema.cds:15",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Travel:to_Customer",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: save without to_Customer: 400 on activate.",
+    "dev": "Travel: save without to_Customer: 400 on activate (input: to_Customer missing).",
+    "ev": "db/schema.cds:15",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Booking:ConnectionID",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: save without ConnectionID: 400 on activate.",
+    "dev": "Booking: save without ConnectionID: 400 on activate (input: ConnectionID missing).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Booking:FlightDate",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: save without FlightDate: 400 on activate.",
+    "dev": "Booking: save without FlightDate: 400 on activate (input: FlightDate missing).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Booking:FlightPrice",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: save without FlightPrice: 400 on activate.",
+    "dev": "Booking: save without FlightPrice: 400 on activate (input: FlightPrice missing).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Booking:BookingStatus",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: save without BookingStatus: 400 on activate.",
+    "dev": "Booking: save without BookingStatus: 400 on activate (input: BookingStatus missing).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Booking:to_Carrier",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: save without to_Carrier: 400 on activate.",
+    "dev": "Booking: save without to_Carrier: 400 on activate (input: to_Carrier missing).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.Booking:to_Customer",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Booking",
+    "biz": "Booking: save without to_Customer: 400 on activate.",
+    "dev": "Booking: save without to_Customer: 400 on activate (input: to_Customer missing).",
+    "ev": "db/schema.cds:37",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.BookingSupplement:Price",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "BookingSupplement",
+    "biz": "BookingSupplement: save without Price: 400 on activate.",
+    "dev": "BookingSupplement: save without Price: 400 on activate (input: Price missing).",
+    "ev": "db/schema.cds:22",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "FW:TravelService.BookingSupplement:to_Supplement",
+    "cat": "Framework constraints",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "BookingSupplement",
+    "biz": "BookingSupplement: save without to_Supplement: 400 on activate.",
+    "dev": "BookingSupplement: save without to_Supplement: 400 on activate (input: to_Supplement missing).",
+    "ev": "db/schema.cds:22",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "DRF:TravelService.Travel:new-activate",
+    "cat": "Draft lifecycle",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: new → activate: active row created.",
+    "dev": "Travel: new → activate: active row created (input: new-activate).",
+    "ev": "srv/travel-service.cds:11",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "DRF:TravelService.Travel:edit-discard",
+    "cat": "Draft lifecycle",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: edit → discard: active row unchanged.",
+    "dev": "Travel: edit → discard: active row unchanged (input: edit-discard).",
+    "ev": "srv/travel-service.cds:11",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   },
+   {
+    "cls": "DRF:TravelService.Travel:foreign-lock",
+    "cat": "Draft lifecycle",
+    "slice": "S01",
+    "sliceName": "TravelService / Travel",
+    "entity": "Travel",
+    "biz": "Travel: foreign → lock: 423 / locked.",
+    "dev": "Travel: foreign → lock: 423 / locked (input: foreign-lock).",
+    "ev": "srv/travel-service.cds:11",
+    "back": "unverified",
+    "tests": [],
+    "exercise": [],
+    "spec": null
+   }
+  ],
+  "counts": {
+   "verified": 12,
+   "exercised": 27,
+   "unverified": 50,
+   "broken": 0,
+   "total": 89
+  },
+  "ran": true
+ },
+ "RULES": {
+  "rules": [
+   {
+    "key": "commented-out-grant",
+    "title": "Authorization commented out in CDS",
+    "status": "draft",
+    "from": "agent finding A2 (ui5-cap-event-app, 2026-10-29); same shape as A3 (cap-sflight)",
+    "hits": [
+     {
+      "ev": "srv/analytics-service.cds:5",
+      "t": "Commented-out restrict in analytics-service.cds",
+      "d": "srv/analytics-service.cds:5 has authorization in a comment: `@(restrict: [`. Whatever it was meant to protect runs with the remaining grants only."
+     }
+    ],
+    "reproduces": [],
+    "error": null
+   },
+   {
+    "key": "hard-coded-currency",
+    "title": "Currency hard-coded where amounts are aggregated or returned",
+    "status": "draft",
+    "from": "agent finding A12 (cap-sflight, 2026-10-29)",
+    "hits": [
+     {
+      "ev": "srv/analytics-service.cds:24",
+      "t": "'USD' hard-coded as CurrencyCode_code",
+      "d": "srv/analytics-service.cds:24 sets the currency to the literal 'USD'. Amounts in other currencies are then labelled (and summed) as USD."
+     }
+    ],
+    "reproduces": [
+     "A12"
+    ],
+    "error": null
+   },
+   {
+    "key": "max-plus-one-id",
+    "title": "Sequential id from max() + 1 (race under parallel requests)",
+    "status": "draft",
+    "from": "agent finding A8 (cap-sflight, 2026-10-29)",
+    "hits": [
+     {
+      "ev": "srv/travel-service.ts:18",
+      "t": "TravelID assigned as max + 1",
+      "d": "req.data.TravelID is set from max(TravelID) + 1 on CREATE (active rows, shared by all users). Two requests that read max() before either commits get the same value; without a unique constraint both rows are stored."
+     }
+    ],
+    "reproduces": [
+     "A8"
+    ],
+    "error": null
+   },
+   {
+    "key": "null-deref-in-guard",
+    "title": "Error path reads a property of the value it just found missing",
+    "status": "draft",
+    "from": "agent finding A7 (cap-sflight, 2026-10-29)",
+    "hits": [
+     {
+      "ev": "srv/travel-service.ts:105",
+      "t": "travel.ID read where travel is missing",
+      "d": "`if (!travel)` at srv/travel-service.ts:105 then reads `travel.ID`. travel is null or undefined on that path, so the request fails with a TypeError (HTTP 500) instead of the intended error."
+     }
+    ],
+    "reproduces": [
+     "A7"
+    ],
+    "error": null
+   },
+   {
+    "key": "writable-owner-field",
+    "title": "Row-ownership field is writable by the owner",
+    "status": "draft",
+    "from": "agent finding A1 (ui5-cap-event-app, 2026-10-29)",
+    "hits": [],
+    "reproduces": [],
+    "error": null
+   }
+  ]
+ }
+}
