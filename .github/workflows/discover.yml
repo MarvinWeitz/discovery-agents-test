@@ -198,6 +198,12 @@ jobs:
           has jest || pkgs+=("jest@29")
           echo "cds major $major, adding: ${pkgs[*]:-nothing}"
           if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
+          # packages added here peer-depend on @sap/cds: let them find the app's own copy (Node follows the
+          # link to its real path, so app and test runtime share one cds instance)
+          if [ -z "$(printf '%s\n' "${pkgs[@]}" | grep '^@sap/cds@')" ] && [ ${#pkgs[@]} -gt 0 ]; then
+            cds_dir=$(dirname "$(node -p "require.resolve('@sap/cds/package.json', { paths: [process.cwd()] })")")
+            mkdir -p "$shim/node_modules/@sap" && ln -sfn "$cds_dir" "$shim/node_modules/@sap/cds"
+          fi
           # the app's own Jest (declared or hoisted) keeps its config; otherwise the one added above
           if has jest; then echo "jest=node $(node -p "try { require.resolve('jest/bin/jest', { paths: [process.cwd()] }) } catch { require.resolve('jest/bin/jest.js', { paths: [process.cwd()] }) }")" >> "$GITHUB_OUTPUT"
           else echo "jest=node $shim/node_modules/jest/bin/jest.js --config '{\"testEnvironment\":\"node\"}' --rootDir ." >> "$GITHUB_OUTPUT"; fi
