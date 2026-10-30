@@ -250,6 +250,12 @@ jobs:
           cp "$GITHUB_WORKSPACE"/out/${{ steps.target.outputs.slug }}/run/tests/generated/*.test.js test/generated/
           ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
 
+      # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
+      - name: Addons after tests
+        if: always() && steps.target.outputs.slug
+        continue-on-error: true
+        run: node bin/after-tests.js "out/${{ steps.target.outputs.slug }}" --generated out/jest-generated.json
+
       - name: Job summary
         if: always()
         env:
@@ -332,6 +338,7 @@ jobs:
             cp "$dir/$slug/run/discovery-report.md" "site/$slug/" 2>/dev/null || true
             cp "$dir/$slug"/run/tests/generated/* "site/$slug/tests/" 2>/dev/null || true
             cp "$dir"/jest-*.json "site/$slug/tests/" 2>/dev/null || true
+            [ -d "$dir/$slug/docs" ] && cp -r "$dir/$slug/docs" "site/$slug/docs"
             added+=("$r")
           done
           if [ ${#added[@]} -eq 0 ]; then echo "count=0" >> "$GITHUB_OUTPUT"; echo "Nothing to publish."; exit 0; fi
