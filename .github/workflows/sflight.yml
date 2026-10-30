@@ -63,17 +63,24 @@ jobs:
           cp "$GITHUB_WORKSPACE"/out/cap-sflight/run/tests/generated/*.test.js test/generated/
           npx jest test/generated --ci --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
 
+      # Addons (discovery.config.json) that need the test results, e.g. coverage by class; rebuilds the atlas
+      - name: Addons after tests
+        if: always()
+        run: node bin/after-tests.js out/cap-sflight --generated out/jest-generated.json --baseline out/jest-baseline.json
+
       - name: Job summary
         if: always()
-        run: node .github/scripts/summary.js out >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          node .github/scripts/summary.js out > out/summary.md
+          if [ -f out/cap-sflight/coverage.md ]; then cat out/cap-sflight/coverage.md >> out/summary.md; fi
+          cat out/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Post the summary on the PR
         if: always() && github.event_name == 'pull_request'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          node .github/scripts/summary.js out > out/summary.md
-          gh pr comment ${{ github.event.pull_request.number }} --repo ${{ github.repository }} --body-file out/summary.md --edit-last --create-if-none
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: .github/scripts/sticky-comment.sh discovery:sflight out/summary.md
 
       - uses: actions/upload-artifact@v4
         if: always()

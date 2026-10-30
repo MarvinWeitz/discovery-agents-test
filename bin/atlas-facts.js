@@ -7,6 +7,7 @@ const path = require('path')
 const cds = require('@sap/cds')
 const { loadRun } = require('../lib/load')
 const { buildAtlas } = require('../lib/atlas-facts')
+const addons = require('../lib/addons')
 
 async function main() {
   const args = process.argv.slice(2)
@@ -20,7 +21,8 @@ async function main() {
   cds.root = root
   const csn = await cds.load(['db', 'srv', 'app'].map(d => path.join(root, d)), { locations: true })
   const { g } = loadRun(runDir)
-  const { D } = buildAtlas({ g, csn, root, metrics, curated })
+  const { D, td } = buildAtlas({ g, csn, root, metrics, curated })
+  for (const a of addons.list()) if (a.facts) await a.facts(D, { g, td, csn, root, metrics, runDir })
   fs.writeFileSync(outFile, JSON.stringify(D, null, 1))
   const s = D.META.sources
   console.log(`atlas facts written: ${outFile} (${D.SECTIONS.length} sections; ${Object.entries(s).map(([k, v]) => `${k} ${v}`).join(', ')}; ${D.RISKS.length} risks, ${D.PATTERNS.length} patterns, ${D.TESTCATS.reduce((a, c) => a + c.cls, 0)} classes)`)
