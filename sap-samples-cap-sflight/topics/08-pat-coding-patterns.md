@@ -52,6 +52,21 @@ _Facts generated from the knowledge graph._
 | Service tests (cds.test) | test/odata.test.ts | 15 | works, enforced in the wrong place | all as alice | Node logic, Config / tests | `test/odata.test.ts:1` |
 | OPA5 journeys | travel_analytics, travel_processor | 12 | idiomatic |  | UI5 apps | `app/travel_analytics/webapp/test/integration/OpaJourney.js:1` |
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P2 | `PAT:Auto-exposed master data` | Fix | Auto-exposed master data: also exposes personal data (Passenger, TravelAgency) | PAT | `db/master-data.cds:5` | 4×3 |
+| P2 | `RSK:G3` | Fix | rejectTravel, acceptTravel callable in states the UI hides | RSK, UIS, STA, PAT | `app/travel_processor/field-control.cds:37` | 3×4 |
+| P2 | `RSK:G6` | Fix | Tests run as one user only (alice) | RSK, PAT | `test/odata.test.ts:1` | 3×3 |
+| P3 | `RSK:G8` | Fix | Global annotation on built-in cds.UUID | RSK, PAT, DEP | `app/common.cds:5` | 2×3 |
+| P3 | `RSK:G9` | Fix | createTravelByTemplate declared and granted, no handler | RSK, PAT | `srv/travel-service.cds:12` | 2×3 |
+| P3 | `PAT:Raw SQL via cds.run` | Review | Raw SQL via cds.run: bypasses CQL and draft handling; check projections | PAT | `srv/travel-service.ts:57` | 2×3 |
+| P3 | `PAT:UI annotations directly on domain entities` | Review | UI annotations directly on domain entities: bypasses the service layer | PAT | `app/labels.cds:7` | 2×3 |
+| P3 | `RSK:G10` | Fix | Booking / BookingSupplement: access inherited from the draft root | RSK, PAT | `srv/travel-service.cds:11` | 2×2 |
+
 ## Views
 
 **PAT-A Pattern cards**

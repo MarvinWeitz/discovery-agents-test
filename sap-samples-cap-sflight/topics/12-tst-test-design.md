@@ -176,6 +176,30 @@ Full combination: 216 cases. All-pairs suite (19 cases, seeded, identical every 
 | deductDiscount combinations | CMB:deductDiscount:18 | percent=101, TravelStatus=O, BookingFee=> 0, target=active, repeat=first | percent=101, TravelStatus=O, BookingFee=> 0, target=active, repeat=first | 400 invalid parameter |  |  |  |
 | deductDiscount combinations | CMB:deductDiscount:19 | percent=1, TravelStatus=X, BookingFee=> 0, target=active, repeat=first | percent=1, TravelStatus=X, BookingFee=> 0, target=active, repeat=first | accepted today; UI hides it |  |  |  |
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P2 | `COV:AUT:/analytics: 8 other entities READ:a` | Test | Test: /analytics: 8 other entities READ as anonymous | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:/analytics: 8 other entities READ:y` | Test | Test: /analytics: 8 other entities READ as rose/martha/amy/admin/alice | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:/processor: 8 other entities READ:a` | Test | Test: /processor: 8 other entities READ as anonymous | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:/processor: 8 other entities READ:y` | Test | Test: /processor: 8 other entities READ as rose/martha/amy/admin/alice | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Booking / BookingSupplement (via Travel draft):a` | Test | Test: Booking / BookingSupplement (via Travel draft) as rose/martha | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Booking / BookingSupplement (via Travel draft):n` | Test | Test: Booking / BookingSupplement (via Travel draft) as anonymous | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel acceptTravel:n` | Test | Test: Travel acceptTravel as anonymous/rose | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel create / edit / delete:n` | Test | Test: Travel create / edit / delete as anonymous/rose/martha | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel createTravelByTemplate:n` | Test | Test: Travel createTravelByTemplate as anonymous/rose/martha | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel deductDiscount:n` | Test | Test: Travel deductDiscount as anonymous/rose | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel rejectTravel:n` | Test | Test: Travel rejectTravel as anonymous/rose | COV, TST |  | 4×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:23:t` | Test | Test: before NEW Booking: derive BookingID | COV, TST |  | 3×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:24:t` | Test | Test: before NEW Booking: derive BookingDate | COV, TST |  | 3×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:29:t` | Test | Test: before NEW BookingSupplement: derive BookingSupplementID | COV, TST |  | 3×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:93:f` | Test | Test: before acceptTravel/rejectTravel Travel: guard false | COV, TST |  | 3×3 |
+
+71 more in the NXT topic file.
+
 ## Views
 
 **TST-A Coverage treemap**

@@ -15,7 +15,7 @@ facts: generated (rules library)
 
 ## Facts
 
-_Facts curated from the deep read (not yet generated)._
+_Facts generated (rules library)._
 
 Rules drafted by agents from their own findings, reviewed and accepted like code. A draft only reports; an accepted rule adds risks and retires the agent finding it reproduces. Each rule has a unit test in `addons/rules/library/<key>.test.js`.
 
@@ -26,6 +26,17 @@ Rules drafted by agents from their own findings, reviewed and accepted like code
 | `max-plus-one-id` Sequential id from max() + 1 (race under parallel requests) | draft | agent finding A8 (cap-sflight, 2026-10-29) | `srv/travel-service.ts:18` TravelID assigned as max + 1 | A8 |
 | `null-deref-in-guard` Error path reads a property of the value it just found missing | draft | agent finding A7 (cap-sflight, 2026-10-29) | `srv/travel-service.ts:105` travel.ID read where travel is missing | A7 |
 | `writable-owner-field` Row-ownership field is writable by the owner | draft | agent finding A1 (ui5-cap-event-app, 2026-10-29) | – | – |
+
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P3 | `RLS:commented-out-grant` | Review | Review draft rule commented-out-grant | RLS | `srv/analytics-service.cds:5` | 2×2 |
+| P3 | `RLS:hard-coded-currency` | Review | Review draft rule hard-coded-currency | RLS | `srv/analytics-service.cds:24` | 2×2 |
+| P3 | `RLS:max-plus-one-id` | Review | Review draft rule max-plus-one-id | RLS | `srv/travel-service.ts:18` | 2×2 |
+| P3 | `RLS:null-deref-in-guard` | Review | Review draft rule null-deref-in-guard | RLS | `srv/travel-service.ts:105` | 2×2 |
 
 ## Views
 

@@ -35,6 +35,19 @@ _Facts generated from the knowledge graph._
 
 OPEN = readable without the role you would expect. "(tested)" = an existing test exercises the cell.
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P1 | `RSK:G1` | Fix | Passenger personal data open to any caller | RSK, AUT | `db/master-data.cds:73` | 4×4 |
+| P1 | `RSK:G2` | Fix | TravelAgency personal data open to any caller | RSK, AUT | `db/master-data.cds:86` | 4×4 |
+| P3 | `AUT:/analytics: 8 other entities READ (unclear)` | Verify | Check access: /analytics: 8 other entities READ as anonymous | AUT | `srv/analytics-service.cds:9` | 2×3 |
+| P3 | `AUT:/processor: 8 other entities READ (unclear)` | Verify | Check access: /processor: 8 other entities READ as anonymous | AUT | `db/schema.cds:82` | 2×3 |
+| P3 | `AUT:Booking / BookingSupplement (via Travel draft) (unclear)` | Verify | Check access: Booking / BookingSupplement (via Travel draft) as rose · no role, martha · reviewer | AUT | `srv/travel-service.cds:11` | 2×3 |
+| P3 | `AUT:Travel createTravelByTemplate (unclear)` | Verify | Check access: Travel createTravelByTemplate as amy · processor, admin · admin, alice · admin · tests | AUT | `srv/travel-service.cds:11` | 2×3 |
+
 ## Views
 
 **AUT-A Role heatmap**

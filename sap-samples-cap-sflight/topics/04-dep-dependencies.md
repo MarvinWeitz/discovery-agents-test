@@ -65,6 +65,16 @@ _Facts generated from the knowledge graph._
 | db/schema.cds | db/common.cds | allowed |  | `db/schema.cds:1` |
 | db/schema.cds | db/master-data.cds | allowed |  | `db/schema.cds:2` |
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P3 | `RSK:G8` | Fix | Global annotation on built-in cds.UUID | RSK, PAT, DEP | `app/common.cds:5` | 2×3 |
+| P3 | `DEP:srv/analytics-service.cds → db/master-data.cds` | Review | srv/analytics-service.cds reaches into db/master-data.cds | DEP | `srv/analytics-service.cds:76` | 2×3 |
+| P3 | `RSK:G11` | Fix | 3 CDS files change models of another layer | RSK, DEP | `app/travel_processor/field-control.cds:12` | 2×2 |
+
 ## Views
 
 **DEP-A Layered graph**

@@ -31,6 +31,16 @@ States of `Travel.TravelStatus`: X (Canceled), A (Accepted), O (Open); default O
 | deductDiscount | A | A | no | no | consistent | `app/travel_processor/field-control.cds:45`, `srv/travel-service.ts:99` |
 | deductDiscount | O | O | yes | yes | consistent | `app/travel_processor/field-control.cds:45`, `srv/travel-service.ts:99` |
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P2 | `RSK:G3` | Fix | rejectTravel, acceptTravel callable in states the UI hides | RSK, UIS, STA, PAT | `app/travel_processor/field-control.cds:37` | 3×4 |
+| P2 | `UIS:acceptTravel offered only if TravelStatus != A` | Fix | Server does not enforce: acceptTravel offered only if TravelStatus != A | UIS, STA | `app/travel_processor/field-control.cds:41` | 4×3 |
+| P2 | `RSK:G5` | Fix | deductDiscount enforced only partly | RSK, UIS, STA | `app/travel_processor/field-control.cds:45` | 3×3 |
+
 ## Views
 
 **STA-A State machine**

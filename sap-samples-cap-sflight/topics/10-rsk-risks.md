@@ -141,6 +141,28 @@ no-outdated-manifest-version, no-deprecated-api. These break with the next UI5 m
 - Test that catches it: Run @ui5/linter in CI and fail on errors.
 
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P1 | `RSK:G1` | Fix | Passenger personal data open to any caller | RSK, AUT | `db/master-data.cds:73` | 4×4 |
+| P1 | `RSK:G2` | Fix | TravelAgency personal data open to any caller | RSK, AUT | `db/master-data.cds:86` | 4×4 |
+| P2 | `RSK:G3` | Fix | rejectTravel, acceptTravel callable in states the UI hides | RSK, UIS, STA, PAT | `app/travel_processor/field-control.cds:37` | 3×4 |
+| P2 | `RSK:G4` | Fix | AnalyticsService has no @requires or @restrict | RSK | `srv/analytics-service.cds:3` | 3×3 |
+| P2 | `RSK:G5` | Fix | deductDiscount enforced only partly | RSK, UIS, STA | `app/travel_processor/field-control.cds:45` | 3×3 |
+| P2 | `RSK:G6` | Fix | Tests run as one user only (alice) | RSK, PAT | `test/odata.test.ts:1` | 3×3 |
+| P2 | `RSK:G7` | Fix | Read-only and hidden-create rules exist only in the UI (5) | RSK, UIS | `app/travel_processor/field-control.cds:29` | 3×3 |
+| P3 | `RSK:A12` | Fix | Hard-coded USD in analytics | RSK | `srv/analytics-service.cds:24` | 2×3 |
+| P3 | `RSK:A7` | Fix | deductDiscount 404 path crashes | RSK | `srv/travel-service.ts:105` | 2×3 |
+| P3 | `RSK:A8` | Fix | TravelID = max + 1 race | RSK | `srv/travel-service.ts:17` | 3×2 |
+| P3 | `RSK:G8` | Fix | Global annotation on built-in cds.UUID | RSK, PAT, DEP | `app/common.cds:5` | 2×3 |
+| P3 | `RSK:G9` | Fix | createTravelByTemplate declared and granted, no handler | RSK, PAT | `srv/travel-service.cds:12` | 2×3 |
+| P3 | `RSK:G10` | Fix | Booking / BookingSupplement: access inherited from the draft root | RSK, PAT | `srv/travel-service.cds:11` | 2×2 |
+| P3 | `RSK:G11` | Fix | 3 CDS files change models of another layer | RSK, DEP | `app/travel_processor/field-control.cds:12` | 2×2 |
+| P3 | `RSK:G12` | Fix | 9 UI5 lint errors | RSK | `app/travel_analytics/webapp/manifest.json:2` | 2×2 |
+
 ## Views
 
 **RSK-A Impact × likelihood**

@@ -26,24 +26,26 @@ One travel-booking app, read end to end: two Fiori elements apps, one CDS model 
 | covered today | 12 |
 | classes tested | 15% |
 | doc statements verified | 12 / 89 |
+| P1 next steps | 2 |
 
 ## Topics
 
 | Code | Topic | Takeaway | File |
 | --- | --- | --- | --- |
-| ARC | Architecture | 2 UI5 apps on 2 OData services, served by one CAP Node.js process with 13 handlers. **7 business rules are promised by UI annotations only**, not enforced by the server. | [01-arc-architecture.md](topics/01-arc-architecture.md) |
-| DAT | Data model | 13 entities: 3 in draft documents, 7 master data, 3 code lists. Personal data in **Passenger, TravelAgency**. | [02-dat-data-model.md](topics/02-dat-data-model.md) |
-| DEP | Dependencies | 15 CDS files, 23 file-to-file dependencies. **3 reach past their layer**, 4 put UI annotations straight on the domain. | [03-dep-dependencies.md](topics/03-dep-dependencies.md) |
-| FLW | Data flow & events | 3 entities get fields written by handlers; the busiest handler is **on deductDiscount Travel** (travel-service.ts:97). 6 lifecycle events carry server or UI hooks. | [04-flw-data-flow-events.md](topics/04-flw-data-flow-events.md) |
-| STA | TravelStatus lifecycle | 3 states, 9 action × state pairs. The UI allows 5, the Node server 8; **3 disagree**. | [05-sta-travelstatus-lifecycle.md](topics/05-sta-travelstatus-lifecycle.md) |
-| AUT | Authorization | 6 users (anonymous plus mock users) × 13 operations. **4 operations expose personal data without a role.** 6 cells are exercised by existing tests. | [06-aut-authorization.md](topics/06-aut-authorization.md) |
-| PAT | Coding patterns | 32 patterns found by fixed detectors. 2 cause a defect or exposure, 6 work but sit in the wrong place. | [07-pat-coding-patterns.md](topics/07-pat-coding-patterns.md) |
-| UIS | UI promises vs server | 16 rules the UI promises, read from the annotations. 8 are enforced by the server or by CAP, 1 only partly; **7 exist only in the UI** and can be bypassed with a plain OData call. | [08-uis-ui-promises-vs-server.md](topics/08-uis-ui-promises-vs-server.md) |
-| RSK | Risks | 15 risks: 12 found by rules, 3 by agent review. Highest: **Passenger personal data open to any caller** (score 16). | [09-rsk-risks.md](topics/09-rsk-risks.md) |
-| RLS | Rules from agent findings | 5 rules drafted from agent findings: 0 accepted, 5 waiting for review. 4 drafts fire on this app, reproducing agent findings **A12, A8, A7** without AI. | [10-rls-rules-from-agent-findings.md](topics/10-rls-rules-from-agent-findings.md) |
-| TST | Test design | 108 equivalence classes in 7 categories; **12 covered by existing tests**. deductDiscount: 19 all-pairs cases instead of 216. | [11-tst-test-design.md](topics/11-tst-test-design.md) |
-| COV | Coverage by class | 16 of 108 classes tested (**15%**) by tests that ran in CI; 7 pin today's behaviour with the intended one waiting as a spec test, 0 generated but not run yet, 39 likely (approximate match), **46 untested**. | [12-cov-coverage-by-class.md](topics/12-cov-coverage-by-class.md) |
-| API | Interfaces | 2 service roots, 23 entity sets, 4 actions. **20 sets need no role**, including personal data. | [13-api-interfaces.md](topics/13-api-interfaces.md) |
+| NXT | Next steps | 118 next steps from 10 sections, ranked by impact × likelihood: **2 P1** (do now), 42 P2, 74 P3. Tick several and copy one combined prompt for a coding agent, as a plan, a change, or tests only. | [01-nxt-next-steps.md](topics/01-nxt-next-steps.md) |
+| ARC | Architecture | 2 UI5 apps on 2 OData services, served by one CAP Node.js process with 13 handlers. **7 business rules are promised by UI annotations only**, not enforced by the server. | [02-arc-architecture.md](topics/02-arc-architecture.md) |
+| DAT | Data model | 13 entities: 3 in draft documents, 7 master data, 3 code lists. Personal data in **Passenger, TravelAgency**. | [03-dat-data-model.md](topics/03-dat-data-model.md) |
+| DEP | Dependencies | 15 CDS files, 23 file-to-file dependencies. **3 reach past their layer**, 4 put UI annotations straight on the domain. | [04-dep-dependencies.md](topics/04-dep-dependencies.md) |
+| FLW | Data flow & events | 3 entities get fields written by handlers; the busiest handler is **on deductDiscount Travel** (travel-service.ts:97). 6 lifecycle events carry server or UI hooks. | [05-flw-data-flow-events.md](topics/05-flw-data-flow-events.md) |
+| STA | TravelStatus lifecycle | 3 states, 9 action × state pairs. The UI allows 5, the Node server 8; **3 disagree**. | [06-sta-travelstatus-lifecycle.md](topics/06-sta-travelstatus-lifecycle.md) |
+| AUT | Authorization | 6 users (anonymous plus mock users) × 13 operations. **4 operations expose personal data without a role.** 6 cells are exercised by existing tests. | [07-aut-authorization.md](topics/07-aut-authorization.md) |
+| PAT | Coding patterns | 32 patterns found by fixed detectors. 2 cause a defect or exposure, 6 work but sit in the wrong place. | [08-pat-coding-patterns.md](topics/08-pat-coding-patterns.md) |
+| UIS | UI promises vs server | 16 rules the UI promises, read from the annotations. 8 are enforced by the server or by CAP, 1 only partly; **7 exist only in the UI** and can be bypassed with a plain OData call. | [09-uis-ui-promises-vs-server.md](topics/09-uis-ui-promises-vs-server.md) |
+| RSK | Risks | 15 risks: 12 found by rules, 3 by agent review. Highest: **Passenger personal data open to any caller** (score 16). | [10-rsk-risks.md](topics/10-rsk-risks.md) |
+| RLS | Rules from agent findings | 5 rules drafted from agent findings: 0 accepted, 5 waiting for review. 4 drafts fire on this app, reproducing agent findings **A12, A8, A7** without AI. | [11-rls-rules-from-agent-findings.md](topics/11-rls-rules-from-agent-findings.md) |
+| TST | Test design | 108 equivalence classes in 7 categories; **12 covered by existing tests**. deductDiscount: 19 all-pairs cases instead of 216. | [12-tst-test-design.md](topics/12-tst-test-design.md) |
+| COV | Coverage by class | 16 of 108 classes tested (**15%**) by tests that ran in CI; 7 pin today's behaviour with the intended one waiting as a spec test, 0 generated but not run yet, 39 likely (approximate match), **46 untested**. | [13-cov-coverage-by-class.md](topics/13-cov-coverage-by-class.md) |
+| API | Interfaces | 2 service roots, 23 entity sets, 4 actions. **20 sets need no role**, including personal data. | [14-api-interfaces.md](topics/14-api-interfaces.md) |
 
 ## How to read this
 
@@ -56,4 +58,5 @@ One travel-booking app, read end to end: two Fiori elements apps, one CDS model 
 
 - Read this file first, then only the topic files you need; each starts with YAML front matter.
 - Tables are the authoritative content. Images are renderings of the same tables and add no facts.
-- `atlas-data.json` holds every fact in machine-readable form (keys: ARC, ARC_LAYERS, ENT, REL, DAT_ROWS, FILES, DEPS, SANKEY_NODES, SANKEY_LINKS, SWIM, HOOK_EVENTS, HOOK_NODE, HOOK_UI, TR, STATES, ROLES, AUTH, PIIREACH, CHAIN, PARITY, PV, TESTCATS, CLASSES, DD, TEST_NOTE, API, PATTERNS, LAYERS, RISKS, KPIS, SECTIONS, META, COVERAGE, DOCS, RULES).
+- Start with the NXT topic file for what to do next: ranked steps, each with a prompt block (evidence, what to do, when it is done).
+- `atlas-data.json` holds every fact in machine-readable form (keys: ARC, ARC_LAYERS, ENT, REL, DAT_ROWS, FILES, DEPS, SANKEY_NODES, SANKEY_LINKS, SWIM, HOOK_EVENTS, HOOK_NODE, HOOK_UI, TR, STATES, ROLES, AUTH, PIIREACH, CHAIN, PARITY, PV, TESTCATS, CLASSES, DD, TEST_NOTE, API, PATTERNS, LAYERS, RISKS, KPIS, SECTIONS, META, COVERAGE, DOCS, RULES, NEXT).

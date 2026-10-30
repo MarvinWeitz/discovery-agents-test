@@ -47,6 +47,14 @@ _Facts generated from the knowledge graph._
 | /processor/Travel(…)/acceptTravel | POST | reviewer, processor, admin | bound action |
 | /processor/Travel(…)/deductDiscount | POST | reviewer, processor, admin | bound action |
 
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P3 | `API:/processor/createTravelByTemplate` | Review | Action createTravelByTemplate has no handler | API |  | 2×3 |
+
 ## Views
 
 **API-A Endpoint map**

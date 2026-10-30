@@ -15,7 +15,7 @@ facts: generated + test results
 
 ## Facts
 
-_Facts curated from the deep read (not yet generated)._
+_Facts generated + test results._
 
 16 of 108 classes tested (15%). Statuses include the results of the generated and existing tests from the CI run.
 
@@ -197,6 +197,30 @@ Legend: ✅ tested · 🧪 generated, not run yet · 🟡 spec only (today pinne
 | `CMB:deductDiscount:17` | Travel · deductDiscount | A | 〰️ likely (approximate match) |  | `test/odata.test.ts:214` |  |
 | `CMB:deductDiscount:18` | Travel · deductDiscount | O | 〰️ likely (approximate match) |  | `test/odata.test.ts:214` |  |
 | `CMB:deductDiscount:19` | Travel · deductDiscount | X | 〰️ likely (approximate match) |  | `test/odata.test.ts:214` |  |
+
+## Next steps
+
+Ranked; prompts for each item are in the NXT topic file.
+
+| Priority | Id | Step | What | Sections | Evidence | Score |
+| --- | --- | --- | --- | --- | --- | --- |
+| P2 | `COV:AUT:/analytics: 8 other entities READ:a` | Test | Test: /analytics: 8 other entities READ as anonymous | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:/analytics: 8 other entities READ:y` | Test | Test: /analytics: 8 other entities READ as rose/martha/amy/admin/alice | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:/processor: 8 other entities READ:a` | Test | Test: /processor: 8 other entities READ as anonymous | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:/processor: 8 other entities READ:y` | Test | Test: /processor: 8 other entities READ as rose/martha/amy/admin/alice | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Booking / BookingSupplement (via Travel draft):a` | Test | Test: Booking / BookingSupplement (via Travel draft) as rose/martha | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Booking / BookingSupplement (via Travel draft):n` | Test | Test: Booking / BookingSupplement (via Travel draft) as anonymous | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel acceptTravel:n` | Test | Test: Travel acceptTravel as anonymous/rose | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel create / edit / delete:n` | Test | Test: Travel create / edit / delete as anonymous/rose/martha | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel createTravelByTemplate:n` | Test | Test: Travel createTravelByTemplate as anonymous/rose/martha | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel deductDiscount:n` | Test | Test: Travel deductDiscount as anonymous/rose | COV, TST |  | 4×3 |
+| P2 | `COV:AUT:Travel rejectTravel:n` | Test | Test: Travel rejectTravel as anonymous/rose | COV, TST |  | 4×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:23:t` | Test | Test: before NEW Booking: derive BookingID | COV, TST |  | 3×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:24:t` | Test | Test: before NEW Booking: derive BookingDate | COV, TST |  | 3×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:29:t` | Test | Test: before NEW BookingSupplement: derive BookingSupplementID | COV, TST |  | 3×3 |
+| P2 | `COV:RUL:rule:srv/travel-service.ts:93:f` | Test | Test: before acceptTravel/rejectTravel Travel: guard false | COV, TST |  | 3×3 |
+
+70 more in the NXT topic file.
 
 ## Views
 
