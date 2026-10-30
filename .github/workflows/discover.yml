@@ -45,10 +45,15 @@ permissions:
 
 env:
   PLAYWRIGHT_VERSION: 1.63.0
+  # gate: false = the pilot runs and reports on pull requests, but its startup and generated tests do
+  # not fail the check yet (the harder pilots: HANA-native objects, xsuaa-only auth, reuse packages, S/4 calls)
   PILOTS: >-
     [{"repo":"cap-js/incidents-app"},
      {"repo":"SAP-samples/ui5-cap-event-app"},
-     {"repo":"SAP-samples/cap-sflight","ref":"7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1"}]
+     {"repo":"SAP-samples/cap-sflight","ref":"7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1"},
+     {"repo":"SAP-samples/cap-hana-exercises-codejam","ref":"b3daa04e39e432d9c0e13f25f689ae2207429fa0","app":"solution/MyHANAApp"},
+     {"repo":"capire/samples","ref":"5a89af673a0c5b24ee1e4dfb8898a7052dcd1b02","app":"bookstore","ui":"-"},
+     {"repo":"SAP-samples/partner-reference-application","ref":"63ecfe4e0289c4013fdb2f82e87d8d0d499333fe"}]
 
 jobs:
   plan:
@@ -137,6 +142,8 @@ jobs:
           dir="$(dirname "$GITHUB_WORKSPACE")/targets/$name"
           git "${auth[@]}" clone --quiet --filter=blob:none "$url" "$dir"
           if [ -n "$REF" ]; then git -C "$dir" checkout --quiet "$REF"; fi
+          # monorepos built from submodules (capire/samples)
+          if [ -f "$dir/.gitmodules" ]; then git "${auth[@]}" -C "$dir" submodule update --init --quiet --recursive || echo "::warning::some submodules could not be checked out"; fi
           commit=$(git -C "$dir" rev-parse HEAD)
 
           case "$PUBLISH_INPUT/$visibility/$GITHUB_EVENT_NAME" in
@@ -200,6 +207,9 @@ jobs:
           # since cds 9, cds.test lives in @cap-js/cds-test
           [ "$major" -ge 9 ] && ! has @cap-js/cds-test && pkgs+=("@cap-js/cds-test")
           has jest || pkgs+=("jest@29")
+          # one @sap/cds instance, and dependencies a broken lockfile left out (see repair-install.js)
+          mapfile -t missing < <(node "$GITHUB_WORKSPACE/.github/scripts/repair-install.js" . "${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.install }}")
+          pkgs+=("${missing[@]}")
           echo "cds major $major, adding: ${pkgs[*]:-nothing}"
           if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
           # packages added here peer-depend on @sap/cds: let them find the app's own copy (Node follows the
@@ -211,6 +221,17 @@ jobs:
           # the app's own Jest (declared or hoisted) keeps its config; otherwise the one added above
           if has jest; then echo "jest=node $(node -p "try { require.resolve('jest/bin/jest', { paths: [process.cwd()] }) } catch { require.resolve('jest/bin/jest.js', { paths: [process.cwd()] }) }")" >> "$GITHUB_OUTPUT"
           else echo "jest=node $shim/node_modules/jest/bin/jest.js --config '{\"testEnvironment\":\"node\"}' --rootDir ." >> "$GITHUB_OUTPUT"; fi
+
+      # SAP Cloud SDK clients that the app generates from OpenAPI specs before its own build (gitignored),
+      # after the test runtime so the generator finds the dependencies repaired there:
+      # run the app's own openapi-generator commands from its package.json scripts
+      - name: Generate API clients
+        continue-on-error: true
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        run: |
+          node -e "for (const s of Object.values(require('./package.json').scripts || {})) for (const c of s.split(/&&|;/)) if (/\bopenapi-generator\b/.test(c)) console.log(c.trim())" | sort -u | while read -r cmd; do
+            echo "\$ $cmd"; eval "$cmd" < /dev/null
+          done
 
       - name: Run the discovery pipeline
         env:
@@ -228,27 +249,44 @@ jobs:
         id: startup
         continue-on-error: true
         working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        env:
+          # token auth only (xsuaa, ias, jwt): test with CAP's mocked users, as its [development] profile would
+          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
         run: |
+          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
           mkdir -p test/discovery-startup
           cat > test/discovery-startup/startup.test.js <<'EOF'
           // Written by the Run discovery workflow: does the app start in-process with an in-memory database?
           const cds = require('@sap/cds')
-          cds.test(__dirname + '/../..')
+          cds.test(__dirname + '/../..', '--with-mocks') // required services without credentials as local mocks
           it('app starts and serves its services', () => {
             if (!Object.values(cds.services).some(s => s instanceof cds.ApplicationService)) throw new Error('no application service served')
           })
           EOF
-          ${{ steps.shim.outputs.jest }} test/discovery-startup --ci --forceExit --testTimeout 120000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-startup.json"
+          # Jest's module sandbox breaks some apps (cds 10, SAP Cloud SDK loggers): then Node's own runner, same tests
+          echo "runner=jest" >> "$GITHUB_OUTPUT"
+          if ! ${{ steps.shim.outputs.jest }} test/discovery-startup --ci --forceExit --testTimeout 120000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-startup.json"; then
+            echo "::warning::The app does not start under Jest; retrying with Node's test runner."
+            echo "runner=node" >> "$GITHUB_OUTPUT"
+            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/discovery-startup --outputFile "$GITHUB_WORKSPACE/out/jest-startup.json"
+          fi
 
       - name: Run the generated tests
         id: generated
         if: steps.startup.outcome == 'success'
         continue-on-error: true
         working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        env:
+          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
         run: |
+          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
           mkdir -p test/generated
           cp "$GITHUB_WORKSPACE"/out/${{ steps.target.outputs.slug }}/run/tests/generated/*.test.js test/generated/
-          ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+          if [ "${{ steps.startup.outputs.runner }}" = node ]; then
+            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/generated --outputFile "$GITHUB_WORKSPACE/out/jest-generated.json"
+          else
+            ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+          fi
 
       # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
       - name: Addons after tests
@@ -287,7 +325,7 @@ jobs:
       # The pilots are known to start and to pass their generated tests, so on a pull request either
       # failing is a regression in the toolkit or this workflow.
       - name: Fail the pull request check if a pilot regressed
-        if: github.event_name == 'pull_request' && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
+        if: github.event_name == 'pull_request' && matrix.target.gate != false && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
         run: |
           echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}. See the job summary."
           exit 1
