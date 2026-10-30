@@ -9,7 +9,11 @@ const path = require('path')
 
 const ROOT = path.join(__dirname, '..')
 const NM = path.join(ROOT, 'node_modules')
-const addons = require('../lib/addons').list()
+const { list, config } = require('../lib/addons')
+const addons = list()
+// "pages": sidebar, overview as home, one section per page; "single": everything on one long page.
+// Readers can switch on the page; this sets the default.
+const LAYOUT = process.env.DISCOVERY_ATLAS_LAYOUT || config().atlas?.layout || 'pages'
 const PW = fs.existsSync(path.join(NM, 'playwright')) ? path.join(NM, 'playwright') : '/opt/node-tools/node_modules/playwright'
 
 // ---------- Markdown helpers ----------
@@ -71,7 +75,7 @@ function buildHtml(D) {
   const t = fs.readFileSync(path.join(ROOT, 'atlas', 'template.html'), 'utf8')
   const m = D.META
   return t.replace(/\{\{TITLE\}\}/g, m.title).replace('{{EYEBROW}}', `Discovery run · ${m.app} · ${m.license} · ${m.scope} · ${m.run}`)
-    .replace('{{LEDE}}', m.lede).replace('{{URL}}', m.url).replace('{{APP}}', m.app.replace(/^/, 'github.com/'))
+    .replace('{{LEDE}}', m.lede).replace('{{LAYOUT}}', LAYOUT === 'single' ? 'single' : 'pages').replace('{{URL}}', m.url).replace('{{APP}}', m.app.replace(/^/, 'github.com/'))
     .replace('/*ADDON_VIEWS*/', () => addons.filter(a => a.views).map(a => fs.readFileSync(a.views, 'utf8')).join('\n'))
     .replace('/*ATLAS_DATA*/null', () => JSON.stringify(D).replace(/</g, '\\u003c'))
 }
@@ -87,7 +91,8 @@ async function render(html, outDir, D) {
   await p.route('**/d3-sankey.min.js', r => r.fulfill({ path: path.join(NM, 'd3-sankey/dist/d3-sankey.min.js'), contentType: 'text/javascript' }))
   await p.route('https://fonts.**', r => r.abort())
   await p.setContent(`<!doctype html><html><head><meta charset="utf-8"></head><body>${html}</body></html>`, { waitUntil: 'load' })
-  await p.addStyleTag({ content: '.picks{display:none!important} nav.codes{position:static!important}' })
+  await p.evaluate(() => { document.documentElement.dataset.layout = 'single' })
+  await p.addStyleTag({ content: '.topbar,.tray{display:none!important} nav.codes{position:static!important}' })
   const extra = {}, shots = []
   for (const s of D.SECTIONS) {
     const sec = await p.$('#' + s.code.toLowerCase())
@@ -125,12 +130,13 @@ async function main() {
   const [dataFile, outDir] = process.argv.slice(2)
   if (!dataFile || !outDir) { console.error('usage: atlas.js <atlas-data.json> <out-dir>'); process.exit(2) }
   const D = JSON.parse(fs.readFileSync(dataFile, 'utf8'))
+  for (const a of addons) if (a.prepare) a.prepare(D)
   const problems = check(D)
   for (const p of problems) console.warn('check: ' + p)
   for (const d of ['images', 'topics']) fs.mkdirSync(path.join(outDir, d), { recursive: true })
   const html = buildHtml(D)
   fs.writeFileSync(path.join(outDir, 'index.html'), html)
-  fs.copyFileSync(dataFile, path.join(outDir, 'atlas-data.json'))
+  fs.writeFileSync(path.join(outDir, 'atlas-data.json'), JSON.stringify(D, null, 1))
   const { extra, shots, errors } = await render(html, outDir, D)
 
   const m = D.META, files = []
@@ -139,7 +145,7 @@ async function main() {
     files.push([s, file])
     const views = s.views.flatMap(v => [`**${s.code}-${v.k} ${v.label}**`, '', img(s.code, v.k, v.label), '', ...(s.code === 'STA' && v.k === 'A' ? ['Same machine, Node layer (red = differs from the UI):', '', `![STA-A Node layer](../images/STA-A-node.png)`, ''] : [])])
     const out = ['---', `app: ${m.app}`, `scope: ${m.scope}`, `run: ${m.run}`, `topic: ${s.code}`, `title: ${s.name}`, `views: [${s.views.map(v => s.code + '-' + v.k).join(', ')}]`, 'source: atlas-data.json', `facts: ${(m.sources || {})[s.code] || 'curated'}`, '---', '',
-      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || 'curated from the deep read (not yet generated)'}._`, '', (TOPICS[s.code] || addons.find(a => a.topics?.[s.code])?.topics[s.code] || (() => '_No Markdown generator for this topic._'))(D, extra), '', '## Views', '', ...views,
+      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || ((m.sources || {})[s.code] ? (m.sources || {})[s.code] : 'curated from the deep read (not yet generated)')}._`, '', (TOPICS[s.code] || addons.find(a => a.topics?.[s.code])?.topics[s.code] || (() => '_No Markdown generator for this topic._'))(D, extra), '', ...addons.map(a => a.topicAppend?.(s.code, D)).filter(Boolean).flatMap(t => [t, '']), '## Views', '', ...views,
       `[Back to the index](../README.md)`, '']
     fs.writeFileSync(path.join(outDir, 'topics', file), out.join('\n'))
   })
@@ -154,6 +160,7 @@ async function main() {
     '## For AI agents', '',
     '- Read this file first, then only the topic files you need; each starts with YAML front matter.',
     '- Tables are the authoritative content. Images are renderings of the same tables and add no facts.',
+    ...(D.NEXT ? ['- Start with the NXT topic file for what to do next: ranked steps, each with a prompt block (evidence, what to do, when it is done).'] : []),
     '- `atlas-data.json` holds every fact in machine-readable form (keys: ' + Object.keys(D).join(', ') + ').', '']
   fs.writeFileSync(path.join(outDir, 'README.md'), readme.join('\n'))
   console.log(`atlas written to ${outDir}: ${files.length} topics, ${shots.length} images${errors.length ? ', page errors: ' + errors.join('; ') : ''}`)

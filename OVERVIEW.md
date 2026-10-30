@@ -36,7 +36,7 @@ D = deterministic (same input, same output, no LLM). A = agentic (LLM agent, rev
 | 18 | Review test design | A | `test-reviewer` | `tests/review.md`, extra tests |
 | 19 | Rerun with agent findings | D | `bin/pipeline.js --base` | atlas marks agent risks; drops those a rule now finds |
 | 20 | Run generated tests in the app's CI | D | app's jest / mocha | pass/fail per class |
-| 21 | Pick views, legal review | H | atlas "keep this view", `THIRD-PARTY-LICENSES.md` | |
+| 21 | Pick next steps, legal review | H | atlas "Next steps" (copy a combined prompt for a coding agent), `THIRD-PARTY-LICENSES.md` | |
 
 What only agents find, on the pilots: crashes on unexpected paths (SFlight `deductDiscount` 404 path reads `travel.ID` from undefined), races (`max(TravelID) + 1`), hard-coded values (USD in analytics), a commented-out grant behind a FIXME and an ownership field users can overwrite (event app). Everything else in the atlases is generated.
 

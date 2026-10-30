@@ -4,6 +4,10 @@
     "diff": true,
     "mutation": true,
     "docs": true,
-    "rules": true
+    "rules": true,
+    "nextsteps": true
+  },
+  "atlas": {
+    "layout": "pages"
   }
 }

@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>{{TITLE}}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,14 +38,14 @@ h1{font-size:clamp(34px,6vw,56px);font-weight:700;line-height:1}
 .kpi b{display:block;font:700 28px/1 var(--display)}
 .kpi span{font-size:12.5px;color:var(--muted)}
 .kpi.c b{color:var(--crit)} .kpi.w b{color:var(--warn)}
-nav.codes{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
+nav.codes{position:sticky;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:8px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 nav.codes a{flex:0 0 auto;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:4px 8px;font:600 13px/1.2 var(--mono)}
 nav.codes a small{font:400 11px var(--body);color:var(--muted);margin-left:4px}
 nav.codes a:hover{border-color:var(--accent)}
 .legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted);padding-block:12px 0}
 .sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:5px}
-section.s{margin-top:34px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;scroll-margin-top:60px}
+section.s{margin-top:34px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 20px;scroll-margin-top:110px}
 .sh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
 .code{font:700 15px/1 var(--mono);color:var(--ink-on-accent);background:var(--accent);padding:5px 7px;border-radius:5px;letter-spacing:.06em}
 .sh h2{font-size:28px;font-weight:600}
@@ -56,8 +57,6 @@ section.s{margin-top:34px;background:var(--surface);border:1px solid var(--line)
 .tabs button:last-child{border-right:0}
 .tabs button[aria-selected="true"]{background:var(--accent);color:var(--ink-on-accent)}
 .tabs button .k{font-family:var(--mono);margin-right:5px;opacity:.75}
-.star{font:600 13px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;padding:5px 10px;cursor:pointer}
-.star[aria-pressed="true"]{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
 .view{min-width:0}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 svg.dg{display:block;width:100%;height:auto;min-width:640px;font-family:var(--body)}
@@ -102,10 +101,11 @@ table.mx td.c{text-align:center}
 .heat .hc{display:grid;place-items:center;height:38px;border-radius:7px;font:700 13px var(--mono);position:relative}
 .heat .hc i{position:absolute;right:4px;top:3px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.card{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--bg);display:grid;gap:6px;align-content:start;min-width:0}
+.card{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--bg);display:grid;grid-template-columns:minmax(0,1fr);gap:6px;align-content:start;min-width:0}
 .card h3{font-size:19px;font-weight:600}
 .card p{margin:0;font-size:13.5px;color:var(--muted)}
 .card .meta{display:flex;flex-wrap:wrap;gap:5px}
+.card .meta .chip{max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .card.cr{border-left:4px solid var(--crit)} .card.wn{border-left:4px solid var(--warn)} .card.gd{border-left:4px solid var(--good)}
 .meter{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
 .meter i{display:block;height:100%;background:var(--accent)}
@@ -129,8 +129,8 @@ table.mx td.c{text-align:center}
 .hook.jv{background:var(--java-soft);border:1px solid var(--java)}
 .hook.cr{outline:2px solid var(--crit);outline-offset:1px}
 .hook code{display:block;color:var(--muted);font-size:10.5px}
-.rk{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
-@media (max-width:760px){.rk{grid-template-columns:1fr}}
+.rk{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:760px){.rk{grid-template-columns:minmax(0,1fr)}}
 .grid5{display:grid;grid-template-columns:28px repeat(5,minmax(44px,64px));grid-template-rows:repeat(5,minmax(44px,58px)) 24px;gap:4px;font:600 11px var(--mono)}
 .grid5 .gc{border-radius:7px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start;padding:4px}
 .grid5 .ax{display:grid;place-items:center;color:var(--muted)}
@@ -141,11 +141,53 @@ table.mx td.c{text-align:center}
 .detail p{margin:6px 0;font-size:14px}
 .split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
 @media (max-width:860px){.split{grid-template-columns:1fr}}
-.picks{position:sticky;bottom:0;z-index:6;margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;box-shadow:0 -6px 18px -12px rgba(0,0,0,.35);margin-bottom:env(safe-area-inset-bottom,0px)}
-.picks b{font:600 18px var(--display)}
-.picks .list{display:flex;flex-wrap:wrap;gap:5px;flex:1;min-width:0}
-.picks button{font:600 13px var(--body);border:0;background:var(--accent);color:var(--ink-on-accent);border-radius:8px;padding:7px 12px;cursor:pointer}
-.picks textarea{width:100%;font:12px var(--mono);display:none}
+/* layout: "pages" (sidebar, overview as home, one section per page) or "single" (one long page) */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:7;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding-block:8px;min-width:0}
+.topbar .home{font:600 19px/1.1 var(--display);color:var(--fg);text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.topbar .crumb{font:600 12px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.topbar .sp{flex:1}
+@media (max-width:640px){.topbar .crumb{display:none}}
+.btn{font:600 13px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:5px 10px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--ink-on-accent)}
+.side{display:none}
+:root[data-layout="pages"] .shell{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:start}
+:root[data-layout="pages"] .side{display:block;position:sticky;top:56px;max-height:calc(100vh - 64px);overflow:auto;padding-block:18px 24px;scrollbar-width:thin}
+:root[data-layout="pages"] nav.codes{display:none}
+:root[data-layout="pages"] section.s:not(.on){display:none}
+:root[data-layout="pages"] section.s{margin-top:22px}
+:root[data-layout="pages"]:not([data-route="home"]) #home{display:none}
+:root[data-layout="pages"][data-route="home"] #main,:root[data-layout="pages"][data-route="home"] #pager{display:none}
+:root[data-layout="single"] #cards,:root[data-layout="single"] #pager{display:none}
+nav.codes{top:calc(env(safe-area-inset-top,0px) + 49px)}
+.side h4{font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:16px 0 6px}
+.side h4:first-child{margin-top:0}
+.side a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--fg);border-radius:7px;padding:5px 8px;font-size:14px;line-height:1.25}
+.side a:hover{background:var(--sunk)}
+.side a[aria-current="page"]{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.side a code{font:600 11px var(--mono);color:var(--muted);flex:0 0 30px}
+.side a span{flex:1;min-width:0}
+@media (max-width:900px){
+ :root[data-layout="pages"] .shell{grid-template-columns:minmax(0,1fr);gap:0}
+ :root[data-layout="pages"] .side{position:sticky;top:49px;z-index:6;background:var(--bg);max-height:none;overflow-x:auto;display:flex;gap:4px;padding-block:8px;border-bottom:1px solid var(--line)}
+ .side h4{display:none}
+ .side a{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);padding:4px 8px}
+ .side a span{display:none}
+ .side a code{flex:0 0 auto;color:var(--fg)}
+}
+.secs{display:grid;gap:18px;margin-top:10px}
+.secs h3{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+.secs .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.sc{display:grid;gap:6px;align-content:start;text-decoration:none;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.sc:hover{border-color:var(--accent)}
+.sc .sh h2{font-size:21px}
+.sc p{margin:0;font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.sc p b{color:var(--crit)}
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.pager a{flex:1;max-width:48%;text-decoration:none;color:var(--fg);border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;min-width:0}
+.pager a:hover{border-color:var(--accent)}
+.pager a small{display:block;font:600 11px var(--mono);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.pager a.nx{text-align:right;margin-left:auto}
 .tm{position:relative;width:100%;height:380px;min-width:0}
 .tm div{position:absolute;border:2px solid var(--surface);border-radius:6px;padding:6px 8px;overflow:hidden;font-size:12.5px;line-height:1.25;color:var(--fg)}
 .tm div b{display:block;font:600 16px var(--display)}
@@ -156,10 +198,14 @@ table.mx td.c{text-align:center}
 </style>
 
 <div class="wrap">
-<header class="top">
+<div class="topbar"><a class="home" href="#">{{TITLE}}</a><span class="crumb" id="crumb"></span><span class="sp"></span><button type="button" class="btn" id="layoutBtn"></button></div>
+<div class="shell">
+<aside class="side" id="side" aria-label="Sections"></aside>
+<div class="content">
+<header class="top" id="home">
   <div class="eyebrow">{{EYEBROW}}</div>
   <h1>{{TITLE}}</h1>
-  <p class="lede">{{LEDE}} Every section offers two or three ways to show the same facts. Star the views that work for you.</p>
+  <p class="lede">{{LEDE}} Every section offers two or three ways to show the same facts.</p>
   <div class="kpis" id="kpis"></div>
   <div class="legend">
     <span><i class="sw" style="background:var(--accent)"></i>Node.js server code</span>
@@ -169,13 +215,17 @@ table.mx td.c{text-align:center}
     <span><i class="sw" style="background:var(--good)"></i>consistent</span>
     <span><span class="chip">file:line</span> evidence in the repo</span>
   </div>
+  <div id="homeExtra"></div>
+  <div class="secs" id="cards"></div>
 </header>
 <nav class="codes" id="nav"></nav>
 <main id="main"></main>
-<div class="picks" id="picks"><b>Your picks</b><div class="list" id="pickList"><span class="chip">none yet: press ☆ on a view</span></div><button id="copyPicks" type="button">Copy picks</button><textarea id="pickTxt" rows="3" readonly></textarea></div>
+<nav class="pager" id="pager" aria-label="Previous and next section"></nav>
 <div class="foot">
   <div>Source: <a href="{{URL}}" target="_blank" rel="noopener">{{APP}}</a>. Scope: CAP Node.js only. Facts come from the toolkit's knowledge graph (CSN, handler scan, manifests, linters) plus agent findings marked as such; each one carries a file:line. Items marked "verify" are inferred from annotations and still need a running request to confirm.</div>
   <div>Libraries on this page: d3 7.9.0 (ISC), d3-sankey 0.12.3 (BSD-3-Clause). Tools in the run: @sap/cds, @sap/eslint-plugin-cds (SAP Developer License, called, not bundled), @ui5/linter (Apache-2.0), eslint (MIT), Playwright (Apache-2.0), mermaid (MIT).</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -208,6 +258,10 @@ const TESTCATS=D.TESTCATS
 
 /* ---------- addon views: each enabled addon view.js, injected by bin/atlas.js ---------- */
 const ADDON_RENDER={}
+// ADDON_PANELS: fn(section, el) adds content under a section's views (section.code 'HOME' = overview)
+// ADDON_BADGES: fn(code) returns small HTML for the sidebar and the overview cards
+// ADDON_INIT: fn() runs once the page is built
+const ADDON_PANELS=[],ADDON_BADGES=[],ADDON_INIT=[]
 /*ADDON_VIEWS*/
 /* ---------- sections ---------- */
 const RENDER={...ADDON_RENDER,'ARC-A':arcMap,'ARC-B':arcLayers,'DAT-A':datTree,'DAT-B':datForce,'DAT-C':datMatrix,'DEP-A':depGraph,'DEP-B':depDsm,'FLW-A':flwSankey,'FLW-B':flwSwim,'FLW-C':flwHooks,'STA-A':staMachine,'STA-B':staTable,'AUT-A':autHeat,'AUT-B':autPii,'AUT-C':autChain,'PAT-A':patCards,'PAT-B':patGrid,'UIS-A':parMatrix,'UIS-B':parBars,'RSK-A':rskHeat,'RSK-B':rskCards,'TST-A':tstTree,'TST-B':tstPairwise,'TST-C':tstBars,'API-A':apiMap,'API-B':apiList}
@@ -467,26 +521,49 @@ function ddExpect(vals){const r=DD.rules.find(x=>Object.entries(x.when).every(([
 /* ---------- shell ---------- */
 const KPIS=D.KPIS
 document.getElementById('kpis').innerHTML=KPIS.map(([v,l,c])=>`<div class="kpi ${c||''}"><b>${v}</b><span>${l}</span></div>`).join('')
-document.getElementById('nav').innerHTML=SECTIONS.map(s=>`<a href="#${s.code.toLowerCase()}">${s.code}<small>${s.name}</small></a>`).join('')
-const picks=new Set(store.get('atlas.picks')||[]),chosen=store.get('atlas.views')||{}
+// pages grouped by question; codes not listed here land in "More"
+const GROUPS=[['Start',['NXT']],['Structure',['ARC','DAT','DEP','API']],['Behaviour',['FLW','STA','UIS']],['Security and risk',['AUT','RSK','PAT','RLS']],['Testing',['TST','COV','MUT']]]
+const byCode=Object.fromEntries(SECTIONS.map(s=>[s.code,s]))
+const known=new Set(GROUPS.flatMap(g=>g[1]))
+const G=[...GROUPS.map(([n,cs])=>[n,cs.filter(c=>byCode[c]).map(c=>byCode[c])]),['More',SECTIONS.filter(s=>!known.has(s.code))]].filter(g=>g[1].length)
+const ORDER=G.flatMap(g=>g[1])
+const badges=c=>ADDON_BADGES.map(f=>f(c)||'').join('')
+document.getElementById('nav').innerHTML=ORDER.map(s=>`<a href="#${s.code.toLowerCase()}">${s.code}<small>${s.name}</small></a>`).join('')
+document.getElementById('side').innerHTML=`<h4>Overview</h4><a href="#" data-go="home"><code>⌂</code><span>Overview</span></a>`+G.map(([n,ss])=>`<h4>${esc(n)}</h4>`+ss.map(s=>`<a href="#${s.code.toLowerCase()}" data-go="${s.code}"><code>${s.code}</code><span>${esc(s.name)}</span>${badges(s.code)}</a>`).join('')).join('')
+document.getElementById('cards').innerHTML=G.map(([n,ss])=>`<div><h3>${esc(n)}</h3><div class="grid">${ss.map(s=>`<a class="sc" href="#${s.code.toLowerCase()}"><div class="sh"><span class="code">${s.code}</span><h2>${esc(s.name)}</h2></div><p>${s.take}</p></a>`).join('')}</div></div>`).join('')
+const chosen=store.get('atlas.views')||{}
 const main=document.getElementById('main')
-SECTIONS.forEach(s=>{
+ORDER.forEach(s=>{
  const sec=document.createElement('section');sec.className='s';sec.id=s.code.toLowerCase()
- sec.innerHTML=`<div class="sh"><span class="code">${s.code}</span><h2>${s.name}</h2></div><p class="take">${s.take}</p><div class="bar"><div class="tabs" role="tablist">${s.views.map(v=>`<button type="button" role="tab" data-v="${v.k}"><span class="k">${v.k}</span>${v.label}</button>`).join('')}</div><button type="button" class="star">☆ keep this view</button></div><div class="view"></div>`
+ sec.innerHTML=`<div class="sh"><span class="code">${s.code}</span><h2>${s.name}</h2></div><p class="take">${s.take}</p><div class="bar"><div class="tabs" role="tablist">${s.views.map(v=>`<button type="button" role="tab" data-v="${v.k}"><span class="k">${v.k}</span>${v.label}</button>`).join('')}</div></div><div class="view"></div>`
  main.appendChild(sec)
- const view=sec.querySelector('.view'),star=sec.querySelector('.star')
+ const view=sec.querySelector('.view')
  const show=k=>{const v=s.views.find(x=>x.k===k)||s.views[0];chosen[s.code]=v.k;store.set('atlas.views',chosen)
   sec.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v.k))
-  view.innerHTML='';try{const out=v.r(view);if(typeof out==='string')view.innerHTML=out}catch(e){view.innerHTML=`<p class="note">This view failed to render (${esc(e.message)}).</p>`}
-  const id=s.code+'-'+v.k;star.setAttribute('aria-pressed',picks.has(id));star.textContent=picks.has(id)?'★ kept':'☆ keep this view'}
+  view.innerHTML='';try{const out=v.r(view);if(typeof out==='string')view.innerHTML=out}catch(e){view.innerHTML=`<p class="note">This view failed to render (${esc(e.message)}).</p>`}}
  sec.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v))
- star.onclick=()=>{const id=s.code+'-'+chosen[s.code];picks.has(id)?picks.delete(id):picks.add(id);store.set('atlas.picks',[...picks]);star.setAttribute('aria-pressed',picks.has(id));star.textContent=picks.has(id)?'★ kept':'☆ keep this view';renderPicks()}
  show(chosen[s.code]||s.views[0].k)
+ ADDON_PANELS.forEach(f=>{try{f(s,sec)}catch(e){}})
 })
-function pickLabel(id){const [c,k]=id.split('-');const s=SECTIONS.find(x=>x.code===c);const v=s&&s.views.find(x=>x.k===k);return v?`${c}-${k} ${v.label}`:id}
-function renderPicks(){const l=document.getElementById('pickList');const arr=[...picks].sort();l.innerHTML=arr.length?arr.map(p=>chip(pickLabel(p),'ac')).join(''):'<span class="chip">none yet: press ☆ on a view</span>'}
-document.getElementById('copyPicks').onclick=()=>{const txt=D.META.title+', views to keep: '+([...picks].sort().map(pickLabel).join('; ')||'none');const ta=document.getElementById('pickTxt')
- const fb=()=>{ta.style.display='block';ta.value=txt;ta.select()}
- try{navigator.clipboard.writeText(txt).then(()=>{const b=document.getElementById('copyPicks');b.textContent='Copied';setTimeout(()=>b.textContent='Copy picks',1500)},fb)}catch(e){fb()}}
-renderPicks()
+ADDON_PANELS.forEach(f=>{try{f({code:'HOME'},document.getElementById('homeExtra'))}catch(e){}})
+/* layout and routing: #code opens that section (a page in "pages", an anchor in "single") */
+const root=document.documentElement
+function route(){
+ const h=decodeURIComponent(location.hash.slice(1)).toLowerCase(),i=ORDER.findIndex(s=>s.code.toLowerCase()===h),s=ORDER[i]
+ root.dataset.route=s?s.code:'home'
+ document.querySelectorAll('section.s').forEach(x=>x.classList.toggle('on',!!s&&x.id===h))
+ document.querySelectorAll('#side a').forEach(a=>a.dataset.go===(s?s.code:'home')?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'))
+ document.getElementById('crumb').textContent=s?`· ${s.code} ${s.name}`:''
+ const p=ORDER[i-1],n=ORDER[i+1]
+ document.getElementById('pager').innerHTML=s?`${p?`<a href="#${p.code.toLowerCase()}"><small>← ${p.code}</small>${esc(p.name)}</a>`:'<a href="#"><small>← Overview</small>Overview</a>'}${n?`<a class="nx" href="#${n.code.toLowerCase()}"><small>${n.code} →</small>${esc(n.name)}</a>`:''}`:''
+ if(root.dataset.layout==='pages')window.scrollTo(0,0)
+ else if(s)document.getElementById(h).scrollIntoView()
+}
+function setLayout(l,save){root.dataset.layout=l;if(save)store.set('atlas.layout',l)
+ document.getElementById('layoutBtn').textContent=l==='pages'?'Show as one page':'Show as pages'
+ route()}
+document.getElementById('layoutBtn').onclick=()=>setLayout(root.dataset.layout==='pages'?'single':'pages',true)
+window.addEventListener('hashchange',route)
+setLayout(store.get('atlas.layout')||'{{LAYOUT}}')
+ADDON_INIT.forEach(f=>{try{f()}catch(e){}})
 </script>
