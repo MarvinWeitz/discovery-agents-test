@@ -193,6 +193,8 @@ jobs:
           if has @sap/cds; then major=$(node -p "require(require.resolve('@sap/cds/package.json', { paths: [process.cwd()] })).version.split('.')[0]")
           else major=9; pkgs+=("@sap/cds@9"); fi
           has @cap-js/sqlite || pkgs+=("@cap-js/sqlite@$([ "$major" -ge 9 ] && echo 2 || echo 1)")
+          # since cds 9, cds.test lives in @cap-js/cds-test
+          [ "$major" -ge 9 ] && ! has @cap-js/cds-test && pkgs+=("@cap-js/cds-test")
           has jest || pkgs+=("jest@29")
           echo "cds major $major, adding: ${pkgs[*]:-nothing}"
           if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
