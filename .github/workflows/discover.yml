@@ -316,7 +316,7 @@ jobs:
           DISCOVERY_MEASURE_OUT: ${{ github.workspace }}/out/${{ steps.target.outputs.slug }}/run/measured
         run: |
           [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
-          node -e "process.exit(require('$GITHUB_WORKSPACE/discovery.config.json').measured === false ? 1 : 0)" || { echo "addon measured is off"; exit 0; }
+          node "$GITHUB_WORKSPACE/bin/addon.js" enabled measured || { echo "measured addon is off"; exit 0; }
           mkdir -p test/discovery-measure "$DISCOVERY_MEASURE_OUT"
           cp "$GITHUB_WORKSPACE"/addons/measured/{authz-probe.test.js,recorder.js} test/discovery-measure/
           rec="$PWD/test/discovery-measure/recorder.js"

@@ -45,6 +45,12 @@ jobs:
           npm ci
           npx cds-typer "*"
 
+      # addon rules: runs its Opengrep rules (addons/rules/opengrep) when the CLI is there
+      - name: Install Opengrep
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/install-opengrep.sh
+
       - name: Run the discovery pipeline
         run: node bin/pipeline.js ../cap-sflight out/cap-sflight --base curated/cap-sflight.json
 
@@ -84,6 +90,26 @@ jobs:
           mkdir -p test/generated
           cp "$GITHUB_WORKSPACE"/out/cap-sflight/run/tests/generated/*.test.js test/generated/
           npx jest test/generated --ci --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
+
+      # Addon measured: authorization probe + request log + coverage (same step as discover.yml)
+      - name: Measure authorization and requests
+        continue-on-error: true
+        timeout-minutes: 15
+        working-directory: ../cap-sflight
+        env:
+          DISCOVERY_MEASURE_OUT: ${{ github.workspace }}/out/cap-sflight/run/measured
+        run: |
+          node "$GITHUB_WORKSPACE/bin/addon.js" enabled measured || { echo "measured addon is off"; exit 0; }
+          mkdir -p test/discovery-measure "$DISCOVERY_MEASURE_OUT"
+          cp "$GITHUB_WORKSPACE"/addons/measured/{authz-probe.test.js,recorder.js} test/discovery-measure/
+          rec="$PWD/test/discovery-measure/recorder.js"
+          cov=(--coverage --coverageProvider=v8 --coverageReporters=json)
+          npx jest test/discovery-measure test/generated --ci --forceExit --testTimeout 600000 \
+            --setupFilesAfterEnv "$rec" "${cov[@]}" --coverageDirectory "$DISCOVERY_MEASURE_OUT/coverage-generated" || true
+          setup=$(npx jest --showConfig 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).configs[0].setupFilesAfterEnv.length)}catch{console.log(0)}})")
+          extra=(); [ "$setup" = 0 ] && extra=(--setupFilesAfterEnv "$rec") || echo "::notice::own Jest setup files kept: own tests run without the request log"
+          npx jest test/odata.test.ts --ci --forceExit "${extra[@]}" "${cov[@]}" --coverageDirectory "$DISCOVERY_MEASURE_OUT/coverage-own" || true
+          ls -R "$DISCOVERY_MEASURE_OUT" | head -20
 
       # Addon uitests: generated OPA5 journeys for the UI promises, run in the Fiori app in headless Chromium
       - name: Run the generated UI tests
