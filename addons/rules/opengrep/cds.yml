@@ -1,0 +1,24 @@
+# Rules library, CDS sources, in Opengrep / Semgrep rule format. Opengrep has no CDS parser, so these
+# rules use its `generic` mode with regular expressions: the matching stays a regex, but the rules are in
+# the standard format, run by a standard engine, testable with `opengrep scan --test` and suppressible
+# with `nosemgrep` comments. Same conventions as js.yml. Tests: cds.cds.
+# Walkthrough: docs/walkthrough/09-patterns-risks-rules.md · Sources: docs/walkthrough/references.md (Rules)
+rules:
+  - id: hard-coded-currency
+    languages: [generic]
+    paths: { include: ["*.cds"] }
+    severity: WARNING
+    message: "'$CUR' hard-coded as currency || The literal '$CUR' is used as the currency. Amounts in other currencies are then labelled (and summed) as $CUR."
+    patterns:
+      - pattern-regex: "['\"](?P<CUR>USD|EUR|GBP|JPY|CHF|CNY|INR|AUD|CAD|SEK|NOK|DKK|PLN|CZK|BRL|MXN|ZAR|SGD|HKD|KRW)['\"]\\s*as\\s+\\w*[Cc]urrency\\w*"
+
+  - id: commented-out-grant
+    languages: [generic]
+    paths: { include: ["*.cds"] }
+    severity: WARNING
+    message: "Commented-out authorization || Authorization in a comment: `$C`. Whatever it was meant to protect runs with the remaining grants only."
+    patterns:
+      - pattern-either:
+          - pattern-regex: "//\\s*(?P<C>@\\(?\\s*(restrict|requires)\\b.*)"
+          - pattern-regex: "//\\s*(?P<C>grant\\s*:.*)"
+          - pattern-regex: "//\\s*(?P<C>['\"](READ|CREATE|UPDATE|DELETE|WRITE|INSERT|UPSERT|NEW|EDIT|PATCH|SAVE|\\*)['\"].*)"

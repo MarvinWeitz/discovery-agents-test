@@ -1,7 +1,9 @@
 // Coverage by equivalence class: which business cases (entity × operation × state) a test exercises,
 // not which lines ran. Sources, strongest first:
 //   generated   a cds.test from bin/gen-tests.js built for exactly this class (manifest.json)
-//   request     an existing test sends a request to the same entity and operation (as a user of the class)
+//   measured    the app's own tests, run in CI with the recorder (addon measured), sent a request to the
+//               same entity and operation as a user of the class: measured, replaces the text scan below
+//   request     an existing test's source text sends a request to the same entity and operation (scan, approximate)
 //   name        an existing test's name mentions the entity and the rule (test-design covered_by, approximate)
 // Status per class: tested · spec (today's behaviour pinned, intended one only as it.skip) · fail ·
 // likely (request without the state or guard branch, or name match) · gen (generated, not run yet) · none
@@ -51,14 +53,24 @@ function classesFrom(td, g, root) {
   const reqs = scanRequests(g, root)
   return td.categories.flatMap(c => c.classes.map(x => {
     const rm = requestMatches(x, reqs)
-    return { id: x.id, cat: c.n, name: x.name, entity: x.dim?.entity || '?', op: x.dim?.op || '?', state: x.dim?.state ?? null, req: !!x.req,
+    return { id: x.id, cat: c.n, name: x.name, entity: x.dim?.entity || '?', op: x.dim?.op || '?', state: x.dim?.state ?? null, users: x.dim?.users || null, req: !!x.req,
       exact: !x.dim?.state && !/:f$/.test(x.id) && !x.id.startsWith('CMB:') && !x.id.startsWith('FW:'),
       request: rm.slice(0, 3).map(r => `${r.file}:${r.line}`), name_match: x.covered_by || null, fact: x.fact || null }
   }))
 }
 
-// results: { generated: jest json, baseline: jest json } (either may be null)
+// requests recorded while the app's own tests ran (addon measured), in the shape requestMatches expects;
+// our own generated tests and probes are counted through the manifest, not here
+// CAP's draft events, in the vocabulary of the classes (the same ops the text scan gives a request)
+const DRAFT_OP = { NEW: 'CREATE', PATCH: 'UPDATE', SAVE: 'draftActivate', EDIT: 'draftEdit', DISCARD: 'DELETE', CANCEL: 'DELETE' }
+function measuredRequests(log = []) {
+  return log.filter(r => r.file && !/^test[\\/](generated|discovery-)/.test(r.file) && r.entity)
+    .map(r => ({ file: r.file, test: r.test, entity: r.entity, op: DRAFT_OP[r.event] || r.event, users: r.user ? [r.user] : [], status: r.status }))
+}
+
+// results: { generated: jest json, baseline: jest json, requests: recorder log } (any may be null)
 function classify(classes, manifest, results = {}) {
+  const measured = results.requests ? measuredRequests(results.requests) : null
   const byFull = new Map()
   for (const s of results.generated?.testResults || []) for (const a of s.assertionResults) byFull.set(a.fullName, a.status)
   const baseFail = new Set((results.baseline?.testResults || []).filter(s => s.status === 'failed').map(s => s.name))
@@ -70,7 +82,10 @@ function classify(classes, manifest, results = {}) {
     const ts = tests[c.id] || []
     const today = ts.filter(t => t.kind === 'today'), spec = ts.filter(t => t.kind === 'spec')
     c.tests = ts.map(t => ({ title: t.title, file: t.file, kind: t.kind, status: t.status || (ran ? 'missing' : 'not run') }))
-    const reqOk = c.request.filter(r => fileOk(r.split(':')[0]))
+    const hits = measured ? requestMatches({ dim: { entity: c.entity, op: c.op, users: c.users } }, measured) : null
+    if (hits) c.measured = hits.length ? { n: hits.length, tests: [...new Set(hits.map(h => h.test || h.file))].slice(0, 3) } : null
+    // with a measured run, the text scan is replaced by what the tests really sent
+    const reqOk = hits ? hits.map(h => h.file) : c.request.filter(r => fileOk(r.split(':')[0]))
     if (today.some(t => t.status === 'failed')) c.st = 'fail'
     else if (today.length && today.every(t => t.status === 'passed')) c.st = spec.length ? 'spec' : 'tested'
     else if (reqOk.length && c.exact) c.st = 'tested'
@@ -98,4 +113,4 @@ function summarize(classes, risks = [], ran = false) {
   return { ran, counts, total: classes.length, tested, pct: classes.length ? Math.round(tested / classes.length * 100) : 0, cats, next, heat: { rows, cols, cells }, label: LABEL }
 }
 
-module.exports = { scanRequests, classesFrom, classify, summarize, STATUS, LABEL }
+module.exports = { measuredRequests, scanRequests, classesFrom, classify, summarize, STATUS, LABEL }

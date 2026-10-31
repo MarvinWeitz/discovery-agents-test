@@ -45,13 +45,13 @@ Importance: how much of the output is wrong when the assumption is wrong. Differ
 | 2 | which CDS files form the model | high | high | db + srv + app folders | probe: `cds.resolve('*')` (roots, `cds.requires.*.model`, plugins) | 2 |
 | 3 | service URL paths | high | medium | own rule (`@path`, `/odata/v4/<kebab>`) | probe: `serviceinfo` (also `@protocol`, multiple protocols, cds version defaults) | 2 |
 | 4 | which file implements which service | high | high | srv folder + sibling `.js` + `@impl` | probe: `cds.serve`'s rule (`@impl`, sibling in `/`, `lib/`, `handlers/`, `cds.requires.<srv>.impl`) + `server.js`; srv folder still walked for helpers | 3 |
-| 5 | remote services and message brokers | high | high | `package.json` only (F5) | probe: `cds.requires` of development + production; production's kind wins | 5b |
+| 5 | remote services and message brokers | high | high | `package.json` only (F5) | probe: `cds.requires` of development + production; the `impl` CAP resolves decides remote vs broker, kind lists as fallback | 5b |
 | 6 | mock users and `restrict_all_services` | high | medium | text + toolkit's cds defaults | probe: effective `cds.requires.auth` with the app's cds version | 5c, 7 |
 | 7 | does the app need mocked auth to start in a test | high | medium | text of `[development]`/`[test]` | probe: auth kind in the `test` profile | 1 |
-| 8 | database per profile | medium | high | text search for `hana`/`sqlite` | probe: `cds.requires.db.kind` per profile; text only when a profile has no db (plugin not installed) | 11 |
+| 8 | database per profile | medium | high | text search for `hana`/`sqlite` | probe: `cds.requires.db` (kind, model, impl) for every profile the app declares; text only when a profile has no db (plugin not installed) | 11 |
 | 9 | CSV seed data | medium | medium | `<db>/data`, `<db>/csv`, `test/data` | probe: `cds.deploy.resources` (data/ and csv/ next to every model file, `cds.requires.db.data`), entity per file from CAP | 8 |
 | 10 | CDS files scanned as text (evidence, layers) | medium | medium | every `.cds` under app/srv/db minus `xmpls` | probe: the app's own files in `csn.$sources` | 4, 5f |
-| 11 | HDI source folders | medium | low | `<db>/src` | folders holding a `.hdiconfig` (the HDI deployer's marker), else `<db>/src` | 5b, 5g |
+| 11 | HDI source folders and file types | medium | low | `<db>/src`, `*.hdb*` | folders holding a `.hdiconfig` (the HDI deployer's marker) and its `file_suffixes`, else `<db>/src` | 5b, 5g |
 | 12 | code list | medium | low | has `code`, `name`, `descr` | includes `sap.common.CodeList`, or that shape | 2 |
 | 13 | personal data | medium | medium | English field names (F10) | `@PersonalData.IsPotentiallyPersonal/Sensitive` + the English names | 7 |
 | 14 | FieldControl path root | medium | medium | skip `to_Travel` (F1) | skip leading associations to entities that are not code lists (CSN) | 4 |
@@ -61,11 +61,17 @@ Importance: how much of the output is wrong when the assumption is wrong. Differ
 | 18 | conditional-write coverage | low | high | test named "discount" (F2) | test named after the action that writes | 8 |
 | 19 | db, srv, app folder names (intake, layers, labels) | medium | low | `cds.env.folders` in the pipeline's process | unchanged (needed before install, cheap) | 1, 5f |
 | 20 | status column = `<field>_code` | low | low | – | unchanged: CAP's foreign-key name for a managed association to a code list (key `code`) | 8 |
-| 21 | UI5 projects under the app folder + `--ui` | medium | medium | – | unchanged; `cds.env.folders.apps` is reported | 5a |
+| 21 | UI5 projects under the app folder + `--ui` | medium | medium | `webapp/manifest.json` only | `@sap-ux/project-access` (ui5.yaml `sourcePath`, Fiori tools apps), then the convention | 1, 5a |
 | 22 | which files are tests | low | medium | `*.test|spec.js|ts` and `*Journey.js` | the app's Jest: `jest --listTests` (its `testMatch`, `roots`, ignores) + OPA journeys; name pattern without Jest | 5d |
 | 23 | app detection in a cloned repo | high | medium | – | unchanged: skip list, depth 6, lockfiles, workspaces | 1 |
 | 24 | `annotate` / `extend` targets in CDS files | medium | medium | regular expressions | CAP's parser `cds.parse.cdl` (multi-line, with line numbers); regex only when parsing fails | 5f |
 | 25 | handlers the static parser finds are the ones that run | high | medium | – | checked in CI against the running app (addon `runtime`) | 3 |
+| 26 | UI5 view events and bindings | medium | medium | 6 attribute names, text patterns | XML parser; event names from UI5's own type definitions | 5a |
+| 27 | guards and where clauses | high | medium | text patterns | TypeScript AST and CAP's `cds.parse.expr` (CXN) | 3, 4 |
+| 28 | entity SQL names in HANA artifacts | medium | medium | dots to `_`, upper case | the app's compiler with its `sql_mapping` | 5g |
+| 29 | UI promises reach the UI | high | medium | CSN only | `$metadata` read with `@sap-ux/edmx-parser`; CAP-derived Capabilities and Computed added | 4 |
+| 30 | authorization matrix is right | high | medium | static model of CAP's rules | measured in CI: every cell sent to the running app (addon `measured`) | 7 |
+| 31 | which test exercises which class | medium | high | text scan of test files | measured in CI: request log via CAP's event API (addon `measured`); text scan without CI | 8 |
 
 ## What asking CAP showed on the pilots
 

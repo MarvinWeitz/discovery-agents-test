@@ -7,7 +7,8 @@
     "rules": true,
     "nextsteps": true,
     "uitests": true,
-    "runtime": true
+    "runtime": true,
+    "measured": true
   },
   "atlas": {
     "layout": "pages"

@@ -52,6 +52,7 @@ Goal: one fact file (`atlas-data.json`) that holds every section, and three view
 | nextsteps | NXT: ranked actions P1 (i×l ≥ 16), P2 (≥ 9), P3, each with a prompt for a coding agent; the page can combine selected items into one prompt | prepare |
 | diff | PR comment comparing base and head runs (risks, patterns, verdicts, authorization cells, coverage; ids with line numbers matched by content) | own workflow `discovery-diff.yml` |
 | runtime | RTM section and `pr/runtime.md`: handlers and service paths the running app registered, compared with the parsed ones (piece 3 D7) | CI startup step + afterTests |
+| measured | MSR section and `pr/measured.md`: the authorization matrix measured against the running app, every request the tests send (user, entity, outcome, queries; CAP's public event API), and which handler rules any test ran (Jest V8 coverage). Feeds the coverage addon with measured requests instead of a text scan | facts (plan) + CI step + afterTests |
 | mutation | MUT section: Stryker mutates the handler code, and the share of mutants the tests catch is the score | own nightly workflow `mutation.yml` |
 
 ### D4. Rendering (`bin/atlas.js`)

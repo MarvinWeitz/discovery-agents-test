@@ -101,6 +101,8 @@ async function render(html, outDir, D) {
       await (await sec.$(`[data-v="${v.k}"]`)).click()
       await p.waitForTimeout(v.label.includes('Force') ? 2500 : 400)
       const view = await sec.$('.view')
+      // an empty view (tiny app, nothing to draw) has no box: skip its image instead of failing the atlas
+      if (!(await view.boundingBox())?.height) { errors.push(`${s.code}-${v.k}: empty view, no image`); continue }
       await view.screenshot({ path: path.join(outDir, 'images', `${s.code}-${v.k}.png`) })
       shots.push(`${s.code}-${v.k}`)
       if (s.code === 'STA' && v.k === 'A' && D.STATES) {
