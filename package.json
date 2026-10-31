@@ -11,6 +11,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@openui5/types": "1.148.9",
+    "@sap-ux/annotation-converter": "0.10.22",
+    "@sap-ux/edmx-parser": "0.10.0",
     "@sap-ux/project-access": "2.3.1",
     "@sap/cds": "^9.9.4",
     "@sap/cds-compiler": "^7.2.1",

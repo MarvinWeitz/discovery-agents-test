@@ -10,6 +10,7 @@ const { cap } = require('../lib/project/cap')
 const { extractModel } = require('../lib/extract/model')
 const { extractHandlersAst } = require('../lib/extract/handlers')
 const { reflexionUi } = require('../lib/analyse/reflexion-ui')
+const { metadataPromises } = require('../lib/analyse/metadata')
 const { extractUI5 } = require('../lib/extract/ui5')
 const { extractConfig } = require('../lib/extract/config')
 const { extractAuth } = require('../lib/extract/auth')
@@ -40,6 +41,7 @@ async function main() {
   const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
   const handlers = extractHandlersAst(root, g, csn)                            // 3   handlers, rules, reads/writes, events
   const uiRules = reflexionUi(root, g, csn)                                   // 4   UI annotations vs handler rules
+  uiRules.metadata = metadataPromises(root, g, project.edmx)                  // 4b  what the UI receives ($metadata)
   await extractUI5(root, g, uiDirs)                                           // 5a  UI5 apps, routes, views
   const config = extractConfig(root, g)                                       // 5b  remote services, brokers, HDI files
   config.auth = extractAuth(root, g, cds)                                     // 5c  mock users, roles
