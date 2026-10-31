@@ -23,6 +23,8 @@ When a new repo breaks something, look here first. Each line names the assumptio
 
 Credentials in `cds.requires` are never written; only their key names are.
 
+The CAP docs section and `@sap/cds` source file behind each question are in [references.md](references.md). Check those when a new cds version comes out.
+
 ## Ranked: importance × how often it differs between projects
 
 Importance: how much of the output is wrong when the assumption is wrong. Differs: how likely a real project does it differently.
