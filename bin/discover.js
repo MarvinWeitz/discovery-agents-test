@@ -40,7 +40,7 @@ async function main() {
   const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
   const handlers = extractHandlersAst(root, g, csn)                            // 3   handlers, rules, reads/writes, events
   const uiRules = reflexionUi(root, g, csn)                                   // 4   UI annotations vs handler rules
-  extractUI5(root, g, uiDirs)                                                 // 5a  UI5 apps, routes, views
+  await extractUI5(root, g, uiDirs)                                           // 5a  UI5 apps, routes, views
   const config = extractConfig(root, g)                                       // 5b  remote services, brokers, HDI files
   config.auth = extractAuth(root, g, cds)                                     // 5c  mock users, roles
   config.cdsDeps = extractCdsDeps(root, g, csn)                               // 5f  CDS file layers
