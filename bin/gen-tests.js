@@ -29,11 +29,13 @@ function main() {
     const i = row ? row.c.findIndex((c, k) => c.v === 'y' && !td.auth.users[k].anon) : -1
     return i >= 0 ? td.auth.users[i].id : (td.auth.users.find(u => !u.anon) || {}).id
   }
-  // every action parameter gets 10 (fits numeric parameters); open fix F9
+  // one valid value per action parameter, from its CDS type (enum: the first value; unknown types: 10)
+  const VALUE = { 'cds.String': 'test', 'cds.LargeString': 'test', 'cds.Boolean': true, 'cds.Date': '2026-01-01', 'cds.DateTime': '2026-01-01T00:00:00Z', 'cds.Timestamp': '2026-01-01T00:00:00Z', 'cds.Time': '12:00:00', 'cds.UUID': '00000000-0000-4000-8000-000000000001' }
+  const valueFor = t => t?.enum ? t.enum[0] : VALUE[t] ?? 10
   const bodyFor = req => {
     const m = req.path.match(/\/(\w+)\.(\w+)$/); if (!m) return {}
     const a = g.byType('Action').find(x => x.props.name === m[2])
-    return Object.fromEntries((a?.props.params || []).map(p => [p, 10]))
+    return Object.fromEntries((a?.props.params || []).map(p => [p, valueFor(a.props.paramTypes?.[p])]))
   }
   const files = [], counts = {}, manifest = []
   for (const c of td.categories) {

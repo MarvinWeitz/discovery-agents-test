@@ -6,6 +6,7 @@ const path = require('path')
 const { execFileSync } = require('child_process')
 const cds = require('@sap/cds')
 const { Graph } = require('../lib/graph')
+const { cap } = require('../lib/project/cap')
 const { extractModel } = require('../lib/extract/model')
 const { extractHandlers } = require('../lib/extract/handlers/regex')
 const { extractHandlersAst } = require('../lib/extract/handlers')
@@ -36,6 +37,7 @@ async function main() {
   try { commit = execFileSync('git', ['-C', root, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim() } catch {}
 
   cds.root = root
+  const project = cap(root)                                                    // 1b  what CAP says: config per profile, model files, endpoints, impls, seed data
   const g = new Graph(run)
   const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
   const handlers = (regex ? extractHandlers : extractHandlersAst)(root, g, csn) // 3   handlers, rules, reads/writes, events
@@ -57,6 +59,7 @@ async function main() {
   fs.mkdirSync(path.join(outDir, 'slices'), { recursive: true })
   fs.mkdirSync(path.join(outDir, 'tests'), { recursive: true })
   const { nodes, edges } = g.toJSONL()
+  fs.writeFileSync(path.join(outDir, 'project.json'), JSON.stringify(project, null, 1))
   fs.writeFileSync(path.join(outDir, 'graph', 'nodes.jsonl'), nodes)
   fs.writeFileSync(path.join(outDir, 'graph', 'edges.jsonl'), edges)
   fs.writeFileSync(path.join(outDir, 'slices', 'catalog.json'), JSON.stringify(slices.map(({ members, ...s }) => ({ ...s, members, status: 'planned' })), null, 2))
