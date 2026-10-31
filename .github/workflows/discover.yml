@@ -294,6 +294,40 @@ jobs:
             ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
           fi
 
+      # Addon measured (discovery.config.json): ask the running app instead of guessing. The authorization probe
+      # sends every row of the static matrix as every mocked user; recorder.js logs, through CAP's public event API,
+      # which requests every test sends (user, entity, outcome, queries); Jest's V8 coverage shows which handler
+      # lines ran. Generated tests and probe first, then the app's own tests (recorder only when the app's Jest
+      # config has no setupFilesAfterEnv of its own, so its setup is never replaced). Results: run/measured/.
+      - name: Measure authorization and requests
+        if: steps.startup.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 20
+        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
+        env:
+          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
+          DISCOVERY_MEASURE_OUT: ${{ github.workspace }}/out/${{ steps.target.outputs.slug }}/run/measured
+        run: |
+          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
+          node -e "process.exit(require('$GITHUB_WORKSPACE/discovery.config.json').measured === false ? 1 : 0)" || { echo "addon measured is off"; exit 0; }
+          mkdir -p test/discovery-measure "$DISCOVERY_MEASURE_OUT"
+          cp "$GITHUB_WORKSPACE"/addons/measured/{authz-probe.test.js,recorder.js} test/discovery-measure/
+          rec="$PWD/test/discovery-measure/recorder.js"
+          cov=(--coverage --coverageProvider=v8 --coverageReporters=json)
+          if [ "${{ steps.startup.outputs.runner }}" = node ]; then
+            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/discovery-measure --outputFile "$GITHUB_WORKSPACE/out/jest-measure.json" || true
+            exit 0
+          fi
+          ${{ steps.shim.outputs.jest }} test/discovery-measure test/generated --ci --forceExit --testTimeout 600000 \
+            --setupFilesAfterEnv "$rec" "${cov[@]}" --coverageDirectory "$DISCOVERY_MEASURE_OUT/coverage-generated" || true
+          # the app's own tests, when it has any outside the folders written by this workflow
+          own=$(find . -path ./node_modules -prune -o -path ./test/generated -prune -o -path './test/discovery-*' -prune -o \( -name '*.test.js' -o -name '*.spec.js' -o -name '*.test.ts' \) -print | head -1)
+          [ -n "$own" ] || { echo "no own tests"; exit 0; }
+          setup=$(${{ steps.shim.outputs.jest }} --showConfig 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).configs[0].setupFilesAfterEnv.length)}catch{console.log(0)}})")
+          extra=(); [ "$setup" = 0 ] && extra=(--setupFilesAfterEnv "$rec") || echo "::notice::own Jest setup files kept: own tests run without the request log"
+          ${{ steps.shim.outputs.jest }} --ci --forceExit --testTimeout 120000 "${extra[@]}" "${cov[@]}" --coverageDirectory "$DISCOVERY_MEASURE_OUT/coverage-own" \
+            --testPathIgnorePatterns /node_modules/ /test/generated/ /test/discovery- /app/ || true
+
       # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
       - name: Addons after tests
         if: always() && steps.target.outputs.slug
