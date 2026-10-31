@@ -233,6 +233,13 @@ jobs:
             echo "\$ $cmd"; eval "$cmd" < /dev/null
           done
 
+      # addon rules: runs its Opengrep rules (addons/rules/opengrep) when the CLI is there
+      - name: Install Opengrep
+        if: hashFiles('addons/rules/opengrep/*.yml') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/install-opengrep.sh
+
       - name: Run the discovery pipeline
         env:
           APP_DIR: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}

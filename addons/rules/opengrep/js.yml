@@ -1,0 +1,72 @@
+# Rules library, handler code (JavaScript / TypeScript), in Opengrep / Semgrep rule format: the community
+# standard for code patterns. Run with the Opengrep CLI (LGPL-2.1, called as an external program, never
+# bundled). Each rule id is the key of a module in ../library/; an id `<key>--<variant>` adds a variant of
+# rule <key>. When no Opengrep CLI is installed, the engine falls back to the module's own detect().
+# message: "<title> || <detail>"; Opengrep fills in the metavariables ($X).
+# metavariable-regex matches from the start of the value (left-anchored), so use .* where needed.
+# Tests: js.js, run with `opengrep scan --test addons/rules/opengrep` (`ruleid:` / `ok:` comments).
+# Walkthrough: docs/walkthrough/09-patterns-risks-rules.md · Sources: docs/walkthrough/references.md (Rules)
+rules:
+  - id: null-deref-in-guard
+    languages: [javascript, typescript]
+    paths: { include: ["*.js", "*.ts", "*.mjs", "*.cjs"] }
+    severity: WARNING
+    message: "$X.$P read where $X is missing || `if (!$X)` then reads `$X.$P`. $X is null or undefined on that path, so the request fails with a TypeError (HTTP 500) instead of the intended error."
+    patterns:
+      - pattern-either:
+          - pattern: if (!$X) $BODY
+          - pattern: if ($A && !$X) $BODY
+          - pattern: if (!$X && $A) $BODY
+      - metavariable-pattern:
+          metavariable: $BODY
+          patterns:
+            - pattern: $X.$P
+            - pattern-not: $X?.$P
+      - focus-metavariable: $BODY
+
+  - id: max-plus-one-id
+    languages: [javascript, typescript]
+    paths: { include: ["*.js", "*.ts", "*.mjs", "*.cjs"] }
+    severity: WARNING
+    message: "$T assigned as max + 1 || $T is set from a max() query + 1 in a shared code path. Two requests that read max() before either commits get the same value; without a unique constraint both rows are stored."
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              let { $M } = await $SEL;
+              ...
+          - pattern-inside: |
+              const { $M } = await $SEL;
+              ...
+          - pattern-inside: |
+              let $M = await $SEL;
+              ...
+          - pattern-inside: |
+              const $M = await $SEL;
+              ...
+      # a CAP query that selects max(<column>)
+      - metavariable-regex:
+          metavariable: $SEL
+          regex: (?is)^SELECT\b.*\bmax\s*\(
+      - pattern-either:
+          - pattern: $T = ++$M
+          - pattern: $T = $M + 1
+          - pattern: $T = $M.$X + 1
+          - pattern: $T = ($M || 0) + 1
+      # per-draft numbering (NEW on a draft child) is single-user
+      - pattern-not-inside: $SRV.before('NEW', ...)
+
+  - id: hard-coded-currency--js
+    languages: [javascript, typescript]
+    paths: { include: ["*.js", "*.ts", "*.mjs", "*.cjs"] }
+    severity: WARNING
+    message: "$CUR hard-coded as $K || $K is set to the literal $CUR. Amounts in other currencies are then labelled (and summed) as $CUR."
+    patterns:
+      - pattern-either:
+          - pattern: "{..., $K: $CUR, ...}"
+          - pattern: $O.$K = $CUR
+          - pattern: $K = $CUR
+          - pattern: |
+              class $C { ... $K = $CUR; ... }
+      - metavariable-regex: { metavariable: $CUR, regex: "^['\"`]?(USD|EUR|GBP|JPY|CHF|CNY|INR|AUD|CAD|SEK|NOK|DKK|PLN|CZK|BRL|MXN|ZAR|SGD|HKD|KRW)['\"`]?$" }
+      - metavariable-regex: { metavariable: $K, regex: "(?i).*currency" }
+      - focus-metavariable: $CUR
