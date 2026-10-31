@@ -6,6 +6,9 @@
 const fs = require('fs')
 const path = require('path')
 
+// event or entity as text: a string, a definition ({name}), or a list of either; '*' when left out
+const names = x => x == null ? '*' : Array.isArray(x) ? x.map(names).join(',') : typeof x === 'string' ? x : typeof x?.name === 'string' ? x.name : String(Object.prototype.toString.call(x))
+
 function start(appRoot) {
   const calls = []
   const EventHandlers = require(require.resolve('@sap/cds/lib/srv/srv-handlers', { paths: [appRoot] }))
@@ -21,11 +24,10 @@ function start(appRoot) {
       const file = site?.[1].replace(/^file:\/\//, '')
       const plugin = file?.match(/node_modules[\\/]((?:@[^\\/]+[\\/])?[^\\/]+)/)?.[1] || null
       const target = handler ? p : undefined // register(srv, phase, event, handler) leaves out the path
-      if (site) calls.push({
-        service: srv.name, phase, event: Array.isArray(event) ? event.join(',') : typeof event === 'object' && event ? event.name : event ?? '*',
-        path: Array.isArray(target) ? target.map(t => t?.name || t).join(',') : typeof target === 'object' && target ? target.name : target ?? '*',
-        file: plugin ? null : path.relative(appRoot, file), line: plugin ? null : Number(site[2]), plugin,
-      })
+      if (site) try {
+        calls.push({ service: srv.name, phase, event: names(event), path: names(target),
+          file: plugin ? null : path.relative(appRoot, file), line: plugin ? null : Number(site[2]), plugin })
+      } catch { /* recording must never stop the app */ }
     }
     depth++
     try { return register.apply(this, arguments) } finally { depth-- }

@@ -66,8 +66,9 @@ jobs:
           cds.test(__dirname + '/../..')
           it('app starts', () => { rec.dump(process.env.DISCOVERY_RUNTIME_OUT, cds) })
           EOF
-          npx jest test/discovery-startup --ci --forceExit
+          npx jest test/discovery-startup --ci --forceExit || true
           rm -rf test/discovery-startup
+          [ -f "$DISCOVERY_RUNTIME_OUT" ] || echo "::warning::runtime recording failed, the Runtime check section is left out"
 
       - name: Run SFlight's own tests (baseline)
         id: baseline
