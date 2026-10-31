@@ -3,6 +3,7 @@
 // atlas if any addon changed the facts:
 //   node bin/after-tests.js <app-out> [--generated jest-generated.json] [--baseline jest-baseline.json]
 // <app-out> is the pipeline's out dir (holds atlas-data.json, run/, atlas/).
+// Step 11 · Walkthrough: docs/walkthrough/11-atlas-and-addons.md
 const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')

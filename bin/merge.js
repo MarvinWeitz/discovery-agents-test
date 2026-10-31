@@ -4,6 +4,7 @@
 // Reads slices/<id>/facts/*.json. A fact is accepted only when its evidence points at an existing
 // file and line and its quote appears within two lines of it. Rejected facts are listed in the
 // merge log so the agent can be asked again; they never reach the graph.
+// Step 12 · Walkthrough: docs/walkthrough/12-ai-loop.md
 const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice, saveGraph } = require('../lib/load')

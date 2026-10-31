@@ -12,7 +12,7 @@
 // Promises without a page, a seed record or a readable condition are listed as skipped, with why.
 const fs = require('fs')
 const path = require('path')
-const { loadSeed } = require('../../lib/seed-data')
+const { loadSeed } = require('../../lib/analyse/seed-data')
 
 const short = n => String(n).split('.').pop()
 

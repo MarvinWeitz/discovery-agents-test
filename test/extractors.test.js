@@ -7,8 +7,8 @@ const fs = require('fs')
 const os = require('os')
 const path = require('path')
 const { Graph } = require('../lib/graph')
-const { extractHandlersAst } = require('../lib/extract-handlers-ast')
-const { extractNative, declaredName, sourcesOf } = require('../lib/extract-native')
+const { extractHandlersAst } = require('../lib/extract/handlers')
+const { extractNative, declaredName, sourcesOf } = require('../lib/extract/native')
 
 function app(files) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'cap-'))

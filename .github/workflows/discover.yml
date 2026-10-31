@@ -252,14 +252,20 @@ jobs:
         env:
           # token auth only (xsuaa, ias, jwt): test with CAP's mocked users, as its [development] profile would
           CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
+          # addon runtime: record what the app registers while it starts (handlers with their line, service paths)
+          DISCOVERY_RECORDER: ${{ github.workspace }}/addons/runtime/record.js
+          DISCOVERY_RUNTIME_OUT: ${{ github.workspace }}/out/${{ steps.target.outputs.slug }}/run/runtime.json
         run: |
           [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
           mkdir -p test/discovery-startup
           cat > test/discovery-startup/startup.test.js <<'EOF'
           // Written by the Run discovery workflow: does the app start in-process with an in-memory database?
+          const fs = require('fs'), path = require('path')
           const cds = require('@sap/cds')
+          const rec = fs.existsSync(process.env.DISCOVERY_RECORDER || '') ? require(process.env.DISCOVERY_RECORDER).start(path.resolve(__dirname, '../..')) : null
           cds.test(__dirname + '/../..', '--with-mocks') // required services without credentials as local mocks
           it('app starts and serves its services', () => {
+            rec?.dump(process.env.DISCOVERY_RUNTIME_OUT, cds)
             if (!Object.values(cds.services).some(s => s instanceof cds.ApplicationService)) throw new Error('no application service served')
           })
           EOF

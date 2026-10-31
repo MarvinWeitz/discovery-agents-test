@@ -36,7 +36,9 @@ function sentence(c, g) {
   if (c.id.startsWith('CMB:')) return null
   return { biz: `${c.name}: ${c.expected}.`, dev: `${c.name}: ${c.expected}${c.input ? ` (input: ${typeof c.input === 'object' ? JSON.stringify(c.input) : c.input})` : ''}.` }
 }
-function plain(guard) { return String(guard || '').replace(/!succeeded && /g, '').replace(/===?/g, 'is').replace(/!==?/g, 'is not').replace(/==\s*null/g, 'is empty').replace(/\btravel\./g, '').replace(/TravelStatusCode\./g, '') }
+// code words to plain words; drops variable prefixes (travel.TravelStatus_code → TravelStatus_code) and enum
+// prefixes (TravelStatusCode.Open → Open), keeps model paths (TravelStatus.code)
+function plain(guard) { return String(guard || '').replace(/!succeeded && /g, '').replace(/\breq\.user\.id\b/g, 'the current user').replace(/==\s*null/g, 'is empty').replace(/!==?/g, 'is not').replace(/===?/g, 'is').replace(/\b[a-z_$][\w$]*\.(?=[A-Za-z_$])/g, '').replace(/\b[A-Z][\w$]*\.(?=[A-Z])/g, '') }
 
 // facts time: sentences with their class and slice; no test results yet
 function build(td, g, runDir) {

@@ -1,22 +1,28 @@
 #!/usr/bin/env node
 // Phase 1 skeleton map: node bin/discover.js <app-root> <out-dir>
+// Step 2–6 · Walkthrough: docs/walkthrough/README.md
 const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
 const cds = require('@sap/cds')
 const { Graph } = require('../lib/graph')
-const { extractModel } = require('../lib/extract-model')
-const { extractHandlers } = require('../lib/extract-handlers')
-const { extractHandlersAst } = require('../lib/extract-handlers-ast')
-const { reflexionUi } = require('../lib/reflexion-ui')
-const { extractUI5, extractConfig, extractAuth, extractTests, extractHistory } = require('../lib/extract-app')
-const { extractCdsDeps } = require('../lib/extract-cds-deps')
-const { extractNative } = require('../lib/extract-native')
-const { extractLint } = require('../lib/extract-lint')
-const { cutSlices, rank, splitSlices, coverage } = require('../lib/slices')
-const { deriveClasses } = require('../lib/classes')
-const { render } = require('../lib/report')
-const { renderDiagrams } = require('../lib/render-diagrams')
+const { cap } = require('../lib/project/cap')
+const { extractModel } = require('../lib/extract/model')
+const { extractHandlers } = require('../lib/extract/handlers/regex')
+const { extractHandlersAst } = require('../lib/extract/handlers')
+const { reflexionUi } = require('../lib/analyse/reflexion-ui')
+const { extractUI5 } = require('../lib/extract/ui5')
+const { extractConfig } = require('../lib/extract/config')
+const { extractAuth } = require('../lib/extract/auth')
+const { extractTests } = require('../lib/extract/tests')
+const { extractHistory } = require('../lib/extract/history')
+const { extractCdsDeps } = require('../lib/extract/cds-deps')
+const { extractNative } = require('../lib/extract/native')
+const { extractLint } = require('../lib/extract/lint')
+const { cutSlices, rank, splitSlices, coverage } = require('../lib/analyse/slices')
+const { deriveClasses } = require('../lib/analyse/classes')
+const { render } = require('../lib/report/report')
+const { renderDiagrams } = require('../lib/report/render-diagrams')
 
 async function main() {
   const args = process.argv.slice(2)
@@ -31,20 +37,21 @@ async function main() {
   try { commit = execFileSync('git', ['-C', root, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim() } catch {}
 
   cds.root = root
+  const project = cap(root)                                                    // 1b  what CAP says: config per profile, model files, endpoints, impls, seed data
   const g = new Graph(run)
-  const csn = await extractModel(cds, root, g)
-  const handlers = (regex ? extractHandlers : extractHandlersAst)(root, g, csn)
-  const uiRules = reflexionUi(root, g, csn)
-  extractUI5(root, g, uiDirs)
-  const config = extractConfig(root, g)
-  config.auth = extractAuth(root, g, cds)
-  config.cdsDeps = extractCdsDeps(root, g, csn)
-  config.native = extractNative(root, g)
-  extractTests(root, g)
-  const lint = extractLint(root, g, uiDirs)
-  const history = extractHistory(root)
+  const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
+  const handlers = (regex ? extractHandlers : extractHandlersAst)(root, g, csn) // 3   handlers, rules, reads/writes, events
+  const uiRules = reflexionUi(root, g, csn)                                   // 4   UI annotations vs handler rules
+  extractUI5(root, g, uiDirs)                                                 // 5a  UI5 apps, routes, views
+  const config = extractConfig(root, g)                                       // 5b  remote services, brokers, HDI files
+  config.auth = extractAuth(root, g, cds)                                     // 5c  mock users, roles
+  config.cdsDeps = extractCdsDeps(root, g, csn)                               // 5f  CDS file layers
+  config.native = extractNative(root, g)                                      // 5g  HANA-native objects
+  extractTests(root, g)                                                       // 5d  existing tests
+  const lint = extractLint(root, g, uiDirs)                                   // 5h  cds lint, ui5 lint
+  const history = extractHistory(root)                                        // 5e  git churn
 
-  const slices = splitSlices(g, rank(g, cutSlices(g), history))
+  const slices = splitSlices(g, rank(g, cutSlices(g), history))               // 6   slices ranked by risk
   const cov = coverage(g)
   const classes = deriveClasses(g)
 
@@ -52,6 +59,10 @@ async function main() {
   fs.mkdirSync(path.join(outDir, 'slices'), { recursive: true })
   fs.mkdirSync(path.join(outDir, 'tests'), { recursive: true })
   const { nodes, edges } = g.toJSONL()
+  fs.writeFileSync(path.join(outDir, 'project.json'), JSON.stringify({ ...project, model: { ...project.model, csnFile: undefined }, edmx: project.edmx && Object.keys(project.edmx) }, null, 1))
+  fs.writeFileSync(path.join(outDir, 'csn.json'), JSON.stringify({ ...csn, $sources: csn.$sources }))
+  // OData $metadata per service from the probe (what the UI receives)
+  if (project.edmx) { fs.mkdirSync(path.join(outDir, 'edmx'), { recursive: true }); for (const [n, f] of Object.entries(project.edmx)) if (fs.existsSync(f)) fs.copyFileSync(f, path.join(outDir, 'edmx', n + '.xml')) }
   fs.writeFileSync(path.join(outDir, 'graph', 'nodes.jsonl'), nodes)
   fs.writeFileSync(path.join(outDir, 'graph', 'edges.jsonl'), edges)
   fs.writeFileSync(path.join(outDir, 'slices', 'catalog.json'), JSON.stringify(slices.map(({ members, ...s }) => ({ ...s, members, status: 'planned' })), null, 2))

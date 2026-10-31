@@ -4,6 +4,7 @@
 //   index.html          interactive page (template + data)
 //   README.md, topics/  Markdown for people and AI agents, with tables and evidence
 //   images/             PNG of every view, embedded in the Markdown
+// Step 11 · Walkthrough: docs/walkthrough/11-atlas-and-addons.md
 const fs = require('fs')
 const path = require('path')
 

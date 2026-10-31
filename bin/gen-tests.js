@@ -4,12 +4,13 @@
 //   - a characterization test that pins what the app does today (passes now), and
 //   - when the design expects something else, a spec test (it.skip) to enable once fixed.
 // Files are syntax-checked with node --check; they are meant to run in the app repo (jest or mocha).
+// Step 10 · Walkthrough: docs/walkthrough/10-generated-tests.md
 const fs = require('fs')
 const path = require('path')
 const { execFileSync } = require('child_process')
 const { loadRun } = require('../lib/load')
-const { design } = require('../lib/test-design')
-const { short } = require('../lib/authz')
+const { design } = require('../lib/analyse/test-design')
+const { short } = require('../lib/analyse/authz')
 
 const q = s => JSON.stringify(s)
 const kind = v => v === 'success' || (+v >= 200 && +v < 300) ? 'ok' : 'err'
@@ -28,10 +29,13 @@ function main() {
     const i = row ? row.c.findIndex((c, k) => c.v === 'y' && !td.auth.users[k].anon) : -1
     return i >= 0 ? td.auth.users[i].id : (td.auth.users.find(u => !u.anon) || {}).id
   }
+  // one valid value per action parameter, from its CDS type (enum: the first value; unknown types: 10)
+  const VALUE = { 'cds.String': 'test', 'cds.LargeString': 'test', 'cds.Boolean': true, 'cds.Date': '2026-01-01', 'cds.DateTime': '2026-01-01T00:00:00Z', 'cds.Timestamp': '2026-01-01T00:00:00Z', 'cds.Time': '12:00:00', 'cds.UUID': '00000000-0000-4000-8000-000000000001' }
+  const valueFor = t => t?.enum ? t.enum[0] : VALUE[t] ?? 10
   const bodyFor = req => {
     const m = req.path.match(/\/(\w+)\.(\w+)$/); if (!m) return {}
     const a = g.byType('Action').find(x => x.props.name === m[2])
-    return Object.fromEntries((a?.props.params || []).map(p => [p, 10]))
+    return Object.fromEntries((a?.props.params || []).map(p => [p, valueFor(a.props.paramTypes?.[p])]))
   }
   const files = [], counts = {}, manifest = []
   for (const c of td.categories) {

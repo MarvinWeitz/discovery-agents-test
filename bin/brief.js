@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 // Writes the brief a Phase 3 agent team starts from: node bin/brief.js <run-dir> <app-root> <slice-id>
 // The brief is the agents' whole context besides the source files it lists.
+// Step 12 · Walkthrough: docs/walkthrough/12-ai-loop.md
 const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice } = require('../lib/load')
-const { walk } = require('../lib/extract-handlers')
+const { cdsSources } = require('../lib/project/cap')
+const { layout } = require('../lib/project/layout')
 
 const { QUESTIONS } = require('./brief-questions')
 
@@ -17,10 +19,11 @@ function main() {
 
   // Annotation files: CDS files that annotate any service entity of the slice
   const names = members.filter(n => n.type === 'ServiceEntity').map(n => n.props.name.split('.').pop())
-  const annotationFiles = walk(root, p => p.endsWith('.cds') && !p.includes(`${path.sep}xmpls${path.sep}`))
+  const ignored = layout(root).ignored
+  const annotationFiles = cdsSources(root)
     .filter(f => new RegExp(`annotate\\s+[\\w.]*\\b(${names.join('|')})\\b`).test(fs.readFileSync(f, 'utf8')))
     .map(f => path.relative(root, f))
-  const files = [...new Set([...slice.files, ...annotationFiles])].filter(f => !f.startsWith('xmpls/'))
+  const files = [...new Set([...slice.files, ...annotationFiles])].filter(f => !ignored.some(d => f.startsWith(d + '/')))
 
   const out = []
   out.push(`# Slice brief ${slice.id}: ${slice.name}`, '')
