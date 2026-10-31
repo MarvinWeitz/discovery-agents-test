@@ -15,7 +15,8 @@ function install() {
   const entries = [], byCtx = new Map()
   const where = () => { try { const s = globalThis.expect?.getState?.(); return s ? { test: s.currentTestName || null, file: s.testPath ? path.relative(process.cwd(), s.testPath) : null } : {} } catch { return {} } }
   const safe = fn => function (...a) { try { return fn.apply(this, a) } catch { /* recording must never break the app */ } }
-  const short = n => n ? String(n).split('.').pop() : null
+  // entity name without service and without the draft suffix: TravelService.Travel.drafts -> Travel
+  const short = n => n ? String(n).replace(/\.drafts$/, '').split('.').pop() : null
   const entryOf = (srv, req) => {
     const id = req.context?.id || cds.context?.id
     const top = id && byCtx.get(id)

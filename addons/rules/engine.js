@@ -52,9 +52,9 @@ function cli() {
 
 // runs the rule files over the given files; Map(rule id -> [{ ev, t, d }]) or { error }
 function opengrep(tool, root, files) {
-  const r = spawnSync(tool.bin, ['scan', '--metrics=off', '--quiet', '--json', ...CONFIGS.flatMap(c => ['--config', c]), ...files.map(f => path.join(root, f.path))],
+  const r = spawnSync(tool.bin, ['scan', '--quiet', '--json', ...CONFIGS.flatMap(c => ['--config', c]), ...files.map(f => path.join(root, f.path))],
     { encoding: 'utf8', timeout: 600000, maxBuffer: 1 << 28, cwd: root, env: ENV })
-  let j; try { j = JSON.parse(r.stdout) } catch { return { error: (r.stderr || r.error?.message || 'no output').split('\n')[0] } }
+  let j; try { j = JSON.parse(r.stdout) } catch { return { error: (r.stderr || r.error?.message || 'no output').trim().split('\n').slice(-3).join(' ').slice(0, 300) } }
   const hits = new Map()
   for (const x of j.results || []) {
     const id = x.check_id.split('.').pop().replace(/--.*$/, '')
@@ -74,8 +74,9 @@ function ruleIds() {
 function run(ctx) {
   const ids = ruleIds(), tool = ids.size ? cli() : null
   const og = tool ? opengrep(tool, ctx.root, ctx.files) : null
+  if (og?.error) console.warn(`[rules] ${tool.version} failed, own detect() used instead: ${og.error}`)
   return library().map(r => {
-    let hits = [], error = null, via = 'own detect()'
+    let hits = [], error = null, via = og?.error && ids.has(r.key) ? `own detect() (${tool.version} failed)` : 'own detect()'
     if (og?.hits && ids.has(r.key)) { hits = og.hits.get(r.key) || []; via = tool.version }
     else try { hits = r.detect(ctx) || [] } catch (e) { error = e.message }
     return { key: r.key, title: r.title, status: r.status, from: r.from, i: r.i, l: r.l, lay: r.lay, test: r.test, hits, error, via }

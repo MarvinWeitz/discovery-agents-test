@@ -29,3 +29,14 @@ test('summarizeRequests groups by entity and event', () => {
   const s = summarizeRequests([{ entity: 'B', event: 'READ', user: 'a', file: 't', status: 200 }, { entity: 'B', event: 'READ', user: 'b', file: 't', status: 403 }])
   assert.equal(s.rows[0].n, 2); assert.deepEqual(s.users, ['a', 'b'])
 })
+
+test('readRequests: legacy draft entries and rejected requests get their entity from the URL', () => {
+  const fs = require('fs'), os = require('os'), path = require('path')
+  const { readRequests } = require('../addons/measured/read')
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'msr-')); fs.mkdirSync(path.join(d, 'requests'))
+  fs.writeFileSync(path.join(d, 'requests', 'a.jsonl'), [
+    { entity: 'drafts', event: 'NEW', url: '/processor/Travel', method: 'POST' },
+    { entity: null, event: null, url: '/processor/Travel?$top=1', method: 'GET', status: 403 },
+  ].map(x => JSON.stringify(x)).join('\n'))
+  assert.deepEqual(readRequests(d).map(r => [r.entity, r.event]), [['Travel', 'NEW'], ['Travel', 'READ']])
+})

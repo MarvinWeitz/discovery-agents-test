@@ -15,11 +15,14 @@ function fromUrl(e) {
   return { ...e, entity: segs[i], event: e.event || action || VERB[e.method] || null }
 }
 
+// recorded before draft targets were shortened: TravelService.Travel.drafts came out as 'drafts'
+const undraft = e => e.entity === 'drafts' && e.url ? { ...e, entity: null } : e
+
 // every recorded request: { test, file, service, event, entity, url, user, outcome, status, queries, inner }
 function readRequests(dir) {
   const d = path.join(dir, 'requests')
   let files = []; try { files = fs.readdirSync(d).filter(f => f.endsWith('.jsonl')).sort() } catch { return [] }
-  return files.flatMap(f => fs.readFileSync(path.join(d, f), 'utf8').split('\n').filter(Boolean).map(l => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean)).map(fromUrl)
+  return files.flatMap(f => fs.readFileSync(path.join(d, f), 'utf8').split('\n').filter(Boolean).map(l => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean)).map(undraft).map(fromUrl)
 }
 
 // Map(file relative to the app root -> Set of executed lines), union of every coverage-final.json under dir

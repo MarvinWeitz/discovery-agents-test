@@ -61,9 +61,11 @@ function classesFrom(td, g, root) {
 
 // requests recorded while the app's own tests ran (addon measured), in the shape requestMatches expects;
 // our own generated tests and probes are counted through the manifest, not here
+// CAP's draft events, in the vocabulary of the classes (the same ops the text scan gives a request)
+const DRAFT_OP = { NEW: 'CREATE', PATCH: 'UPDATE', SAVE: 'draftActivate', EDIT: 'draftEdit', DISCARD: 'DELETE', CANCEL: 'DELETE' }
 function measuredRequests(log = []) {
   return log.filter(r => r.file && !/^test[\\/](generated|discovery-)/.test(r.file) && r.entity)
-    .map(r => ({ file: r.file, test: r.test, entity: r.entity, op: r.event, users: r.user ? [r.user] : [], status: r.status }))
+    .map(r => ({ file: r.file, test: r.test, entity: r.entity, op: DRAFT_OP[r.event] || r.event, users: r.user ? [r.user] : [], status: r.status }))
 }
 
 // results: { generated: jest json, baseline: jest json, requests: recorder log } (any may be null)
@@ -111,4 +113,4 @@ function summarize(classes, risks = [], ran = false) {
   return { ran, counts, total: classes.length, tested, pct: classes.length ? Math.round(tested / classes.length * 100) : 0, cats, next, heat: { rows, cols, cells }, label: LABEL }
 }
 
-module.exports = { scanRequests, classesFrom, classify, summarize, STATUS, LABEL }
+module.exports = { measuredRequests, scanRequests, classesFrom, classify, summarize, STATUS, LABEL }
