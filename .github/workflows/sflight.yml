@@ -48,6 +48,27 @@ jobs:
       - name: Run the discovery pipeline
         run: node bin/pipeline.js ../cap-sflight out/cap-sflight --base curated/cap-sflight.json
 
+      # Addon runtime: start the app with cds.test and record every handler it registers (with its line)
+      # and every served path, to check the static facts against the running app
+      - name: Record what the app registers at startup
+        continue-on-error: true
+        working-directory: ../cap-sflight
+        env:
+          DISCOVERY_RECORDER: ${{ github.workspace }}/addons/runtime/record.js
+          DISCOVERY_RUNTIME_OUT: ${{ github.workspace }}/out/cap-sflight/run/runtime.json
+        run: |
+          node "$GITHUB_WORKSPACE/bin/addon.js" enabled runtime || { echo "runtime addon is off"; exit 0; }
+          mkdir -p test/discovery-startup
+          cat > test/discovery-startup/startup.test.js <<'EOF'
+          const fs = require('fs'), path = require('path')
+          const cds = require('@sap/cds')
+          const rec = require(process.env.DISCOVERY_RECORDER).start(path.resolve(__dirname, '../..'))
+          cds.test(__dirname + '/../..')
+          it('app starts', () => { rec.dump(process.env.DISCOVERY_RUNTIME_OUT, cds) })
+          EOF
+          npx jest test/discovery-startup --ci --forceExit
+          rm -rf test/discovery-startup
+
       - name: Run SFlight's own tests (baseline)
         id: baseline
         continue-on-error: true

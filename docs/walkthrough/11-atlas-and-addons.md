@@ -51,6 +51,7 @@ Goal: one fact file (`atlas-data.json`) that holds every section, and three view
 | uitests | UIT section and OPA5 journeys (piece 10 D6) | facts + CI step |
 | nextsteps | NXT: ranked actions P1 (i×l ≥ 16), P2 (≥ 9), P3, each with a prompt for a coding agent; the page can combine selected items into one prompt | prepare |
 | diff | PR comment comparing base and head runs (risks, patterns, verdicts, authorization cells, coverage; ids with line numbers matched by content) | own workflow `discovery-diff.yml` |
+| runtime | RTM section and `pr/runtime.md`: handlers and service paths the running app registered, compared with the parsed ones (piece 3 D7) | CI startup step + afterTests |
 | mutation | MUT section: Stryker mutates the handler code, and the share of mutants the tests catch is the score | own nightly workflow `mutation.yml` |
 
 ### D4. Rendering (`bin/atlas.js`)

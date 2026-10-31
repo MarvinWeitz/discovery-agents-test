@@ -20,6 +20,16 @@ When a new repo breaks something, look here first. Each line names the assumptio
 | which file implements each service | the rule of `cds.serve` (`@sap/cds/lib/srv/factory.js`) | `impls` |
 | which seed files CAP loads, into which entity | `cds.deploy.resources` (`cds deploy`) | `seed` |
 | custom bootstrap | `server.js` / `server.ts` in the root, which `cds serve` loads | `server` |
+| the compiled model, once, with the app's compiler | `cds.load` (`cds compile`) | `run/csn.json` |
+| OData metadata per service | `cds.compile.to.edmx` (`cds compile --to edmx`) | `edmx`, files in `run/edmx/` |
+
+Beyond the probe, three more steps now ask a tool instead of reading text:
+
+| Question | Tool | Piece |
+|---|---|---|
+| `annotate` / `extend` targets and lines | CAP's parser `cds.parse.cdl` | 5f |
+| which files are the app's tests | the app's Jest, `jest --listTests` | 5d |
+| which handlers really exist, at which line, on which service path | the running app (`cds.test`), recorded by addon `runtime` | 3 D7 |
 
 Credentials in `cds.requires` are never written; only their key names are.
 
@@ -52,8 +62,10 @@ Importance: how much of the output is wrong when the assumption is wrong. Differ
 | 19 | db, srv, app folder names (intake, layers, labels) | medium | low | `cds.env.folders` in the pipeline's process | unchanged (needed before install, cheap) | 1, 5f |
 | 20 | status column = `<field>_code` | low | low | – | unchanged: CAP's foreign-key name for a managed association to a code list (key `code`) | 8 |
 | 21 | UI5 projects under the app folder + `--ui` | medium | medium | – | unchanged; `cds.env.folders.apps` is reported | 5a |
-| 22 | tests found by `*.test|spec.js|ts` and `*Journey.js` | low | medium | – | unchanged (matches Jest's default `testMatch`) | 5d |
+| 22 | which files are tests | low | medium | `*.test|spec.js|ts` and `*Journey.js` | the app's Jest: `jest --listTests` (its `testMatch`, `roots`, ignores) + OPA journeys; name pattern without Jest | 5d |
 | 23 | app detection in a cloned repo | high | medium | – | unchanged: skip list, depth 6, lockfiles, workspaces | 1 |
+| 24 | `annotate` / `extend` targets in CDS files | medium | medium | regular expressions | CAP's parser `cds.parse.cdl` (multi-line, with line numbers); regex only when parsing fails | 5f |
+| 25 | handlers the static parser finds are the ones that run | high | medium | – | checked in CI against the running app (addon `runtime`) | 3 |
 
 ## What asking CAP showed on the pilots
 

@@ -63,6 +63,13 @@ Independent of handlers, for connectors and helper modules:
 - native SQL in `x.run(...)` and `cds.run(...)` gives `nativeSql` on the file node,
 - `switch (<...kind...>) { case 'hana': ... }` and `if (<...kind...> === 'sqlite')` give `dbBranches` (database kinds `hana`, `sqlite`, `postgres`, `h2` in a switch; `hana`, `sqlite`, `postgres` in a comparison).
 
+### D7. Checked against the running app (addon `runtime`)
+Everything above reads code. In CI the addon `runtime` also starts the app with `cds.test` and records what CAP really registers:
+- `addons/runtime/record.js` wraps `EventHandlers.prototype.register` in the app's own `@sap/cds/lib/srv/srv-handlers.js`, the one function every `srv.before/on/after/reject` goes through, and notes the file and line of the caller from the stack. CAP's generic handlers (caller inside `@sap/cds`) are skipped; callers in other packages are listed as plugins.
+- It writes `run/runtime.json`: registrations, and every served service with its real path.
+- `addons/runtime/index.js` matches each registration to a parsed handler by file, phase and line (±2 lines). ✅ found by both, ❗ registered but the parser missed it, ⚠️ parsed but not registered at startup (conditional, registered later, or dead code). Service paths are compared with piece 2 the same way.
+- Output: section RTM in the atlas, topic `16-rtm-runtime-check.md`, and `pr/runtime.md` in the PR comment.
+
 ## Every hard-coded fact in this piece
 
 | Value | Where | Effect if your repo differs |

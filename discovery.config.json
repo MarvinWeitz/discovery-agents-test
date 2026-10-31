@@ -6,7 +6,8 @@
     "docs": true,
     "rules": true,
     "nextsteps": true,
-    "uitests": true
+    "uitests": true,
+    "runtime": true
   },
   "atlas": {
     "layout": "pages"

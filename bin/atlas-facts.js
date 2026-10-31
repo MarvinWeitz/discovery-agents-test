@@ -7,7 +7,7 @@ const fs = require('fs')
 const path = require('path')
 const cds = require('@sap/cds')
 const { loadRun } = require('../lib/load')
-const { modelFiles, remember } = require('../lib/project/cap')
+const { compiledModel, remember } = require('../lib/project/cap')
 const { buildAtlas } = require('../lib/atlas')
 const addons = require('../lib/addons')
 
@@ -23,7 +23,7 @@ async function main() {
   const known = path.join(runDir, 'project.json')
   if (fs.existsSync(known)) remember(root, JSON.parse(fs.readFileSync(known, 'utf8')))
   cds.root = root
-  const csn = await cds.load(modelFiles(root), { locations: true })
+  const csn = await compiledModel(root, cds, path.join(runDir, 'csn.json'))
   const { g } = loadRun(runDir)
   const { D, td } = buildAtlas({ g, csn, root, metrics, curated })
   for (const a of addons.list()) if (a.facts) await a.facts(D, { g, td, csn, root, metrics, runDir, out: path.dirname(path.resolve(outFile)) })

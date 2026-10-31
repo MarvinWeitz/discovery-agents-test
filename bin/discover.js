@@ -59,7 +59,10 @@ async function main() {
   fs.mkdirSync(path.join(outDir, 'slices'), { recursive: true })
   fs.mkdirSync(path.join(outDir, 'tests'), { recursive: true })
   const { nodes, edges } = g.toJSONL()
-  fs.writeFileSync(path.join(outDir, 'project.json'), JSON.stringify(project, null, 1))
+  fs.writeFileSync(path.join(outDir, 'project.json'), JSON.stringify({ ...project, model: { ...project.model, csnFile: undefined }, edmx: project.edmx && Object.keys(project.edmx) }, null, 1))
+  fs.writeFileSync(path.join(outDir, 'csn.json'), JSON.stringify({ ...csn, $sources: csn.$sources }))
+  // OData $metadata per service from the probe (what the UI receives)
+  if (project.edmx) { fs.mkdirSync(path.join(outDir, 'edmx'), { recursive: true }); for (const [n, f] of Object.entries(project.edmx)) if (fs.existsSync(f)) fs.copyFileSync(f, path.join(outDir, 'edmx', n + '.xml')) }
   fs.writeFileSync(path.join(outDir, 'graph', 'nodes.jsonl'), nodes)
   fs.writeFileSync(path.join(outDir, 'graph', 'edges.jsonl'), edges)
   fs.writeFileSync(path.join(outDir, 'slices', 'catalog.json'), JSON.stringify(slices.map(({ members, ...s }) => ({ ...s, members, status: 'planned' })), null, 2))

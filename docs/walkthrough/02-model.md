@@ -72,3 +72,5 @@ Goal: turn the app's CDS model into graph nodes and edges, with every fact point
 
 ## Output
 Graph nodes `Service`, `Role`, `ServiceEntity`, `Entity`, `Element`, `Action`, `Event`, `ExternalService`, and edges `requires`, `exposes`, `projects_on`, `composes`, `associates`, `has_element`, `has_action`, `declares_event`. All have `source: tool:csn`, `confidence: high`, and `file:line` evidence. The compiled CSN is also returned and passed to pieces 3, 4 and 5.
+
+The probe compiles the model once, with the app's own compiler, and discover keeps it as `run/csn.json` (with `$sources`), so later steps (`bin/atlas-facts.js`) read the same model instead of compiling again. It also writes the OData metadata per service with `cds.compile.to.edmx` to `run/edmx/<Service>.xml`: the `$metadata` document the UI really receives, with every annotation as the Fiori elements app sees it. It is kept as evidence; a check that every UI promise in piece 4 reaches it is a next step.

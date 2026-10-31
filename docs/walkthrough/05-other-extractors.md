@@ -38,7 +38,7 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 
 ## 5d. Existing tests (`tests.js`)
 
-- **Which files:** `*.test.js|ts`, `*.spec.js|ts` anywhere under the app (not `node_modules` or dot folders), plus `webapp/test/**/*Journey.js` (OPA5). Files under ignored folders (`xmpls`, from cap-sflight) are skipped.
+- **Which files:** the app's own Jest decides. `tests.js` `testFiles` runs `jest --listTests --json` with the app's Jest (`node_modules/.bin/jest` in the app or its parent folder), so the app's `testMatch`, `roots` and `testPathIgnorePatterns` apply. OPA5 journeys (`webapp/test/**/*Journey.js`) are added, because Jest does not run them. Only when Jest is not installed: the name pattern `*.test|spec.js|ts`, skipping `node_modules`, dot folders and ignored folders (`xmpls`).
 - **Per file:** number of `it(`, `test(` or `opaTest(` calls, the test names, the users they run as (`auth: { username: 'x' }` or `.auth('x')`), and the service entities they mention by **short name as a whole word**.
 - **Weak:** "mentions" is text matching, so a test that mentions `Travel` in a comment counts as touching the Travel entity. This is why coverage of existing tests is called approximate everywhere.
 
@@ -48,7 +48,7 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 
 ## 5f. CDS file dependencies and layers (`cds-deps.js`)
 
-- **Files:** every `.cds` file under the app, srv and db folders, except ignored folders.
+- **Files:** the app's own `.cds` files in the compiled model (`csn.$sources` from the probe). Fallback: every `.cds` file under the app, srv and db folders, except ignored folders.
 - **Layer of a file:** the folder it is in (app, srv or db). Anything else, including packages, is `ext`. The allowed direction is app → srv → db → ext.
 - **Edges:**
   - `using ... from '<file>'` gives `uses`. It is `bad` when a lower layer imports a higher one.
@@ -60,7 +60,8 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
   - app → db extend: `bad`
   - srv → db: `bad`
   - lower → higher: `bad`
-- **Weak:** text patterns, not the compiler. A `using` spread over several lines, or a target named through an alias the pattern does not see, can be missed.
+- **How `annotate` / `extend` are read:** with CAP's own parser, `cds.parse.cdl(src, {locations:true})`, which lists every extension with its target and line, also when it spans several lines. Only when the parser fails on a file: the old text pattern.
+- **Still text:** the `using ... from` lines (the parser resolves them away). On all three local pilots the parser gave the same edges as the patterns did.
 
 ## 5g. HANA-native objects (`native.js`)
 
@@ -89,7 +90,7 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 | plugin = `@cap-js/*` or `@sap/cds-*` | config.js | – |
 | HDI sources = folders with `.hdiconfig`, else `<db>/src` | layout.js `hdiDirs` | – |
 | users = effective `cds.requires.auth` (probe, app's own cds version); file:line from `package.json`, `.cdsrc.json` | auth.js, lib/project/cap.js | users only in `.cdsrc.yaml` get `@sap/cds defaults` as evidence |
-| test files `*.test|spec.js|ts`, `webapp/test/**/*Journey.js` | tests.js `isTest` | Mocha files without `.test` in the name are missed |
+| test files: `jest --listTests`; fallback `*.test|spec.js|ts`; plus `webapp/test/**/*Journey.js` | tests.js `testFiles`, `isTest` | Mocha or Vitest suites are only found by the fallback name pattern |
 | CDS files = the app's own files in the compiled model (`csn.$sources`); `xmpls` only matters in the fallback | lib/project/cap.js `cdsSources` | files the model never uses are not listed |
 | layer = folder (app, srv, db), else ext | layout.js `layerOf` | a domain model under srv is judged as service layer |
 | artifact name longer than 3 characters for code matches | native.js | – |
