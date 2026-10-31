@@ -34,6 +34,12 @@ For each service, each exposed entity (not generated, not `.texts`):
 - **Open entities without grants:** anonymous gets `n` when `restrict_all_services` is on, otherwise `a`. The value comes from the app's config and CAP's defaults (piece 5c), so the matrix follows the app.
 - **Tested cell:** an existing test that mentions the entity and runs as that user marks the cell as tested. This is approximate, because "mentions" is a text match (piece 5d).
 
+### D5. Measured in CI (addon `measured`)
+- **What:** `addons/measured/authz-probe.test.js` runs in the app's test runtime (`cds.test`, mocked users) and sends one request per matrix row as every user: GET, POST, PATCH, DELETE or the bound action, with keys from the seed data (`plan.json`, written by the pipeline).
+- **Verdict:** CAP's own auth handlers decide. 401/403 = `n`, 405 = `n405` (Capabilities), anything else (2xx, 400 validation, 404, 409 from a handler) = got past authorization = `y`.
+- **Compare:** each cell is `agree`, `differ` or `measured` (the static value was `a`). The MSR section and `pr/measured.md` show the differences; a KPI counts them.
+- **Why:** the static matrix models CAP's rules; the probe asks CAP. A difference is either a toolkit bug or a rule the model misses.
+
 ### D4. Personal data
 - An element name counts as personal data when it matches: `firstname`, `lastname`, `middlename`, `givenname`, `familyname`, `e-mail`/`email`, `phone`, `street`, `birth`, `iban`, `creditcard`, `ssn`, `passport`, `taxid` (case-insensitive).
 - **Assumes English field names.** German or abbreviated names (`Vorname`, `Strasse`, `tel`, `dob`) are not detected.

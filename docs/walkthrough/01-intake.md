@@ -42,7 +42,8 @@ Goal: find the CAP app in any GitHub repo and make it startable in a test, witho
 - **What:** any folder with `webapp/manifest.json` that is **inside the install root** but not under `<app>/app/`.
 - **Why inside the install root:** exercise repos (CodeJam) hold many unrelated UIs that belong to other solutions.
 - **Override:** `ui_paths`. `-` means none (used for capire/samples, where the UIs belong to other apps).
-- **Assumes:** standard UI5 layout `webapp/manifest.json`. A UI5 app with another `sourcePath` in `ui5.yaml` is not found.
+- **How:** `lib/project/ui5apps.js` asks SAP's Fiori tools library `@sap-ux/project-access` (Apache-2.0): `ui5.yaml` with `getWebappPath` (honours a custom `sourcePath`), then `findAllApps` (Fiori tools apps), then the plain `webapp/manifest.json` convention for apps neither of them knows. CAP Node.js projects inside a repo come from `findCapProjects` + `getCapProjectType`.
+- **Assumes:** a UI5 app has a `ui5.yaml` or the standard `webapp/manifest.json`.
 
 ### D7. Package manager
 - **What:** `pnpm-lock.yaml` → pnpm, else `yarn.lock` → yarn, else npm.

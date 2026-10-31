@@ -11,12 +11,12 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 
 ## 5a. UI5 apps (`ui5.js`)
 
-- **Which apps:** every `webapp/manifest.json` under the app folder (from `cds.env.folders`, default `app/`) and under the extra folders from `--ui` (piece 1 finds them in monorepos).
+- **Which apps:** found with `@sap-ux/project-access` (piece 1 D6): every UI5 app under the app folder (from `cds.env.folders`, default `app/`) and under the extra folders from `--ui` (piece 1 finds them in monorepos).
 - **App node** `ui5app:<sap.app.id>` with the minimum UI5 version, the libraries, and whether it is Fiori elements (the `sap.fe.templates` library is listed).
 - **Data sources → services:** each OData data source's `uri` (slashes trimmed, one leading `/`) is matched to the service whose path (piece 2) it **ends with**. No match makes it an `ExternalService` named by its URI.
   - Assumes the UI calls the CAP service under its own path. An approuter route that rewrites the path (`/api/` → `/odata/v4/travel/`) breaks the match.
 - **Routes:** each `routing.routes` entry, its first target, and the target's `entitySet` or `contextPath` (Fiori elements). The default model's data source decides the service. `navigation.*.detail.route` gives `navigates_to`.
-- **Views and fragments:** each `*.view.xml` and `*.fragment.xml` in the webapp. Bindings are matched with a text pattern (`"/Entity` or `{path: '/Entity`). Event attributes `press`, `change`, `select`, `liveChange`, `search` and `submit` become `UIHandler` nodes. These are `confidence: medium`.
+- **Views and fragments:** each `*.view.xml` and `*.fragment.xml` in the webapp, parsed as XML with `fast-xml-parser` (MIT). Bindings come from attribute values that start with `/Entity` or `{path: '/Entity`. An attribute is an event when its name is a UI5 event: the names come from UI5's own type definitions (`@openui5/types`, plus `@sapui5/types` when installed), every `attach<Event>` method of every control, read with the TypeScript compiler and cached (767 names in 1.148). Its value (a controller method, `.onX`, or `cmd:`) becomes a `UIHandler` node. These are `confidence: medium`.
   - **Not covered:** JS views, controller logic, bindings built in code, i18n.
 
 ## 5b. Configuration (`config.js`)
@@ -27,7 +27,8 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 - **Not services:** `db`, `auth`, `queue`, `middlewares`, `scheduling`, `outbox` (CAP's own runtime entries).
 - **Descriptors:** whether `mta.yaml`, `xs-security.json` and `app/router/xs-app.json` exist in the app folder.
 - **Plugins:** dependencies starting with `@cap-js/` or `@sap/cds-`.
-- **HDI artifacts:** every `*.hdb*` file under a folder that holds a `.hdiconfig` (the HDI deployer's own marker; outermost wins, `gen/` skipped), else under `<db>/src`, becomes a `DbArtifact`.
+- **HDI artifacts:** under a folder that holds a `.hdiconfig` (the HDI deployer's own marker; outermost wins, `gen/` skipped), every file whose suffix that `.hdiconfig` lists under `file_suffixes` becomes a `DbArtifact`; without a `.hdiconfig`, every `*.hdb*` file under `<db>/src`.
+- **Remote API or broker:** decided by the `impl` CAP resolves for the required service (`cds env`): CAP's remote service class means a remote API, a messaging class means a broker. The kind lists stay as fallback. This stopped `audit-log` from counting as a remote API.
 
 ## 5c. Mock users and roles (`auth.js`)
 
@@ -65,11 +66,12 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 
 ## 5g. HANA-native objects (`native.js`)
 
+- **Calculation views** are parsed as XML (`fast-xml-parser`), not with text patterns. SQL artifacts keep text patterns: there is no open-source HANA SQLScript parser, and `cds.parse.cql` rejects plain `UPDATE` and accepts HANA's `DUMMY`, so it cannot tell them apart.
 - **Name of an artifact:** read from its content. Calculation views give the scenario id, synonyms the first key. SQL artifacts give the name after `CREATE PROCEDURE|FUNCTION|VIEW|SEQUENCE|TABLE|TRIGGER|ROLE` (comments removed). The fallback is the file name.
-- **What it reads:** calculation views give `resourceUri` entries, synonyms give `target.object`, SQL gives every name after `FROM`, `JOIN`, `INTO`, `UPDATE` or `CALL`. A name equal to an entity's SQL name (dots to `_`, upper case) gives a `reads` edge. A name equal to another artifact gives `depends_on`.
+- **What it reads:** calculation views give `resourceUri` entries, synonyms give `target.object`, SQL gives every name after `FROM`, `JOIN`, `INTO`, `UPDATE` or `CALL`. A name equal to an entity's SQL name gives a `reads` edge. SQL names come from the app's own compiler (`getArtifactCdsPersistenceName` for HANA, with the app's `sql_mapping`), written by the probe to `run/project.json`; dots to `_`, upper case only as fallback. A name equal to another artifact gives `depends_on`.
 - **`@cds.persistence.exists` entities** are linked to the artifact with their SQL name or short name (`backed_by`). Without one they are marked `nativeMissing`.
 - **Code that names an artifact:** any `.js`/`.ts` source file that quotes an artifact name longer than 3 characters gives `uses_native`.
-- **Database model per profile:** `cds.requires.db["[profile]"].model` in `package.json` becomes a `DbVariant` per profile, with its `.cds` files.
+- **Database per profile:** the probe asks `cds.env` for every profile the app declares (`[x]` keys in `package.json` and `.cdsrc.json`) and records `requires.db` kind, model and impl. Each profile with its own model becomes a `DbVariant`.
 
 ## 5h. Lint (`lint.js`)
 
