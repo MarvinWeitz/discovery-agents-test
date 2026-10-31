@@ -361,6 +361,8 @@ jobs:
           mkdir -p out
           node .github/scripts/result.js out "$RUN_SLUG"
           node .github/scripts/summary.js out "$RUN_SLUG" "Discovery: $RUN_REPO" >> "$GITHUB_STEP_SUMMARY"
+          # addon snippets (measured, rules, runtime, ...), as on the SFlight PR comment
+          for f in "out/$RUN_SLUG"/pr/*.md; do [ -f "$f" ] && { echo; cat "$f"; } >> "$GITHUB_STEP_SUMMARY"; done
 
       - uses: actions/upload-artifact@v4
         if: always() && steps.target.outputs.slug
