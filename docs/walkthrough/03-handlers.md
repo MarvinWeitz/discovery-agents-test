@@ -1,7 +1,7 @@
 ---
 piece: 3 of 12
 title: Parse the Node.js handlers
-code: lib/extract/handlers/ (index, binding, names, registrations, body, file-scan, vocabulary), regex.js (old text matcher, only with --regex)
+code: lib/extract/handlers/ (index, binding, names, registrations, body, file-scan, vocabulary)
 runs: bin/discover.js, right after piece 2
 ---
 
@@ -50,7 +50,7 @@ Tried in this order. The first hit wins:
 | `req.warn`, `req.info` | `Rule` kind `message` | same fields |
 | `req.data.x = ...` | `Rule` kind `derivation` | field, expression, guard |
 | CQL `SELECT/INSERT/UPSERT/UPDATE/DELETE` chains | `reads` / `writes` edge | target from `.from/.into/.entity` or the first argument, `where`/`and` (template or fluent), values from `.with/.set/.data/.entries`; `req.subject`/`req.target` means the handler's target |
-| a write with a `where` that compares something | extra `Rule` kind `conditional-write` | only if the where has `!= <> > < = null` and is not just a key (`{...}`, `UUID =`, a single word) |
+| a write with a `where` that compares something | extra `Rule` kind `conditional-write` | the where clause is parsed with CAP's `cds.parse.expr` (CXN; `${x}` placeholders become `?`); a rule when it compares a field that is not a key. Regex only when CAP cannot parse it |
 | `cds.run(`UPDATE ${X} ...`)` | `reads`/`writes` per interpolated entity | the first entity is the write target for non-SELECT |
 | `x.emit('E')`, `x.send('E')` on the own service | `emits` edge | to the declared event of the service if there is one |
 | `<connected>.read/create/insert/upsert/update/delete/run/send/emit/get/post/put/patch(...)` | `calls_service` edge, or `reads`/`writes` when the service is `db` | entity from the first argument |
@@ -69,6 +69,9 @@ Everything above reads code. In CI the addon `runtime` also starts the app with 
 - It writes `run/runtime.json`: registrations, and every served service with its real path.
 - `addons/runtime/index.js` matches each registration to a parsed handler by file, phase and line (±2 lines). ✅ found by both, ❗ registered but the parser missed it, ⚠️ parsed but not registered at startup (conditional, registered later, or dead code). Service paths are compared with piece 2 the same way.
 - Output: section RTM in the atlas, topic `16-rtm-runtime-check.md`, and `pr/runtime.md` in the PR comment.
+
+### Conditions as data (`lib/analyse/conditions.js`)
+- Guards (`if`, `else`, ternary, `&&`) are read from the TypeScript AST and where clauses from CAP's CXN, into `conds`: `[{ lhs, op, rhs, literal, symbol }]`, outermost guard first, `else` negated. Piece 4 compares these with the UI's conditions (also parsed with `cds.parse.expr`) instead of matching text.
 
 ## Every hard-coded fact in this piece
 

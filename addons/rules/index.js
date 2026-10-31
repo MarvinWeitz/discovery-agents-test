@@ -19,7 +19,7 @@ function facts(D, { g, csn, root, out }) {
   let n = D.RISKS.filter(r => r.src !== 'agent').length
   const added = acc.flatMap(r => r.hits.map(h => ({ src: 'rule', key: `rule:${r.key}@${h.ev}`, id: 'G' + ++n, t: h.t, d: h.d, i: r.i, l: r.l, lay: r.lay, ev: h.ev, test: r.test })))
   D.RISKS = [...D.RISKS.filter(r => r.src !== 'agent'), ...added, ...D.RISKS.filter(r => r.src === 'agent' && !retired.has(r.id))]
-  D.RULES = { rules: res.map(({ key, title, status, from, hits, reproduces, error }) => ({ key, title, status, from, hits, reproduces, error })) }
+  D.RULES = { rules: res.map(({ key, title, status, from, hits, reproduces, error, via }) => ({ key, title, status, from, hits, reproduces, error, via })) }
   const drafts = res.filter(r => r.status === 'draft'), hit = drafts.filter(r => r.hits.length)
   const take = `${res.length} rules drafted from agent findings: ${acc.length} accepted, ${drafts.length} waiting for review. ${hit.length} drafts fire on this app${hit.some(r => r.reproduces.length) ? `, reproducing agent finding${hit.flatMap(r => r.reproduces).length > 1 ? 's' : ''} <b>${[...new Set(hit.flatMap(r => r.reproduces))].join(', ')}</b> without AI` : ''}.`
   const i = D.SECTIONS.findIndex(s => s.code === 'RLS'), sec = { code: 'RLS', name: 'Rules from agent findings', take, views: [{ k: 'A', label: 'Rule cards' }] }
@@ -27,15 +27,15 @@ function facts(D, { g, csn, root, out }) {
   D.META.sources = { ...D.META.sources, RLS: 'generated (rules library)' }
   if (out) {
     fs.mkdirSync(path.join(out, 'pr'), { recursive: true })
-    fs.writeFileSync(path.join(out, 'pr', 'rules.md'), ['### Rules from agent findings', '', '| Rule | Status | Hits here | Reproduces |', '| --- | --- | --- | --- |',
-      ...res.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '`').join(', ') || '–'} | ${r.reproduces.join(', ') || '–'} |`), ''].join('\n'))
+    fs.writeFileSync(path.join(out, 'pr', 'rules.md'), ['### Rules from agent findings', '', '| Rule | Status | Run by | Hits here | Reproduces |', '| --- | --- | --- | --- | --- |',
+      ...res.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${r.via} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '`').join(', ') || '–'} | ${r.reproduces.join(', ') || '–'} |`), ''].join('\n'))
   }
 }
 
 const topics = {
   RLS: D => ['Rules drafted by agents from their own findings, reviewed and accepted like code. A draft only reports; an accepted rule adds risks and retires the agent finding it reproduces. Each rule has a unit test in `addons/rules/library/<key>.test.js`.', '',
-    '| Rule | Status | Drafted from | Hits on this app | Reproduces agent finding |', '| --- | --- | --- | --- | --- |',
-    ...D.RULES.rules.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${cell(r.from)} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '` ' + cell(h.t)).join('<br>') || '–'} | ${r.reproduces.join(', ') || '–'} |`)].join('\n')
+    '| Rule | Status | Drafted from | Run by | Hits on this app | Reproduces agent finding |', '| --- | --- | --- | --- | --- | --- |',
+    ...D.RULES.rules.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${cell(r.from)} | ${r.via || 'own detect()'} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '` ' + cell(h.t)).join('<br>') || '–'} | ${r.reproduces.join(', ') || '–'} |`)].join('\n')
 }
 
 module.exports = { facts, topics, views: path.join(__dirname, 'view.js') }

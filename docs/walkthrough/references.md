@@ -34,6 +34,11 @@ For each decision that follows CAP, this page names the CAP documentation sectio
 | `annotate` / `extend` per file, with target and line | [Parsing and Compiling Models](https://cap.cloud.sap/docs/node.js/cds-compile) → cds.parse.cdl() | `lib/compile/parse.js` (calls `@sap/cds-compiler` `parse.cdl`) | cds-deps.js `extensionsOf` |
 | the compiled model, reused by later steps | same page → cds.load(); [CSN](https://cap.cloud.sap/docs/cds/csn) | `lib/compile/load.js` | probe.js → `run/csn.json`, cap.js `compiledModel` |
 | OData metadata per service (what the UI receives as `$metadata`) | same page → cds.compile.to.edmx(); [Serving OData APIs](https://cap.cloud.sap/docs/advanced/odata) | `lib/compile/to/edm.js` | probe.js → `run/edmx/<Service>.xml` |
+| conditions as data (CXN) | [CXN](https://cap.cloud.sap/docs/cds/cxn); [Parsing](https://cap.cloud.sap/docs/node.js/cds-compile) → cds.parse.expr() | `lib/compile/parse.js` | conditions.js, handlers/body.js, reflexion-ui.js |
+| builtin types | [Reflection](https://cap.cloud.sap/docs/node.js/cds-reflect) → cds.linked, `_type` | `lib/linked/` | model.js `builtin` |
+| SQL names of entities | [Databases](https://cap.cloud.sap/docs/guides/databases) → Naming Mode (`sql_mapping`) | `@sap/cds-compiler` `getArtifactCdsPersistenceName` | probe.js → `sqlNames`, native.js |
+| what the UI receives: `$metadata` annotations | [Serving OData APIs](https://cap.cloud.sap/docs/advanced/odata); Fiori tools libraries `@sap-ux/edmx-parser`, `@sap-ux/annotation-converter` (github.com/SAP/open-ux-odata) | – | metadata.js |
+| Capabilities restrictions answered with 405; Core.Computed / ReadOnly ignored on input | [Providing Services](https://cap.cloud.sap/docs/guides/providing-services) → @readonly, @insertonly; Input Validation | `libx/_runtime/common/generic/auth/capabilities.js`; `lib/req/validate.js` (163–164) | metadata.js verdict `framework` |
 | personal data annotations | [Annotating Personal Data](https://cap.cloud.sap/docs/guides/data-privacy/annotations) → @PersonalData (IsPotentiallyPersonal, IsPotentiallySensitive) | – | model.js `personalFields`, authz.js |
 
 ## Runtime
@@ -44,13 +49,17 @@ For each decision that follows CAP, this page names the CAP documentation sectio
 | custom `server.js` (root, else srv folder; `server.ts` in a TypeScript run) | [Bootstrapping Servers](https://cap.cloud.sap/docs/node.js/cds-server) → Custom server.js; Lifecycle Events → bootstrap | `bin/serve.js` `_local_server_js` | probe.js `server` |
 | TypeScript implementations | [Using TypeScript](https://cap.cloud.sap/docs/node.js/typescript) → Using cds-tsx; Testing with ts-jest (`CDS_TYPESCRIPT`) | `lib/srv/factory.js` `exts` | probe.js `implOf` |
 | every handler the app registers, with its call site | [Core Services](https://cap.cloud.sap/docs/node.js/core-services) → srv.on, before, after (Registering Event Handlers) | `lib/srv/srv-handlers.js` `EventHandlers.prototype.register` (all `srv.before/on/after/reject` end here; not a public API) | addons/runtime/record.js |
+| requests the tests send, without patching | [Core Services](https://cap.cloud.sap/docs/node.js/core-services) → srv.before/after('*'), srv.on('error'); [Lifecycle Events](https://cap.cloud.sap/docs/node.js/cds-server) → served | `lib/srv/srv-handlers.js` | addons/measured/recorder.js |
+| authorization answered by CAP (401, 403, 405) | [Authorization](https://cap.cloud.sap/docs/guides/security/authorization) → @restrict, @requires; [Authentication](https://cap.cloud.sap/docs/node.js/authentication) → Mocked Authentication | `libx/_runtime/common/generic/auth/` | addons/measured/authz-probe.test.js |
 | tests under `cds.test` (NODE_ENV=test → `test` profile) | [Testing with cds.test](https://cap.cloud.sap/docs/node.js/cds-test) → cds.test(); Dos and Don'ts | `lib/test/` | probe.js `test` profile, generated tests |
 
 ## Data
 
 | Decision | CAP docs | @sap/cds source | Used in |
 |---|---|---|---|
+| seed file parsing (CSV and JSON) | same page → Providing Initial Data | `lib/compile/parse.js` `csv` (cds.parse.csv) | seed-data.js |
 | CSV seed files: `db/data`, `test/data`, any `data/` (and legacy `csv/`) next to model files; `.csv`, `.json`; `_texts` handling | [Using Databases](https://cap.cloud.sap/docs/guides/databases) → Providing Initial Data; Location of CSV Files | `lib/dbs/cds-deploy.js` `deploy.resources` | cap.js `seedFiles` |
+| HDI file types per folder (`.hdiconfig` → `file_suffixes`) | `@sap/hdi-deploy` README → .hdiconfig | – | config.js `hdiSuffixes` |
 | HDI source folders (`src/`, `cfg/`, `.hdiconfig`) | SAP HANA Deployment Infrastructure: `@sap/hdi-deploy` package README (npm page could not be fetched on 2026-10-31; check the README in `node_modules/@sap/hdi-deploy` of an app that uses it) | – | layout.js `hdiDirs` |
 
 ## Tests
@@ -59,6 +68,28 @@ For each decision that follows CAP, this page names the CAP documentation sectio
 |---|---|---|---|
 | which files are the app's tests | [Jest CLI](https://jestjs.io/docs/cli) → --listTests; [Configuring Jest](https://jestjs.io/docs/configuration) → testMatch, testPathIgnorePatterns, roots | `jest-cli` (`--listTests`), the app's own Jest | tests.js `testFiles` |
 | OPA5 journeys (not run by Jest) | [UI5 OPA5](https://ui5.sap.com/#/topic/2696ab50faad458f9b4027ec2f9b884d) → Journeys; [Fiori elements test library](https://ui5.sap.com/#/api/sap.fe.test) | – | tests.js `isTest` |
+
+## UI5 and Fiori tools
+
+| Decision | Docs | Source | Used in |
+|---|---|---|---|
+| which folders are UI5 apps; which are CAP Node.js projects | `@sap-ux/project-access` README (github.com/SAP/open-ux-tools, packages/project-access) → findAllApps, getWebappPath, findCapProjects, getCapProjectType | the package | ui5apps.js, detect.js |
+| UI5 event names | [UI5 TypeScript](https://sap.github.io/ui5-typescript/) → `@openui5/types` | `attach<Event>` methods in `types/*.d.ts` | ui5-events.js |
+
+## Rules
+
+| Decision | Docs | Source | Used in |
+|---|---|---|---|
+| rule format, metavariables, generic mode | [Opengrep](https://github.com/opengrep/opengrep) (Semgrep CE rule syntax: semgrep.dev/docs/writing-rules/rule-syntax) | – | addons/rules/opengrep |
+| rule tests (`ruleid:` / `ok:`) | Semgrep docs → Testing rules | – | js.js, cds.cds |
+| `metavariable-regex` is left-anchored | Semgrep docs → metavariable-regex ("matches from the start") | – | js.yml |
+
+## Checked and left as they are (2026-10-31)
+
+- **`@mermaid-js/mermaid-cli` for report diagrams:** `render-diagrams.js` already calls Mermaid's own `mermaid.render` in Playwright's Chromium; the CLI would add Puppeteer and a second Chromium for the same result.
+- **`graphology` for the graph:** the slice cut and ranking follow CAP relations (compositions, projections, handlers); centrality is a degree sum. A graph library would replace a few loops, not a decision.
+- **`srv.handlers` instead of wrapping `register`:** `srv.handlers` lists the handler functions but not the line that registered them, which the RTM comparison needs.
+- **Joern for data flow:** not added. Opengrep's taint mode covers flows inside one handler; cross-file flow would need Joern (JVM, Apache-2.0) as an optional CI addon.
 
 ## Where the docs and the code differ (checked 2026-10-31)
 

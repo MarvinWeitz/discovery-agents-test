@@ -49,6 +49,11 @@ The method is a reflexion model (Murphy and Notkin): the annotations are the int
 - `@readonly`, `@mandatory` and `@assert.range` on elements (or on their type), and `@assert.range` on action parameters, get verdict `framework`. CAP's generic handlers check these.
 - Skipped on `@readonly` and `@cds.autoexpose` entities, where they promise nothing. Managed fields (`createdAt`, `createdBy`, `modifiedAt`, `modifiedBy`) and draft fields (`IsActiveEntity`, `HasActiveEntity`, `HasDraftEntity`, `Draft*`, `LastChanged*`) are skipped.
 
+### D7b. What the UI really receives (`lib/analyse/metadata.js`)
+- **What:** the `$metadata` CAP generates per service (`run/edmx/<Service>.xml`, piece 2) is read with SAP's Fiori tools libraries `@sap-ux/edmx-parser` + `@sap-ux/annotation-converter` (Apache-2.0).
+- Every promise from D3 to D6 gets `sent`: true when the annotation reaches `$metadata`, false when it stays in the CDS model (the atlas adds "(not in $metadata)").
+- Promises only `$metadata` shows become rules with verdict `framework`: `capabilities` (Insert/Update/Delete restrictions false; CAP answers 405) and `computed` (`Core.Computed`, `Core.Immutable`, static `FieldControl #ReadOnly`; CAP ignores client values). Code lists, generated and auto-exposed entities are skipped.
+
 ### D8. Evidence for the UI side
 - The CSN does not give the line of an annotation. `lib/project/sources.js` searches the CDS files of the app, srv and db folders (in that order) for the annotation name. When a second word is given (the action or element name), that word must appear in the 4 lines above or the line below.
 - **Weak:** the first textual match wins, so with several similar annotations the line can point at the wrong one.

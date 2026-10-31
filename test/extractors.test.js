@@ -68,9 +68,9 @@ test('cds.connect.to with a class constant, native SQL and a db-kind branch', ()
 test('HDI artifacts: names, sources, backing entities and code that calls them (CodeJam)', () => {
   assert.strictEqual(declaredName('PROCEDURE "sleep" ( )\n LANGUAGE SQLSCRIPT AS BEGIN END', 'hdbprocedure'), 'sleep')
   assert.strictEqual(declaredName('<Calculation:scenario xmlns:x="y" id="V_INTERACTION" a="b">', 'hdbcalculationview'), 'V_INTERACTION')
-  assert.deepStrictEqual(sourcesOf('<resourceUri>APP_HEADERS</resourceUri><resourceUri>APP_ITEMS</resourceUri>', 'hdbcalculationview'), ['APP_HEADERS', 'APP_ITEMS'])
+  assert.deepStrictEqual(sourcesOf('<Calculation:scenario id="V"><dataSources><DataSource id="H"><resourceUri>APP_HEADERS</resourceUri></DataSource><DataSource id="I"><resourceUri>APP_ITEMS</resourceUri></DataSource></dataSources></Calculation:scenario>', 'hdbcalculationview'), ['APP_HEADERS', 'APP_ITEMS'])
   const root = app({
-    'db/src/V_INTERACTION.hdbcalculationview': '<Calculation:scenario id="V_INTERACTION"><DataSource id="H"><resourceUri>APP_HEADERS</resourceUri></DataSource>',
+    'db/src/V_INTERACTION.hdbcalculationview': '<Calculation:scenario id="V_INTERACTION"><dataSources><DataSource id="H"><resourceUri>APP_HEADERS</resourceUri></DataSource></dataSources></Calculation:scenario>',
     'db/src/sleep.hdbprocedure': 'PROCEDURE "sleep" ( ) AS BEGIN END',
     'srv/cat.js': "module.exports = srv => srv.on('sleep', () => db.run('Call \"sleep\"()'))",
     'package.json': JSON.stringify({ cds: { requires: { db: { '[production]': { model: 'db/hana' }, '[development]': { model: 'db/sqlite' } } } } }),
@@ -85,4 +85,19 @@ test('HDI artifacts: names, sources, backing entities and code that calls them (
   assert.deepStrictEqual(edges(g, 'reads'), ['dbartifact:db/src/V_INTERACTION.hdbcalculationview -> entity:app.Headers'])
   assert.deepStrictEqual(edges(g, 'uses_native'), ['file:srv/cat.js -> dbartifact:db/src/sleep.hdbprocedure'])
   assert.strictEqual(r.variants, 2)
+})
+
+test('if-guards become comparisons from the syntax tree; the else branch is negated', () => {
+  const root = app({ 'srv/s.js': [
+    "module.exports = srv => srv.on('accept', 'Travels', async req => {",
+    "  const t = await SELECT.one.from('Travels')",
+    "  if (t.status === 'A') req.reject(400, 'already accepted')",
+    "  else if (!(t.fee == null)) req.warn('fee set')",
+    "})"].join('\n') })
+  const g = new Graph('t')
+  g.node('service:S', 'Service', { name: 'S' }); g.node('svcentity:S.Travels', 'ServiceEntity', { name: 'S.Travels', service: 'S' })
+  extractHandlersAst(root, g, { definitions: { S: { kind: 'service', '@impl': './s.js', $location: { file: 'srv/s.cds' } } } })
+  const rules = g.byType('Rule').sort((a, b) => a.id.localeCompare(b.id))
+  assert.deepStrictEqual(rules[0].props.conds, [{ lhs: 't.status', op: '=', rhs: 'A', literal: true }])
+  assert.deepStrictEqual(rules[1].props.conds.map(c => [c.lhs, c.op, c.rhs]), [['t.status', '!=', 'A'], ['t.fee', '!=', null]])
 })

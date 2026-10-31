@@ -17,5 +17,6 @@ const path = require('path')
 const { detect } = require('../../lib/project/detect')
 
 const [repoDir, appArg = '', uiArg = '', slug = ''] = process.argv.slice(2)
-const out = detect(repoDir, { appArg, uiArg, slug, curatedDir: path.join(__dirname, '../../curated') })
-for (const [k, v] of Object.entries(out)) console.log(`${k}=${v}`)
+detect(repoDir, { appArg, uiArg, slug, curatedDir: path.join(__dirname, '../../curated') })
+  .then(out => { for (const [k, v] of Object.entries(out)) console.log(`${k}=${v}`) })
+  .catch(e => { console.error(e.message); process.exit(1) })

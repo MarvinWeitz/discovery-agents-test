@@ -20,9 +20,16 @@ const nkey = n => hasLine(n.id) ? `${n.type}|${noLine(n.id)}|${stable({ ...n.pro
 
 function graphDiff(a, b) {
   const A = new Map(a.nodes.map(n => [nkey(n), n])), B = new Map(b.nodes.map(n => [nkey(n), n]))
-  const added = [...B].filter(([k]) => !A.has(k)).map(([, n]) => n), removed = [...A].filter(([k]) => !B.has(k)).map(([, n]) => n)
+  let added = [...B].filter(([k]) => !A.has(k)).map(([, n]) => n), removed = [...A].filter(([k]) => !B.has(k)).map(([, n]) => n)
+  const keysOf = (p, q) => Object.keys({ ...p, ...q }).filter(x => stable(p[x]) !== stable(q[x]))
   const changed = [...B].filter(([k, n]) => A.has(k) && stable(A.get(k).props) !== stable(n.props))
-    .map(([k, n]) => ({ id: n.id, type: n.type, keys: Object.keys({ ...A.get(k).props, ...n.props }).filter(x => stable(A.get(k).props[x]) !== stable(n.props[x])) }))
+    .map(([k, n]) => ({ id: n.id, type: n.type, keys: keysOf(A.get(k).props, n.props) }))
+  // a line-numbered node whose content changed but whose id stayed is a change, not a removal plus an addition
+  const addedById = new Map(added.map(n => [n.id, n]))
+  const same = removed.filter(n => addedById.get(n.id)?.type === n.type)
+  for (const n of same) changed.push({ id: n.id, type: n.type, keys: keysOf(n.props, addedById.get(n.id).props) })
+  const sameIds = new Set(same.map(n => n.id))
+  added = added.filter(n => !sameIds.has(n.id)); removed = removed.filter(n => !sameIds.has(n.id))
   const moved = new Map([...B].filter(([k, n]) => A.has(k) && A.get(k).id !== n.id).map(([k, n]) => [A.get(k).id, n.id]))
   const ek = e => `${moved.get(e.from) || e.from}|${e.rel}|${moved.get(e.to) || e.to}|${stable(e.props)}`
   const EA = new Set(a.edges.map(ek)), EB = new Set(b.edges.map(e => `${e.from}|${e.rel}|${e.to}|${stable(e.props)}`))

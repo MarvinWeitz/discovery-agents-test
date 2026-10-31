@@ -32,7 +32,10 @@ function afterTests({ out, results }) {
   const file = path.join(out, 'atlas-data.json')
   const D = readJson(file); if (!D?.COVERAGE) return false
   const manifest = readJson(path.join(out, 'run', 'tests', 'generated', 'manifest.json'))
-  const classes = classify(D.COVERAGE.classes, manifest, results)
+  // requests the app's own tests sent, recorded in CI by addon measured (when it is on)
+  let requests = null
+  try { const r = require('../measured/read').readRequests(path.join(out, 'run', 'measured')); if (r.length) requests = r } catch {}
+  const classes = classify(D.COVERAGE.classes, manifest, { ...results, requests })
   D.COVERAGE = { ...summarize(classes, D.RISKS, !!results.generated), classes }
   apply(D)
   fs.writeFileSync(file, JSON.stringify(D, null, 1))

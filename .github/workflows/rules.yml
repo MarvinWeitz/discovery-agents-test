@@ -30,3 +30,14 @@ jobs:
       - name: Rule tests
         if: steps.flag.outputs.on == 'true'
         run: node --test 'addons/rules/library/*.test.js'
+      - name: Install Opengrep
+        if: steps.flag.outputs.on == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/install-opengrep.sh
+      # the same rules in Opengrep format, tested with Opengrep's own test runner (ruleid: / ok: comments)
+      - name: Opengrep rule tests
+        if: steps.flag.outputs.on == 'true'
+        run: |
+          command -v opengrep || { echo "::warning::Opengrep not installed, rule tests skipped"; exit 0; }
+          opengrep scan --test addons/rules/opengrep
