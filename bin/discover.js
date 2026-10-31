@@ -8,7 +8,6 @@ const cds = require('@sap/cds')
 const { Graph } = require('../lib/graph')
 const { cap } = require('../lib/project/cap')
 const { extractModel } = require('../lib/extract/model')
-const { extractHandlers } = require('../lib/extract/handlers/regex')
 const { extractHandlersAst } = require('../lib/extract/handlers')
 const { reflexionUi } = require('../lib/analyse/reflexion-ui')
 const { extractUI5 } = require('../lib/extract/ui5')
@@ -26,7 +25,6 @@ const { renderDiagrams } = require('../lib/report/render-diagrams')
 
 async function main() {
   const args = process.argv.slice(2)
-  const regex = args.includes('--regex') // old text-matching extractor, kept for comparison
   const ui = args.indexOf('--ui')
   const uiDirs = ui >= 0 ? args[ui + 1].split(',') : [] // extra UI5 project folders, relative to the app root
   const [root, outDir] = args.filter((a, i) => !a.startsWith('--') && (ui < 0 || i !== ui + 1)).map(p => path.resolve(p))
@@ -40,7 +38,7 @@ async function main() {
   const project = cap(root)                                                    // 1b  what CAP says: config per profile, model files, endpoints, impls, seed data
   const g = new Graph(run)
   const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
-  const handlers = (regex ? extractHandlers : extractHandlersAst)(root, g, csn) // 3   handlers, rules, reads/writes, events
+  const handlers = extractHandlersAst(root, g, csn)                            // 3   handlers, rules, reads/writes, events
   const uiRules = reflexionUi(root, g, csn)                                   // 4   UI annotations vs handler rules
   extractUI5(root, g, uiDirs)                                                 // 5a  UI5 apps, routes, views
   const config = extractConfig(root, g)                                       // 5b  remote services, brokers, HDI files

@@ -1,7 +1,7 @@
 ---
 piece: 3 of 12
 title: Parse the Node.js handlers
-code: lib/extract/handlers/ (index, binding, names, registrations, body, file-scan, vocabulary), regex.js (old text matcher, only with --regex)
+code: lib/extract/handlers/ (index, binding, names, registrations, body, file-scan, vocabulary)
 runs: bin/discover.js, right after piece 2
 ---
 
