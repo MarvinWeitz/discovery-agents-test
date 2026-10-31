@@ -86,3 +86,18 @@ test('HDI artifacts: names, sources, backing entities and code that calls them (
   assert.deepStrictEqual(edges(g, 'uses_native'), ['file:srv/cat.js -> dbartifact:db/src/sleep.hdbprocedure'])
   assert.strictEqual(r.variants, 2)
 })
+
+test('if-guards become comparisons from the syntax tree; the else branch is negated', () => {
+  const root = app({ 'srv/s.js': [
+    "module.exports = srv => srv.on('accept', 'Travels', async req => {",
+    "  const t = await SELECT.one.from('Travels')",
+    "  if (t.status === 'A') req.reject(400, 'already accepted')",
+    "  else if (!(t.fee == null)) req.warn('fee set')",
+    "})"].join('\n') })
+  const g = new Graph('t')
+  g.node('service:S', 'Service', { name: 'S' }); g.node('svcentity:S.Travels', 'ServiceEntity', { name: 'S.Travels', service: 'S' })
+  extractHandlersAst(root, g, { definitions: { S: { kind: 'service', '@impl': './s.js', $location: { file: 'srv/s.cds' } } } })
+  const rules = g.byType('Rule').sort((a, b) => a.id.localeCompare(b.id))
+  assert.deepStrictEqual(rules[0].props.conds, [{ lhs: 't.status', op: '=', rhs: 'A', literal: true }])
+  assert.deepStrictEqual(rules[1].props.conds.map(c => [c.lhs, c.op, c.rhs]), [['t.status', '!=', 'A'], ['t.fee', '!=', null]])
+})
