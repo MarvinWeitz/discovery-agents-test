@@ -108,7 +108,7 @@ Goal: find the CAP app in any GitHub repo and make it startable in a test, witho
 | UIs counted only inside the install root, not under `<app>/app` | `uiProjects` | – |
 | pnpm > yarn > npm | `packageManager` | – |
 | TypeScript = `.ts` under the srv folder | `hasTypeScript` | TS handlers elsewhere not flagged |
-| token auth kinds `xsuaa`, `ias`, `jwt`; dev profiles `[development]`, `[test]` | `TOKEN_AUTH`, `DEV_PROFILES` | other profiles ignored |
+| mock auth needed = auth kind `xsuaa`, `ias` or `jwt` in CAP's `test` profile (probe); text of `[development]`/`[test]` only as fallback | `needsMockAuth`, `TOKEN_AUTH` | – |
 | `@sap/cds@9` fallback, sqlite 2 for cds ≥ 9 else 1, `jest@29` | discover.yml shim step | cds 7 or 8 apps get mismatched runtimes only if the install failed |
 | nested cds search depth 3 | repair-install.js | deeper copies stay |
 | only `openapi-generator` scripts run | discover.yml | other generators not run |

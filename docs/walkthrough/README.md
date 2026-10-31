@@ -4,7 +4,7 @@ Each piece explains its decisions (what, why, what it assumes), lists every hard
 
 | Piece | Step | Code | AI? |
 |---|---|---|---|
-| [00](00-assumptions.md) | **Every assumption in one table**, and the open fixes | `lib/project/` | – |
+| [00](00-assumptions.md) | **Every assumption, ranked**, who decides it (CAP via the probe, or a fallback), the open fixes | `lib/project/` | – |
 | [01](01-intake.md) | Intake: clone, find the app, install, repair, start | `.github/workflows/discover.yml`, `lib/project/detect.js` | no |
 | [02](02-model.md) | Compile the CDS model | `lib/extract/model.js` | no |
 | [03](03-handlers.md) | Parse the Node.js handlers | `lib/extract/handlers/` | no |

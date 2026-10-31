@@ -51,7 +51,7 @@ Goal: turn every class from piece 8 that has a concrete request into a test that
 | test files live two levels below the app root | gen-tests.js header line | copying elsewhere breaks the `cds.test` path |
 | `--with-mocks` | gen-tests.js | – |
 | success statuses `[200, 201, 204]` | gen-tests.js `okStatus` | – |
-| action parameters all set to `10` | gen-tests.js `bodyFor` | non-numeric parameters get a wrong body |
+| action parameter value per CDS type: numbers 10, strings `test`, booleans true, dates, UUID; enum: first value | gen-tests.js `valueFor` | – |
 | empty password when none is configured | gen-tests.js | apps with real basic-auth passwords need them in the mock config |
 | Jest 29 fallback, Node test runner fallback | discover.yml | – |
 | startup pass = ≥ 1 ApplicationService served | discover.yml | – |

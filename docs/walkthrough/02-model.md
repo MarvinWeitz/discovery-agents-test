@@ -31,8 +31,9 @@ Goal: turn the app's CDS model into graph nodes and edges, with every fact point
 
 ### D4. Services
 - **Node** `service:<name>` with its OData path.
-- **Path rule:** `@path`, else `@odata` when it is a string, else `/odata/v4/` + the service name in kebab case without the `Service` suffix (`TravelService` → `/odata/v4/travel`). A path without a leading `/` gets `/odata/v4/` in front.
-- **Assumes:** OData V4 under CAP's default prefix. Services served only as REST (`@protocol: 'rest'`) or GraphQL, or apps that change the prefix through `cds.env.protocols`, get a wrong path. The path is used in piece 5 to match UI5 data sources and in piece 10 for requests.
+- **Path:** what CAP computes with `cds.compile.to.serviceinfo` in the probe (`run/project.json` `services`), so `@path`, `@protocol`, `cds.env.protocols` and the cds version's defaults all count. Every protocol is kept in `protocols`; `path` is the OData endpoint, else the first one. In a project with a `pom.xml` CAP also lists Java paths; only the Node.js ones are used.
+- **Fallback** when the probe has no answer: `@path`, else `@odata` when it is a string, else `/odata/v4/` + the service name in kebab case without `Service`.
+- The path is used in piece 5 to match UI5 data sources and in piece 10 for requests.
 - **Roles:** `@requires` gives one `requires` edge per role with grant `*`. Each `@restrict` entry gives one edge per role in `to` (default `any`), with `grant` (default `*`, a list is joined with commas) and `where`.
 
 ### D5. Entities
@@ -55,11 +56,14 @@ Goal: turn the app's CDS model into graph nodes and edges, with every fact point
 
 | Value | Where | Effect if your repo differs |
 |---|---|---|
-| model folders = `cds.env.folders` db, srv, app (defaults `db/ srv/ app/`) | lib/project/layout.js `modelDirs` | other roots (`schema`, `services`, `cds.requires.*.model`) are not compiled |
+| model files = `cds.resolve('*')` in the app folder (roots, `cds.requires.*.model`, plugin models) | lib/project/cap.js `modelFiles` | – (fallback: db, srv, app folders) |
 | compiler = toolkit's `@sap/cds` 9.x | package.json of the toolkit | apps that need cds 7 or 8 syntax may fail |
 | skip definitions without `$location` or under `node_modules` | model.js `isExternal` | reuse packages vendored inside the repo count as the app's own |
 | `@cds.external` = imported API | model.js `remoteOf` | – |
-| OData path: `@path`, `@odata`, else `/odata/v4/<kebab-name-without-Service>` | model.js `servicePath` | REST, GraphQL or a custom prefix get a wrong path |
+| service path = CAP's `serviceinfo` (Node.js runtime) | model.js `servicePathOf` | – (fallback rule `servicePath`) |
+| code list = includes `sap.common.CodeList`, or has `code`, `name`, `descr` | model.js `isCodeList` | – |
+| action parameter types, following derived types to `cds.*` | model.js `paramTypes` | – |
+| personal data = `@PersonalData.IsPotentiallyPersonal/Sensitive` | model.js `personalFields` | – |
 | `@restrict` defaults: `to: any`, `grant: *` | model.js `roles` | – |
 | generated = `.texts`, or a service entity without projection/query | model.js | – |
 | code list = has `code`, `name`, `descr` | model.js | own code lists with other names are treated as master data |

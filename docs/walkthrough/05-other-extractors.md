@@ -21,12 +21,13 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 
 ## 5b. Configuration (`config.js`)
 
-- **Remote services:** `cds.requires.<name>` in `package.json` whose `kind` matches `odata`, `rest` or `hcql` becomes an `ExternalService` with model and destination. If the app also serves a service of that name, it is marked as served remotely (a modulith or reuse service).
+- **Remote services:** `cds.requires.<name>` as CAP resolves it (probe: development and production profiles merged, production's kind wins; all config files, `.cdsrc.yaml`, env variables, plugins) whose `kind` matches `odata`, `rest` or `hcql`, or that CAP marks `external`, becomes an `ExternalService` with model and destination. If the app also serves a service of that name, it is marked as served remotely (a modulith or reuse service).
 - **Message brokers:** `kind` or name matching `messaging`, `event-mesh`, `enterprise-messaging`, `kafka` or `redis`.
-- **Gap:** only `package.json` is read here, **not** `.cdsrc.json` or `.cdsrc.yaml`. The effective `cds.env` from `lib/project/config.js` would cover all of them. This was left as it is so that the output stays unchanged, and it is listed as an open fix.
+- **Evidence:** the first config file whose text names the entry (`package.json`, `.cdsrc.json`, `.cdsrc.yaml`, `.cdsrc-private.json`), else `cds env`.
+- **Not services:** `db`, `auth`, `queue`, `middlewares`, `scheduling`, `outbox` (CAP's own runtime entries).
 - **Descriptors:** whether `mta.yaml`, `xs-security.json` and `app/router/xs-app.json` exist in the app folder.
 - **Plugins:** dependencies starting with `@cap-js/` or `@sap/cds-`.
-- **HDI artifacts:** every `*.hdb*` file under `<db>/src` becomes a `DbArtifact`.
+- **HDI artifacts:** every `*.hdb*` file under a folder that holds a `.hdiconfig` (the HDI deployer's own marker; outermost wins, `gen/` skipped), else under `<db>/src`, becomes a `DbArtifact`.
 
 ## 5c. Mock users and roles (`auth.js`)
 
@@ -83,13 +84,13 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 | data source → service by "URI ends with service path" | ui5.js | rewritten approuter paths look like external services |
 | view event attributes `press change select liveChange search submit` | ui5.js | other events are not listed |
 | remote kinds `odata rest hcql`; broker kinds `messaging event-mesh enterprise-messaging kafka redis` | config.js `REMOTE_KINDS`, `BROKER_KINDS` | – |
-| remote services read from `package.json` only | config.js | **`.cdsrc.json` / `.cdsrc.yaml` requires are not seen (open fix)** |
+| remote services = effective `cds.requires` (development + production) | config.js, lib/project/cap.js | – |
 | descriptors `mta.yaml`, `xs-security.json`, `app/router/xs-app.json` | lib/project/config.js `DESCRIPTORS` | another approuter location is reported as missing |
 | plugin = `@cap-js/*` or `@sap/cds-*` | config.js | – |
-| HDI sources `<db>/src/**/*.hdb*` | layout.js `hdiDir` | HDI modules elsewhere (`db-hana/src`, `hana/`) are missed |
-| auth config files `package.json`, `.cdsrc.json` (+ effective env for CAP defaults) | lib/project/config.js `FILES` | users only in `.cdsrc.yaml` or `.cdsrc-private.json` are missed |
+| HDI sources = folders with `.hdiconfig`, else `<db>/src` | layout.js `hdiDirs` | – |
+| users = effective `cds.requires.auth` (probe, app's own cds version); file:line from `package.json`, `.cdsrc.json` | auth.js, lib/project/cap.js | users only in `.cdsrc.yaml` get `@sap/cds defaults` as evidence |
 | test files `*.test|spec.js|ts`, `webapp/test/**/*Journey.js` | tests.js `isTest` | Mocha files without `.test` in the name are missed |
-| ignored folders `xmpls` | layout.js `CONVENTIONS.ignored` | **cap-sflight leftover; harmless elsewhere** |
+| CDS files = the app's own files in the compiled model (`csn.$sources`); `xmpls` only matters in the fallback | lib/project/cap.js `cdsSources` | files the model never uses are not listed |
 | layer = folder (app, srv, db), else ext | layout.js `layerOf` | a domain model under srv is judged as service layer |
 | artifact name longer than 3 characters for code matches | native.js | – |
 | lint timeout 5 min per linter | lint.js | big apps lose their lint findings |

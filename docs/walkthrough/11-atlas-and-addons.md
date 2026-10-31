@@ -64,7 +64,7 @@ Goal: one fact file (`atlas-data.json`) that holds every section, and three view
 | Value | Where | Effect if your repo differs |
 |---|---|---|
 | CDS compiled again from the layout folders | bin/atlas-facts.js | same limits as piece 2 |
-| database detection by `hana` / `sqlite` in config text and dependency names | sections/arc.js | Postgres apps show no database box |
+| databases = `cds.requires.db.kind` per profile (probe), HDI artifacts mean HANA; text search only for a profile without db config | sections/arc.js, lib/project/cap.js `dbKinds` | – |
 | entity groups: draft documents, master data, code lists, `sap.common.*` | sections/arc.js, dat.js | – |
 | HTTP verbs per event (UPDATE→PATCH, CREATE/NEW→POST, SAVE→POST draftActivate, READ→GET, DELETE) | sections/flw.js `VERB` | – |
 | verdict symbols and colours | sections/uis.js `PV` | – |

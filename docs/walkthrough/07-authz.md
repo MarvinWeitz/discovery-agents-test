@@ -42,7 +42,7 @@ For each service, each exposed entity (not generated, not `.texts`):
 
 | Value | Where | Effect if your repo differs |
 |---|---|---|
-| PII name pattern (English) | authz.js `PII` | other languages and abbreviations are missed |
+| personal data = `@PersonalData` fields + English name pattern | authz.js `piiFields`, `PII` | unannotated fields with non-English names are missed |
 | pseudo roles `any`, `authenticated-user` | authz.js `hits` | `system-user` and `internal-user` are not treated specially |
 | `WRITE` covers CREATE, UPDATE, DELETE | authz.js | – |
 | one column per distinct role set of CAP's built-in users | authz.js `users` | – |

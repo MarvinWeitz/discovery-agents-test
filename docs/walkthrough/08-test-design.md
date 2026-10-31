@@ -15,7 +15,7 @@ Goal: turn the facts into equivalence classes, so that one test per class is eno
 - **What:** every `.csv` under `<db>/data`, `<db>/csv` and `test/data`. The file name with `-` replaced by `.` is the entity name (`sap.fe.cap.travel-Travel.csv` → `sap.fe.cap.travel.Travel`). `.texts` files are skipped. The separator is `;` when the header has more `;` than `,`.
 - **Why:** a request needs a key that exists. Picking a row with the right status from the seed data ("a Travel whose status is Open") gives a test that runs on the app's own data.
 - **Gaps:**
-  - CAP also loads CSVs from `data/` and `csv/` folders next to **any** model file (for example `srv/data`, or a reuse package's data). Those are not read.
+  - The files come from CAP (`cds.deploy.resources` in the probe): `data/` and `csv/` next to **every** model file, `cds.requires.db.data`, and `test/data`, each with the entity CAP maps it to. Packages' data is left out.
   - Quoted fields with line breaks are not parsed.
 
 ### D2. Seven categories, each with its technique

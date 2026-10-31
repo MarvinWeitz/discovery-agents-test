@@ -14,8 +14,8 @@ The parser is the TypeScript compiler API. It reads `.js` and `.ts` as a syntax 
 ## Decisions, in run order
 
 ### D1. Which files (`binding.js` `handlerFiles`)
-- **What:** every `.js` or `.ts` file (not `.d.ts`) under the srv folder (name from `cds.env.folders`, default `srv/`), plus service implementations **outside** the app folder that a service's `@impl` or its `.cds` file location points to (reuse packages next to the app in a monorepo, for example `../reviews/srv/reviews-service.js`).
-- **Assumes:** handlers live in the srv folder. **Missed:** handlers registered in `server.js` at the root, in `lib/` or `handlers/` folders that no srv file `require`s, in plugins (`cds-plugin.js`), or compiled output only (a TypeScript app whose sources are elsewhere).
+- **What:** every `.js` or `.ts` file (not `.d.ts`) under the srv folder (name from `cds.env.folders`, default `srv/`), plus the implementation CAP itself resolves for each service (probe `impls`: `@impl`, `<name>.js|ts` next to the `.cds` file or in its `lib/` or `handlers/` folder, `cds.requires.<service>.impl`), plus `server.js`, plus service implementations **outside** the app folder that a service's `@impl` or its `.cds` file location points to (reuse packages next to the app in a monorepo, for example `../reviews/srv/reviews-service.js`).
+- **Assumes:** handlers live in the srv folder. **Missed:** handler code in plugins (`cds-plugin.js`), or compiled output only (a TypeScript app whose sources are elsewhere).
 
 ### D2. Which service a file implements (`binding.js` `serviceFor`)
 Tried in this order. The first hit wins:
@@ -67,7 +67,8 @@ Independent of handlers, for connectors and helper modules:
 
 | Value | Where | Effect if your repo differs |
 |---|---|---|
-| handler files = `.js`/`.ts` under the srv folder (+ `@impl` outside) | layout.js `handlerDirs`, binding.js | handlers elsewhere are missed |
+| handler files = srv folder + CAP's implementation per service + `server.js` (+ `@impl` outside) | layout.js `handlerDirs`, lib/project/cap.js, binding.js | plugin code is missed |
+| a file's service: CAP's answer first, then class name, `@impl`, sibling, base name | binding.js `serviceFor` | – |
 | service binding order (class name, @impl ×3, sibling .cds, base name) | binding.js `serviceFor` | a file bound to the wrong service attaches its handlers there |
 | split implementation: callee gets `this`/`srv`/`service`, up to 6 hops | binding.js `bindServices` | other parameter names are not followed |
 | CRUD events list | vocabulary.js `CRUD` | – |
