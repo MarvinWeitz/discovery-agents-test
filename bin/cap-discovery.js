@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // cap-discovery: the whole toolkit as one command that runs INSIDE a CAP project (portable mode).
-// Nothing has to be added to the project: run it with npx from the toolkit's (private) repo, from the GitHub
+// Nothing has to be added to the project: install it from the toolkit's (private) repo, from the GitHub
 // Action, or from the Claude Code plugin's copy (node ${CLAUDE_PLUGIN_ROOT}/bin/cap-discovery.js).
 //
-//   npx --yes git+https://<host>/<owner>/<toolkit-repo>.git#<ref> <command> [options]
+//   npm install -g --legacy-peer-deps git+https://<host>/<owner>/<toolkit-repo>.git#<ref>   (once)
+//   cap-discovery <command> [options]
 //
 //   init     write discovery.config.json, a GitHub workflow, Claude Code settings for the AI pass, .gitignore line
 //   run      static pipeline: discover, facts, findings, tests, atlas, validate (no app start, no AI)

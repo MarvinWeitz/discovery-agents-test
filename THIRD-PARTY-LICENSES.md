@@ -46,7 +46,7 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 
 ## Portable mode (in a project's own CI or checkout)
 
-Nothing new is bundled. `npx git+https://<host>/<org>/<toolkit-repo>.git` and the GitHub Action install the same npm packages as above, into npx's cache or the action's folder, never into the project's `package.json`. In the project, the test runtime prefers the project's own `@sap/cds`, Jest and `@cap-js/cds-test`; only packages it lacks are added to a folder outside the checkout (CI) or on request (`--runtime-dir`).
+Nothing new is bundled. The CLI install (`npm install -g git+https://<host>/<org>/<toolkit-repo>.git`) and the GitHub Action install the same npm packages as above, into a global/prefix folder or the action's folder, never into the project's `package.json`. In the project, the test runtime prefers the project's own `@sap/cds`, Jest and `@cap-js/cds-test`; only packages it lacks are added to a folder outside the checkout (CI) or on request (`--runtime-dir`).
 
 | Tool | Version | Licence | How we use it | Commercial note |
 | --- | --- | --- | --- | --- |

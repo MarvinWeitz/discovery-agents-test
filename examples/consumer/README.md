@@ -1,6 +1,6 @@
 # Example: what a CAP project commits to use discovery
 
-These are exactly the files `npx --yes git+https://<ghe-host>/<org>/cap-discovery.git init` writes into a project's root (here with `--toolkit https://github.example-corp.com/your-org/cap-discovery`) (next to its own `package.json`, `db/`, `srv/`, `app/`):
+These are exactly the files `cap-discovery init` writes into a project's root (here with `--toolkit https://github.example-corp.com/your-org/cap-discovery`) (next to its own `package.json`, `db/`, `srv/`, `app/`):
 
 | File | Purpose |
 | --- | --- |

@@ -35,17 +35,17 @@ The toolkit is meant to sit in a **private repo on your GitHub Enterprise** (Clo
 
    Inputs: `path`, `app`, `ui`, `mode`, `tests`, `install`, `out`, `docs`, `images`, `opengrep`, `summary`, `comment`, `artifact`, `fail-on-error` (see [action.yml](action.yml)). Outputs: `status`, `startup`, `generated`, `aftertests`, `out`, `app`, `ui`.
 
-2. **npx, no install** (laptop, any other CI such as Azure DevOps, GitLab, Jenkins). Git reads the private repo with your normal credentials for that host:
+2. **CLI** (laptop, any other CI such as Azure DevOps, GitLab, Jenkins). Install it once outside the project; git reads the private repo with your normal credentials for that host:
 
    ```sh
-   T=git+https://<ghe-host>/<org>/cap-discovery.git#main
-   npx --yes $T init      # once: config, workflow, Claude Code settings, .gitignore
-   npx --yes $T run       # static pipeline -> .discovery/ (no app start, no AI)
-   npx --yes $T all       # + start the app under cds.test, generated tests, measured
-   npx --yes $T docs      # Markdown output -> docs/discovery/ (commit it)
+   npm install -g --ignore-scripts --legacy-peer-deps git+https://<ghe-host>/<org>/cap-discovery.git#main
+   cap-discovery init      # once: config, workflow, Claude Code settings, .gitignore
+   cap-discovery run       # static pipeline -> .discovery/ (no app start, no AI)
+   cap-discovery all       # + start the app under cds.test, generated tests, measured
+   cap-discovery docs      # Markdown output -> docs/discovery/ (commit it)
    ```
 
-   Pin with `#<tag or commit>`. Nothing is added to the project's `package.json`. In a CI job, give git a token first: `git config --global url."https://x-access-token:$TOKEN@<ghe-host>/".insteadOf "https://<ghe-host>/"` (as `.github/workflows/portable.yml` does).
+   Pin with `#<tag or commit>`; `--prefix <dir>` instead of `-g` keeps it in a folder of your choice. Nothing is added to the project's `package.json`. `npx` works only with the github.com shorthand (`npx github:<org>/<repo>`), not with a GHE git URL (npm fails with "GitFetcher requires an Arborist constructor"), hence the install. In a CI job, give git a token first: `git config --global url."https://x-access-token:$TOKEN@<ghe-host>/".insteadOf "https://<ghe-host>/"` (as `.github/workflows/portable.yml` does).
 
 3. **Claude Code plugin** (the optional AI pass, and running everything from a Claude Code session). `init` adds the toolkit repo as a plugin marketplace to the project's `.claude/settings.json` (a `git` source with the GHE URL), so everyone who opens the project in Claude Code is offered the `cap-discovery` plugin: the `gap-resolver`, slice and review agents and the `cap-discovery` / `cap-atlas-reader` skills. Claude Code clones it with the user's own git credentials. The plugin's folder is the toolkit itself, so the skill runs `node ${CLAUDE_PLUGIN_ROOT}/bin/cap-discovery.js …` with no repo URL at all. Manual install: `/plugin marketplace add https://<ghe-host>/<org>/cap-discovery.git`, then `/plugin install cap-discovery@cap-discovery`.
 
@@ -78,9 +78,9 @@ Your project's `discovery.config.json` is merged over the toolkit's defaults ([l
 ## Private repositories
 
 - **The project**: the action runs with the project repo's own `GITHUB_TOKEN`; logs, artifacts and the PR comment stay in that repo. No extra secret, no Pages.
-- **The toolkit**: private on GHE, shared through the Actions access setting above; `npx` and the Claude Code plugin use the developer's git credentials.
+- **The toolkit**: private on GHE, shared through the Actions access setting above; the CLI install and the Claude Code plugin use the developer's git credentials.
 - **Central mode** (`discover.yml`, many repos from one place) stays available for public samples; private targets need the toolkit repo itself to be private plus a `DISCOVERY_REPO_TOKEN`.
 
 ## Example
 
-[examples/consumer/](examples/consumer/) holds exactly the files `init` writes. `.github/workflows/portable.yml` checks both ways on `cap-js/incidents-app` on every pull request: the action after `init`, and `npx github:<this repo>#<commit> init / all`; both must start the app, pass the generated tests, validate, and leave the app's `package.json` and tests untouched.
+[examples/consumer/](examples/consumer/) holds exactly the files `init` writes. `.github/workflows/portable.yml` checks both ways on `cap-js/incidents-app` on every pull request: the action after `init`, and the CLI installed from `git+<this repo>#<commit>` running `init / all`; both must start the app, pass the generated tests, validate, and leave the app's `package.json` and tests untouched.
