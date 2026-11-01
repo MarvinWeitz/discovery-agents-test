@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarvinWeitz/discovery-agents-test/schema/gap.schema.json",
+  "title": "Gap",
+  "description": "A question static analysis could not settle, one JSON object per line of run/findings/gaps.jsonl. A gap is the hand-over point to a measurement, an AI pass or a person. Docs: docs/walkthrough/13-findings-and-gaps.md",
+  "type": "object",
+  "required": ["id", "kind", "question", "why", "resolvableBy", "priority", "status", "subjects", "about", "look"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^G-[a-z0-9-]+-[0-9a-f]{10}$", "description": "Stable: hash of kind and key." },
+    "kind": { "$ref": "#/$defs/kind" },
+    "question": { "type": "string", "minLength": 5, "description": "The question, answerable with yes/no, a value, or findings with evidence." },
+    "why": { "type": "string", "minLength": 5, "description": "Why static analysis could not answer it." },
+    "resolvableBy": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["measured", "ai", "human"] }, "description": "Who can settle it, best first." },
+    "priority": { "enum": ["high", "medium", "low"] },
+    "status": { "enum": ["open", "answered", "resolved"], "description": "open = nobody settled it; answered = an AI answer passed the evidence gate (not yet reviewed); resolved = measured or a person decided." },
+    "resolvedBy": { "type": "array", "items": { "type": "string", "pattern": "^F-" }, "description": "Findings that answered or resolved it." },
+    "subjects": { "type": "array", "items": { "type": "string" }, "description": "Graph node ids it is about." },
+    "about": { "type": "array", "items": { "type": "string", "pattern": "^F-" }, "description": "Findings that raised it." },
+    "look": {
+      "type": "array", "description": "Where to look first: files (relative to the app root) with an optional line.",
+      "items": { "type": "object", "required": ["file"], "additionalProperties": false, "properties": { "file": { "type": "string" }, "line": { "type": "integer", "minimum": 1 }, "why": { "type": "string" } } }
+    },
+    "expects": { "type": "string", "description": "What a good answer contains (e.g. 'the file:line that enforces it, or unknown')." },
+    "stage": { "type": "string" },
+    "data": { "type": "object" }
+  },
+  "$defs": {
+    "kind": {
+      "enum": ["enforcement-elsewhere", "authz-unclear", "class-expectation", "handler-missing", "custom-route-behaviour", "plugin-binding", "native-sql-effect", "missing-install", "rule-confirmation", "business-criticality", "slice-review", "hana-only-path", "runtime-only-handler"]
+    }
+  }
+}

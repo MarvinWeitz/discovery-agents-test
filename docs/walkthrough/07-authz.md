@@ -1,5 +1,5 @@
 ---
-piece: 7 of 12
+piece: 7 of 13
 title: Authorization matrix
 code: lib/analyse/authz.js
 runs: inside bin/atlas-facts.js and bin/gen-tests.js (computed from the graph, not stored)

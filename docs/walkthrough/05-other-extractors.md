@@ -1,8 +1,8 @@
 ---
-piece: 5 of 12
+piece: 5 of 13
 title: UI5 apps, configuration, users, tests, history, CDS layers, HANA-native objects, lint
-code: lib/extract/ui5.js, config.js, auth.js, tests.js, history.js, cds-deps.js, native.js, lint.js
-runs: bin/discover.js, after pieces 2 to 4, in this order: ui5, config, auth, cds-deps, native, tests, lint, history
+code: lib/extract/ui5.js, config.js, auth.js, tests.js, history.js, cds-deps.js, native.js, bootstrap.js, lint.js
+runs: bin/discover.js, after pieces 2 to 4, in this order: ui5, config, auth, cds-deps, native, tests, bootstrap, lint, history
 ---
 
 # Piece 5: The other extractors
@@ -79,6 +79,13 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 - **UI5 lint:** `ui5lint` in every folder with a `ui5.yaml` under the UI roots.
 - Each message becomes a `Finding` (error or warning) on its file. A linter that crashes gives `null` instead of a count. Each linter can run for up to 5 minutes. This is most of the time `discover` takes on SFlight.
 
+## 5i. Bootstrap code: server.js routes and local plugins (`bootstrap.js`)
+
+- **What:** code CAP runs at startup besides the service implementations. The custom `server.js` (`server.ts`) the probe reports, and `cds-plugin.js` of every **local** plugin package: a dependency (or devDependency) that resolves to a folder in the repo, as an npm workspace or a `file:` dependency (`lib/project/plugins.js`).
+- **Why plugins:** CAP loads `cds-plugin.js` of every dependency at startup (`@sap/cds lib/plugins.js` `fetch`), so a plugin in the same repo is app code (F8). When the app is installed, the probe's `cds.env.plugins` with their `impl` paths decide (realpath, so a workspace symlink shows its folder); without an install, `package.json` and the nearest `workspaces` declaration. Registry packages are not the app's code and are left out. Plugin files are also handed to the handler parser (piece 3).
+- **Routes (F13):** on the express app of `cds.on('bootstrap', app => …)` (and on any `express()` result): `app.get/post/put/patch/delete/all/use('<path>', …)` and `app.serve('<path>')`. `use` with `express.static` and `serve` are static folders. Each one becomes an `HttpRoute` node with `file:line`, listed in the API section under `(express)`, and a finding plus a gap in the findings layer (piece 13): CAP's `@requires` / `@restrict` do not apply to them.
+- **Not covered:** routes whose path is built at runtime, routers mounted from other modules, plugins installed from a registry (they are listed by the probe in `project.json` `plugins`).
+
 ## Every hard-coded fact in this piece
 
 | Value | Where | Effect if your repo differs |
@@ -97,6 +104,8 @@ Each extractor adds one kind of fact to the graph. None of them runs app code.
 | layer = folder (app, srv, db), else ext | layout.js `layerOf` | a domain model under srv is judged as service layer |
 | artifact name longer than 3 characters for code matches | native.js | – |
 | lint timeout 5 min per linter | lint.js | big apps lose their lint findings |
+| local plugin = dependency resolving to a workspace or `file:` folder with `cds-plugin.js|ts|mjs`; workspaces looked up at most 5 folders up | lib/project/plugins.js | a plugin linked another way (npm link) is only found after install |
+| express app = bootstrap callback parameter or `express()` result; methods `get post put patch delete all use options head`, `serve` | bootstrap.js | routes added through a router module are missed |
 
 ## Output
-Graph nodes `UI5App`, `Route`, `View`, `UIHandler`, `ExternalService`, `MessagingBroker`, `Role`, `MockUser`, `DbArtifact`, `DbVariant`, `CdsFile`, `ExistingTest`, `Finding`, and their edges. `metrics.json` gets counts for auth, CDS dependencies, native objects and lint.
+Graph nodes `UI5App`, `Route`, `View`, `UIHandler`, `ExternalService`, `MessagingBroker`, `Role`, `MockUser`, `DbArtifact`, `DbVariant`, `CdsFile`, `ExistingTest`, `Finding`, `HttpRoute`, `PluginFile`, and their edges. `metrics.json` gets counts for auth, CDS dependencies, native objects and lint.

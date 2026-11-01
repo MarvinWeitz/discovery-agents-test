@@ -1,5 +1,5 @@
 ---
-piece: 8 of 12
+piece: 8 of 13
 title: Test design (categories, equivalence classes, all-pairs)
 code: lib/analyse/test-design.js, lib/analyse/seed-data.js
 runs: inside bin/atlas-facts.js and bin/gen-tests.js

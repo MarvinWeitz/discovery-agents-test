@@ -1,5 +1,5 @@
 ---
-piece: 6 of 12
+piece: 6 of 13
 title: Cut vertical slices and rank them by risk
 code: lib/analyse/slices.js, lib/analyse/classes.js
 runs: bin/discover.js, after all extractors

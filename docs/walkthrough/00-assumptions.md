@@ -72,6 +72,7 @@ Importance: how much of the output is wrong when the assumption is wrong. Differ
 | 29 | UI promises reach the UI | high | medium | CSN only | `$metadata` read with `@sap-ux/edmx-parser`; CAP-derived Capabilities and Computed added | 4 |
 | 30 | authorization matrix is right | high | medium | static model of CAP's rules | measured in CI: every cell sent to the running app (addon `measured`) | 7 |
 | 31 | which test exercises which class | medium | high | text scan of test files | measured in CI: request log via CAP's event API (addon `measured`); text scan without CI | 8 |
+| 32 | handler code in local plugins and express routes in `server.js` | medium | medium | not read | `lib/project/plugins.js` (probe `cds.env.plugins`, else workspaces / `file:`), `lib/extract/bootstrap.js` | 5i |
 
 ## What asking CAP showed on the pilots
 
@@ -80,7 +81,7 @@ Importance: how much of the output is wrong when the assumption is wrong. Differ
 | cap-sflight | a `pom.xml` turns on the `java` profile for Node too, so `[java]` config applies and CAP lists Java service paths next to the Node ones (the Node ones are used) |
 | cap-sflight | databases: SQLite in development, HANA in production (before: both, without the profile) |
 | ui5-cap-event-app | SQLite in production as well, not only for local runs |
-| ui5-cap-event-app | `server.js` adds a custom `/logout` route; the file is now read, the route is not yet an endpoint (F13) |
+| ui5-cap-event-app | `server.js` adds a custom `POST /odata/v4/event-registration/logout` route; listed as an endpoint since F13 |
 | Poetry Slam | profile `with-mtx-sidecar` is on by default; `byd_khproject` and other remote APIs come with their models from `cds.requires` |
 | bookstore | `ReviewsService` and `OrdersService` are marked `external` by CAP; messaging is `file-based-messaging` in development |
 | incidents-app | without an install, no `cds.requires.db` (the `@cap-js/sqlite` plugin adds it), so the text fallback decides the database box (F12) |
@@ -129,9 +130,9 @@ Importance: how much of the output is wrong when the assumption is wrong. Differ
 | F5 | remote services read from `package.json` only | **fixed**: effective `cds.requires` |
 | F6 | model roots other than db/srv/app not compiled | **fixed**: `cds.resolve('*')` |
 | F7 | CSV seed data next to other model files not read | **fixed**: `cds.deploy.resources` |
-| F8 | handlers outside srv missed | **mostly fixed**: CAP's implementation rule and `server.js`; plugin code (`cds-plugin.js` of local packages) still not read |
+| F8 | handlers outside srv missed | **fixed**: CAP's implementation rule, `server.js`, and `cds-plugin.js` of local plugin packages (workspaces, `file:`; from `cds.env.plugins` when installed). Unbindable plugin registrations become a `plugin-binding` gap |
 | F9 | action parameters all `10` | **fixed**: value per type |
 | F10 | personal data English only | **fixed**: `@PersonalData` plus names |
-| F11 | the model needs the app's npm packages when it imports CDS from packages | open: without an install the probe reports the compile error in `project.json` |
-| F12 | without an install, plugin config (e.g. `@cap-js/sqlite` adds `cds.requires.db`) is missing | open by design: CI installs first; locally the text fallback fills the database box |
-| F13 | routes added in `server.js` (`cds.on('bootstrap', app => app.post(...))`) are read as a file but not listed as endpoints | open |
+| F11 | the model needs the app's npm packages when it imports CDS from packages | **explicit**: without an install the run reports an `analysis-limit` finding (critical when the model did not compile) and a `missing-install` gap settled by a CI run; the static run stays valid |
+| F12 | without an install, plugin config (e.g. `@cap-js/sqlite` adds `cds.requires.db`) is missing | **explicit**, by design: CI installs first; locally the text fallback fills the database box, and the same `analysis-limit` finding and `missing-install` gap say so |
+| F13 | routes added in `server.js` (`cds.on('bootstrap', app => app.post(...))`) are read as a file but not listed as endpoints | **fixed**: `HttpRoute` nodes from `server.js` and local plugins (piece 5i), listed in the API section and as `custom-route` findings with a gap: CAP authorization does not apply |

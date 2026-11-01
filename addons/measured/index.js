@@ -130,6 +130,28 @@ function afterTests({ out }) {
   return true
 }
 
+
+// findings stage (after the tests ran): the measured authorization per operation, settling the static
+// matrix's unclear cells, and handler rules no test executes
+function findings(B, { D }) {
+  const { gapId, findingId } = require('../../lib/findings/book')
+  const M = D?.MEASURED
+  const statics = new Map((D?.AUTH || []).map(r => [r.op, r]))
+  for (const r of M?.authz?.rows || []) {
+    const s = statics.get(r.op), key = `${s?.svc || ''}|${r.op}`
+    const differ = r.cells.filter(c => c.st === 'differ'), settled = r.cells.filter(c => c.st === 'measured')
+    B.finding({ kind: 'authz-measured', key, method: 'measured', source: 'addons/measured (authz-probe.test.js)', status: differ.length ? 'refuted' : 'confirmed',
+      title: `${r.method} ${r.url}: ${differ.length ? `${differ.length} cells differ from the static matrix` : 'as predicted'}`,
+      statement: r.cells.map(c => `${c.user} ${c.status ?? c.measured}`).join(', ') + '.', severity: { level: differ.length ? 'warning' : 'good' }, evidence: s?.ev ? [s.ev] : [],
+      about: [findingId('authz', key)], resolves: settled.length || differ.length ? [gapId('authz-unclear', key)] : [],
+      data: { op: r.op, method: r.method, url: r.url, cells: r.cells } })
+  }
+  for (const r of M?.rules?.never || []) {
+    B.finding({ kind: 'rule-reached', key: r.id, method: 'measured', source: 'addons/measured (Jest V8 coverage)', title: `No test runs the ${r.kind} at ${r.ev}`,
+      statement: `No generated test and no test of the app executes this line${r.guard ? ` (${r.guard})` : ''}.`, severity: { level: 'warning' }, evidence: [r.ev], subjects: [r.id] })
+  }
+}
+
 const cell = s => String(s ?? '').replace(/\|/g, '\\|')
 const MARK = { agree: '✅', differ: '❗', measured: '◽' }
 function authzMd(A) {
@@ -157,4 +179,4 @@ const topics = {
   },
 }
 
-module.exports = { facts, afterTests, topics, views: path.join(__dirname, 'view.js'), plan, keyOf, compareAuthz, rulesReached, summarizeRequests }
+module.exports = { facts, afterTests, findings, topics, views: path.join(__dirname, 'view.js'), plan, keyOf, compareAuthz, rulesReached, summarizeRequests }

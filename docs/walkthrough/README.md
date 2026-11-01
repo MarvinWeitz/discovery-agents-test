@@ -17,6 +17,7 @@ Each piece explains its decisions (what, why, what it assumes), lists every hard
 | [09](09-patterns-risks-rules.md) | Patterns, risks, rules | `lib/analyse/patterns.js`, `risks.js`, `addons/rules` | no |
 | [10](10-generated-tests.md) | Generated tests and running them | `bin/gen-tests.js`, CI | no |
 | [11](11-atlas-and-addons.md) | Atlas and addons | `lib/atlas/`, `bin/atlas.js`, `addons/` | no |
-| [12](12-ai-loop.md) | The optional AI loop | `bin/brief.js`, `merge.js`, `agents/` | **yes, by hand** |
+| [12](12-ai-loop.md) | The optional AI loop | `bin/brief.js`, `merge.js`, `ai-requests.js`, `ai-merge.js`, `agents/` | **yes, by hand** |
+| [13](13-findings-and-gaps.md) | **Findings and gaps** (the middle layer), stages, modes, validation | `lib/findings/`, `lib/stages.js`, `bin/findings.js`, `bin/validate.js` | no |
 
-Order in `bin/pipeline.js`: discover (pieces 2 to 6) → facts (7 to 9, 11) → tests (10) → atlas (11). The GitHub workflow adds piece 1 before, and the test run and the after-tests addons after.
+Order in `bin/pipeline.js`: discover (pieces 2 to 6) → facts (7 to 9, 11) → findings (13) → tests (10) → atlas (11) → ai-requests (12, mode `static+ai` only) → validate (13). The GitHub workflow adds piece 1 before, and the test run, the after-tests addons and the findings again after. Every stage with its inputs and outputs: [../stages.md](../stages.md); what a given run did: `<out>/manifest.json` or `node bin/stages.js show <out>`.

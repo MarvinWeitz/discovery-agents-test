@@ -1,13 +1,26 @@
 ---
-piece: 12 of 12
+piece: 12 of 13
 title: The optional AI loop (agents, evidence gate, curated findings, rule drafting)
-code: bin/brief.js, bin/brief-questions.js, bin/merge.js, bin/dossier.js, agents/*.md, schema/facts.md, curated/*.json, skills/cap-discovery, skills/cap-atlas-reader
+code: bin/ai-requests.js, bin/ai-merge.js, bin/brief.js, bin/brief-questions.js, bin/merge.js, bin/dossier.js, lib/evidence.js, agents/*.md, schema/ai-answer.schema.json, schema/facts.md, curated/*.json, skills/cap-discovery, skills/cap-atlas-reader
 runs: by hand in Claude Code; never in CI
 ---
 
 # Piece 12: The AI loop
 
-Pieces 1 to 11 use no AI. This piece is the only place where an LLM works, and it is optional. The pipeline, the workflows and the atlas all run without it.
+Pieces 1 to 11 and 13 use no AI. This piece is the only place where an LLM works, and it is optional. The pipeline, the workflows and the atlas all run without it.
+
+There are two ways in, both reading the run's artifacts and writing back only through the evidence gate:
+
+| | Gap pass (D8, since 2026-11-01) | Slice pass (D1 to D7) |
+|---|---|---|
+| Unit of work | one open gap from `run/findings/gaps.jsonl` | one slice, 10 fixed questions |
+| Brief | `run/ai/requests/<gap>.md` (`bin/ai-requests.js`) | `run/slices/<id>/brief.md` (`bin/brief.js`) |
+| Agent | `gap-resolver` | flow-tracer, behaviour-analyst, event-integration-analyst, risk-reviewer |
+| Answer | `run/ai/answers/<gap>.json` (`schema/ai-answer.schema.json`) | `slices/<id>/facts/<agent>.json` (`schema/facts.md`) |
+| Gate and merge | `bin/ai-merge.js` → `run/findings/ai.jsonl` | `bin/merge.js` → graph, merge log |
+| Lands in | the findings layer, method `ai`, gap `answered` | the graph (source `agent:*`), dossier, curated risks |
+
+The gap pass is the default: it only spends AI on what static analysis could not settle, and every answer is tied to one question. The slice pass goes deeper on a whole feature; its `slice-review` gap in the findings points at it.
 
 Goal: find what fixed rules cannot see, such as crashes on unusual paths, races, hard-coded values, a FIXME that changes behaviour, or an ownership field a user can overwrite. Then turn each kind of finding into a rule, so it never needs AI again.
 
@@ -55,6 +68,13 @@ Goal: find what fixed rules cannot see, such as crashes on unusual paths, races,
 ### D7. Test review (`test-reviewer`)
 - Reviews the test design: corrects classes marked `verify`, adds missing classes and tests. Its output is a Markdown review plus test files, which a person merges.
 
+### D8. Gap pass: answer what static analysis left open (`bin/ai-requests.js`, `gap-resolver`, `bin/ai-merge.js`)
+- **Requests:** in mode `static+ai`, the pipeline writes one request per open gap that lists `ai` among its resolvers (piece 13 D9): self-contained, with code excerpts and the answer format. `index.json` orders them by priority.
+- **Answers:** the `gap-resolver` agent reads the request and the code and writes `answers/<gap>.json`: `answered` with findings (each with `file`, `line`, verbatim `quote`), or `unknown` with what would settle it.
+- **Gate:** `bin/ai-merge.js` checks the answer against its schema and every evidence against the code (`lib/evidence.js`, the same check as D3). Accepted findings go to `run/findings/ai.jsonl` with method `ai`, status `suspected` and `resolves: [gap]`; the findings stage then runs in mode `static+ai`, so the gap becomes `answered`, and the run is validated. Rerunning is safe: `ai.jsonl` is rebuilt from all answers.
+- **Not trusted further than the gate:** an AI finding never becomes `confirmed` by itself; a measurement (CI) or a person does that. Switching back to mode `static` hides the AI layer without deleting it.
+- **Tried on SFlight (2026-11-01):** three answers by hand in the agent's format: `createTravelByTemplate` is declared but never implemented, `acceptTravel` has no status check on the server (both accepted), an invented quote (rejected: "quote not found near srv/travel-service.ts:95"), and one `unknown`.
+
 ## What is assumed
 
 - Claude Code with the subagent files copied to `.claude/agents/`.
@@ -69,7 +89,9 @@ Goal: find what fixed rules cannot see, such as crashes on unusual paths, races,
 | quote must be within ±2 lines of the evidence line | bin/merge.js |
 | fact kinds `node`, `edge`, `classes`, `risk` | bin/merge.js, schema/facts.md |
 | curated file chosen by `META.app` = owner/repo | lib/project/detect.js `curatedFor` |
+| which gaps get a request: open, `ai` in `resolvableBy` | bin/ai-requests.js |
+| AI findings are `suspected`, gaps `answered` (never `resolved`) | bin/ai-merge.js, lib/findings/book.js |
 | agent risk dropped when `gen` names a rule key that fired | lib/atlas/index.js |
 
 ## Output
-`run/slices/<id>/brief.md`, `facts/*.json`, `merge-log.json`, `dossier.md`; `curated/<app>.json`; new drafts in `addons/rules/library/`.
+`run/ai/requests/`, `run/ai/answers/`, `run/ai/merge-log.json`, `run/findings/ai.jsonl`; `run/slices/<id>/brief.md`, `facts/*.json`, `merge-log.json`, `dossier.md`; `curated/<app>.json`; new drafts in `addons/rules/library/`.

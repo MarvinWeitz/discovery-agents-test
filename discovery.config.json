@@ -1,4 +1,8 @@
 {
+  "mode": "static",
+  "stages": {
+    "findings": true
+  },
   "addons": {
     "coverage": true,
     "diff": true,

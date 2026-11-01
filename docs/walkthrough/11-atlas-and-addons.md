@@ -1,5 +1,5 @@
 ---
-piece: 11 of 12
+piece: 11 of 13
 title: Atlas facts, rendering, and the addons
 code: bin/atlas-facts.js + lib/atlas/ (index.js, sections/<code>.js, util.js); bin/atlas.js + atlas/template.html; lib/addons.js; addons/*; bin/after-tests.js
 runs: bin/pipeline.js steps "facts" and "atlas"; after-tests and the diff and mutation addons in CI

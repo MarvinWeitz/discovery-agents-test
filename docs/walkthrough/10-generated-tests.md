@@ -1,5 +1,5 @@
 ---
-piece: 10 of 12
+piece: 10 of 13
 title: Generate cds.test suites and run them
 code: bin/gen-tests.js; in CI .github/workflows/discover.yml (startup probe, test run), .github/scripts/node-test.js, .github/scripts/result.js; addons/uitests for UI tests
 runs: bin/pipeline.js step "tests"; execution only in GitHub Actions

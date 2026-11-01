@@ -1,5 +1,5 @@
 ---
-piece: 2 of 12
+piece: 2 of 13
 title: Compile the CDS model into the graph
 code: lib/extract/model.js, lib/project/layout.js, lib/graph.js
 runs: bin/discover.js (first step), and again in bin/atlas-facts.js (same folders)

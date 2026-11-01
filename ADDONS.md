@@ -13,7 +13,7 @@ Optional modules on top of the discovery pipeline. Each one lives in its own fol
 | Remove it for good | delete `addons/<name>/` (and its workflow, if it has one; listed below) |
 | Check from a workflow | `node bin/addon.js enabled <name>` exits 0 when on |
 
-The core calls addons at three places only (`lib/addons.js` documents the hooks): `facts` in `bin/atlas-facts.js`, `afterTests` in `bin/after-tests.js` (CI, after Jest ran), and `prepare` / `topics` / `topicAppend` / `views` in `bin/atlas.js` (data derived from the final facts, Markdown and HTML). With every addon off, the pipeline's output is the same as before addons existed.
+The core calls addons at four places only (`lib/addons.js` documents the hooks): `facts` in `bin/atlas-facts.js`, `afterTests` in `bin/after-tests.js` (CI, after Jest ran), `findings` in `bin/findings.js` (findings and gaps for the middle layer; `rules`, `measured` and `runtime` use it), and `prepare` / `topics` / `topicAppend` / `views` in `bin/atlas.js` (data derived from the final facts, Markdown and HTML). With every addon off, the pipeline's output is the same as before addons existed.
 
 Shared, addon-neutral helpers the core now writes: a `dim` (entity, operation, state) and `fact` (graph node) on every equivalence class, and `run/tests/generated/manifest.json` mapping each generated test title to its class.
 
