@@ -1,0 +1,15 @@
+{
+  "name": "cap-discovery",
+  "displayName": "CAP discovery",
+  "description": "Discover a CAP Node.js + UI5 app inside its own repo: atlas, findings and gaps, generated cds.test suites, and the agents for the optional AI pass on the gaps and the slice deep dive.",
+  "author": {
+    "name": "Marvin Weitz"
+  },
+  "keywords": [
+    "sap",
+    "cap",
+    "ui5",
+    "discovery",
+    "testing"
+  ]
+}

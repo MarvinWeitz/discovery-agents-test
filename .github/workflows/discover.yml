@@ -36,6 +36,7 @@ on:
     paths:
       - .github/workflows/discover.yml
       - .github/scripts/**
+      - action.yml
       - bin/**
       - lib/**
       - atlas/**
@@ -44,7 +45,6 @@ permissions:
   contents: read
 
 env:
-  PLAYWRIGHT_VERSION: 1.63.0
   # gate: false = the pilot runs and reports on pull requests, but its startup and generated tests do
   # not fail the check yet (the harder pilots: HANA-native objects, xsuaa-only auth, reuse packages, S/4 calls)
   PILOTS: >-
@@ -106,12 +106,6 @@ jobs:
         with:
           node-version: 22.x
 
-      - name: Install toolkit
-        run: |
-          npm ci --ignore-scripts --legacy-peer-deps
-          npm i --no-save --legacy-peer-deps playwright@${PLAYWRIGHT_VERSION}
-          npx playwright install --with-deps chromium
-
       - name: Check out the target repo
         id: target
         env:
@@ -160,194 +154,24 @@ jobs:
           } >> "$GITHUB_OUTPUT"
           echo "$REPO ($visibility) at $commit → $slug, publish: $publish"
 
-      - name: Find the CAP app and UI5 projects
-        id: detect
-        run: |
-          node .github/scripts/detect.js "${{ steps.target.outputs.dir }}" "$APP_PATH" "$UI_PATHS" "$REPO" | tee -a "$GITHUB_OUTPUT"
-
-      # Same setup the pilots use in their own CI. Failures are tolerated: the pipeline reads the sources
-      # with the toolkit's own @sap/cds, only the runtime tests need an installed app.
-      - name: Install the app
-        id: install
+      # The same GitHub Action other repos use in their own CI (action.yml -> bin/cap-discovery.js), pointed at the
+      # clone: install, pipeline, start under cds.test, generated tests, measured addon, after-tests. Its fallbacks
+      # (mocked auth for token-only apps, Node's test runner, repaired installs, --with-mocks) are in lib/runtime/.
+      - name: Discovery (the portable action)
+        id: disc
+        uses: ./
         continue-on-error: true
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.install }}
-        env:
-          PM: ${{ steps.detect.outputs.pm }}
-        run: |
-          case "$PM" in
-            pnpm) corepack enable && (pnpm install --frozen-lockfile || pnpm install) ;;
-            yarn) corepack enable && (yarn install --frozen-lockfile || yarn install) ;;
-            *)    if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then npm ci --no-audit --no-fund || npm install --no-audit --no-fund; else npm install --no-audit --no-fund; fi ;;
-          esac
-          # Repos that set ignore-scripts (e.g. in .npmrc) skip SQLite's native build; run just that one.
-          if [ -d node_modules/better-sqlite3 ] && ! node -e "new (require('better-sqlite3'))(':memory:')" 2>/dev/null; then
-            npm rebuild better-sqlite3 --ignore-scripts=false
-          fi
-
-      - name: Generate cds-typer models
-        if: steps.detect.outputs.typer == 'true' || steps.detect.outputs.ts == 'true'
-        continue-on-error: true
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-        run: |
-          npm i -g @sap/cds-dk typescript tsx
-          if [ "${{ steps.detect.outputs.typer }}" = true ]; then npx cds-typer "*"; fi
-
-      # Jest, SQLite and (if the install failed) @sap/cds go into a node_modules folder above the clone,
-      # so the app resolves them without its own package.json being touched.
-      - name: Add test runtime next to the app
-        id: shim
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-        run: |
-          shim="$(dirname "${{ steps.target.outputs.dir }}")"
-          has() { node -e "require.resolve('$1/package.json', { paths: [process.cwd()] })" 2>/dev/null; }
-          pkgs=()
-          if has @sap/cds; then major=$(node -p "require(require.resolve('@sap/cds/package.json', { paths: [process.cwd()] })).version.split('.')[0]")
-          else major=9; pkgs+=("@sap/cds@9"); fi
-          has @cap-js/sqlite || pkgs+=("@cap-js/sqlite@$([ "$major" -ge 9 ] && echo 2 || echo 1)")
-          # since cds 9, cds.test lives in @cap-js/cds-test
-          [ "$major" -ge 9 ] && ! has @cap-js/cds-test && pkgs+=("@cap-js/cds-test")
-          has jest || pkgs+=("jest@29")
-          # one @sap/cds instance, and dependencies a broken lockfile left out (see repair-install.js)
-          mapfile -t missing < <(node "$GITHUB_WORKSPACE/.github/scripts/repair-install.js" . "${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.install }}")
-          pkgs+=("${missing[@]}")
-          echo "cds major $major, adding: ${pkgs[*]:-nothing}"
-          if [ ${#pkgs[@]} -gt 0 ]; then npm i --prefix "$shim" --no-audit --no-fund --legacy-peer-deps "${pkgs[@]}"; fi
-          # packages added here peer-depend on @sap/cds: let them find the app's own copy (Node follows the
-          # link to its real path, so app and test runtime share one cds instance)
-          if [ -z "$(printf '%s\n' "${pkgs[@]}" | grep '^@sap/cds@')" ] && [ ${#pkgs[@]} -gt 0 ]; then
-            cds_dir=$(dirname "$(node -p "require.resolve('@sap/cds/package.json', { paths: [process.cwd()] })")")
-            mkdir -p "$shim/node_modules/@sap" && ln -sfn "$cds_dir" "$shim/node_modules/@sap/cds"
-          fi
-          # the app's own Jest (declared or hoisted) keeps its config; otherwise the one added above
-          if has jest; then echo "jest=node $(node -p "try { require.resolve('jest/bin/jest', { paths: [process.cwd()] }) } catch { require.resolve('jest/bin/jest.js', { paths: [process.cwd()] }) }")" >> "$GITHUB_OUTPUT"
-          else echo "jest=node $shim/node_modules/jest/bin/jest.js --config '{\"testEnvironment\":\"node\"}' --rootDir ." >> "$GITHUB_OUTPUT"; fi
-
-      # SAP Cloud SDK clients that the app generates from OpenAPI specs before its own build (gitignored),
-      # after the test runtime so the generator finds the dependencies repaired there:
-      # run the app's own openapi-generator commands from its package.json scripts
-      - name: Generate API clients
-        continue-on-error: true
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-        run: |
-          node -e "for (const s of Object.values(require('./package.json').scripts || {})) for (const c of s.split(/&&|;/)) if (/\bopenapi-generator\b/.test(c)) console.log(c.trim())" | sort -u | while read -r cmd; do
-            echo "\$ $cmd"; eval "$cmd" < /dev/null
-          done
-
-      # addon rules: runs its Opengrep rules (addons/rules/opengrep) when the CLI is there
-      - name: Install Opengrep
-        if: hashFiles('addons/rules/opengrep/*.yml') != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: .github/scripts/install-opengrep.sh
-
-      - name: Run the discovery pipeline
-        env:
-          APP_DIR: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-          UI: ${{ steps.detect.outputs.ui }}
-          CURATED: ${{ steps.detect.outputs.curated }}
-          SLUG: ${{ steps.target.outputs.slug }}
-        run: |
-          args=("$APP_DIR" "out/$SLUG")
-          [ -n "$UI" ] && args+=(--ui "$UI")
-          [ -n "$CURATED" ] && args+=(--base "$CURATED")
-          node bin/pipeline.js "${args[@]}"
-
-      - name: Start the app under cds.test
-        id: startup
-        continue-on-error: true
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-        env:
-          # token auth only (xsuaa, ias, jwt): test with CAP's mocked users, as its [development] profile would
-          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
-          # addon runtime: record what the app registers while it starts (handlers with their line, service paths)
-          DISCOVERY_RECORDER: ${{ github.workspace }}/addons/runtime/record.js
-          DISCOVERY_RUNTIME_OUT: ${{ github.workspace }}/out/${{ steps.target.outputs.slug }}/run/runtime.json
-        run: |
-          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
-          mkdir -p test/discovery-startup
-          cat > test/discovery-startup/startup.test.js <<'EOF'
-          // Written by the Run discovery workflow: does the app start in-process with an in-memory database?
-          const fs = require('fs'), path = require('path')
-          const cds = require('@sap/cds')
-          const rec = fs.existsSync(process.env.DISCOVERY_RECORDER || '') ? require(process.env.DISCOVERY_RECORDER).start(path.resolve(__dirname, '../..')) : null
-          cds.test(__dirname + '/../..', '--with-mocks') // required services without credentials as local mocks
-          it('app starts and serves its services', () => {
-            rec?.dump(process.env.DISCOVERY_RUNTIME_OUT, cds)
-            if (!Object.values(cds.services).some(s => s instanceof cds.ApplicationService)) throw new Error('no application service served')
-          })
-          EOF
-          # Jest's module sandbox breaks some apps (cds 10, SAP Cloud SDK loggers): then Node's own runner, same tests
-          echo "runner=jest" >> "$GITHUB_OUTPUT"
-          if ! ${{ steps.shim.outputs.jest }} test/discovery-startup --ci --forceExit --testTimeout 120000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-startup.json"; then
-            echo "::warning::The app does not start under Jest; retrying with Node's test runner."
-            echo "runner=node" >> "$GITHUB_OUTPUT"
-            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/discovery-startup --outputFile "$GITHUB_WORKSPACE/out/jest-startup.json"
-          fi
-
-      - name: Run the generated tests
-        id: generated
-        if: steps.startup.outcome == 'success'
-        continue-on-error: true
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-        env:
-          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
-        run: |
-          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
-          mkdir -p test/generated
-          cp "$GITHUB_WORKSPACE"/out/${{ steps.target.outputs.slug }}/run/tests/generated/*.test.js test/generated/
-          if [ "${{ steps.startup.outputs.runner }}" = node ]; then
-            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/generated --outputFile "$GITHUB_WORKSPACE/out/jest-generated.json"
-          else
-            ${{ steps.shim.outputs.jest }} test/generated --ci --forceExit --testTimeout 60000 --json --outputFile="$GITHUB_WORKSPACE/out/jest-generated.json"
-          fi
-
-      # Addon measured (discovery.config.json): ask the running app instead of guessing. The authorization probe
-      # sends every row of the static matrix as every mocked user; recorder.js logs, through CAP's public event API,
-      # which requests every test sends (user, entity, outcome, queries); Jest's V8 coverage shows which handler
-      # lines ran. Generated tests and probe first, then the app's own tests (recorder only when the app's Jest
-      # config has no setupFilesAfterEnv of its own, so its setup is never replaced). Results: run/measured/.
-      - name: Measure authorization and requests
-        if: steps.startup.outcome == 'success'
-        continue-on-error: true
-        timeout-minutes: 20
-        working-directory: ${{ steps.target.outputs.dir }}/${{ steps.detect.outputs.app }}
-        env:
-          CDS_REQUIRES_AUTH_KIND: ${{ steps.detect.outputs.mockauth == 'true' && 'mocked' || '' }}
-          DISCOVERY_MEASURE_OUT: ${{ github.workspace }}/out/${{ steps.target.outputs.slug }}/run/measured
-        run: |
-          [ -n "$CDS_REQUIRES_AUTH_KIND" ] || unset CDS_REQUIRES_AUTH_KIND
-          node "$GITHUB_WORKSPACE/bin/addon.js" enabled measured || { echo "measured addon is off"; exit 0; }
-          mkdir -p test/discovery-measure "$DISCOVERY_MEASURE_OUT"
-          cp "$GITHUB_WORKSPACE"/addons/measured/{authz-probe.test.js,recorder.js} test/discovery-measure/
-          rec="$PWD/test/discovery-measure/recorder.js"
-          cov=(--coverage --coverageProvider=v8 --coverageReporters=json)
-          if [ "${{ steps.startup.outputs.runner }}" = node ]; then
-            node "$GITHUB_WORKSPACE/.github/scripts/node-test.js" test/discovery-measure --outputFile "$GITHUB_WORKSPACE/out/jest-measure.json" || true
-            exit 0
-          fi
-          ${{ steps.shim.outputs.jest }} test/discovery-measure test/generated --ci --forceExit --testTimeout 600000 \
-            --setupFilesAfterEnv "$rec" "${cov[@]}" --coverageDirectory "$DISCOVERY_MEASURE_OUT/coverage-generated" || true
-          # the app's own tests, when it has any outside the folders written by this workflow
-          own=$(find . -path ./node_modules -prune -o -path ./test/generated -prune -o -path './test/discovery-*' -prune -o \( -name '*.test.js' -o -name '*.spec.js' -o -name '*.test.ts' \) -print | head -1)
-          [ -n "$own" ] || { echo "no own tests"; exit 0; }
-          setup=$(${{ steps.shim.outputs.jest }} --showConfig 2>/dev/null | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{console.log(JSON.parse(s).configs[0].setupFilesAfterEnv.length)}catch{console.log(0)}})")
-          extra=(); [ "$setup" = 0 ] && extra=(--setupFilesAfterEnv "$rec") || echo "::notice::own Jest setup files kept: own tests run without the request log"
-          ${{ steps.shim.outputs.jest }} --ci --forceExit --testTimeout 120000 "${extra[@]}" "${cov[@]}" --coverageDirectory "$DISCOVERY_MEASURE_OUT/coverage-own" \
-            --testPathIgnorePatterns /node_modules/ /test/generated/ /test/discovery- /app/ || true
-
-      # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
-      # then the findings stage again (measured findings settle gaps) and bin/validate.js; recorded in manifest.json
-      - name: Addons after tests
-        id: aftertests
-        if: always() && steps.target.outputs.slug
-        continue-on-error: true
-        env:
-          RUN_TESTS: ${{ steps.startup.outcome == 'success' && steps.generated.outcome || 'skipped' }}
-        run: |
-          out="out/${{ steps.target.outputs.slug }}"
-          case "$RUN_TESTS" in success) st=ran;; failure) st=failed;; *) st=skipped;; esac
-          node bin/stages.js record "$out" run-tests "$st" "startup ${{ steps.startup.outcome }}, generated tests ${{ steps.generated.outcome }}" || true
-          node bin/after-tests.js "$out" --generated out/jest-generated.json
+        with:
+          path: ${{ steps.target.outputs.dir }}
+          app: ${{ env.APP_PATH }}
+          ui: ${{ env.UI_PATHS }}
+          slug: ${{ env.REPO }}
+          out: ${{ github.workspace }}/out/${{ steps.target.outputs.slug }}
+          reports: ${{ github.workspace }}/out
+          node-version: ''
+          summary: 'false'
+          artifact: ''
+          fail-on-error: 'false'
 
       - name: Job summary
         if: always()
@@ -356,19 +180,19 @@ jobs:
           RUN_SLUG: ${{ steps.target.outputs.slug }}
           RUN_REF: ${{ env.REF }}
           RUN_COMMIT: ${{ steps.target.outputs.commit }}
-          RUN_APP: ${{ steps.detect.outputs.app }}
-          RUN_UI: ${{ steps.detect.outputs.ui }}
-          RUN_CURATED: ${{ steps.detect.outputs.curated }}
+          RUN_APP: ${{ steps.disc.outputs.app }}
+          RUN_UI: ${{ steps.disc.outputs.ui }}
+          RUN_CURATED: ${{ steps.disc.outputs.curated }}
           RUN_VISIBILITY: ${{ steps.target.outputs.visibility }}
           RUN_PUBLISH: ${{ steps.target.outputs.publish }}
           RUN_PUBLISH_NOTE: ${{ steps.target.outputs.note }}
           RUN_ATLAS_URL: ${{ steps.target.outputs.atlas_url }}
-          RUN_STARTUP: ${{ steps.startup.outcome == 'success' && 'ok' || steps.startup.outcome == 'failure' && 'failed' || 'not run' }}
+          RUN_STARTUP: ${{ steps.disc.outputs.startup == 'success' && 'ok' || steps.disc.outputs.startup == 'failure' && 'failed' || 'not run' }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           mkdir -p out
           node .github/scripts/result.js out "$RUN_SLUG"
-          node .github/scripts/summary.js out "$RUN_SLUG" "Discovery: $RUN_REPO" >> "$GITHUB_STEP_SUMMARY"
+          node lib/runtime/summary.js out "$RUN_SLUG" "Discovery: $RUN_REPO" >> "$GITHUB_STEP_SUMMARY"
           # addon snippets (measured, rules, runtime, ...), as on the SFlight PR comment
           for f in "out/$RUN_SLUG"/pr/*.md; do [ -f "$f" ] && { echo; cat "$f"; } >> "$GITHUB_STEP_SUMMARY"; done
 
@@ -382,9 +206,9 @@ jobs:
       # The pilots are known to start and to pass their generated tests, so on a pull request either
       # failing is a regression in the toolkit or this workflow.
       - name: Fail the pull request check if a pilot regressed
-        if: github.event_name == 'pull_request' && matrix.target.gate != false && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success' || steps.aftertests.outcome == 'failure')
+        if: github.event_name == 'pull_request' && matrix.target.gate != false && (steps.disc.outputs.startup != 'success' || steps.disc.outputs.generated != 'success' || steps.disc.outputs.aftertests == 'failure' || steps.disc.outputs.status != 'success')
         run: |
-          echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}, after tests + findings + validation: ${{ steps.aftertests.outcome }}. See the job summary."
+          echo "::error::action: ${{ steps.disc.outcome }}, run: ${{ steps.disc.outputs.status }}, startup: ${{ steps.disc.outputs.startup }}, generated tests: ${{ steps.disc.outputs.generated }}, after tests + findings + validation: ${{ steps.disc.outputs.aftertests }}. See the job summary."
           exit 1
 
   publish:

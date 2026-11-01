@@ -11,7 +11,7 @@ const { STAGES, MODES, byId } = require('../lib/stages')
 const manifest = require('../lib/manifest')
 
 const DOC = path.join(__dirname, '..', 'docs', 'stages.md')
-const WHEN = { pipeline: 'bin/pipeline.js', ci: 'CI only', 'on-demand': 'on demand', 'by-hand': 'by an AI agent or a person' }
+const WHEN = { pipeline: 'bin/pipeline.js', ci: 'needs the running app (cap-discovery test, CI)', 'on-demand': 'on demand', 'by-hand': 'by an AI agent or a person' }
 const METHOD = { static: 'static', measured: '**measured**', ai: '**AI**' }
 const cell = s => String(s).replace(/\|/g, '\\|')
 const code = l => l.map(x => `\`${x}\``).join(', ')

@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "cap-discovery": {
+      "source": {
+        "source": "git",
+        "url": "https://github.example-corp.com/your-org/cap-discovery.git"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "cap-discovery@cap-discovery": true
+  }
+}

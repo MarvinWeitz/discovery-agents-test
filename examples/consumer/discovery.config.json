@@ -1,0 +1,7 @@
+{
+  "mode": "static",
+  "docs": "docs/discovery",
+  "addons": {
+    "mutation": false
+  }
+}

@@ -24,7 +24,7 @@ if (!fs.existsSync(path.join(dir, 'plan.json'))) { console.log('[uitests] no UI 
 const plan = JSON.parse(fs.readFileSync(path.join(dir, 'plan.json'), 'utf8'))
 const port = +(opt('--port') || 4004), url = (opt('--url') || `http://localhost:${port}`).replace(/\/$/, '')
 const TIMEOUT = +(opt('--timeout') || 900) * 1000
-const PW = [path.join(ROOT, 'node_modules', 'playwright'), '/opt/node-tools/node_modules/playwright'].find(p => fs.existsSync(p)) || 'playwright'
+const PW = require('../../lib/resolve').dir('playwright') || 'playwright'
 
 const get = u => new Promise(res => http.get(u, r => { r.resume(); res(r.statusCode) }).on('error', () => res(0)))
 const sleep = ms => new Promise(r => setTimeout(r, ms))

@@ -132,7 +132,7 @@ jobs:
       - name: Job summary
         if: always()
         run: |
-          node .github/scripts/summary.js out > out/summary.md
+          node lib/runtime/summary.js out > out/summary.md
           # addons put their PR snippets in out/<app>/pr/*.md
           for f in out/cap-sflight/pr/*.md; do [ -f "$f" ] && { echo; cat "$f"; } >> out/summary.md; done
           cat out/summary.md >> "$GITHUB_STEP_SUMMARY"

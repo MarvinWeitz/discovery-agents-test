@@ -64,7 +64,7 @@ Set it with `--mode`, `DISCOVERY_MODE`, or `"mode"` in `discovery.config.json` (
 
 | # | Stage | When | Method | Switch | Reads | Writes |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | **intake** Get the app | CI only | static | always | repository URL, ref, optional app folder and UI folders | the app checkout with node_modules |
+| 1 | **intake** Get the app | needs the running app (cap-discovery test, CI) | static | always | repository URL, ref, optional app folder and UI folders | the app checkout with node_modules |
 | 2 | **discover** Ask CAP, extract, analyse | bin/pipeline.js | static | always | app folder, --ui folders | run/project.json, run/csn.json, run/edmx/, run/graph/nodes.jsonl, run/graph/edges.jsonl, run/slices/catalog.json, run/tests/class-seeds.json, run/metrics.json, run/discovery-report.md |
 | 3 | **facts** Analyse into atlas facts | bin/pipeline.js | static | always | run/, curated/<app>.json (optional) | atlas-data.json, run/measured/plan.json, pr/*.md |
 | 4 | **findings** Findings and gaps (the middle layer) | bin/pipeline.js | static | `stages.findings` | run/graph/, run/csn.json, run/project.json, run/metrics.json, atlas-data.json, run/findings/ai.jsonl (mode static+ai) | run/findings/findings.jsonl, run/findings/gaps.jsonl, run/findings/summary.json, run/findings/README.md, pr/findings.md |
@@ -72,8 +72,8 @@ Set it with `--mode`, `DISCOVERY_MODE`, or `"mode"` in `discovery.config.json` (
 | 6 | **atlas** Render the atlas | bin/pipeline.js | static | always | atlas-data.json | atlas/README.md, atlas/topics/*.md, atlas/images/*.png, atlas/index.html |
 | 7 | **ai-requests** Prepare AI requests | bin/pipeline.js | static | `mode` | run/findings/gaps.jsonl, run/findings/findings.jsonl, run/graph/ | run/ai/requests/<gap>.md, run/ai/requests/index.json, run/ai/README.md |
 | 8 | **validate** Validate the run | bin/pipeline.js | static | always | manifest.json, run/findings/, run/ai/answers/, run/graph/ | exit code, problems on stderr |
-| 9 | **run-tests** Run the app and its tests | CI only | **measured** | `addons.measured, addons.runtime` | run/tests/generated/, run/measured/plan.json, the installed app | jest-generated.json, run/runtime.json, run/measured/authz.json, run/measured/requests*.jsonl, run/measured/coverage-*/ |
-| 10 | **after-tests** Fold in what the running app answered | CI only | **measured** | always | jest-generated.json, run/runtime.json, run/measured/ | atlas-data.json, atlas/, run/findings/, manifest.json |
+| 9 | **run-tests** Run the app and its tests | needs the running app (cap-discovery test, CI) | **measured** | `addons.measured, addons.runtime` | run/tests/generated/, run/measured/plan.json, the installed app | jest-generated.json, run/runtime.json, run/measured/authz.json, run/measured/requests*.jsonl, run/measured/coverage-*/ |
+| 10 | **after-tests** Fold in what the running app answered | needs the running app (cap-discovery test, CI) | **measured** | always | jest-generated.json, run/runtime.json, run/measured/ | atlas-data.json, atlas/, run/findings/, manifest.json |
 | 11 | **ai-answer** Answer the requests | by an AI agent or a person | **AI** | `mode` | run/ai/requests/, the app source | run/ai/answers/<gap>.json |
 | 12 | **ai-merge** Gate and merge AI answers | on demand | static | `mode` | run/ai/answers/*.json, the app source | run/findings/ai.jsonl, run/ai/merge-log.json, run/findings/ (rebuilt) |
 
@@ -81,10 +81,10 @@ Set it with `--mode`, `DISCOVERY_MODE`, or `"mode"` in `discovery.config.json` (
 
 ### intake: Get the app
 
-Clone the repository, find the CAP app and its UI5 projects, install its packages, repair what blocks a test start.
+Clone the repository (central mode) or use the checkout it runs in (portable mode), find the CAP app and its UI5 projects, install its packages, repair what blocks a test start.
 
-- **When:** CI only · **method:** static · **switch:** always on · **walkthrough:** piece 01
-- **Code:** `.github/workflows/discover.yml`, `lib/project/detect.js`
+- **When:** needs the running app (cap-discovery test, CI) · **method:** static · **switch:** always on · **walkthrough:** piece 01
+- **Code:** `.github/workflows/discover.yml`, `bin/cap-discovery.js`, `lib/project/detect.js`, `lib/runtime/test-run.js`
 - **Reads:** `repository URL, ref, optional app folder and UI folders`
 - **Writes:** `the app checkout with node_modules`
 
@@ -157,8 +157,8 @@ Check every findings, gaps, AI answer and manifest file against its schema, and 
 
 Start the app under cds.test (records registered handlers), run the generated tests, send the authorization probe, log requests, collect coverage.
 
-- **When:** CI only · **method:** measured · **switch:** addons.measured, addons.runtime · **walkthrough:** piece 10
-- **Code:** `.github/workflows/discover.yml`
+- **When:** needs the running app (cap-discovery test, CI) · **method:** measured · **switch:** addons.measured, addons.runtime · **walkthrough:** piece 10
+- **Code:** `lib/runtime/test-run.js`, `lib/runtime/node-test.js`, `lib/runtime/repair-install.js`
 - **Reads:** `run/tests/generated/`, `run/measured/plan.json`, `the installed app`
 - **Writes:** `jest-generated.json`, `run/runtime.json`, `run/measured/authz.json`, `run/measured/requests*.jsonl`, `run/measured/coverage-*/`
 
@@ -166,7 +166,7 @@ Start the app under cds.test (records registered handlers), run the generated te
 
 Addons compare measured results with the static facts and update the atlas; the findings stage runs again, so measured findings settle the gaps they answer.
 
-- **When:** CI only · **method:** measured · **switch:** always on · **walkthrough:** piece 11, 13
+- **When:** needs the running app (cap-discovery test, CI) · **method:** measured · **switch:** always on · **walkthrough:** piece 11, 13
 - **Code:** `bin/after-tests.js`, `addons/*/index.js afterTests()`
 - **Reads:** `jest-generated.json`, `run/runtime.json`, `run/measured/`
 - **Writes:** `atlas-data.json`, `atlas/`, `run/findings/`, `manifest.json`

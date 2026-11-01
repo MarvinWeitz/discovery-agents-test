@@ -1,0 +1,21 @@
+flowchart LR
+  subgraph TK["Toolkit repo (private, on your GitHub Enterprise)"]
+    CLI["bin/cap-discovery.js<br/>init · run · test · all · docs · summary · ai"]
+    ACT["action.yml<br/>composite GitHub Action"]
+    PLG[".claude-plugin/<br/>agents + skills"]
+    ACT --> CLI
+  end
+  subgraph P["Your CAP project (private)"]
+    CFG["discovery.config.json<br/>merged over toolkit defaults"]
+    WF[".github/workflows/discovery.yml<br/>uses: org/cap-discovery@main"]
+    CS[".claude/settings.json<br/>plugin enabled"]
+    OUT[".discovery/<br/>atlas · findings · gaps · tests"]
+    DOCS["docs/discovery/<br/>Markdown, committed"]
+  end
+  WF -- "CI run in your repo" --> ACT
+  DEV["Laptop · Claude Code · other CI"] -- "npx git+https://ghe/…" --> CLI
+  CS -. "offers (git source, user credentials)" .-> PLG
+  CLI --> OUT --> DOCS
+  CFG --> CLI
+  PLG -- "gap-resolver answers<br/>.discovery/run/ai/requests" --> OUT
+  CEN["Central: Run discovery workflow<br/>(pilots, public samples)"] -- "uses: ./" --> ACT

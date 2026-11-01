@@ -1,0 +1,228 @@
+# CAP discovery as one step in any repository's workflow. Runs bin/cap-discovery.js on the checked-out
+# project: static pipeline, then (tests: true) the app under cds.test with the generated tests, measured
+# addon and after-tests. Everything stays in the calling repository (artifact, job summary, PR comment).
+# Works on github.com and GitHub Enterprise (Cloud and Server); the toolkit repo itself can be private
+# (allow it once: Settings → Actions → General → Access). Minimal use:
+#
+#   - uses: actions/checkout@v4
+#   - uses: <owner>/<toolkit-repo>@main
+#
+# Settings live in the project's discovery.config.json (merged over the toolkit's defaults).
+name: CAP discovery
+description: Discover a CAP Node.js + UI5 app (atlas, findings, gaps, generated cds.test suites) inside its own CI
+branding:
+  icon: search
+  color: blue
+
+inputs:
+  path:
+    description: Project (repo) root, relative to the workspace
+    default: .
+  app:
+    description: CAP project folder relative to path (empty = detect)
+    default: ''
+  ui:
+    description: UI5 project folders relative to path, comma separated (empty = detect, "-" = none)
+    default: ''
+  mode:
+    description: static | static+ai (empty = discovery.config.json, else static)
+    default: ''
+  tests:
+    description: Start the app under cds.test and run the generated tests (false = static analysis only)
+    default: 'true'
+  install:
+    description: auto (when node_modules is missing) | always | never
+    default: auto
+  out:
+    description: Output folder (default <path>/.discovery)
+    default: ''
+  reports:
+    description: Folder for Jest reports and tests.json (default <out>/reports)
+    default: ''
+  slug:
+    description: owner/repo used for curated findings and titles (default the calling repository)
+    default: ''
+  docs:
+    description: Also copy the Markdown output to this folder (e.g. docs/discovery); commit it in a later step if you want
+    default: ''
+  images:
+    description: Install Playwright + Chromium for the atlas PNGs and the uitests addon
+    default: 'true'
+  opengrep:
+    description: Install Opengrep for the rules addon
+    default: 'true'
+  node-version:
+    description: Node.js version (empty = use the one already set up)
+    default: '22.x'
+  summary:
+    description: Write the job summary
+    default: 'true'
+  comment:
+    description: On pull requests, keep one summary comment up to date (needs pull-requests write)
+    default: 'false'
+  artifact:
+    description: Name of the uploaded artifact with the whole output (empty = no upload)
+    default: discovery
+  fail-on-error:
+    description: Fail the step when the pipeline or the after-tests validation fails
+    default: 'true'
+  token:
+    description: Token for the PR comment (and the Opengrep download on github.com)
+    default: ${{ github.token }}
+
+outputs:
+  out:
+    description: Absolute output folder
+    value: ${{ steps.run.outputs.out }}
+  app:
+    description: CAP project folder relative to path
+    value: ${{ steps.where.outputs.app }}
+  ui:
+    description: UI5 project folders relative to the app folder (as passed to the pipeline)
+    value: ${{ steps.where.outputs.ui }}
+  curated:
+    description: curated agent findings merged from the toolkit (curated/<file>.json), if any
+    value: ${{ steps.where.outputs.curated }}
+  status:
+    description: success | failure (pipeline, tests phase and validation)
+    value: ${{ steps.run.outputs.status }}
+  startup:
+    description: success | failure | skipped (app start under cds.test)
+    value: ${{ steps.run.outputs.startup }}
+  generated:
+    description: success | failure | skipped (generated tests)
+    value: ${{ steps.run.outputs.generated }}
+  aftertests:
+    description: success | failure | skipped (after-tests stage, findings again, validation)
+    value: ${{ steps.run.outputs.aftertests }}
+
+runs:
+  using: composite
+  steps:
+    - if: inputs.node-version != ''
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Install the toolkit
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      env:
+        IMAGES: ${{ inputs.images }}
+      run: |
+        [ -d node_modules/@sap/cds ] || npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+        if [ "$IMAGES" = true ]; then
+          npm i --no-save --legacy-peer-deps --no-audit --no-fund playwright@1.63.0
+          npx playwright install --with-deps chromium
+        fi
+
+    - name: Find the CAP app and UI5 projects
+      id: where
+      shell: bash
+      env:
+        A: ${{ github.action_path }}
+        P: ${{ inputs.path }}
+        APP: ${{ inputs.app }}
+        UI: ${{ inputs.ui }}
+        OUT: ${{ inputs.out }}
+        SLUG: ${{ inputs.slug }}
+      run: |
+        args=(--project "$P"); [ -n "$APP" ] && args+=(--app "$APP"); [ -n "$UI" ] && args+=(--ui "$UI"); [ -n "$OUT" ] && args+=(--out "$OUT"); [ -n "$SLUG" ] && args+=(--slug "$SLUG")
+        node "$A/bin/cap-discovery.js" where "${args[@]}" > "$RUNNER_TEMP/cap-discovery-where.json"
+        jq -r '"app=\(.app)", "ui=\(.ui)", "ts=\(.ts)", "typer=\(.typer)", "curated=\(.curated)"' "$RUNNER_TEMP/cap-discovery-where.json" | tee -a "$GITHUB_OUTPUT"
+
+    # TypeScript apps and cds-typer models need CAP's dev kit on the PATH
+    - if: inputs.tests == 'true' && (steps.where.outputs.ts == 'true' || steps.where.outputs.typer == 'true')
+      name: CAP dev tools for TypeScript
+      shell: bash
+      continue-on-error: true
+      run: npm i -g @sap/cds-dk typescript tsx
+
+    - if: inputs.opengrep == 'true'
+      name: Install Opengrep (rules addon)
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.server_url == 'https://github.com' && inputs.token || '' }}
+      run: ${{ github.action_path }}/.github/scripts/install-opengrep.sh
+
+    - name: Run discovery
+      id: run
+      shell: bash
+      env:
+        A: ${{ github.action_path }}
+        P: ${{ inputs.path }}
+        APP: ${{ inputs.app }}
+        UI: ${{ inputs.ui }}
+        MODE: ${{ inputs.mode }}
+        OUT: ${{ inputs.out }}
+        REPORTS: ${{ inputs.reports }}
+        SLUG: ${{ inputs.slug }}
+        DOCS: ${{ inputs.docs }}
+        TESTS: ${{ inputs.tests }}
+        INSTALL: ${{ inputs.install }}
+        IMAGES: ${{ inputs.images }}
+      run: |
+        [ "$IMAGES" = true ] || export DISCOVERY_IMAGES=off
+        args=(--project "$P" --install "$INSTALL")
+        for kv in "app:$APP" "ui:$UI" "mode:$MODE" "out:$OUT" "reports:$REPORTS" "slug:$SLUG" "docs:$DOCS"; do
+          [ -n "${kv#*:}" ] && args+=("--${kv%%:*}" "${kv#*:}")
+        done
+        cmd=all; [ "$TESTS" = true ] || cmd=run
+        status=success
+        node "$A/bin/cap-discovery.js" "$cmd" "${args[@]}" || status=failure
+        out=$(jq -r .out "$RUNNER_TEMP/cap-discovery-where.json"); reports=$(jq -r .reports "$RUNNER_TEMP/cap-discovery-where.json")
+        [ -n "$REPORTS" ] && reports=$(realpath -m "$REPORTS")
+        t="$reports/tests.json"
+        {
+          echo "status=$status"; echo "out=$out"; echo "reports=$reports"
+          for k in startup generated aftertests; do echo "$k=$( [ -f "$t" ] && jq -r ".$k" "$t" || echo skipped)"; done
+        } | tee -a "$GITHUB_OUTPUT"
+
+    - if: always() && inputs.summary == 'true' && steps.run.outputs.out
+      name: Job summary
+      shell: bash
+      env:
+        A: ${{ github.action_path }}
+        P: ${{ inputs.path }}
+        OUT: ${{ steps.run.outputs.out }}
+        REPORTS: ${{ steps.run.outputs.reports }}
+        SLUG: ${{ inputs.slug }}
+      run: node "$A/bin/cap-discovery.js" summary --project "$P" --out "$OUT" --reports "$REPORTS" ${SLUG:+--slug "$SLUG"} >> "$GITHUB_STEP_SUMMARY"
+
+    - if: always() && inputs.comment == 'true' && github.event_name == 'pull_request' && steps.run.outputs.out
+      name: Pull request comment
+      shell: bash
+      continue-on-error: true
+      env:
+        A: ${{ github.action_path }}
+        P: ${{ inputs.path }}
+        OUT: ${{ steps.run.outputs.out }}
+        REPORTS: ${{ steps.run.outputs.reports }}
+        GH_TOKEN: ${{ inputs.token }}
+        GH_ENTERPRISE_TOKEN: ${{ inputs.token }}
+        GH_HOST: ${{ github.server_url }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        export GH_HOST="${GH_HOST#https://}"   # gh talks to this GitHub (Enterprise) host
+        body="$RUNNER_TEMP/cap-discovery-comment.md"
+        node "$A/bin/cap-discovery.js" summary --project "$P" --out "$OUT" --reports "$REPORTS" > "$body"
+        printf '\n[Full atlas, findings and tests: artifact of this run](%s)\n' "$RUN_URL" >> "$body"
+        "$A/.github/scripts/sticky-comment.sh" cap-discovery "$body"
+
+    - if: always() && inputs.artifact != '' && steps.run.outputs.out
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact }}
+        path: |
+          ${{ steps.run.outputs.out }}
+          ${{ steps.run.outputs.reports }}
+        if-no-files-found: ignore
+        include-hidden-files: true
+
+    - if: inputs.fail-on-error == 'true' && steps.run.outputs.status == 'failure'
+      name: Fail on pipeline or validation errors
+      shell: bash
+      run: |
+        echo "::error::Discovery failed (pipeline, or the after-tests validation). See the log of the Run discovery step."
+        exit 1
