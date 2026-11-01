@@ -1,0 +1,151 @@
+{
+ "at": "2026-11-01T23:30:06.177Z",
+ "note": "first run of the held-out shop seeds, before any fix made for them",
+ "seeds": [
+  {
+   "id": "ts-unbound-action-no-handler",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "action-without-handler",
+    "risk:noimpl"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-cancel-guard-removed",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "ui-promise:ui-only",
+    "risk:ui-only"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-sql-injection",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "rule:sql-injection",
+    "native-sql"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-null-deref",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "rule:null-deref-in-guard"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-emit-typo",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "rule:unknown-event"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-role-typo",
+   "detected": false,
+   "detectable": true,
+   "checks": [
+    "rule:unknown-role"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-admin-open",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "risk:open-svc"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ts-method-reference",
+   "detected": true,
+   "detectable": true,
+   "checks": [],
+   "noise": 0
+  },
+  {
+   "id": "ts-stock-unchecked",
+   "detected": false,
+   "detectable": false,
+   "checks": [
+    "risk:*"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-deprecated-jquery-sap",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "lint:ui5-lint:*"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-global-access",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "lint:ui5-lint:no-globals"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-sync-loading",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "lint:ui5-lint:*"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-binding-unknown-set",
+   "detected": false,
+   "detectable": true,
+   "checks": [
+    "rule:ui5-unknown-binding*"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-action-unknown",
+   "detected": false,
+   "detectable": true,
+   "checks": [
+    "rule:ui5-unknown-binding*"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-datasource-wrong-path",
+   "detected": false,
+   "detectable": true,
+   "checks": [
+    "rule:ui5-unknown-binding*"
+   ],
+   "noise": 0
+  },
+  {
+   "id": "ui5-inline-script",
+   "detected": true,
+   "detectable": true,
+   "checks": [
+    "lint:ui5-lint:csp-unsafe-inline-script"
+   ],
+   "noise": 0
+  }
+ ]
+}

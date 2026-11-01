@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="806" viewBox="0 0 760 806" font-family="system-ui, sans-serif" font-size="12">
+<rect width="760" height="806" fill="#fff"/>
+<text x="12" y="20" font-size="14" font-weight="600">Seeded bugs per check: found, missed, false alarms</text>
+<g transform="translate(254,28)"><rect width="10" height="10" fill="#188038"/><text x="14" y="9">found</text><rect x="70" width="10" height="10" fill="#d93025"/><text x="84" y="9">missed</text><rect x="150" width="10" height="10" fill="#f29900"/><text x="164" y="9">false alarm</text></g>
+<text x="244" y="58" text-anchor="end">rule:unknown-role</text>
+<rect x="250" y="46" width="86" height="16" fill="#188038" rx="2"/><text x="254" y="58" fill="#fff" font-size="11">4</text>
+<text x="244" y="80" text-anchor="end">action-without-handler</text>
+<rect x="250" y="68" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="80" fill="#fff" font-size="11">3</text>
+<text x="244" y="102" text-anchor="end">native-sql</text>
+<rect x="250" y="90" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="102" fill="#fff" font-size="11">3</text>
+<text x="244" y="124" text-anchor="end">risk:ui-only</text>
+<rect x="250" y="112" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="124" fill="#fff" font-size="11">3</text>
+<text x="244" y="146" text-anchor="end">rule:auth-not-for-production</text>
+<rect x="250" y="134" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="146" fill="#fff" font-size="11">3</text>
+<text x="244" y="168" text-anchor="end">rule:null-deref-in-guard</text>
+<rect x="250" y="156" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="168" fill="#fff" font-size="11">3</text>
+<text x="244" y="190" text-anchor="end">rule:sql-injection</text>
+<rect x="250" y="178" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="190" fill="#fff" font-size="11">3</text>
+<text x="244" y="212" text-anchor="end">rule:ui5-unknown-binding*</text>
+<rect x="250" y="200" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="212" fill="#fff" font-size="11">3</text>
+<text x="244" y="234" text-anchor="end">rule:unknown-event</text>
+<rect x="250" y="222" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="234" fill="#fff" font-size="11">3</text>
+<text x="244" y="256" text-anchor="end">ui-promise:ui-only</text>
+<rect x="250" y="244" width="64" height="16" fill="#188038" rx="2"/><text x="254" y="256" fill="#fff" font-size="11">3</text>
+<text x="244" y="278" text-anchor="end">lint:ui5-lint:*</text>
+<rect x="250" y="266" width="42" height="16" fill="#188038" rx="2"/><text x="254" y="278" fill="#fff" font-size="11">2</text>
+<text x="244" y="300" text-anchor="end">risk:noimpl</text>
+<rect x="250" y="288" width="42" height="16" fill="#188038" rx="2"/><text x="254" y="300" fill="#fff" font-size="11">2</text>
+<text x="244" y="322" text-anchor="end">risk:open-svc</text>
+<rect x="250" y="310" width="42" height="16" fill="#188038" rx="2"/><text x="254" y="322" fill="#fff" font-size="11">2</text>
+<text x="244" y="344" text-anchor="end">risk:pii-open</text>
+<rect x="250" y="332" width="42" height="16" fill="#188038" rx="2"/><text x="254" y="344" fill="#fff" font-size="11">2</text>
+<text x="244" y="366" text-anchor="end">risk:remote-untested</text>
+<rect x="250" y="354" width="42" height="16" fill="#188038" rx="2"/><text x="254" y="366" fill="#fff" font-size="11">2</text>
+<text x="244" y="388" text-anchor="end">rule:orphan-handler</text>
+<rect x="250" y="376" width="42" height="16" fill="#188038" rx="2"/><text x="254" y="388" fill="#fff" font-size="11">2</text>
+<text x="244" y="410" text-anchor="end">state-transition</text>
+<rect x="250" y="398" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="410" fill="#fff" font-size="11">1</text>
+<rect x="272" y="398" width="20" height="16" fill="#d93025" rx="2"/><text x="276" y="410" fill="#fff" font-size="11">1</text>
+<text x="244" y="432" text-anchor="end">authz</text>
+<rect x="250" y="420" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="432" fill="#fff" font-size="11">1</text>
+<text x="244" y="454" text-anchor="end">custom-route</text>
+<rect x="250" y="442" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="454" fill="#fff" font-size="11">1</text>
+<text x="244" y="476" text-anchor="end">lint:ui5-lint:csp-unsafe-inline-script</text>
+<rect x="250" y="464" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="476" fill="#fff" font-size="11">1</text>
+<text x="244" y="498" text-anchor="end">lint:ui5-lint:no-globals</text>
+<rect x="250" y="486" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="498" fill="#fff" font-size="11">1</text>
+<text x="244" y="520" text-anchor="end">pattern:UI annotations directly on do…</text>
+<rect x="250" y="508" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="520" fill="#fff" font-size="11">1</text>
+<text x="244" y="542" text-anchor="end">risk:*</text>
+<rect x="250" y="530" width="20" height="16" fill="#d93025" rx="2"/><text x="254" y="542" fill="#fff" font-size="11">1</text>
+<text x="244" y="564" text-anchor="end">risk:db-branch</text>
+<rect x="250" y="552" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="564" fill="#fff" font-size="11">1</text>
+<text x="244" y="586" text-anchor="end">risk:events-untested</text>
+<rect x="250" y="574" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="586" fill="#fff" font-size="11">1</text>
+<text x="244" y="608" text-anchor="end">risk:native-sql</text>
+<rect x="250" y="596" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="608" fill="#fff" font-size="11">1</text>
+<text x="244" y="630" text-anchor="end">risk:partial</text>
+<rect x="250" y="618" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="630" fill="#fff" font-size="11">1</text>
+<text x="244" y="652" text-anchor="end">rule:commented-out-grant</text>
+<rect x="250" y="640" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="652" fill="#fff" font-size="11">1</text>
+<text x="244" y="674" text-anchor="end">rule:hard-coded-currency</text>
+<rect x="250" y="662" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="674" fill="#fff" font-size="11">1</text>
+<text x="244" y="696" text-anchor="end">rule:max-plus-one-id</text>
+<rect x="250" y="684" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="696" fill="#fff" font-size="11">1</text>
+<text x="244" y="718" text-anchor="end">rule:unknown-grant</text>
+<rect x="250" y="706" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="718" fill="#fff" font-size="11">1</text>
+<text x="244" y="740" text-anchor="end">rule:writable-owner-field</text>
+<rect x="250" y="728" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="740" fill="#fff" font-size="11">1</text>
+<text x="244" y="762" text-anchor="end">ui-promise:*</text>
+<rect x="250" y="750" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="762" fill="#fff" font-size="11">1</text>
+</svg>

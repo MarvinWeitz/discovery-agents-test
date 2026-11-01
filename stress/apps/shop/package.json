@@ -1,0 +1,23 @@
+{
+  "name": "stress-shop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stress corpus base app: TypeScript CAP service and a freestyle UI5 app",
+  "dependencies": { "@sap/cds": "^9" },
+  "devDependencies": { "typescript": "^5", "tsx": "^4", "@cap-js/cds-types": "^0.14" },
+  "cds": {
+    "requires": {
+      "[development]": {
+        "auth": {
+          "kind": "mocked",
+          "users": {
+            "carla": { "password": "", "roles": ["Customer"] },
+            "dan": { "password": "", "roles": ["Customer"] },
+            "erin": { "password": "", "roles": ["ShopAdmin"] }
+          }
+        }
+      },
+      "[production]": { "auth": "xsuaa" }
+    }
+  }
+}

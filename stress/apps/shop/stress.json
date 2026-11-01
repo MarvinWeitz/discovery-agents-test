@@ -1,0 +1,6 @@
+{
+  "title": "Book shop (TypeScript CAP service + freestyle UI5 app)",
+  "about": "TypeScript service class run with tsx, an unbound action with a stock check, a bound cancel action with @Core.OperationAvailable in CDS expression syntax, an event, row-level @restrict, a freestyle UI5 app (XML view, controller calling the action).",
+  "ui5": ["app/shop"],
+  "accepted": []
+}

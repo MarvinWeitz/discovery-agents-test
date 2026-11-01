@@ -17,7 +17,7 @@ module.exports = {
         if (!m) return
         const alias = m[2] || m[1]
         const win = lines.slice(i, i + 6).join('\n')
-        const inc = win.match(new RegExp(`(\\w+(?:\\.\\w+)*)\\s*=\\s*(?:\\+\\+\\s*${alias}\\b|${alias}\\s*\\+\\s*1\\b|\\(?\\s*${alias}\\s*\\|\\|\\s*0\\s*\\)?\\s*\\+\\s*1)`))
+        const inc = win.match(new RegExp(`(\\w+(?:\\.\\w+)*)\\s*=\\s*(?:\\+\\+\\s*${alias}\\b|${alias}\\s*\\+\\s*1\\b|\\(?\\s*${alias}\\s*(?:\\|\\||\\?\\?)\\s*0\\s*\\)?\\s*\\+\\s*1)`))
         if (!inc) return
         const line = i + 1 + win.slice(0, inc.index).split('\n').length - 1
         // per-draft numbering (NEW on a draft child, scoped by its parent) is single-user; skip it
