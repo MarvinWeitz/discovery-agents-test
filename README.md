@@ -31,7 +31,7 @@ The app needs no `npm install`; the toolkit compiles the model with its own `@sa
 
 ## Inside your own project (portable mode)
 
-Run it in the project itself instead of from this repo: a GitHub Action step in the project's CI (`uses: <org>/<toolkit-repo>@main`), or the `cap-discovery` CLI (installed from the toolkit's git URL) with `run|all|docs` in any checkout, plus a Claude Code plugin for the AI pass. Private code never leaves the project, and the toolkit itself can live in a private GitHub Enterprise repo. `npx … init` writes the workflow, a `discovery.config.json` (merged over the defaults here) and the Claude Code settings. Everything about it: [PORTABLE.md](PORTABLE.md); the files a project commits: [examples/consumer/](examples/consumer/).
+Run it in the project itself instead of from this repo: a GitHub Action step in the project's CI (`uses: <org>/<toolkit-repo>@main`), or the `cap-discovery` CLI (installed from the toolkit's git URL) with `run|all|docs` in any checkout, plus a Claude Code plugin for the AI pass. Private code never leaves the project, and the toolkit itself can live in a private GitHub Enterprise repo. `cap-discovery init` writes the workflow, a `discovery.config.json` (merged over the defaults here) and the Claude Code settings. Everything about it: [PORTABLE.md](PORTABLE.md); the files a project commits: [examples/consumer/](examples/consumer/).
 
 ## CI on a public sample
 
