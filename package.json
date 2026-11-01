@@ -18,6 +18,7 @@
     "@sap/cds-compiler": "^7.2.1",
     "@sap/eslint-plugin-cds": "^4.2.5",
     "@ui5/linter": "^1.23.7",
+    "ajv": "8.17.1",
     "covertable": "3.4.0",
     "d3": "7.9.0",
     "d3-sankey": "0.12.3",

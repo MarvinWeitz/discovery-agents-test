@@ -19,6 +19,7 @@ const { extractHistory } = require('../lib/extract/history')
 const { extractCdsDeps } = require('../lib/extract/cds-deps')
 const { extractNative } = require('../lib/extract/native')
 const { extractLint } = require('../lib/extract/lint')
+const { extractBootstrap } = require('../lib/extract/bootstrap')
 const { cutSlices, rank, splitSlices, coverage } = require('../lib/analyse/slices')
 const { deriveClasses } = require('../lib/analyse/classes')
 const { render } = require('../lib/report/report')
@@ -48,6 +49,7 @@ async function main() {
   config.cdsDeps = extractCdsDeps(root, g, csn)                               // 5f  CDS file layers
   config.native = extractNative(root, g)                                      // 5g  HANA-native objects
   extractTests(root, g)                                                       // 5d  existing tests
+  config.bootstrap = extractBootstrap(root, g)                                // 5i  server.js routes, local plugin code
   const lint = extractLint(root, g, uiDirs)                                   // 5h  cds lint, ui5 lint
   const history = extractHistory(root)                                        // 5e  git churn
 
@@ -67,7 +69,7 @@ async function main() {
   fs.writeFileSync(path.join(outDir, 'graph', 'edges.jsonl'), edges)
   fs.writeFileSync(path.join(outDir, 'slices', 'catalog.json'), JSON.stringify(slices.map(({ members, ...s }) => ({ ...s, members, status: 'planned' })), null, 2))
   fs.writeFileSync(path.join(outDir, 'tests', 'class-seeds.json'), JSON.stringify(classes, null, 2))
-  fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify({ run, app, root, commit, handlers, uiRules, auth: config.auth, cdsDeps: config.cdsDeps, native: config.native, lint, coverage: { ...cov, unassigned: cov.unassigned.length } }, null, 2))
+  fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify({ run, app, root, commit, handlers, uiRules, auth: config.auth, cdsDeps: config.cdsDeps, native: config.native, bootstrap: config.bootstrap, lint, coverage: { ...cov, unassigned: cov.unassigned.length } }, null, 2))
   fs.writeFileSync(path.join(outDir, 'discovery-report.md'), render({ app, commit, g, slices, cov, lint, config, classes, history, run }))
   const diagrams = await renderDiagrams(path.join(outDir, 'discovery-report.md'))
   console.log(`${app}: ${g.nodes.size} nodes, ${g.edges.length} edges, ${slices.length} slices, coverage ${Math.round(cov.ratio * 100)}%, ${diagrams.rendered} diagrams rendered`)

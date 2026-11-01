@@ -1,5 +1,5 @@
 ---
-piece: 9 of 12
+piece: 9 of 13
 title: Coding patterns, risk rules, rules drafted from agent findings
 code: lib/analyse/patterns.js, lib/analyse/risks.js, addons/rules/ (engine.js, library/*.js)
 runs: inside bin/atlas-facts.js (rules addon through its facts hook)

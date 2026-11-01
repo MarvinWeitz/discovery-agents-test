@@ -336,10 +336,18 @@ jobs:
             --testPathIgnorePatterns /node_modules/ /test/generated/ /test/discovery- /app/ || true
 
       # Addons (discovery.config.json) that use the test results: coverage by class, test-backed docs; rebuilds the atlas
+      # then the findings stage again (measured findings settle gaps) and bin/validate.js; recorded in manifest.json
       - name: Addons after tests
+        id: aftertests
         if: always() && steps.target.outputs.slug
         continue-on-error: true
-        run: node bin/after-tests.js "out/${{ steps.target.outputs.slug }}" --generated out/jest-generated.json
+        env:
+          RUN_TESTS: ${{ steps.startup.outcome == 'success' && steps.generated.outcome || 'skipped' }}
+        run: |
+          out="out/${{ steps.target.outputs.slug }}"
+          case "$RUN_TESTS" in success) st=ran;; failure) st=failed;; *) st=skipped;; esac
+          node bin/stages.js record "$out" run-tests "$st" "startup ${{ steps.startup.outcome }}, generated tests ${{ steps.generated.outcome }}" || true
+          node bin/after-tests.js "$out" --generated out/jest-generated.json
 
       - name: Job summary
         if: always()
@@ -374,9 +382,9 @@ jobs:
       # The pilots are known to start and to pass their generated tests, so on a pull request either
       # failing is a regression in the toolkit or this workflow.
       - name: Fail the pull request check if a pilot regressed
-        if: github.event_name == 'pull_request' && matrix.target.gate != false && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success')
+        if: github.event_name == 'pull_request' && matrix.target.gate != false && (steps.startup.outcome != 'success' || steps.generated.outcome != 'success' || steps.aftertests.outcome == 'failure')
         run: |
-          echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}. See the job summary."
+          echo "::error::startup: ${{ steps.startup.outcome }}, generated tests: ${{ steps.generated.outcome }}, after tests + findings + validation: ${{ steps.aftertests.outcome }}. See the job summary."
           exit 1
 
   publish:

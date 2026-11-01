@@ -1,6 +1,6 @@
 # Third-party tools and licences
 
-Tracked as we go; legal review happens later. Nothing is bundled: every package is installed from npm by whoever runs the toolkit. Status as of 2026-10-31.
+Tracked as we go; legal review happens later. Nothing is bundled: every package is installed from npm by whoever runs the toolkit. Status as of 2026-11-01.
 
 ## Used by the toolkit
 
@@ -26,6 +26,7 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | Opengrep | latest release | LGPL-2.1 | Rules addon: runs the rules in `addons/rules/opengrep` when installed; CI downloads it from its GitHub releases | OK as an external CLI, never linked or bundled. Our rule files are our own |
 | Semgrep CE | 1.183.0 (local test only) | LGPL-2.1 | Same rule format; used to test the rules where Opengrep's binaries were not reachable. The engine accepts either | OK as an external CLI. Semgrep's registry rules (Semgrep Rules License) are not used |
 | `@cap-js/cds-test`, `jest` | the app's, or 1.x / 29 | Apache-2.0 / MIT | Measured addon: authorization probe and request recorder run in the app's own test runtime in CI | OK, installed into the analysed app only |
+| `ajv` | 8.17.1 | MIT | Validates findings, gaps, AI answers and the run manifest against the JSON Schemas in `schema/` | OK. Brings `fast-deep-equal` (MIT), `json-schema-traverse` (MIT), `fast-uri` (BSD-3-Clause), `require-from-string` (MIT) |
 | `git` | system | GPL-2.0 | Commit hash and churn (CLI only, not linked) | OK as a separate tool |
 
 ## Installed during the session, not used by the toolkit

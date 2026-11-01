@@ -11,6 +11,8 @@ One command maps an app with fixed tools. Agents then read the slices the tools 
 
 ## 1. Deterministic vs agentic
 
+The exact stage list with inputs, outputs and switches is generated: [docs/stages.md](docs/stages.md). Mode `static` (default) is steps 1 to 13b and complete on its own; mode `static+ai` adds the agentic steps, which read and write only the findings layer.
+
 D = deterministic (same input, same output, no LLM). A = agentic (LLM agent, reviewed by a deterministic gate). H = human.
 
 | # | Step | Kind | Tool / module | Output |
@@ -29,6 +31,10 @@ D = deterministic (same input, same output, no LLM). A = agentic (LLM agent, rev
 | 11 | Risk rules | D | `lib/analyse/risks.js` | scored risks with the test that catches each |
 | 12 | Generate cds.test suites | D | `bin/gen-tests.js` | `today:` tests and `it.skip` `spec:` tests, syntax-checked |
 | 13 | Render atlas | D | `bin/atlas.js`, Playwright, d3 | Markdown, PNG, interactive HTML |
+| 13b | Findings and gaps: every judgement and every open question, machine-readable, with JSON Schemas; validated | D | `bin/findings.js`, `bin/validate.js` | `run/findings/findings.jsonl`, `gaps.jsonl` |
+| 13c | AI requests for open gaps (mode `static+ai`) | D | `bin/ai-requests.js` | `run/ai/requests/` |
+| 13d | Answer gaps | A | `gap-resolver` | `run/ai/answers/` |
+| 13e | Accept AI answers (quote on the cited line) | D | `bin/ai-merge.js` | `run/findings/ai.jsonl`, gaps `answered` |
 | 14 | Slice brief | D | `bin/brief.js` | per-slice context with 10 fixed questions |
 | 15 | Trace flows, explain rules and states, map integrations | A | `flow-tracer`, `behaviour-analyst`, `event-integration-analyst` | facts JSON |
 | 16 | Accept agent facts | D | `bin/merge.js` (file:line + verbatim quote check) | merged graph, rejection log |

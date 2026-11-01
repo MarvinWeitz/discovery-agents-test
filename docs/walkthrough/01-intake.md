@@ -1,5 +1,5 @@
 ---
-piece: 1 of 12
+piece: 1 of 13
 title: Intake (clone, detect, install, repair, start)
 code: .github/workflows/discover.yml, lib/project/detect.js (rules) + .github/scripts/detect.js (CLI), .github/scripts/repair-install.js, .github/scripts/node-test.js
 runs: GitHub Actions only. bin/pipeline.js skips all of this; you pass it the paths yourself.

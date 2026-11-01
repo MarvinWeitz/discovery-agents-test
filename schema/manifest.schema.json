@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarvinWeitz/discovery-agents-test/schema/manifest.schema.json",
+  "title": "Run manifest",
+  "description": "<out>/manifest.json: which stages ran in which mode, when, how long, with which switches, and the files each wrote. Stage list: lib/stages.js, docs/stages.md",
+  "type": "object",
+  "required": ["toolkit", "mode", "app", "stages"],
+  "additionalProperties": false,
+  "properties": {
+    "toolkit": { "type": "object", "required": ["version"], "properties": { "version": { "type": "string" }, "commit": { "type": ["string", "null"] }, "node": { "type": "string" }, "cds": { "type": ["string", "null"] } } },
+    "mode": { "enum": ["static", "static+ai"] },
+    "app": { "type": "object", "required": ["root"], "properties": { "root": { "type": "string" }, "name": { "type": ["string", "null"] }, "commit": { "type": ["string", "null"] } } },
+    "addons": { "type": "object", "additionalProperties": { "type": "boolean" } },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "status"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "status": { "enum": ["ran", "off", "skipped", "failed"] },
+          "why": { "type": "string" },
+          "method": { "enum": ["static", "measured", "ai"] },
+          "started": { "type": "string" },
+          "seconds": { "type": "number" },
+          "said": { "type": "string" },
+          "outputs": { "type": "array", "items": { "type": "object", "required": ["path"], "additionalProperties": false, "properties": { "path": { "type": "string" }, "files": { "type": "integer" }, "bytes": { "type": "integer" }, "sha256": { "type": "string" } } } }
+        }
+      }
+    }
+  }
+}

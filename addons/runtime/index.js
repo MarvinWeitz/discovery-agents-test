@@ -58,6 +58,27 @@ function afterTests({ out }) {
   return true
 }
 
+
+// findings stage (after the app started in CI): where the parser and the running app disagree. A
+// registration the parser missed for an action settles that action's "handler-missing" gap.
+function findings(B, { D }) {
+  const R = D?.RUNTIME; if (!R) return
+  const missing = [...B.gaps.values()].filter(g => g.kind === 'handler-missing')
+  for (const r of R.rows) {
+    if (r.status === 'confirmed') continue
+    const ev = String(r.event || '').split(',')
+    const settles = missing.filter(g => g.subjects.some(s => ev.includes(String(s).split('.').pop()))).map(g => g.id)
+    B.finding({ kind: 'handler-check', key: `runtime|${r.ev}|${r.phase}|${r.event}`, method: 'measured', source: 'addons/runtime (record.js)', status: 'confirmed',
+      title: `${r.phase} ${r.event} on ${r.path || r.service}: registered at startup, missed by the parser`, statement: `The running app registered ${r.phase} ${r.event}${r.path ? ` on ${r.path}` : ''} at ${r.ev}; the static parser did not find it.`,
+      severity: { level: 'warning' }, evidence: r.file ? [r.ev] : [], resolves: settles, data: { phase: r.phase, event: r.event, path: r.path, service: r.service || null } })
+  }
+  for (const h of R.staticOnly) {
+    B.finding({ kind: 'handler-check', key: `static|${h.handler}`, method: 'measured', source: 'addons/runtime (record.js)', status: 'suspected', confidence: 'medium',
+      title: `${h.phase} ${h.event} on ${h.path}: parsed, not registered at startup`, statement: 'The parser found this handler, but the app did not register it while starting: registered later, conditionally, or dead code.',
+      severity: { level: 'info' }, evidence: [h.ev], subjects: [h.handler], data: { phase: h.phase, event: h.event, path: h.path } })
+  }
+}
+
 const cell = s => String(s ?? '').replace(/\|/g, '\\|')
 const ICON = { confirmed: '✅', 'runtime-only': '❗', 'static-only': '⚠️' }
 function summaryMd(R) {
@@ -81,4 +102,4 @@ const topics = {
   },
 }
 
-module.exports = { afterTests, topics, views: path.join(__dirname, 'view.js'), compare, summaryMd }
+module.exports = { afterTests, findings, topics, views: path.join(__dirname, 'view.js'), compare, summaryMd }

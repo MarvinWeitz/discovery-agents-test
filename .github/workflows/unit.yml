@@ -1,4 +1,4 @@
-# Unit tests of the extractors (test/*.test.js): fixtures for split service implementations, handlers on
+# Unit tests of the extractors and the findings layer (test/*.test.js): fixtures for split service implementations, handlers on
 # connected services, event subscriptions, remote calls, native SQL and HANA-native artifacts.
 name: Extractor unit tests
 
@@ -6,6 +6,10 @@ on:
   pull_request:
     paths:
       - 'lib/**'
+      - 'bin/**'
+      - 'schema/**'
+      - 'addons/**'
+      - 'docs/stages.md'
       - 'test/**'
       - '.github/workflows/unit.yml'
 
@@ -25,3 +29,5 @@ jobs:
         run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
       - name: Unit tests
         run: node --test 'test/*.test.js'
+      - name: docs/stages.md matches lib/stages.js
+        run: node bin/stages.js check

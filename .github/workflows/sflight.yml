@@ -125,7 +125,9 @@ jobs:
       # Addons (discovery.config.json) that need the test results, e.g. coverage by class; rebuilds the atlas
       - name: Addons after tests
         if: always()
-        run: node bin/after-tests.js out/cap-sflight --generated out/jest-generated.json --baseline out/jest-baseline.json
+        run: |
+          node bin/stages.js record out/cap-sflight run-tests ${{ steps.generated.outcome == 'success' && 'ran' || 'failed' }} "generated tests ${{ steps.generated.outcome }}" || true
+          node bin/after-tests.js out/cap-sflight --generated out/jest-generated.json --baseline out/jest-baseline.json
 
       - name: Job summary
         if: always()

@@ -32,10 +32,24 @@ function facts(D, { g, csn, root, out }) {
   }
 }
 
+
+// findings stage: every hit as a finding; a draft rule's hit is "suspected" until a person accepts the rule
+function findings(B, { D }) {
+  for (const r of D?.RULES?.rules || []) for (const h of r.hits || []) {
+    const key = `${r.key}@${h.ev}`
+    const id = B.finding({ kind: 'rule-hit', key, title: h.t, statement: h.d, source: `rules:${r.key}${r.via && r.via !== 'own detect()' ? ` (${r.via})` : ''}`,
+      status: r.status === 'accepted' ? 'detected' : 'suspected', confidence: r.status === 'accepted' ? 'high' : 'medium', severity: { level: 'warning' }, evidence: [h.ev],
+      data: { rule: r.key, ruleStatus: r.status, from: r.from, reproduces: r.reproduces || [] } })
+    if (r.status !== 'accepted') B.gap({ kind: 'rule-confirmation', key, about: [id], priority: 'low', resolvableBy: ['human', 'ai'],
+      question: `Is the draft rule ${r.key} right here (${h.ev}), and should it be accepted?`, why: 'Draft rules report only; a person decides whether a rule becomes a risk source.',
+      look: [h.ev], expects: 'true or false positive, with the reason', data: { rule: `addons/rules/library/${r.key}.js` } })
+  }
+}
+
 const topics = {
   RLS: D => ['Rules drafted by agents from their own findings, reviewed and accepted like code. A draft only reports; an accepted rule adds risks and retires the agent finding it reproduces. Each rule has a unit test in `addons/rules/library/<key>.test.js`.', '',
     '| Rule | Status | Drafted from | Run by | Hits on this app | Reproduces agent finding |', '| --- | --- | --- | --- | --- | --- |',
     ...D.RULES.rules.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${cell(r.from)} | ${r.via || 'own detect()'} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '` ' + cell(h.t)).join('<br>') || '–'} | ${r.reproduces.join(', ') || '–'} |`)].join('\n')
 }
 
-module.exports = { facts, topics, views: path.join(__dirname, 'view.js') }
+module.exports = { facts, findings, topics, views: path.join(__dirname, 'view.js') }

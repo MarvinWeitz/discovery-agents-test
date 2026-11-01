@@ -8,14 +8,23 @@ See [OVERVIEW.md](OVERVIEW.md) for the process (which steps are deterministic, w
 
 ```sh
 npm install --ignore-scripts
-node bin/pipeline.js <app-root> <out-dir> [--ui ../ui-a,../ui-b] [--base curated/<app>.json]
+node bin/pipeline.js <app-root> <out-dir> [--ui ../ui-a,../ui-b] [--base curated/<app>.json] [--mode static|static+ai]
+node bin/stages.js show <out-dir>      # what ran, how long, what each stage wrote (from <out-dir>/manifest.json)
 ```
+
+What runs when, with every input and output: [docs/stages.md](docs/stages.md) (generated from `lib/stages.js`).
+
+**Modes.** `static` (default) uses no AI anywhere and is complete on its own. Its machine-readable middle layer is `run/findings/findings.jsonl` (every judgement with evidence, method and status) and `run/findings/gaps.jsonl` (every question static analysis could not settle, with who can: a measurement, an AI, a person), each with a JSON Schema in `schema/`, checked by `bin/validate.js` at the end of every run. `static+ai` also writes one request per open gap to `run/ai/requests/`; an AI agent answers them later (`agents/gap-resolver.md`), and `bin/ai-merge.js` lets in only findings whose quote is on the cited line. Details: [docs/walkthrough/13-findings-and-gaps.md](docs/walkthrough/13-findings-and-gaps.md).
 
 | Step | Script | Writes |
 | --- | --- | --- |
 | 1 discover | `bin/discover.js <app-root> <out>/run [--ui dirs]` | knowledge graph `graph/*.jsonl`, `metrics.json`, `slices/catalog.json`, `discovery-report.md` |
 | 2 facts | `bin/atlas-facts.js <out>/run <out>/atlas-data.json [--base curated.json]` | every atlas section, generated from the graph; agent risks merged from the curated file |
+| 2b findings | `bin/findings.js <out> [--mode m]` | `run/findings/findings.jsonl`, `gaps.jsonl`, `summary.json`, `README.md` (the middle layer; addons add measured findings after the tests) |
 | 3 tests | `bin/gen-tests.js <out>/run` | `run/tests/generated/*.test.js` (cds.test, syntax-checked) |
+| 5 ai-requests | `bin/ai-requests.js <out>` (mode `static+ai`) | `run/ai/requests/<gap>.md`, `index.json`, `run/ai/README.md` |
+| 6 validate | `bin/validate.js <out>` | nothing; fails the run when a schema or a link between findings, gaps, graph and code does not hold |
+| later | `bin/ai-merge.js <out>` | gates `run/ai/answers/*.json` into `run/findings/ai.jsonl`, rebuilds the findings in mode `static+ai`, validates |
 | 4 atlas | `bin/atlas.js <out>/atlas-data.json <out>/atlas` | `README.md`, `topics/*.md`, `images/*.png`, `index.html` (one page per section with a sidebar, or one long page: `"atlas": { "layout" }` in `discovery.config.json`; ranked next steps with copyable AI prompts from the `nextsteps` addon, see [ADDONS.md](ADDONS.md)) |
 
 The app needs no `npm install`; the toolkit compiles the model with its own `@sap/cds`. If the app imports `@sap/cds/common`, make the toolkit's `node_modules` resolvable from the app (for example a symlink named `node_modules` in the app's parent folder). The toolkit never runs the app or its tests.
@@ -35,6 +44,10 @@ Private repos: add a `DISCOVERY_REPO_TOKEN` secret (fine-grained, Contents: read
 On pull requests the workflow runs on the pilot apps as a check and builds the Pages site as the `pages-preview` artifact without publishing. Pilots, all gating: incidents-app, ui5-cap-event-app, cap-sflight, HANA CodeJam (calc view, procedure, xsuaa), capire/samples bookstore (reuse services, events, workspace with submodules) and Poetry Slam Manager (split handlers, S/4HANA, ByD and B1 APIs, HANA sequence). A pilot that should only report gets `"gate": false` in `PILOTS`. What each of them taught the extractors: [PILOTS.md](PILOTS.md).
 
 ## Agentic deep dive
+
+Gap pass (answers only what static analysis left open): `node bin/pipeline.js … --mode static+ai`, run `agents/gap-resolver.md` on each `run/ai/requests/<gap>.md`, then `node bin/ai-merge.js <out>`.
+
+Slice pass (a whole feature, 10 fixed questions):
 
 ```sh
 node bin/brief.js   <out>/run <app-root> <slice-id>   # slice brief for the agents
@@ -58,6 +71,8 @@ Code is grouped by task. Each step has a walkthrough in [docs/walkthrough/](docs
 | `lib/extract/ui5.js`, `config.js`, `auth.js`, `tests.js`, `history.js` | manifests, `package.json`, `.cdsrc.json`, `xs-security.json`, tests, git | UI5 apps and routes, remote services and brokers, mock users (merged with CAP defaults), roles, tests and the users they run as, churn |
 | `lib/extract/cds-deps.js` | CDS sources | file dependencies (`using`, `annotate`, `extend`) with layer verdicts |
 | `lib/extract/lint.js` | `@sap/eslint-plugin-cds`, `@ui5/linter` | findings |
+| `lib/extract/bootstrap.js`, `lib/project/plugins.js` | `server.js`, `cds-plugin.js` of local plugin packages | express routes added at bootstrap (`HttpRoute`), local plugin code (`PluginFile`) |
+| `lib/findings/`, `lib/stages.js`, `lib/manifest.js`, `lib/schema.js` | everything above | the middle layer (findings, gaps), the stage list, the run manifest, schema checks |
 | `lib/analyse/reflexion-ui.js` | UI annotations vs handlers | `UiRule` verdicts: enforced, consistent, framework, partial, stricter, ui-only |
 | `lib/analyse/slices.js`, `classes.js` | graph | vertical slices ranked by risk; equivalence-class seeds |
 | `lib/analyse/authz.js` | graph | user × operation matrix incl. draft inheritance and row-level filters |

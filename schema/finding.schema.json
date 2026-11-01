@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/MarvinWeitz/discovery-agents-test/schema/finding.schema.json",
+  "title": "Finding",
+  "description": "One judgement of a discovery run, one JSON object per line of run/findings/findings.jsonl (and run/findings/ai.jsonl). Docs: docs/walkthrough/13-findings-and-gaps.md",
+  "type": "object",
+  "required": ["id", "kind", "title", "statement", "method", "source", "status", "confidence", "evidence", "subjects"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^F-[a-z0-9-]+-[0-9a-f]{10}$", "description": "Stable: hash of kind and a key that does not depend on the run (no timestamps). Same finding on the same code = same id." },
+    "kind": { "$ref": "#/$defs/kind" },
+    "title": { "type": "string", "minLength": 3, "maxLength": 200, "description": "Short label, no Markdown." },
+    "statement": { "type": "string", "minLength": 3, "description": "One or two plain sentences: what is true, and why it matters." },
+    "method": { "enum": ["static", "measured", "ai", "human"], "description": "How it was found: static = files and CAP's compiler only; measured = the running app answered; ai = an LLM, through the evidence gate; human = a person (curated file)." },
+    "source": { "type": "string", "minLength": 2, "description": "The tool or rule that produced it, e.g. risks.js#pii-open, reflexion-ui, opengrep:max-plus-one-id, agent:gap-resolver." },
+    "status": { "enum": ["detected", "suspected", "confirmed", "refuted"], "description": "detected = a deterministic rule fired on the code; suspected = heuristic, draft rule or AI, needs a check; confirmed = measured or reviewed; refuted = a measurement or review showed it is not so." },
+    "confidence": { "enum": ["high", "medium", "low"] },
+    "severity": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "level": { "enum": ["critical", "warning", "info", "good"] },
+        "impact": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "likelihood": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+    "layer": { "type": "string", "description": "UI, Annotations, Service, Node, Model, DB, Config, Tests" },
+    "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" }, "description": "Where in the app it can be seen. Empty only for findings about the whole project (then subjects names it)." },
+    "subjects": { "type": "array", "items": { "type": "string" }, "description": "Graph node ids (run/graph/nodes.jsonl) the finding is about." },
+    "test": { "type": "string", "description": "The request or test that would show it." },
+    "gaps": { "type": "array", "items": { "type": "string", "pattern": "^G-" }, "description": "Open questions this finding raises (ids in gaps.jsonl)." },
+    "resolves": { "type": "array", "items": { "type": "string", "pattern": "^G-" }, "description": "Gaps this finding settles (measured, ai or human findings)." },
+    "about": { "type": "array", "items": { "type": "string", "pattern": "^F-" }, "description": "Other findings this one confirms, refutes or details." },
+    "stage": { "type": "string", "description": "Stage id from lib/stages.js that wrote it." },
+    "data": { "type": "object", "description": "Kind-specific details, documented per kind in docs/walkthrough/13-findings-and-gaps.md." }
+  },
+  "$defs": {
+    "kind": {
+      "enum": ["risk", "pattern", "ui-promise", "authz", "layer-violation", "lint", "state-transition", "action-without-handler", "native-sql", "custom-route", "plugin-code", "analysis-limit", "rule-hit", "handler-check", "authz-measured", "rule-reached", "agent-risk", "ai-finding"]
+    },
+    "evidence": {
+      "type": "object", "required": ["file", "line"], "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string", "minLength": 1, "description": "Path relative to the app root (may start with ../ for a reuse package)." },
+        "line": { "type": "integer", "minimum": 1 },
+        "quote": { "type": "string", "description": "Verbatim text at or within two lines of the line. Required for method ai." }
+      }
+    }
+  }
+}

@@ -1,4 +1,6 @@
-# Agent fact format
+# Agent fact format (slice pass)
+
+Formats of the machine-readable layer: `finding.schema.json`, `gap.schema.json` (run/findings/), `ai-answer.schema.json` (answers of the gap pass), `manifest.schema.json` (what ran). This file covers the slice pass of piece 12.
 
 Every Phase 3 agent returns one JSON file. Nothing an agent says enters the graph unless it passes `bin/merge.js`, which checks that each `evidence` points at a real file and line and that `quote` appears within two lines of it.
 

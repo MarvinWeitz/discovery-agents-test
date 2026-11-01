@@ -9,20 +9,7 @@ const fs = require('fs')
 const path = require('path')
 const { loadRun, findSlice, saveGraph } = require('../lib/load')
 
-const norm = s => s.replace(/\s+/g, ' ').trim()
-
-function checkEvidence(root, evidence, quote) {
-  const m = /^(.+):(\d+)$/.exec(evidence || '')
-  if (!m) return 'evidence is not path:line'
-  const file = path.join(root, m[1])
-  if (!fs.existsSync(file)) return `file ${m[1]} does not exist`
-  const lines = fs.readFileSync(file, 'utf8').split('\n')
-  const line = +m[2]
-  if (line < 1 || line > lines.length) return `line ${line} outside ${m[1]} (${lines.length} lines)`
-  if (!quote || quote.length < 8) return 'quote missing or shorter than 8 characters'
-  const window = norm(lines.slice(Math.max(0, line - 3), line + 2).join(' '))
-  return window.includes(norm(quote)) ? null : `quote not found near ${evidence}`
-}
+const { checkEvidence } = require('../lib/evidence')
 
 function main() {
   const [runDir, root, id] = process.argv.slice(2)

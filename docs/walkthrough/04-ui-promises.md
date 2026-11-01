@@ -1,5 +1,5 @@
 ---
-piece: 4 of 12
+piece: 4 of 13
 title: UI promises vs server enforcement (reflexion)
 code: lib/analyse/reflexion-ui.js, lib/project/sources.js (annotation locator)
 runs: bin/discover.js, after pieces 2 and 3
