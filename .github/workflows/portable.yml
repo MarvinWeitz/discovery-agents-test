@@ -72,10 +72,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
-      - name: The consumer repository, installed as its own CI would
-        run: |
-          git clone --quiet "https://github.com/$CONSUMER.git" consumer
-          cd consumer && npm ci --no-audit --no-fund
+      - name: The consumer repository (no lockfile; `all` installs it because node_modules is missing)
+        run: git clone --quiet "https://github.com/$CONSUMER.git" consumer
       - name: npx init / all / docs
         working-directory: consumer
         env:
