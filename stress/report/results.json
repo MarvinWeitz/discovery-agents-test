@@ -1,37 +1,7 @@
 {
- "at": "2026-11-01T23:37:37.582Z",
- "seconds": 361,
+ "at": "2026-11-01T23:56:30.906Z",
+ "seconds": 23,
  "bases": [
-  {
-   "base": "orders",
-   "title": "Orders with approval flow (CAP Node.js + Fiori elements)",
-   "control": true,
-   "valid": {
-    "compile": {
-     "ok": true
-    },
-    "tests": {
-     "ok": true,
-     "pass": 6,
-     "fail": 0
-    },
-    "ts": null,
-    "ui5": [
-     {
-      "dir": "app/orders",
-      "ok": true,
-      "lint": 0,
-      "fatal": []
-     }
-    ],
-    "ok": true
-   },
-   "discover": {
-    "ok": true
-   },
-   "alarms": [],
-   "findings": 47
-  },
   {
    "base": "shop",
    "title": "Book shop (TypeScript CAP service + freestyle UI5 app)",
@@ -63,6 +33,36 @@
    },
    "alarms": [],
    "findings": 28
+  },
+  {
+   "base": "orders",
+   "title": "Orders with approval flow (CAP Node.js + Fiori elements)",
+   "control": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 6,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "alarms": [],
+   "findings": 47
   }
  ],
  "seeds": [
@@ -3992,6 +3992,49 @@
      ]
     }
    ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "probe-write-grant-not-actions",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "WRITE does not grant bound actions",
+   "bug": "No bug: Buyers have READ, WRITE and submit; approve is not theirs. The authorization matrix must say denied, not unclear.",
+   "checks": [],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": true,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
    "graph": [],
    "noise": [],
    "forbidden": [],

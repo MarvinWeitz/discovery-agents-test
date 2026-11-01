@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 
 const STRESS = path.join(__dirname, '..')
-const WORK = path.join(STRESS, '.work')
+const WORK = process.env.STRESS_WORK || path.join(STRESS, '.work')
 
 function copyDir(from, to) {
   fs.mkdirSync(to, { recursive: true })

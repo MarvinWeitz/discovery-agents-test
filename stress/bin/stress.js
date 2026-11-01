@@ -15,13 +15,15 @@ const { validate, nodeTest } = require('../lib/validate')
 const { readRun, compare, controlAlarms } = require('../lib/score')
 const { render } = require('../lib/render')
 
-const TOOLKIT = path.join(STRESS, '..')
-const REPORT = path.join(STRESS, 'report')
 const args = process.argv.slice(2)
+// --toolkit <dir>: score another checkout of the toolkit (e.g. main, for a before/after table); --report <dir>
+const argv = k => { const i = args.indexOf(k); return i >= 0 ? path.resolve(args[i + 1]) : null }
+const TOOLKIT = argv('--toolkit') || path.join(STRESS, '..')
+const REPORT = argv('--report') || path.join(STRESS, 'report')
 const cmd = args[0] || 'run'
 const flag = f => args.includes(f)
 const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] : d }
-const filter = args.slice(1).find((a, i, all) => !a.startsWith('--') && all[i - 1] !== '--jobs') || null
+const filter = args.slice(1).find((a, i, all) => !a.startsWith('--') && !['--jobs', '--toolkit', '--report'].includes(all[i - 1])) || null
 
 const PRE = `const cds = require('@sap/cds')
 const { test } = require('node:test')

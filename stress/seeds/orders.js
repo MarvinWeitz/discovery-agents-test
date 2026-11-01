@@ -179,6 +179,13 @@ exports.seeds = [
 })`,
   },
   {
+    id: 'probe-write-grant-not-actions', category: 'authz', probe: true, title: "WRITE does not grant bound actions",
+    bug: "No bug: Buyers have READ, WRITE and submit; approve is not theirs. The authorization matrix must say denied, not unclear.",
+    edits: [],
+    forbid: [{ check: 'authz', text: 'Orders approve.*(unclear|allowed) for [^;.]*\\balice\\b' }],
+    proof: `test('alice may not approve', async () => { assert.strictEqual((await POST('${act(O2, 'approve')}', {}, as('alice'))).status, 403) })`,
+  },
+  {
     id: 'transition-wrong-target', category: 'ui-promise', title: 'reject sets status A (approved)',
     bug: 'Copy-paste: reject moves the order to Approved. Static checks cannot know that "reject" should not mean A.',
     detectable: false,

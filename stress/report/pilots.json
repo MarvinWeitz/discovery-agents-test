@@ -1,0 +1,162 @@
+{
+ "at": "2026-11-01T23:41:38.188Z",
+ "pilots": [
+  {
+   "id": "incidents",
+   "app": ".",
+   "ui": null,
+   "seconds": 23,
+   "findings": 55,
+   "alarms": 18,
+   "gaps": 6,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "mutants": [
+    {
+     "op": "delete-guard",
+     "file": "srv/processor-service.js",
+     "line": 10,
+     "before": "if (closed) req.reject `Can't modify a closed incident!`",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "- pattern:Validation with req.reject / req.error"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sflight",
+   "app": ".",
+   "ui": null,
+   "seconds": 50,
+   "findings": 127,
+   "alarms": 57,
+   "gaps": 23,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "mutants": [
+    {
+     "op": "delete-guard",
+     "file": "srv/travel-service.ts",
+     "line": 36,
+     "before": "if (BeginDate < today()) req.error (400, `Begin Date must not be before today.`, 'in/BeginDate')",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:Validation with req.reject / req.error"
+     ]
+    },
+    {
+     "op": "delete-guard",
+     "file": "srv/travel-service.ts",
+     "line": 37,
+     "before": "if (BeginDate > EndDate) req.error (400, `End Date must be after Begin Date.`, 'in/EndDate')",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:Validation with req.reject / req.error"
+     ]
+    },
+    {
+     "op": "delete-guard",
+     "file": "srv/travel-service.ts",
+     "line": 105,
+     "before": "if (!travel) throw req.reject (404, `Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.`)",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:Validation with req.reject / req.error",
+      "- rule:null-deref-in-guard"
+     ]
+    },
+    {
+     "op": "flip-comparison",
+     "file": "srv/travel-service.ts",
+     "line": 106,
+     "before": "if (travel.status === TravelStatusCode.Accepted) throw req.reject (400, `Travel \"${travel.ID}\" has been approved already.`)",
+     "after": "if (travel.status !== TravelStatusCode.Accepted) throw req.reject (400, `Travel \"${travel.ID}\" has been approved already.`)",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "rename-handler",
+     "file": "app/.karma/karma-cap-middleware.js",
+     "line": 20,
+     "before": "proc.on(\"close\", reject);",
+     "after": "proc.on(\"closeMutant\", reject);",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "rename-handler",
+     "file": "app/.karma/karma-cap-middleware.js",
+     "line": 21,
+     "before": "proc.stdout.on(\"data\", (data) => {",
+     "after": "proc.stdout.on(\"dataMutant\", (data) => {",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "rename-handler",
+     "file": "app/.karma/karma-cap-middleware.js",
+     "line": 27,
+     "before": "process.on(\"exit\", () => {",
+     "after": "process.on(\"exitMutant\", () => {",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/master-data.cds",
+     "line": 5,
+     "before": "@cds.autoexpose @readonly",
+     "after": "@cds.autoexpose",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/schema.cds",
+     "line": 14,
+     "before": "TravelID       : Integer default 0 @readonly;",
+     "after": "TravelID       : Integer default 0 ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/schema.cds",
+     "line": 15,
+     "before": "BeginDate      : Date @mandatory;",
+     "after": "BeginDate      : Date ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    }
+   ]
+  }
+ ]
+}
