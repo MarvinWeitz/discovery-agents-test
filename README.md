@@ -24,7 +24,8 @@ What runs when, with every input and output: [docs/stages.md](docs/stages.md) (g
 | 3 tests | `bin/gen-tests.js <out>/run` | `run/tests/generated/*.test.js` (cds.test, syntax-checked) |
 | 5 ai-requests | `bin/ai-requests.js <out>` (mode `static+ai`) | `run/ai/requests/<gap>.md`, `index.json`, `run/ai/README.md` |
 | 6 validate | `bin/validate.js <out>` | nothing; fails the run when a schema or a link between findings, gaps, graph and code does not hold |
-| later | `bin/ai-merge.js <out>` | gates `run/ai/answers/*.json` into `run/findings/ai.jsonl`, rebuilds the findings in mode `static+ai`, validates |
+| later | `bin/ai-pass.js plan\|check\|status <out>` | the AI pass: the gaps to answer with the agent prompt, one answer gated at once, what is left (no LLM call; Claude Code: `/cap-discovery:fill-gaps`) |
+| later | `bin/ai-merge.js <out>` | rebuilds the findings in mode `static+ai`, which gates every `run/ai/answers/*.json` into `run/findings/ai.jsonl`; validates |
 | 4 atlas | `bin/atlas.js <out>/atlas-data.json <out>/atlas` | `README.md`, `topics/*.md`, `images/*.png`, `index.html` (one page per section with a sidebar, or one long page: `"atlas": { "layout" }` in `discovery.config.json`; ranked next steps with copyable AI prompts from the `nextsteps` addon, see [ADDONS.md](ADDONS.md)) |
 
 The app needs no `npm install`; the toolkit compiles the model with its own `@sap/cds`. If the app imports `@sap/cds/common`, make the toolkit's `node_modules` resolvable from the app (for example a symlink named `node_modules` in the app's parent folder). The toolkit never runs the app or its tests.
@@ -49,7 +50,7 @@ On pull requests the workflow runs on the pilot apps as a check and builds the P
 
 ## Agentic deep dive
 
-Gap pass (answers only what static analysis left open): `node bin/pipeline.js … --mode static+ai`, run `agents/gap-resolver.md` on each `run/ai/requests/<gap>.md`, then `node bin/ai-merge.js <out>`.
+Gap pass (answers only what static analysis left open): in Claude Code with the plugin, `/cap-discovery:fill-gaps`. By hand: `node bin/ai-pass.js plan <out>` (gaps and the exact prompt for each), run `agents/gap-resolver.md` with each prompt, `node bin/ai-pass.js check <out> <gap>`, then `node bin/ai-merge.js <out>` and `node bin/ai-pass.js status <out>`. What runs when: [piece 12, D9](docs/walkthrough/12-ai-loop.md).
 
 Slice pass (a whole feature, 10 fixed questions):
 

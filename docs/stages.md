@@ -67,7 +67,7 @@ Set it with `--mode`, `DISCOVERY_MODE`, or `"mode"` in `discovery.config.json` (
 | 1 | **intake** Get the app | needs the running app (cap-discovery test, CI) | static | always | repository URL, ref, optional app folder and UI folders | the app checkout with node_modules |
 | 2 | **discover** Ask CAP, extract, analyse | bin/pipeline.js | static | always | app folder, --ui folders | run/project.json, run/csn.json, run/edmx/, run/graph/nodes.jsonl, run/graph/edges.jsonl, run/slices/catalog.json, run/tests/class-seeds.json, run/metrics.json, run/discovery-report.md |
 | 3 | **facts** Analyse into atlas facts | bin/pipeline.js | static | always | run/, curated/<app>.json (optional) | atlas-data.json, run/measured/plan.json, pr/*.md |
-| 4 | **findings** Findings and gaps (the middle layer) | bin/pipeline.js | static | `stages.findings` | run/graph/, run/csn.json, run/project.json, run/metrics.json, atlas-data.json, run/findings/ai.jsonl (mode static+ai) | run/findings/findings.jsonl, run/findings/gaps.jsonl, run/findings/summary.json, run/findings/README.md, pr/findings.md |
+| 4 | **findings** Findings and gaps (the middle layer) | bin/pipeline.js | static | `stages.findings` | run/graph/, run/csn.json, run/project.json, run/metrics.json, atlas-data.json, run/ai/answers/*.json (mode static+ai, gated again on every rebuild) | run/findings/findings.jsonl, run/findings/gaps.jsonl, run/findings/summary.json, run/findings/README.md, pr/findings.md, run/findings/ai.jsonl (mode static+ai), run/ai/merge-log.json (mode static+ai) |
 | 5 | **tests** Generate tests | bin/pipeline.js | static | always | run/ | run/tests/generated/*.test.js, run/tests/generated/manifest.json |
 | 6 | **atlas** Render the atlas | bin/pipeline.js | static | always | atlas-data.json | atlas/README.md, atlas/topics/*.md, atlas/images/*.png, atlas/index.html |
 | 7 | **ai-requests** Prepare AI requests | bin/pipeline.js | static | `mode` | run/findings/gaps.jsonl, run/findings/findings.jsonl, run/graph/ | run/ai/requests/<gap>.md, run/ai/requests/index.json, run/ai/README.md |
@@ -75,7 +75,7 @@ Set it with `--mode`, `DISCOVERY_MODE`, or `"mode"` in `discovery.config.json` (
 | 9 | **run-tests** Run the app and its tests | needs the running app (cap-discovery test, CI) | **measured** | `addons.measured, addons.runtime` | run/tests/generated/, run/measured/plan.json, the installed app | jest-generated.json, run/runtime.json, run/measured/authz.json, run/measured/requests*.jsonl, run/measured/coverage-*/ |
 | 10 | **after-tests** Fold in what the running app answered | needs the running app (cap-discovery test, CI) | **measured** | always | jest-generated.json, run/runtime.json, run/measured/ | atlas-data.json, atlas/, run/findings/, manifest.json |
 | 11 | **ai-answer** Answer the requests | by an AI agent or a person | **AI** | `mode` | run/ai/requests/, the app source | run/ai/answers/<gap>.json |
-| 12 | **ai-merge** Gate and merge AI answers | on demand | static | `mode` | run/ai/answers/*.json, the app source | run/findings/ai.jsonl, run/ai/merge-log.json, run/findings/ (rebuilt) |
+| 12 | **ai-merge** Gate and merge AI answers | on demand | static | `mode` | run/ai/answers/*.json, the app source | run/findings/ai.jsonl, run/ai/merge-log.json, run/findings/ (rebuilt), manifest.json (stages ai-answer, ai-merge) |
 
 ## Each stage
 
@@ -112,8 +112,8 @@ Every judgement of the run as one finding with evidence, method and status; ever
 
 - **When:** bin/pipeline.js · **method:** static · **switch:** stages.findings · **walkthrough:** piece 13
 - **Code:** `bin/findings.js`, `lib/findings/`, `addons/*/index.js findings()`
-- **Reads:** `run/graph/`, `run/csn.json`, `run/project.json`, `run/metrics.json`, `atlas-data.json`, `run/findings/ai.jsonl (mode static+ai)`
-- **Writes:** `run/findings/findings.jsonl`, `run/findings/gaps.jsonl`, `run/findings/summary.json`, `run/findings/README.md`, `pr/findings.md`
+- **Reads:** `run/graph/`, `run/csn.json`, `run/project.json`, `run/metrics.json`, `atlas-data.json`, `run/ai/answers/*.json (mode static+ai, gated again on every rebuild)`
+- **Writes:** `run/findings/findings.jsonl`, `run/findings/gaps.jsonl`, `run/findings/summary.json`, `run/findings/README.md`, `pr/findings.md`, `run/findings/ai.jsonl (mode static+ai)`, `run/ai/merge-log.json (mode static+ai)`
 - **Schemas:** `schema/finding.schema.json`, `schema/gap.schema.json`
 
 ### tests: Generate tests
@@ -173,22 +173,22 @@ Addons compare measured results with the static facts and update the atlas; the 
 
 ### ai-answer: Answer the requests
 
-An AI agent (Claude Code) reads each request and the app source and writes one answer per gap: findings with file:line and a verbatim quote, or "unknown".
+In the developer's own Claude Code session, /cap-discovery:fill-gaps runs `ai plan` (the open gaps and the exact prompt for each), one gap-resolver agent per gap (reads the request and the app source, writes findings with file:line and a verbatim quote, or "unknown"), and `ai check <gap>` with one retry. Nothing runs in CI; no API key is needed.
 
 - **When:** by an AI agent or a person · **method:** ai · **switch:** mode · **walkthrough:** piece 12
-- **Code:** `agents/gap-resolver.md`, `skills/cap-discovery`
+- **Code:** `skills/fill-gaps/SKILL.md`, `agents/gap-resolver.md`, `bin/ai-pass.js`
 - **Reads:** `run/ai/requests/`, `the app source`
 - **Writes:** `run/ai/answers/<gap>.json`
 - **Schemas:** `schema/ai-answer.schema.json`
 
 ### ai-merge: Gate and merge AI answers
 
-Accept an AI finding only when its file:line exists and its quote is there; rejected ones go to the log. Accepted ones become findings with method ai, and the findings stage marks their gaps answered.
+Rebuild the findings in mode static+ai: accept an AI finding only when the gap is still in the run, its file:line exists, its quote is there and the file is in scope (no CAP Java); rejected ones go to the log with the reason. Accepted ones become findings with method ai, status suspected, and their gaps become answered (never resolved). Records who answered and when in manifest.json.
 
 - **When:** on demand · **method:** static · **switch:** mode · **walkthrough:** piece 12, 13
-- **Code:** `bin/ai-merge.js`, `lib/evidence.js`
+- **Code:** `bin/ai-merge.js`, `lib/ai/gate.js`, `lib/evidence.js`
 - **Reads:** `run/ai/answers/*.json`, `the app source`
-- **Writes:** `run/findings/ai.jsonl`, `run/ai/merge-log.json`, `run/findings/ (rebuilt)`
+- **Writes:** `run/findings/ai.jsonl`, `run/ai/merge-log.json`, `run/findings/ (rebuilt)`, `manifest.json (stages ai-answer, ai-merge)`
 
 ## The three layers of a finished run
 

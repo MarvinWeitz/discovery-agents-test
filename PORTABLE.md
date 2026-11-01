@@ -60,7 +60,7 @@ The toolkit is meant to sit in a **private repo on your GitHub Enterprise** (Clo
 | `all` | install if needed, `run`, `test` | as above |
 | `docs [dir]` | copies the Markdown-first subset: atlas README + topics + images + index.html, `findings.md`, `discovery-report.md`, generated tests, `stages.md` | a run |
 | `summary` | Markdown summary (KPIs, every generated test) on stdout | a run |
-| `ai requests` / `ai merge` | the AI pass on the open gaps ([walkthrough](docs/walkthrough/13-findings-and-gaps.md)) | mode `static+ai` |
+| `ai plan` / `ai check <gap>` / `ai merge` / `ai status` | the optional AI pass on the open gaps; in Claude Code `/cap-discovery:fill-gaps` runs all of it ([walkthrough](docs/walkthrough/12-ai-loop.md)) | no LLM call itself; `ai merge` switches the findings to mode `static+ai` |
 
 Options: `--project`, `--app`, `--ui`, `--out` (default `.discovery`), `--reports`, `--mode`, `--base`, `--docs`, `--install auto|always|never`, `--runtime-dir`, `--keep-tests`, `--slug`. `npx … --help` lists them.
 

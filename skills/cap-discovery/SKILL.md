@@ -18,13 +18,15 @@ node "$T/bin/cap-discovery.js" where                    # what it would analyse
 node "$T/bin/cap-discovery.js" run                      # static pipeline -> .discovery/
 node "$T/bin/cap-discovery.js" all                      # + start the app under cds.test, generated tests, measured
 node "$T/bin/cap-discovery.js" docs docs/discovery      # Markdown output to a committed folder
-node "$T/bin/cap-discovery.js" run --mode static+ai     # + one AI request per open gap
-node "$T/bin/cap-discovery.js" ai merge                 # after the gap-resolver answers
+node "$T/bin/cap-discovery.js" ai plan --limit 10      # optional AI pass: the gaps to answer, with the agent prompt
+node "$T/bin/cap-discovery.js" ai check <gap>           # gate one answer now
+node "$T/bin/cap-discovery.js" ai merge                 # gate all answers, findings in mode static+ai
+node "$T/bin/cap-discovery.js" ai status                # pending, accepted, rejected, unknown
 ```
 
 - Output folder `.discovery/` has the same layout as `<out>` below. Settings: the project's `discovery.config.json` (merged over the toolkit defaults).
 - `all` needs the app installed (it installs when `node_modules` is missing) and, if the app lacks Jest / `@cap-js/cds-test` / SQLite, `--runtime-dir <folder above the project>`; it never edits package.json and removes the test folders it wrote.
-- AI pass: for each `.discovery/run/ai/requests/<gap>.md` run this plugin's `gap-resolver` agent (`${CLAUDE_PLUGIN_ROOT}/agents/gap-resolver.md`), then `ai merge`.
+- AI pass on the open gaps (optional): use this plugin's `fill-gaps` skill (`/cap-discovery:fill-gaps`). It runs `ai plan`, one `gap-resolver` agent per gap, `ai check <gap>` with one retry, then `ai merge` and `ai status`.
 - In CI the same runs as the toolkit repo's GitHub Action; `cap-discovery.js init` writes the workflow, the config and the Claude Code settings.
 
 ## 1. Deterministic pass from the toolkit checkout (no LLM)
@@ -43,9 +45,12 @@ node bin/pipeline.js <app-root> <out> [--ui ../ui-a,../ui-b] [--base curated/<ap
 
 ## 1b. AI pass on the gaps (optional)
 
-1. `node bin/ai-requests.js <out>` (done by the pipeline in mode `static+ai`): one request per open gap an AI can settle, in `run/ai/requests/`, highest priority first in `index.json`.
-2. For each request, run the `gap-resolver` agent; it writes `run/ai/answers/<gap>.json` (`schema/ai-answer.schema.json`).
-3. `node bin/ai-merge.js <out>`: the evidence gate accepts a finding only when its quote is on the cited line, rebuilds `run/findings/` in mode `static+ai` and validates. AI findings stay `suspected`, their gaps `answered`.
+The `fill-gaps` skill runs these steps; by hand:
+
+1. `node bin/ai-pass.js plan <out> --limit 10`: the open gaps an AI can settle, highest priority first, each with the exact prompt for the agent (writes `run/ai/requests/` when missing, also on a static run).
+2. For each item, run the `gap-resolver` agent with that prompt; it writes `run/ai/answers/<gap>.json` (`schema/ai-answer.schema.json`).
+3. `node bin/ai-pass.js check <out> <gap>`: gates that one answer now and shows the real lines at a failed citation; retry once.
+4. `node bin/ai-merge.js <out>`: the evidence gate accepts a finding only when its quote is on the cited line, rebuilds `run/findings/` in mode `static+ai` and validates. AI findings stay `suspected`, their gaps `answered`. `node bin/ai-pass.js status <out>` shows what is left.
 
 ## 2. Agentic pass (slices, deeper)
 
