@@ -1,0 +1,27 @@
+flowchart LR
+  subgraph S["1 · Static run (default, CI or local, no AI)"]
+    direction TB
+    P["cap-discovery run<br/>bin/pipeline.js"] --> F["run/findings/<br/>findings.jsonl · gaps.jsonl"]
+    F --> V1["validate"]
+  end
+  subgraph A["2 · AI pass (optional, in the developer's Claude Code session)"]
+    direction TB
+    PL["ai plan<br/>open gaps + exact prompt"] --> GR["gap-resolver agent<br/>one per gap, reads code"]
+    GR --> AN["run/ai/answers/&lt;gap&gt;.json"]
+    AN --> CK{"ai check &lt;gap&gt;<br/>quote on its line?<br/>in scope?"}
+    CK -- "rejected: real lines shown<br/>(one retry)" --> GR
+  end
+  subgraph M["3 · Merge (on demand)"]
+    direction TB
+    MG["ai merge<br/>gate every answer again"] --> FA["findings in mode static+ai<br/>method ai · suspected<br/>gap answered"]
+    FA --> V2["validate · manifest:<br/>ai-answer, ai-merge"]
+  end
+  subgraph C["4 · Later runs"]
+    direction TB
+    R1["mode static: AI layer ignored,<br/>kept on disk"]
+    R2["mode static+ai: answers re-gated<br/>against the new code"]
+    R3["CI measurement or a person:<br/>gap resolved"]
+  end
+  F --> PL
+  CK -- "passes" --> MG
+  FA --> R1 & R2 & R3

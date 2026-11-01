@@ -50,7 +50,7 @@ for (const g of todo) {
     '## What the run already knows', '',
     ...(about.length ? about.map(f => `- **${f.title}** (\`${f.id}\`, ${f.method}, ${f.status}): ${f.statement}${f.evidence.length ? ` Evidence: ${f.evidence.map(e => `\`${e.file}:${e.line}\``).join(', ')}.` : ''}`) : ['- No finding yet; the gap comes from the structure of the app.']),
     ...(subj.length ? ['', 'Graph nodes (`run/graph/nodes.jsonl`):', '', ...subj.slice(0, 12).map(n => `- \`${n.id}\` ${n.type}${n.evidence ? ` at \`${n.evidence}\`` : ''}${props(n) ? `: ${props(n)}` : ''}`)] : []),
-    ...(g.data?.questions ? ['', 'Questions for this slice:', '', ...g.data.questions.map(q => `- ${q}`), '', `Full brief: \`node bin/brief.js ${path.relative(process.cwd(), run) || run} ${root} ${g.data.slice}\``] : []),
+    ...(g.data?.questions ? ['', 'Questions for this slice:', '', ...g.data.questions.map(q => `- ${q}`), '', `Full brief: \`node ${path.join(__dirname, 'brief.js')} ${run} ${root} ${g.data.slice}\``] : []),
     ...(g.data?.ai ? ['', `An earlier AI answer (${g.data.ai.status}, not accepted: no evidence passed the gate): ${g.data.ai.answer}`] : []),
     '', '## Read first', '',
     ...g.look.map(l => `- \`${l.file}${l.line ? ':' + l.line : ''}\`${l.why ? ` (${l.why})` : ''}`), '',
@@ -59,7 +59,7 @@ for (const g of todo) {
     `What a good answer contains: ${g.expects || 'findings with file:line evidence, or "unknown"'}.`, '',
     `Write \`run/ai/answers/${g.id}.json\` (schema \`schema/ai-answer.schema.json\`):`, '',
     '```json', JSON.stringify({ gap: g.id, agent: 'gap-resolver', status: 'answered', answer: 'One or two plain sentences answering the question.', findings: [{ title: 'Short label', statement: 'What is true and why it matters.', confidence: 'medium', evidence: [{ file: 'srv/example.js', line: 42, quote: 'verbatim text from that line' }], test: 'the request that would show it' }] }, null, 2), '```', '',
-    'Rules: every finding needs evidence whose `quote` is verbatim text within two lines of `line` (else it is rejected); paths are relative to the app root; say `"status": "unknown"` with an empty `findings` list when the code does not show the answer, and name in `answer` what would (a request, a person).', '',
+    'Rules: every finding needs evidence whose `quote` is verbatim text within two lines of `line` (else it is rejected); paths are relative to the app root; the scope is CAP Node.js, so evidence in Java sources is rejected; say `"status": "unknown"` with an empty `findings` list when the code does not show the answer, and name in `answer` what would (a request, a person).', '',
   ].join('\n')
   fs.writeFileSync(path.join(rdir, `${g.id}.md`), md)
   index.push({ gap: g.id, kind: g.kind, priority: g.priority, status: g.status, question: g.question, request: `requests/${g.id}.md`, answer: `answers/${g.id}.json`, answered: fs.existsSync(path.join(run, 'ai', 'answers', `${g.id}.json`)) })

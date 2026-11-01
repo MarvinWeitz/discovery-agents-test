@@ -12,7 +12,12 @@
 //   all      run + test
 //   docs     copy the Markdown output (atlas, findings, report) to a folder you commit, e.g. docs/discovery
 //   summary  Markdown summary of the last run on stdout (job summary, PR comment)
-//   ai       ai requests | ai merge: the optional AI pass on the open gaps (agents/gap-resolver.md)
+//   ai       the optional AI pass on the open gaps (bin/ai-pass.js; in Claude Code: /cap-discovery:fill-gaps)
+//              ai requests          one request file per open gap an AI can work on
+//              ai plan [--limit N]  the requests still to answer, with the exact agent prompt (JSON)
+//              ai check <gap>       gate one answer now: schema, gap, every quote on its line
+//              ai merge             gate all answers and fold them into the findings (mode static+ai)
+//              ai status            every request: pending, unmerged, accepted, rejected, unknown
 //   where    what it would analyse: project, app folder, UI5 folders, config files, output folder
 //
 // Options (all optional; the project is the current folder):
@@ -39,7 +44,7 @@ const { spawnSync } = require('child_process')
 
 const TOOLKIT = path.join(__dirname, '..')
 const argv = process.argv.slice(2)
-const FLAGS = new Set(['--keep-tests', '--force', '--help', '-h'])
+const FLAGS = new Set(['--keep-tests', '--force', '--help', '-h', '--redo', '--json'])
 const opts = {}, pos = []
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
@@ -190,7 +195,8 @@ async function main() {
       const sub = pos[1]
       if (sub === 'requests') return void node('ai-requests.js', [out])
       if (sub === 'merge') return void node('ai-merge.js', [out])
-      log('usage: cap-discovery ai requests|merge'); process.exit(2)
+      if (['plan', 'prompt', 'check', 'status'].includes(sub)) return void node('ai-pass.js', [sub, out, ...pos.slice(2), ...argv.filter(a => ['--redo', '--json'].includes(a)), ...['limit', 'priority', 'kind', 'gap'].flatMap(k => opts[k] ? [`--${k}`, opts[k]] : [])])
+      log('usage: cap-discovery ai requests|plan|prompt <gap>|check <gap>|merge|status'); process.exit(2)
     }
     case 'where': {
       const { det, appDir } = await where()
