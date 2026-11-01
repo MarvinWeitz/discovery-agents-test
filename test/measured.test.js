@@ -40,3 +40,17 @@ test('readRequests: legacy draft entries and rejected requests get their entity 
   ].map(x => JSON.stringify(x)).join('\n'))
   assert.deepEqual(readRequests(d).map(r => [r.entity, r.event]), [['Travel', 'NEW'], ['Travel', 'READ']])
 })
+
+test('findings: the same operation in two services settles the gap of its own service, and only rows with a gap', () => {
+  const { findings } = require('../addons/measured')
+  const { gapId } = require('../lib/findings/book')
+  const op = 'Customers READ (PII: email)'
+  const D = { AUTH: [{ op, svc: 'Admin', ev: 'a.cds:1', c: ['y', { v: 'a' }] }, { op, svc: 'Processor', ev: 'p.cds:1', c: ['y', 'n'] }] }
+  D.MEASURED = { authz: compareAuthz(D, { users: ['u1', 'u2'], results: [
+    { row: 0, op, cells: [{ user: 'u1', v: 'y', status: 200 }, { user: 'u2', v: 'n', status: 403 }] },
+    { row: 1, op, cells: [{ user: 'u1', v: 'y', status: 200 }, { user: 'u2', v: 'error', status: null }] },
+  ] }) }
+  const out = []
+  findings({ finding: f => out.push(f), gap: () => {} }, { D })
+  assert.deepEqual(out.map(f => f.resolves), [[gapId('authz-unclear', `Admin|${op}`)], []])
+})
