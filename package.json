@@ -1,14 +1,38 @@
 {
-  "name": "cap-discovery-toolkit",
+  "name": "cap-discovery",
   "version": "1.0.0",
-  "description": "Discovery pipeline for CAP Node.js + UI5 apps: knowledge graph, atlas, test design",
+  "description": "Discovery for CAP Node.js + UI5 apps, inside the project or centrally: knowledge graph, atlas, findings and gaps, generated cds.test suites",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "cap-discovery": "bin/cap-discovery.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "addons/",
+    "atlas/",
+    "curated/",
+    "schema/",
+    "agents/",
+    "skills/",
+    "templates/",
+    ".claude-plugin/",
+    "discovery.config.json",
+    "eslint.cds.config.mjs",
+    "THIRD-PARTY-LICENSES.md",
+    "docs/stages.md"
+  ],
   "scripts": {
     "discover": "node bin/discover.js",
-    "pipeline": "node bin/pipeline.js"
+    "pipeline": "node bin/pipeline.js",
+    "cap-discovery": "node bin/cap-discovery.js"
   },
   "keywords": [],
   "author": "",
-  "license": "UNLICENSED",
   "dependencies": {
     "@openui5/types": "1.148.9",
     "@sap-ux/annotation-converter": "0.10.22",
@@ -27,9 +51,8 @@
     "mermaid": "^10.9.1",
     "typescript": "5.9.3"
   },
-  "private": true,
-  "bin": {
-    "discover": "bin/discover.js",
-    "cap-discovery": "bin/pipeline.js"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarvinWeitz/discovery-agents-test.git"
   }
 }

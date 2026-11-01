@@ -1,0 +1,29 @@
+# CAP discovery in this repository's own CI: nothing leaves the repo.
+# The toolkit ({{REPO}}) may be a private repo on the same GitHub (Enterprise) host: allow it once in its
+# Settings → Actions → General → Access ("Accessible from repositories in the organization / enterprise").
+# The atlas, findings and generated tests are kept as the run's "discovery" artifact; the summary is on the
+# run page and, on pull requests, in one comment that is updated on every push.
+# Settings: discovery.config.json in the repo root (merged over the toolkit's defaults).
+name: Discovery
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write   # the summary comment; remove together with "comment: true" below
+
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0       # git history feeds the churn view
+      - uses: {{REPO}}@{{REF}}
+        with:
+          comment: true
+          # app: srv-app        # CAP project folder, when detection picks the wrong one
+          # ui: app/a,app/b     # UI5 projects outside the CAP project's app/ folder
+          # tests: false        # static analysis only, never start the app

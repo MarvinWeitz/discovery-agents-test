@@ -1,0 +1,99 @@
+# Portable mode check: the toolkit used the way another repository would use it, on a public sample app
+# (cap-js/incidents-app) checked out as if it were that repository.
+#   action   uses: the composite action (action.yml) on the consumer checkout, after `cap-discovery init`
+#   cli      npm install of git+<this repo's URL>#<PR commit> into a folder outside the consumer, then init / all / docs
+#            inside it, nothing added to its package.json (npx cannot run generic git URLs: npm's GitFetcher error)
+#            (works for a private toolkit repo on github.com or GitHub Enterprise: git reads it with this job's token)
+# Both assert what a consumer gets: atlas Markdown, findings, a valid run, the app started, generated tests passed.
+name: Portable mode
+on:
+  pull_request:
+    paths:
+      - action.yml
+      - package.json
+      - templates/**
+      - .claude-plugin/**
+      - bin/**
+      - lib/**
+      - .github/workflows/portable.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CONSUMER: cap-js/incidents-app
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: toolkit
+          persist-credentials: false
+      - name: The consumer repository
+        run: git clone --quiet "https://github.com/$CONSUMER.git" consumer   # a public sample from github.com
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: cap-discovery init (what the consumer commits once)
+        working-directory: consumer
+        run: |
+          node ../toolkit/bin/cap-discovery.js init --toolkit "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+          git status --short
+          cat .github/workflows/discovery.yml
+      - name: The action, as in the generated workflow
+        id: disc
+        uses: ./toolkit
+        with:
+          path: consumer
+          artifact: portable-action
+          node-version: ''
+      - name: What the consumer got
+        env:
+          STATUS: ${{ steps.disc.outputs.status }}
+          STARTUP: ${{ steps.disc.outputs.startup }}
+          GENERATED: ${{ steps.disc.outputs.generated }}
+          AFTER: ${{ steps.disc.outputs.aftertests }}
+        working-directory: consumer
+        run: |
+          echo "status $STATUS, startup $STARTUP, generated $GENERATED, after tests $AFTER"
+          test "$STATUS" = success && test "$STARTUP" = success && test "$GENERATED" = success && test "$AFTER" = success
+          for f in .discovery/atlas/README.md .discovery/run/findings/findings.jsonl .discovery/manifest.json docs/discovery/README.md docs/discovery/findings.md; do test -s "$f" || { echo "::error::missing $f"; exit 1; }; done
+          # the app's own files are untouched apart from what init wrote and the docs folder
+          git status --short
+          test -z "$(git status --porcelain -- package.json package-lock.json test)" || { echo "::error::the app's package.json or tests changed"; exit 1; }
+
+  cli:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: The consumer repository (no lockfile; `all` installs it because node_modules is missing)
+        run: git clone --quiet "https://github.com/$CONSUMER.git" consumer
+      - name: install the toolkit outside the project, then init / all / docs
+        working-directory: consumer
+        env:
+          SERVER: ${{ github.server_url }}
+          TOOLKIT: git+${{ github.server_url }}/${{ github.repository }}.git#${{ github.event.pull_request.head.sha || github.sha }}
+          GIT_TOKEN: ${{ github.token }}
+          DISCOVERY_IMAGES: 'off' # no Chromium in this job: Markdown and index.html only
+        run: |
+          # the toolkit repo may be private: let git (and so npm) read it with this job's token
+          git config --global url."https://x-access-token:${GIT_TOKEN}@${SERVER#https://}/".insteadOf "$SERVER/"
+          npm install --prefix "$RUNNER_TEMP/cap-discovery" --ignore-scripts --legacy-peer-deps --no-audit --no-fund "$TOOLKIT"
+          cd_ () { "$RUNNER_TEMP/cap-discovery/node_modules/.bin/cap-discovery" "$@"; }
+          cd_ init --toolkit "$SERVER/$GITHUB_REPOSITORY"
+          cd_ all
+          cd_ summary >> "$GITHUB_STEP_SUMMARY"
+      - name: What the consumer got
+        working-directory: consumer
+        run: |
+          jq . .discovery/reports/tests.json
+          test "$(jq -r '.startup + .generated + .aftertests' .discovery/reports/tests.json)" = successsuccesssuccess
+          for f in .discovery/atlas/README.md .discovery/run/findings/findings.jsonl docs/discovery/README.md; do test -s "$f" || { echo "::error::missing $f"; exit 1; }; done
+          test -z "$(git status --porcelain -- package.json package-lock.json test)" || { echo "::error::the app's package.json or tests changed"; exit 1; }

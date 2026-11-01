@@ -7,7 +7,27 @@ description: Discover a CAP Node.js + UI5 app end to end (architecture, data mod
 
 Strategy: map wide with fixed tools, slice deep with agents, converge into one atlas. Every fact carries `file:line` evidence. Scope is CAP Node.js; a Java backend in the same repo is ignored.
 
-## 1. Deterministic pass (no LLM)
+## 0. Inside the project you are working in (portable, preferred)
+
+This plugin's folder is the toolkit itself. Install its packages once, then run it from the CAP project's repo root; nothing is added to the project's package.json:
+
+```sh
+T="${CLAUDE_PLUGIN_ROOT}"
+[ -d "$T/node_modules/@sap/cds" ] || npm ci --prefix "$T" --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+node "$T/bin/cap-discovery.js" where                    # what it would analyse
+node "$T/bin/cap-discovery.js" run                      # static pipeline -> .discovery/
+node "$T/bin/cap-discovery.js" all                      # + start the app under cds.test, generated tests, measured
+node "$T/bin/cap-discovery.js" docs docs/discovery      # Markdown output to a committed folder
+node "$T/bin/cap-discovery.js" run --mode static+ai     # + one AI request per open gap
+node "$T/bin/cap-discovery.js" ai merge                 # after the gap-resolver answers
+```
+
+- Output folder `.discovery/` has the same layout as `<out>` below. Settings: the project's `discovery.config.json` (merged over the toolkit defaults).
+- `all` needs the app installed (it installs when `node_modules` is missing) and, if the app lacks Jest / `@cap-js/cds-test` / SQLite, `--runtime-dir <folder above the project>`; it never edits package.json and removes the test folders it wrote.
+- AI pass: for each `.discovery/run/ai/requests/<gap>.md` run this plugin's `gap-resolver` agent (`${CLAUDE_PLUGIN_ROOT}/agents/gap-resolver.md`), then `ai merge`.
+- In CI the same runs as the toolkit repo's GitHub Action; `cap-discovery.js init` writes the workflow, the config and the Claude Code settings.
+
+## 1. Deterministic pass from the toolkit checkout (no LLM)
 
 ```sh
 cd <toolkit>            # npm install --ignore-scripts once

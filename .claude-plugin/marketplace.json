@@ -1,0 +1,12 @@
+{
+  "name": "cap-discovery",
+  "description": "CAP discovery toolkit for Claude Code",
+  "owner": { "name": "Marvin Weitz" },
+  "plugins": [
+    {
+      "name": "cap-discovery",
+      "source": ".",
+      "description": "Agents and skills for discovering a CAP Node.js + UI5 app and settling the gaps static analysis leaves open"
+    }
+  ]
+}

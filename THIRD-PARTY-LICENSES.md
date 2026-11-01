@@ -44,6 +44,17 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | wshobson/agents C4 plugin | MIT | agent role split and Markdown-first output |
 | SAP/codeql-sap-js queries | MIT | list of CAP security patterns to check (row-level filters, open services); not executed |
 
+## Portable mode (in a project's own CI or checkout)
+
+Nothing new is bundled. The CLI install (`npm install -g git+https://<host>/<org>/<toolkit-repo>.git`) and the GitHub Action install the same npm packages as above, into a global/prefix folder or the action's folder, never into the project's `package.json`. In the project, the test runtime prefers the project's own `@sap/cds`, Jest and `@cap-js/cds-test`; only packages it lacks are added to a folder outside the checkout (CI) or on request (`--runtime-dir`).
+
+| Tool | Version | Licence | How we use it | Commercial note |
+| --- | --- | --- | --- | --- |
+| `actions/setup-node`, `actions/upload-artifact` | v4 | MIT | Steps inside `action.yml` | OK |
+| `@cap-js/cds-test`, `@cap-js/sqlite`, `jest` | the project's, else 0.x / 1.x–2.x / 29 | Apache-2.0 (cap-js), MIT (Jest) | Test runtime when the project does not bring them; installed from npm, not bundled | OK |
+| `@sap/cds-dk` | latest, CI only | SAP Developer License | `npm i -g` in the action for TypeScript / cds-typer apps (as before in the workflow) | Review needed. Installed by the customer's CI run, never bundled |
+| Claude Code plugin format (`.claude-plugin/`) | n/a | our own files | Marketplace + plugin manifest so a project can enable the agents and skills | OK; using the plugin needs the user's own Claude Code licence |
+
 ## Reference only (not used, licence blocks commercial use)
 
 | Source | Licence | Why only reference |

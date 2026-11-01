@@ -72,7 +72,7 @@ function compareAuthz(D, measured) {
       st === 'agree' ? agree++ : st === 'differ' ? differ++ : unclear++
       return { user: c.user, static: sv, measured: c.v, status: c.status, st }
     })
-    rows.push({ op: m.op, method: m.method, url: m.url, cells })
+    rows.push({ row: m.row, svc: s.svc, op: m.op, method: m.method, url: m.url, cells })
   }
   return { users: measured.users, rows, agree, differ, unclear }
 }
@@ -138,12 +138,16 @@ function findings(B, { D }) {
   const M = D?.MEASURED
   const statics = new Map((D?.AUTH || []).map(r => [r.op, r]))
   for (const r of M?.authz?.rows || []) {
-    const s = statics.get(r.op), key = `${s?.svc || ''}|${r.op}`
+    // the same operation text appears once per service (Customers READ in two services): match by row, then service
+    const s = (r.row != null && D.AUTH?.[r.row]) || (D?.AUTH || []).find(x => x.op === r.op && (!r.svc || x.svc === r.svc)) || statics.get(r.op)
+    const key = `${r.svc || s?.svc || ''}|${r.op}`
     const differ = r.cells.filter(c => c.st === 'differ'), settled = r.cells.filter(c => c.st === 'measured')
+    // only a row the static matrix left unclear has a gap to settle (lib/findings/static.js authz)
+    const hasGap = r.cells.some(c => c.static === 'a')
     B.finding({ kind: 'authz-measured', key, method: 'measured', source: 'addons/measured (authz-probe.test.js)', status: differ.length ? 'refuted' : 'confirmed',
       title: `${r.method} ${r.url}: ${differ.length ? `${differ.length} cells differ from the static matrix` : 'as predicted'}`,
       statement: r.cells.map(c => `${c.user} ${c.status ?? c.measured}`).join(', ') + '.', severity: { level: differ.length ? 'warning' : 'good' }, evidence: s?.ev ? [s.ev] : [],
-      about: [findingId('authz', key)], resolves: settled.length || differ.length ? [gapId('authz-unclear', key)] : [],
+      about: [findingId('authz', key)], resolves: hasGap && (settled.length || differ.length) ? [gapId('authz-unclear', key)] : [],
       data: { op: r.op, method: r.method, url: r.url, cells: r.cells } })
   }
   for (const r of M?.rules?.never || []) {

@@ -9,13 +9,13 @@ const fs = require('fs')
 const path = require('path')
 
 const ROOT = path.join(__dirname, '..')
-const NM = path.join(ROOT, 'node_modules')
+const resolve = require('../lib/resolve') // packages also when hoisted (toolkit installed inside a project)
 const { list, config } = require('../lib/addons')
 const addons = list()
 // "pages": sidebar, overview as home, one section per page; "single": everything on one long page.
 // Readers can switch on the page; this sets the default.
 const LAYOUT = process.env.DISCOVERY_ATLAS_LAYOUT || config().atlas?.layout || 'pages'
-const PW = fs.existsSync(path.join(NM, 'playwright')) ? path.join(NM, 'playwright') : '/opt/node-tools/node_modules/playwright'
+const PW = resolve.dir('playwright') || 'playwright'
 
 // ---------- Markdown helpers ----------
 const md = s => String(s ?? '').replace(/<b>(.*?)<\/b>/g, '**$1**').replace(/<code>(.*?)<\/code>/g, '`$1`').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&')
@@ -83,13 +83,22 @@ function buildHtml(D) {
 
 // ---------- images: one PNG per view, plus extras the Markdown needs ----------
 async function render(html, outDir, D) {
-  const { chromium } = require(PW)
-  const b = await chromium.launch()
+  // Without Playwright + Chromium (e.g. a laptop that never installed them) the Markdown and index.html are
+  // still written; only the PNG renderings are missing. DISCOVERY_IMAGES=off skips them on purpose.
+  let chromium, b
+  try {
+    if (process.env.DISCOVERY_IMAGES === 'off') throw new Error('DISCOVERY_IMAGES=off')
+    ;({ chromium } = require(PW))
+    b = await chromium.launch()
+  } catch (e) {
+    console.warn(`images skipped (${String(e.message).split('\n')[0]}); install Playwright + Chromium for the PNGs`)
+    return { extra: {}, shots: [], errors: [] }
+  }
   const p = await b.newPage({ viewport: { width: 1200, height: 900 }, deviceScaleFactor: 2, colorScheme: 'light' })
   const errors = []
   p.on('pageerror', e => errors.push(e.message))
-  await p.route('**/d3.min.js', r => r.fulfill({ path: path.join(NM, 'd3/dist/d3.min.js'), contentType: 'text/javascript' }))
-  await p.route('**/d3-sankey.min.js', r => r.fulfill({ path: path.join(NM, 'd3-sankey/dist/d3-sankey.min.js'), contentType: 'text/javascript' }))
+  await p.route('**/d3.min.js', r => r.fulfill({ path: path.join(resolve.dir('d3'), 'dist/d3.min.js'), contentType: 'text/javascript' }))
+  await p.route('**/d3-sankey.min.js', r => r.fulfill({ path: path.join(resolve.dir('d3-sankey'), 'dist/d3-sankey.min.js'), contentType: 'text/javascript' }))
   await p.route('https://fonts.**', r => r.abort())
   await p.setContent(`<!doctype html><html><head><meta charset="utf-8"></head><body>${html}</body></html>`, { waitUntil: 'load' })
   await p.evaluate(() => { document.documentElement.dataset.layout = 'single' })

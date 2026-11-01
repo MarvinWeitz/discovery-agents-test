@@ -29,6 +29,10 @@ What runs when, with every input and output: [docs/stages.md](docs/stages.md) (g
 
 The app needs no `npm install`; the toolkit compiles the model with its own `@sap/cds`. If the app imports `@sap/cds/common`, make the toolkit's `node_modules` resolvable from the app (for example a symlink named `node_modules` in the app's parent folder). The toolkit never runs the app or its tests.
 
+## Inside your own project (portable mode)
+
+Run it in the project itself instead of from this repo: a GitHub Action step in the project's CI (`uses: <org>/<toolkit-repo>@main`), or the `cap-discovery` CLI (installed from the toolkit's git URL) with `run|all|docs` in any checkout, plus a Claude Code plugin for the AI pass. Private code never leaves the project, and the toolkit itself can live in a private GitHub Enterprise repo. `cap-discovery init` writes the workflow, a `discovery.config.json` (merged over the defaults here) and the Claude Code settings. Everything about it: [PORTABLE.md](PORTABLE.md); the files a project commits: [examples/consumer/](examples/consumer/).
+
 ## CI on a public sample
 
 `.github/workflows/sflight.yml` checks out `SAP-samples/cap-sflight` at a pinned commit, installs it the way its own CI does, runs `bin/pipeline.js` on it, then copies the generated cds.test files into the app and runs them with the app's Jest. With the `uitests` addon it also runs generated OPA5 UI tests for the UI promises in SFlight's Fiori app (headless Chromium, see [ADDONS.md](ADDONS.md)). The job summary lists every generated test with its result; the atlas, the run and the Jest reports are uploaded as the `sflight-discovery` artifact. SFlight's own `test/odata.test.ts` runs too, as a baseline.
