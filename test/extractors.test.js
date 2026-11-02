@@ -101,3 +101,22 @@ test('if-guards become comparisons from the syntax tree; the else branch is nega
   assert.deepStrictEqual(rules[0].props.conds, [{ lhs: 't.status', op: '=', rhs: 'A', literal: true }])
   assert.deepStrictEqual(rules[1].props.conds.map(c => [c.lhs, c.op, c.rhs]), [['t.status', '!=', 'A'], ['t.fee', '!=', null]])
 })
+
+test('projection sources: filtered paths, joins and sub-selects give the entity name (smart-core crash)', async () => {
+  const { sourceOf, extractModel } = require('../lib/extract/model')
+  const cds = require('@sap/cds')
+  const csn = cds.compile.to.csn(`namespace my;
+    entity Books { key ID: Integer; stock: Integer; author: Association to Authors; }
+    entity Authors { key ID: Integer; name: String; }
+    entity BookAuthors as select from Books join Authors on Books.author.ID = Authors.ID { key Books.ID, Authors.name };
+    service Cat { entity InStock as projection on my.Books[stock > 0]; entity Joined as projection on my.BookAuthors; }`)
+  assert.strictEqual(sourceOf(csn.definitions['my.Cat.InStock']), 'my.Books')
+  assert.strictEqual(sourceOf(csn.definitions['my.BookAuthors']), 'my.Books')
+  assert.strictEqual(sourceOf({ query: { SELECT: { from: { SELECT: { from: { ref: ['my.Authors'] } } } } } }), 'my.Authors')
+  assert.strictEqual(sourceOf({ kind: 'entity' }), null)
+  const root = app({ 'package.json': '{"name":"x"}', 'db/schema.cds': 'namespace my; entity Books { key ID: Integer; stock: Integer; }',
+    'srv/cat.cds': "using my from '../db/schema'; service Cat { entity InStock as projection on my.Books[stock > 0]; }" })
+  const g = new Graph()
+  await extractModel(cds, root, g)
+  assert.ok(g.edges.some(e => e.rel === 'projects_on' && e.from === 'svcentity:Cat.InStock' && e.to === 'entity:my.Books'))
+})

@@ -19,7 +19,7 @@ module.exports = {
       const grants = String(e.props.grant).split(',')
       if (!grants.some(x => ['UPDATE', 'WRITE', '*', 'PATCH'].includes(x))) continue
       const svcEnt = e.from.replace(/^svcentity:/, '')
-      const def = csn.definitions?.[svcEnt], base = csn.definitions?.[def?.query?.SELECT?.from?.ref?.[0] || def?.projection?.from?.ref?.[0]] || def
+      const def = csn.definitions?.[svcEnt], base = csn.definitions?.[require('../../../lib/extract/model').sourceOf(def)] || def
       const el = def?.elements?.[field] || base?.elements?.[field]
       if (!el) continue
       const locked = el['@readonly'] || el['@Core.Computed'] || el['@cds.on.insert'] || el['@cds.on.update'] || el['@Core.Immutable'] || el.key
