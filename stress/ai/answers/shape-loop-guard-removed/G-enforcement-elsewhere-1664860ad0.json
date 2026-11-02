@@ -1,0 +1,22 @@
+{
+  "gap": "G-enforcement-elsewhere-1664860ad0",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "Yes. The transition handler in srv/order-service.js registers reject with from = 'S' and rejects with 409 when the stored status_code is not 'S', so the UI promise is enforced on the server; the check is table-driven, which is why the static parser saw a computed value.",
+  "findings": [
+    {
+      "title": "Orders.reject enforces status_code = S via the TRANSITIONS table",
+      "statement": "The handler loops over TRANSITIONS and registers this.on(action, Orders, ...) for each; for reject, from = 'S', so a stored status other than 'S' is rejected with 409 before the UPDATE to 'R'. This matches the @Core.OperationAvailable rule. The table-driven pattern (action, from, to) is a candidate for a deterministic rule.",
+      "confidence": "high",
+      "severity": { "level": "good" },
+      "layer": "handler",
+      "subjects": ["uirule:OrderService.Orders.reject:available"],
+      "evidence": [
+        { "file": "srv/order-service.js", "line": 3, "quote": "['reject', 'S', 'R']" },
+        { "file": "srv/order-service.js", "line": 8, "quote": "for (const [action, from, to] of TRANSITIONS) this.on(action, Orders, async req => {" },
+        { "file": "srv/order-service.js", "line": 12, "quote": "if (from && order.status_code !== from) return req.reject(409, `Only orders in status ${from} can do this`)" }
+      ],
+      "test": "As carol (Approver): POST /orders/Orders(ID=<an order in status O>,IsActiveEntity=true)/OrderService.reject with {\"reason\":\"x\"}; expect 409 'Only orders in status S can do this'."
+    }
+  ]
+}

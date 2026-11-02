@@ -52,6 +52,7 @@ rules:
           - pattern: $T = $M + 1
           - pattern: $T = $M.$X + 1
           - pattern: $T = ($M || 0) + 1
+          - pattern: $T = ($M ?? 0) + 1
       # per-draft numbering (NEW on a draft child) is single-user
       - pattern-not-inside: $SRV.before('NEW', ...)
 

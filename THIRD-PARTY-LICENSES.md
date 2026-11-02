@@ -44,6 +44,18 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | wshobson/agents C4 plugin | MIT | agent role split and Markdown-first output |
 | SAP/codeql-sap-js queries | MIT | list of CAP security patterns to check (row-level filters, open services); not executed |
 
+## Stress corpus (`stress/`, test only)
+
+Installed into `stress/node_modules` by `npm ci` in `stress/` (locally and in the `stress.yml` workflow). Used only to prove that the seeded apps are valid and that each planted bug is real. Nothing here is bundled with the toolkit or shipped to a target project.
+
+| Tool | Version | Licence | How we use it | Commercial note |
+| --- | --- | --- | --- | --- |
+| `@sap/cds`, `@sap/cds-dk` | 9.x | SAP Developer License | `cds compile` and the CAP runtime for the corpus apps | Review needed. Dev dependency of our own test suite, never bundled |
+| `@cap-js/sqlite`, `@cap-js/cds-test`, `@cap-js/cds-types` | 2.x / 0.4 / 0.14 | Apache-2.0 | In-memory database and `cds.test` for the proof tests | OK |
+| `@ui5/cli`, `@ui5/linter` | 4.x / 1.x | Apache-2.0 | `ui5 build` and `ui5lint` on the corpus UI5 apps | OK (the linter reads `@sapui5/types`, SAP Developer License, not redistributed) |
+| `@types/openui5`, `@types/node`, `typescript` | 1.136 / 22 / 5.9.3 | MIT / MIT / Apache-2.0 | `tsc --noEmit` on the TypeScript corpus app | OK |
+| `tsx` | 4.x | MIT | Runs the TypeScript service under `node --test` | OK |
+
 ## Portable mode (in a project's own CI or checkout)
 
 Nothing new is bundled. The CLI install (`npm install -g git+https://<host>/<org>/<toolkit-repo>.git`) and the GitHub Action install the same npm packages as above, into a global/prefix folder or the action's folder, never into the project's `package.json`. In the project, the test runtime prefers the project's own `@sap/cds`, Jest and `@cap-js/cds-test`; only packages it lacks are added to a folder outside the checkout (CI) or on request (`--runtime-dir`).

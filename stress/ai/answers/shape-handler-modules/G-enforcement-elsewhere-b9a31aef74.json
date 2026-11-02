@@ -1,0 +1,48 @@
+{
+  "gap": "G-enforcement-elsewhere-b9a31aef74",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "Yes: the submit handler is the shared helper srv/handlers/transition.js built with transition('O', 'S'), which reads the order's status_code and rejects with 409 unless it equals 'O', so the server enforces \"status_code = O\" for Orders.submit. The parser missed it because the handler is a require()'d factory result (handler module -> transition helper); this require-a-factory pattern recurs for all three actions and is a candidate for a deterministic rule.",
+  "findings": [
+    {
+      "title": "Orders.submit enforces status_code = O in the transition helper",
+      "statement": "srv/order-service.js registers the submit handler from srv/handlers/submit.js, which exports transition('O', 'S'). The transition step selects the order's status_code and calls req.reject(409) when it is not 'O', then updates it to 'S'. The UI's Core.OperationAvailable rule (status_code = O) is therefore backed by a server check in the Node handler, not only hidden in the UI. Only the OrderService action path is covered: AdminService exposes sales.Orders without this handler, so an Admin could still write status_code directly.",
+      "confidence": "high",
+      "severity": {
+        "level": "good"
+      },
+      "layer": "handler",
+      "subjects": [
+        "uirule:OrderService.Orders.submit:available"
+      ],
+      "evidence": [
+        {
+          "file": "srv/order-service.js",
+          "line": 6,
+          "quote": "this.on('submit', Orders, require('./handlers/submit'))"
+        },
+        {
+          "file": "srv/handlers/submit.js",
+          "line": 1,
+          "quote": "require('./transition')('O', 'S')"
+        },
+        {
+          "file": "srv/handlers/transition.js",
+          "line": 3,
+          "quote": "const order = await SELECT.one.from(Orders, ID).columns('status_code')"
+        },
+        {
+          "file": "srv/handlers/transition.js",
+          "line": 5,
+          "quote": "if (order.status_code !== from) return req.reject(409, `Only orders in status ${from} can do this`)"
+        },
+        {
+          "file": "srv/handlers/transition.js",
+          "line": 9,
+          "quote": "module.exports = (from, to) => function (req) { return step(this.entities.Orders, req, from, to) }"
+        }
+      ],
+      "test": "POST /orders/Orders(ID=aaaaaaaa-0000-0000-0000-000000000002,IsActiveEntity=true)/OrderService.submit as alice (order not in status O) should return 409 \"Only orders in status O can do this\"."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+<mvc:View controllerName="stress.shop.controller.Main" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+  <Page title="{i18n>appTitle}">
+    <List id="books" items="{path: '/Books', parameters: {$select: 'ID,title,stock'}}" mode="SingleSelectMaster">
+      <StandardListItem title="{title}" description="{author}" info="{stock}" />
+    </List>
+    <footer>
+      <Toolbar>
+        <StepInput id="quantity" value="1" min="1" max="10" />
+        <Button text="{i18n>order}" press=".onOrder" type="Emphasized" />
+      </Toolbar>
+    </footer>
+  </Page>
+</mvc:View>

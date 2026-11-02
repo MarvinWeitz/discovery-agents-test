@@ -1,0 +1,6 @@
+{
+  "title": "Orders with approval flow (CAP Node.js + Fiori elements)",
+  "about": "Roles Buyer/Approver/Admin, row-level @restrict, draft, three bound actions with a status machine checked in handlers and announced via @Core.OperationAvailable, personal data on Customers, an event.",
+  "ui5": ["app/orders"],
+  "accepted": []
+}

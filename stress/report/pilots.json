@@ -1,0 +1,602 @@
+{
+ "at": "2026-11-02T00:22:34.181Z",
+ "pilots": [
+  {
+   "id": "incidents",
+   "app": ".",
+   "ui": null,
+   "seconds": 8,
+   "findings": 55,
+   "alarms": 18,
+   "gaps": 6,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 18,
+    "after": 18,
+    "newAlarms": [],
+    "goneAlarms": [],
+    "changedAlarms": []
+   },
+   "mutants": [
+    {
+     "op": "delete-guard",
+     "file": "srv/processor-service.js",
+     "line": 10,
+     "before": "if (closed) req.reject `Can't modify a closed incident!`",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "- pattern:Validation with req.reject / req.error"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sflight",
+   "app": ".",
+   "ui": null,
+   "seconds": 23,
+   "findings": 127,
+   "alarms": 57,
+   "gaps": 23,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 57,
+    "after": 57,
+    "newAlarms": [],
+    "goneAlarms": [],
+    "changedAlarms": []
+   },
+   "mutants": [
+    {
+     "op": "delete-guard",
+     "file": "srv/travel-service.ts",
+     "line": 36,
+     "before": "if (BeginDate < today()) req.error (400, `Begin Date must not be before today.`, 'in/BeginDate')",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:Validation with req.reject / req.error"
+     ]
+    },
+    {
+     "op": "delete-guard",
+     "file": "srv/travel-service.ts",
+     "line": 37,
+     "before": "if (BeginDate > EndDate) req.error (400, `End Date must be after Begin Date.`, 'in/EndDate')",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:Validation with req.reject / req.error"
+     ]
+    },
+    {
+     "op": "delete-guard",
+     "file": "srv/travel-service.ts",
+     "line": 105,
+     "before": "if (!travel) throw req.reject (404, `Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.`)",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:Validation with req.reject / req.error",
+      "- rule:null-deref-in-guard"
+     ]
+    },
+    {
+     "op": "flip-comparison",
+     "file": "srv/travel-service.ts",
+     "line": 106,
+     "before": "if (travel.status === TravelStatusCode.Accepted) throw req.reject (400, `Travel \"${travel.ID}\" has been approved already.`)",
+     "after": "if (travel.status !== TravelStatusCode.Accepted) throw req.reject (400, `Travel \"${travel.ID}\" has been approved already.`)",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/master-data.cds",
+     "line": 5,
+     "before": "@cds.autoexpose @readonly",
+     "after": "@cds.autoexpose",
+     "killed": false,
+     "alarm": false,
+     "by": []
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/schema.cds",
+     "line": 14,
+     "before": "TravelID       : Integer default 0 @readonly;",
+     "after": "TravelID       : Integer default 0 ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/schema.cds",
+     "line": 15,
+     "before": "BeginDate      : Date @mandatory;",
+     "after": "BeginDate      : Date ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "event-app",
+   "app": "packages/server",
+   "ui": "../ui-admin,../ui-form",
+   "seconds": 13,
+   "findings": 57,
+   "alarms": 31,
+   "gaps": 10,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 30,
+    "after": 31,
+    "newAlarms": [
+     {
+      "check": "rule:auth-not-for-production",
+      "title": "Production uses mocked authentication",
+      "ev": ".cdsrc.json:3"
+     }
+    ],
+    "goneAlarms": [],
+    "changedAlarms": []
+   },
+   "mutants": [
+    {
+     "op": "drop-restrict-where",
+     "file": "srv/eventregistration-service.cds",
+     "line": 22,
+     "before": "where : 'Email = $user.id' // users can only see and modify their own data",
+     "after": "// users can only see and modify their own data",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ authz",
+      "~ risk:ui5-errors",
+      "~ risk:inherit",
+      "- risk:row-level",
+      "- rule:writable-owner-field"
+     ]
+    },
+    {
+     "op": "rename-handler",
+     "file": "server.js",
+     "line": 3,
+     "before": "cds.on('bootstrap', (app) => {",
+     "after": "cds.on('bootstrapMutant', (app) => {",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "- custom-route"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "codejam",
+   "app": "solution/MyHANAApp",
+   "ui": null,
+   "seconds": 8,
+   "findings": 53,
+   "alarms": 12,
+   "gaps": 9,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 12,
+    "after": 12,
+    "newAlarms": [],
+    "goneAlarms": [],
+    "changedAlarms": []
+   },
+   "mutants": [
+    {
+     "op": "drop-requires",
+     "file": "srv/interaction_srv.cds",
+     "line": 7,
+     "before": "@requires           : 'authenticated-user'",
+     "after": "",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ authz",
+      "~ pattern:Declarative authorization (@requires / @restrict)",
+      "~ risk:tests-one-user",
+      "- authz"
+     ]
+    },
+    {
+     "op": "drop-requires",
+     "file": "srv/interaction_srv.cds",
+     "line": 12,
+     "before": "@requires: 'Admin'",
+     "after": "",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ authz",
+      "+ risk:inherit",
+      "~ pattern:Declarative authorization (@requires / @restrict)",
+      "~ risk:tests-one-user",
+      "~ risk:ui5-errors",
+      "- authz"
+     ]
+    },
+    {
+     "op": "drop-restrict-where",
+     "file": "srv/interaction_srv.cds",
+     "line": 21,
+     "before": "where: 'country_code = ''DE'''",
+     "after": "'DE'''",
+     "killed": null,
+     "error": "discover.js"
+    },
+    {
+     "op": "rename-handler",
+     "file": "srv/interaction_srv.js",
+     "line": 16,
+     "before": "this.on('sleep', async () => {",
+     "after": "this.on('sleepMutant', async () => {",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ action-without-handler",
+      "+ risk:noimpl",
+      "+ rule:orphan-handler",
+      "~ pattern:Bound actions",
+      "~ pattern:on-handlers",
+      "~ risk:ui5-errors"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "srv/interaction_srv.cds",
+     "line": 15,
+     "before": "@readonly",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:@readonly service entities"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "srv/interaction_srv.cds",
+     "line": 18,
+     "before": "@readonly",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:@readonly service entities",
+      "- ui-promise:framework"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "srv/interaction_srv.cds",
+     "line": 27,
+     "before": "@readonly",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ pattern:@readonly service entities",
+      "- ui-promise:framework"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "bookstore",
+   "app": "bookstore",
+   "ui": null,
+   "seconds": 5,
+   "findings": 65,
+   "alarms": 12,
+   "gaps": 27,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 15,
+    "after": 12,
+    "newAlarms": [],
+    "goneAlarms": [
+     {
+      "check": "pattern:State rules in UI annotations",
+      "title": "State rules in UI annotations",
+      "ev": ""
+     },
+     {
+      "check": "risk:ui-only",
+      "title": "Read-only and hidden-create rules exist only in the UI (1)",
+      "ev": ""
+     },
+     {
+      "check": "ui-promise:ui-only",
+      "title": "field-control on Items (quantity): ui-only",
+      "ev": ""
+     }
+    ],
+    "changedAlarms": [
+     {
+      "check": "pattern:Declarative authorization (@requires / @restrict)",
+      "title": "Declarative authorization (@requires / @restrict)",
+      "ev": "../bookshop/srv/cat-service.cds:19"
+     },
+     {
+      "check": "risk:tests-one-user",
+      "title": "Tests run as one user only (alice)",
+      "ev": "test/cds.ql.test.js:1"
+     },
+     {
+      "check": "risk:events-untested",
+      "title": "2 events from other services change data here, untested",
+      "ev": "srv/mashup.js:49"
+     },
+     {
+      "check": "risk:db-variant",
+      "title": "Production and tests load different database models (development: db/sqlite · production: db/hana)",
+      "ev": "package.json:32"
+     },
+     {
+      "check": "risk:inherit",
+      "title": "Items: access inherited from the draft root",
+      "ev": "../orders/srv/orders-service.cds:8"
+     }
+    ]
+   },
+   "mutants": [
+    {
+     "op": "drop-requires",
+     "file": "srv/mashup.cds",
+     "line": 34,
+     "before": "annotate AdminService with @requires:'admin';",
+     "after": "annotate AdminService with ;",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ plugin-code",
+      "+ risk:pii-open",
+      "+ risk:open-svc",
+      "~ authz",
+      "~ pattern:Declarative authorization (@requires / @restrict)",
+      "~ pattern:Function-style service impl"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "app/admin-books/fiori-service.cds",
+     "line": 107,
+     "before": "@readonly entity Languages as projection on sap.common.Languages;",
+     "after": "entity Languages as projection on sap.common.Languages;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "+ plugin-code",
+      "~ pattern:Function-style service impl",
+      "~ pattern:CSV seed data",
+      "~ pattern:@readonly service entities",
+      "~ pattern:Class-based service (extends cds.ApplicationService)",
+      "- plugin-code"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "app/genres/fiori-service.cds",
+     "line": 4,
+     "before": "annotate Genres with @readonly;",
+     "after": "annotate Genres with ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "+ plugin-code",
+      "~ pattern:Function-style service impl",
+      "~ pattern:CSV seed data",
+      "~ pattern:@readonly service entities",
+      "~ pattern:Class-based service (extends cds.ApplicationService)",
+      "- plugin-code"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "poetry-slam",
+   "app": ".",
+   "ui": null,
+   "seconds": 22,
+   "findings": 191,
+   "alarms": 30,
+   "gaps": 40,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 30,
+    "after": 30,
+    "newAlarms": [],
+    "goneAlarms": [],
+    "changedAlarms": []
+   },
+   "mutants": [
+    {
+     "op": "drop-restrict-where",
+     "file": "srv/poetryslam/poetrySlamServiceAuthorizations.cds",
+     "line": 26,
+     "before": "where: 'status_code = 2 or status_code = 3'",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ authz",
+      "~ risk:row-level",
+      "~ risk:noimpl",
+      "~ risk:ui5-errors",
+      "~ risk:inherit",
+      "- risk:row-level"
+     ]
+    },
+    {
+     "op": "drop-restrict-where",
+     "file": "srv/poetryslam/poetrySlamServiceAuthorizations.cds",
+     "line": 45,
+     "before": "where: 'createdBy = $user'",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ authz",
+      "~ risk:row-level",
+      "~ risk:noimpl",
+      "~ risk:ui5-errors",
+      "~ risk:inherit",
+      "- risk:row-level"
+     ]
+    },
+    {
+     "op": "drop-restrict-where",
+     "file": "srv/poetryslam/poetrySlamServiceAuthorizations.cds",
+     "line": 64,
+     "before": "where: 'createdBy = $user or artistIndicator=true'",
+     "after": "",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ authz",
+      "~ risk:noimpl",
+      "~ risk:ui5-errors",
+      "~ risk:inherit",
+      "- risk:row-level"
+     ]
+    },
+    {
+     "op": "rename-handler",
+     "file": "srv/jobscheduler/jobSchedulerServiceImplementation.js",
+     "line": 27,
+     "before": "srv.on('generateConsumerJobs', async (req) => {",
+     "after": "srv.on('generateConsumerJobsMutant', async (req) => {",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ action-without-handler",
+      "+ risk:noimpl",
+      "+ rule:orphan-handler",
+      "~ pattern:Bound actions",
+      "~ pattern:on-handlers",
+      "~ risk:noimpl"
+     ]
+    },
+    {
+     "op": "rename-handler",
+     "file": "srv/jobscheduler/jobSchedulerServiceImplementation.js",
+     "line": 46,
+     "before": "srv.on('sendReminder', async (req) => {",
+     "after": "srv.on('sendReminderMutant', async (req) => {",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ action-without-handler",
+      "+ risk:noimpl",
+      "+ rule:orphan-handler",
+      "~ pattern:Bound actions",
+      "~ pattern:on-handlers",
+      "~ risk:noimpl"
+     ]
+    },
+    {
+     "op": "rename-handler",
+     "file": "srv/poetryslam/poetrySlamServiceImplementation.js",
+     "line": 35,
+     "before": "this.on('userInfo', () => {",
+     "after": "this.on('userInfoMutant', () => {",
+     "killed": true,
+     "alarm": true,
+     "by": [
+      "+ action-without-handler",
+      "+ risk:noimpl",
+      "+ rule:orphan-handler",
+      "~ pattern:Bound actions",
+      "~ pattern:on-handlers",
+      "~ risk:ui5-errors"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/poetrySlamManagerModel.cds",
+     "line": 83,
+     "before": "number                 @title: '{i18n>number}'                 @readonly;",
+     "after": "number                 @title: '{i18n>number}'                 ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/poetrySlamManagerModel.cds",
+     "line": 84,
+     "before": "title                  @title: '{i18n>title}'                  @mandatory;",
+     "after": "title                  @title: '{i18n>title}'                  ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    },
+    {
+     "op": "drop-constraint",
+     "file": "db/poetrySlamManagerModel.cds",
+     "line": 86,
+     "before": "dateTime               @title: '{i18n>dateTime}'               @mandatory;",
+     "after": "dateTime               @title: '{i18n>dateTime}'               ;",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ ui-promise:framework"
+     ]
+    }
+   ]
+  }
+ ]
+}

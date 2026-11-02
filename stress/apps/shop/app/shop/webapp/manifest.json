@@ -1,0 +1,21 @@
+{
+  "_version": "2.0.0",
+  "sap.app": {
+    "id": "stress.shop",
+    "type": "application",
+    "title": "{{appTitle}}",
+    "applicationVersion": { "version": "1.0.0" },
+    "dataSources": {
+      "catalog": { "uri": "/catalog/", "type": "OData", "settings": { "odataVersion": "4.0" } }
+    }
+  },
+  "sap.ui": { "technology": "UI5", "deviceTypes": { "desktop": true, "tablet": true, "phone": true } },
+  "sap.ui5": {
+    "dependencies": { "minUI5Version": "1.136.0", "libs": { "sap.m": {}, "sap.ui.core": {} } },
+    "rootView": { "viewName": "stress.shop.view.Main", "type": "XML", "id": "main" },
+    "models": {
+      "i18n": { "type": "sap.ui.model.resource.ResourceModel", "settings": { "bundleName": "stress.shop.i18n.i18n" } },
+      "": { "dataSource": "catalog", "settings": { "operationMode": "Server", "autoExpandSelect": true } }
+    }
+  }
+}

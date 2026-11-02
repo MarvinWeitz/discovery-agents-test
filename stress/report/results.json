@@ -1,0 +1,4101 @@
+{
+ "at": "2026-11-02T00:22:34.022Z",
+ "seconds": 373,
+ "bases": [
+  {
+   "base": "orders",
+   "title": "Orders with approval flow (CAP Node.js + Fiori elements)",
+   "control": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 6,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "alarms": [],
+   "findings": 47
+  },
+  {
+   "base": "shop",
+   "title": "Book shop (TypeScript CAP service + freestyle UI5 app)",
+   "control": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 5,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "alarms": [],
+   "findings": 28
+  }
+ ],
+ "seeds": [
+  {
+   "id": "config-cdsrc-json",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "cds config in .cdsrc.json instead of package.json",
+   "bug": "No bug: the same mocked users, read from .cdsrc.json.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "type": "MockUser",
+     "id": "^user:alice$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:bob$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:carol$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:admin$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-cdsrc-yaml",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "cds config in .cdsrc.yaml",
+   "bug": "No bug: the mocked users come from .cdsrc.yaml.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "type": "MockUser",
+     "id": "^user:alice$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:bob$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:carol$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:admin$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-profile-users",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "Mocked users only in the [development] profile, xsuaa in [production]",
+   "bug": "No bug: the usual split between local mock users and XSUAA in production.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "type": "MockUser",
+     "id": "^user:alice$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:bob$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:carol$",
+     "hit": true
+    },
+    {
+     "type": "MockUser",
+     "id": "^user:admin$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-custom-folders",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "cds.folders.srv = \"service\" and srv/ renamed",
+   "bug": "No bug: services and handlers live in service/ as configured.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-monorepo",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "Monorepo: CAP app in packages/backend, discovery pointed at the repo root",
+   "bug": "No bug: npm workspaces; the CAP project is one level down.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "detected_layout": {
+    "app": "packages/backend",
+    "ui": ""
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    },
+    {
+     "type": "Service",
+     "id": "^service:OrderService$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-dummy-auth-production",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "[production] requires auth: \"dummy\"",
+   "bug": "Dummy auth in production: every request runs as a privileged user, all @requires and @restrict are void.",
+   "checks": [
+    "rule:auth-not-for-production"
+   ],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:auth-not-for-production",
+     "text": "dummy",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-7287d309cf"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-mocked-auth-production",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "[production] keeps mocked auth with fixed users",
+   "bug": "Mocked auth in production: anyone who knows the user name \"admin\" (password empty) is admin.",
+   "checks": [
+    "rule:auth-not-for-production"
+   ],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:auth-not-for-production",
+     "text": "mocked",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-7287d309cf"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-mocked-auth-no-production-override",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "Mocked users at top level, no [production] auth",
+   "bug": "The mock users sit at the top level of cds.requires.auth and nothing overrides them for production, so production stays mocked (as many samples are configured).",
+   "checks": [
+    "rule:auth-not-for-production"
+   ],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:auth-not-for-production",
+     "text": "mocked",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-1cba40d1bb"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-xs-security-missing-scope",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "xs-security.json lacks the Admin scope",
+   "bug": "@requires: Admin, but xs-security.json defines only Buyer and Approver: nobody can be given Admin in production.",
+   "checks": [
+    "rule:unknown-role"
+   ],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-role",
+     "text": "Admin",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-cbc128d24b"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-xs-security-complete",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "xs-security.json with every role",
+   "bug": "No bug: scopes and role templates for Buyer, Approver and Admin.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-multitenancy",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "Multitenancy, extensibility and feature toggles with an MTX sidecar",
+   "bug": "No bug: an MTX sidecar folder and cds.requires.multitenancy / extensibility / toggles.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-ui5-custom-webapp-path",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "ui5.yaml maps webapp to src/",
+   "bug": "No bug: the UI5 app sources are in app/orders/src as ui5.yaml says.",
+   "checks": [],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "type": "UI5App",
+     "id": "stress\\.orders",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "config-remote-profile",
+   "base": "orders",
+   "group": "config",
+   "category": "config",
+   "title": "Remote API configured only for [production], called from submit",
+   "bug": "The remote API is configured only in the production profile; locally and in tests the call has no destination and no mock.",
+   "checks": [
+    "risk:remote-untested"
+   ],
+   "file": "seeds/config.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:remote-untested",
+     "text": "API_BP",
+     "hit": true,
+     "ids": [
+      "F-risk-c12bcbdaa0"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-no-requires",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "Admin service loses its @requires",
+   "bug": "AdminService (customers with e-mail and phone) is open to anonymous callers.",
+   "checks": [
+    "risk:open-svc",
+    "risk:pii-open"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:open-svc",
+     "text": "AdminService",
+     "hit": true,
+     "ids": [
+      "F-risk-f5054aedbc"
+     ]
+    },
+    {
+     "check": "risk:pii-open",
+     "text": "Customers",
+     "hit": true,
+     "ids": [
+      "F-risk-e6a3896e84"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-role-typo-requires",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "@requires names a role nobody has ('Admins')",
+   "bug": "Typo in the role name locks every real admin out; no mock user, no xs-security role carries it.",
+   "checks": [
+    "rule:unknown-role"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-role",
+     "text": "Admins",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-cbc128d24b"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-role-typo-restrict",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "@restrict grants to 'Aprover'",
+   "bug": "Typo in a @restrict role: approvers can no longer read or approve.",
+   "checks": [
+    "rule:unknown-role"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-role",
+     "text": "Aprover",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-2b37b6e2ad"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-grant-typo",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "@restrict grants 'aprove' (no such action)",
+   "bug": "Typo in a grant: the action approve is granted to nobody.",
+   "checks": [
+    "rule:unknown-grant"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-grant",
+     "text": "aprove",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-c9069f1c9e"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-row-filter-dropped",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "Buyer grant loses where: 'createdBy = $user'",
+   "bug": "Every buyer reads and edits every order (cross-user access).",
+   "checks": [
+    "authz"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "authz",
+     "text": "Orders READ",
+     "hit": true,
+     "ids": [
+      "F-authz-c33b493e24"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [
+    {
+     "id": "F-risk-ef3ce837f4",
+     "check": "risk:row-level",
+     "title": "Orders: row-level filter for Buyer needs a cross-user test"
+    }
+   ],
+   "detected": true
+  },
+  {
+   "id": "authz-commented-grant",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "Approver grant commented out",
+   "bug": "Someone commented out a grant while debugging; approvers are locked out.",
+   "checks": [
+    "rule:commented-out-grant"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:commented-out-grant",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-172a84a184"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-writable-owner",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "Row filter on a plain writable owner field",
+   "bug": "Rows are filtered by owner = $user, but owner is writable: a buyer can hand an order to someone else.",
+   "checks": [
+    "rule:writable-owner-field"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:writable-owner-field",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-3a59d9dacd"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-pii-projection",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "Customers with e-mail re-exposed to every buyer",
+   "bug": "A new projection on Customers in OrderService exposes e-mail and phone to any authenticated user.",
+   "checks": [
+    "risk:pii-open"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:pii-open",
+     "text": "CustomerContacts",
+     "hit": true,
+     "ids": [
+      "F-risk-ac537df56b"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "authz-custom-route",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "Debug express route in server.js",
+   "bug": "A bootstrap route returns all orders without any authentication.",
+   "checks": [
+    "custom-route"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "custom-route",
+     "text": "/debug/orders",
+     "hit": true,
+     "ids": [
+      "F-custom-route-62cdb0df09"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "action-handler-removed",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "reject has no handler",
+   "bug": "The reject handler was deleted; the action is still in the service and the UI.",
+   "checks": [
+    "action-without-handler",
+    "risk:noimpl"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "action-without-handler",
+     "text": "reject",
+     "hit": true,
+     "ids": [
+      "F-action-without-handler-6a098700a6"
+     ]
+    },
+    {
+     "check": "risk:noimpl",
+     "text": "reject",
+     "hit": true,
+     "ids": [
+      "F-risk-6603ff6663"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "action-handler-typo",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "Handler registered for 'aprove'",
+   "bug": "Typo in the event name: approve has no handler, the aprove handler never runs.",
+   "checks": [
+    "action-without-handler",
+    "rule:orphan-handler"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "action-without-handler",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-action-without-handler-3b32237edd"
+     ]
+    },
+    {
+     "check": "rule:orphan-handler",
+     "text": "aprove",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-97f0c5bb26"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "action-orphan-handler",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "Handler for an action the service does not declare",
+   "bug": "this.on('cancel', Orders) is dead code: the service has no cancel action.",
+   "checks": [
+    "rule:orphan-handler"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:orphan-handler",
+     "text": "cancel",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-b76afb61ab"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "action-null-deref",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "Not-found guard dereferences the missing row",
+   "bug": "The 404 message reads order.ID from undefined: a TypeError and a 500 instead of a 404.",
+   "checks": [
+    "rule:null-deref-in-guard"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:null-deref-in-guard",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-70d345de56"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "action-max-plus-one",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "Order number = max + 1",
+   "bug": "Two parallel creates read the same max and get the same order number.",
+   "checks": [
+    "rule:max-plus-one-id"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:max-plus-one-id",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-971e8b61bb"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "action-hard-coded-currency",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "Currency forced to 'EUR' in a handler",
+   "bug": "Every order is stored in EUR whatever the customer currency is.",
+   "checks": [
+    "rule:hard-coded-currency"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:hard-coded-currency",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-3c42659189"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui-only-action-guard",
+   "base": "orders",
+   "group": "orders",
+   "category": "ui-promise",
+   "title": "approve loses its status check",
+   "bug": "@Core.OperationAvailable hides approve unless status = S, but the server approves open orders too.",
+   "checks": [
+    "ui-promise:ui-only",
+    "risk:ui-only"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "ui-promise:ui-only",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-ui-promise-289643c958"
+     ]
+    },
+    {
+     "check": "risk:ui-only",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-risk-4e47ef2db9"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui-partial-action-guard",
+   "base": "orders",
+   "group": "orders",
+   "category": "ui-promise",
+   "title": "approve checks status != 'A' instead of = 'S'",
+   "bug": "The UI offers approve only for submitted orders; the server also approves open and rejected ones.",
+   "checks": [
+    "risk:partial",
+    "state-transition"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:partial",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-risk-03435a3bde"
+     ]
+    },
+    {
+     "check": "state-transition",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-state-transition-c28c61a9d5",
+      "F-state-transition-e45b97939b"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "probe-static-readonly",
+   "base": "orders",
+   "group": "orders",
+   "category": "ui-promise",
+   "title": "status read-only via @Common.FieldControl: #ReadOnly",
+   "bug": "No bug: @readonly replaced by the static @Common.FieldControl: #ReadOnly, which CAP enforces like @readonly (the proof shows the server ignores the value).",
+   "checks": [],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": true,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "probe-static-mandatory",
+   "base": "orders",
+   "group": "orders",
+   "category": "ui-promise",
+   "title": "title mandatory via @Common.FieldControl: #Mandatory",
+   "bug": "No bug: @mandatory moved to the static @Common.FieldControl: #Mandatory, which CAP enforces like @mandatory (the proof shows a 400).",
+   "checks": [],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": true,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "probe-write-grant-not-actions",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "WRITE does not grant bound actions",
+   "bug": "No bug: Buyers have READ, WRITE and submit; approve is not theirs. The authorization matrix must say denied, not unclear.",
+   "checks": [],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": true,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "transition-wrong-target",
+   "base": "orders",
+   "group": "orders",
+   "category": "ui-promise",
+   "title": "reject sets status A (approved)",
+   "bug": "Copy-paste: reject moves the order to Approved. Static checks cannot know that \"reject\" should not mean A.",
+   "checks": [
+    "state-transition"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": false,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "state-transition",
+     "text": "reject",
+     "hit": false,
+     "ids": []
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": false
+  },
+  {
+   "id": "sql-injection-native",
+   "base": "orders",
+   "group": "orders",
+   "category": "sql",
+   "title": "Search builds native SQL from the request",
+   "bug": "req.data.q is pasted into a SQL string: q = x' UNION SELECT ... reads any table.",
+   "checks": [
+    "native-sql",
+    "rule:sql-injection"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "native-sql",
+     "hit": true,
+     "ids": [
+      "F-native-sql-8c958a9deb"
+     ]
+    },
+    {
+     "check": "rule:sql-injection",
+     "text": "req.data.q",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-d93a7b5d87"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "sql-injection-cql-string",
+   "base": "orders",
+   "group": "orders",
+   "category": "sql",
+   "title": "CQL where clause built from a template string",
+   "bug": ".where(`name like '%${q}%'`) parses user input as CQL: q = x' or name like '% returns every row.",
+   "checks": [
+    "rule:sql-injection"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:sql-injection",
+     "text": "req.data.q",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-86be919a92"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "sql-hana-only",
+   "base": "orders",
+   "group": "orders",
+   "category": "sql",
+   "title": "HANA-only SQL in submit",
+   "bug": "FROM DUMMY only exists on HANA: submit fails on SQLite, so no local test reaches it.",
+   "checks": [
+    "native-sql",
+    "risk:native-sql"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "native-sql",
+     "text": "DUMMY",
+     "hit": true,
+     "ids": [
+      "F-native-sql-6baaee0a23"
+     ]
+    },
+    {
+     "check": "risk:native-sql",
+     "hit": true,
+     "ids": [
+      "F-risk-0933539f0a"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "sql-db-branch",
+   "base": "orders",
+   "group": "orders",
+   "category": "sql",
+   "title": "if (cds.db.kind === \"hana\") branch",
+   "bug": "The HANA branch never runs in SQLite tests.",
+   "checks": [
+    "risk:db-branch"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:db-branch",
+     "hit": true,
+     "ids": [
+      "F-risk-33be378142"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "event-emit-undeclared",
+   "base": "orders",
+   "group": "orders",
+   "category": "events",
+   "title": "emit('OrderApprovedd')",
+   "bug": "Typo in the emitted event name: subscribers of OrderApproved never hear about approvals.",
+   "checks": [
+    "rule:unknown-event"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-event",
+     "text": "OrderApprovedd",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-b07a7c810a"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "event-subscribe-typo",
+   "base": "orders",
+   "group": "orders",
+   "category": "events",
+   "title": "Subscriber listens to 'OrderAproved'",
+   "bug": "An audit subscriber on another service listens to an event name that is never emitted.",
+   "checks": [
+    "rule:unknown-event"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-event",
+     "text": "OrderAproved",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-0b67947e2c"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "event-emit-removed",
+   "base": "orders",
+   "group": "orders",
+   "category": "events",
+   "title": "approve no longer emits OrderApproved",
+   "bug": "The emit was lost (found by the AI pass on a refactored shape, 2026-11-02): consumers of OrderApproved never hear of an approval.",
+   "checks": [
+    "rule:event-never-emitted"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:event-never-emitted",
+     "text": "OrderApproved",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-8268451ba5"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "event-subscriber-untested",
+   "base": "orders",
+   "group": "orders",
+   "category": "events",
+   "title": "Audit subscriber without a test",
+   "bug": "A subscriber writes the audit log on OrderApproved; no test emits the event and checks the log (the existing test only mentions the event name).",
+   "checks": [
+    "risk:events-untested"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:events-untested",
+     "text": "OrderApproved",
+     "hit": true,
+     "ids": [
+      "F-risk-6f40641fae"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "remote-untested",
+   "base": "orders",
+   "group": "orders",
+   "category": "events",
+   "title": "Remote business partner API without a test double",
+   "bug": "Submit calls a remote OData API; no test mocks it, so timeouts and 4xx answers are untested.",
+   "checks": [
+    "risk:remote-untested"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:remote-untested",
+     "text": "API_BP",
+     "hit": true,
+     "ids": [
+      "F-risk-c12bcbdaa0"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "layer-ui-on-domain",
+   "base": "orders",
+   "group": "orders",
+   "category": "cap",
+   "title": "UI annotations written on the domain entity",
+   "bug": "app/ annotates sales.Orders (db layer) instead of the service projection: every service gets the UI texts.",
+   "checks": [
+    "pattern:UI annotations directly on domain entities"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "pattern:UI annotations directly on domain entities",
+     "hit": true,
+     "ids": [
+      "F-pattern-eedbe5c94d"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-loop-registration",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "Actions registered in a loop",
+   "bug": "No bug: approve and reject are registered by iterating over a table of transitions.",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-handler-modules",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "Handlers in their own modules, passed as require(...)",
+   "bug": "No bug: this.on(\"approve\", Orders, require(\"./handlers/approve\")).",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-bound-methods",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "Handlers as class methods (this.onApprove.bind(this))",
+   "bug": "No bug: each action is handled by a method of the service class.",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-service-impl-function",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "cds.service.impl(function () { ... }) with string targets",
+   "bug": "No bug: the older function style, and entity targets given as strings ('Orders').",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-srv-arrow",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "module.exports = srv => { srv.on([...], ...) } with an event array",
+   "bug": "No bug: one handler for approve and reject, dispatching on req.event.",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-impl-annotation",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "@impl points to srv/lib/orders-impl.js",
+   "bug": "No bug: the implementation file does not sit next to the .cds file.",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-src-folder-bug",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "Implementation under srv/src/, with a null-deref guard",
+   "bug": "The 404 guard reads order.ID from undefined (500 instead of 404); the code sits in srv/src/.",
+   "checks": [
+    "rule:null-deref-in-guard"
+   ],
+   "file": "seeds/shapes.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:null-deref-in-guard",
+     "file": "srv/src/",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-b37d1171dc"
+     ]
+    }
+   ],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-esm",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "ES module implementation (type: module, export default class)",
+   "bug": "No bug: package.json \"type\": \"module\" and an ESM service class.",
+   "checks": [],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.submit$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.approve$",
+     "hit": true
+    },
+    {
+     "rel": "handles",
+     "to": "^action:OrderService\\.Orders\\.reject$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-cds-expression-guard-removed",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "OperationAvailable as a CDS expression, approve guard removed",
+   "bug": "@Core.OperationAvailable: (status.code = 'S') in CDS expression syntax; the server approves in any state.",
+   "checks": [
+    "ui-promise:ui-only",
+    "risk:ui-only"
+   ],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "ui-promise:ui-only",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-ui-promise-289643c958"
+     ]
+    },
+    {
+     "check": "risk:ui-only",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-risk-4e47ef2db9"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-loop-guard-removed",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "Loop registration, approve no longer checks the status",
+   "bug": "Transitions table says approve may start anywhere (from = null); the UI still hides it unless S.",
+   "checks": [
+    "ui-promise:*"
+   ],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": false,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "ui-promise:*",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-ui-promise-289643c958"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-unbound-action-no-handler",
+   "base": "shop",
+   "group": "held-out",
+   "category": "cap",
+   "title": "submitOrder handler removed (TS)",
+   "bug": "The unbound action submitOrder has no handler any more; the UI still calls it.",
+   "checks": [
+    "action-without-handler",
+    "risk:noimpl"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "action-without-handler",
+     "text": "submitOrder",
+     "hit": true,
+     "ids": [
+      "F-action-without-handler-29160abae3"
+     ]
+    },
+    {
+     "check": "risk:noimpl",
+     "text": "submitOrder",
+     "hit": true,
+     "ids": [
+      "F-risk-3e15a917e2"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-cancel-guard-removed",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui-promise",
+   "title": "cancel no longer checks the status (TS, CDS expression)",
+   "bug": "@Core.OperationAvailable: ($self.status = 'N') hides cancel for shipped orders; the server cancels them anyway and puts the stock back.",
+   "checks": [
+    "ui-promise:ui-only",
+    "risk:ui-only"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "ui-promise:ui-only",
+     "text": "cancel",
+     "hit": true,
+     "ids": [
+      "F-ui-promise-81e57a82cf"
+     ]
+    },
+    {
+     "check": "risk:ui-only",
+     "text": "cancel",
+     "hit": true,
+     "ids": [
+      "F-risk-4e47ef2db9"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-sql-injection",
+   "base": "shop",
+   "group": "held-out",
+   "category": "sql",
+   "title": "Search by title with a template string (TS)",
+   "bug": "A function searchBooks(title) pastes req.data.title into native SQL.",
+   "checks": [
+    "rule:sql-injection",
+    "native-sql"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:sql-injection",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-1f9e987982"
+     ]
+    },
+    {
+     "check": "native-sql",
+     "hit": true,
+     "ids": [
+      "F-native-sql-7fbc41941e"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-null-deref",
+   "base": "shop",
+   "group": "held-out",
+   "category": "cap",
+   "title": "Not-found message reads row.ID (TS)",
+   "bug": "if (!row) req.reject(404, `Book ${row.ID} ...`): TypeError and 500 for an unknown book.",
+   "checks": [
+    "rule:null-deref-in-guard"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:null-deref-in-guard",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-7950016f63"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-emit-typo",
+   "base": "shop",
+   "group": "held-out",
+   "category": "events",
+   "title": "emit('BookOrderd') (TS)",
+   "bug": "Typo in the emitted event: BookOrdered subscribers never fire.",
+   "checks": [
+    "rule:unknown-event"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-event",
+     "text": "BookOrderd",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-9b8446f691"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-role-typo",
+   "base": "shop",
+   "group": "held-out",
+   "category": "authz",
+   "title": "@requires: 'Customers' on submitOrder",
+   "bug": "Typo in the role on the action: no customer can order.",
+   "checks": [
+    "rule:unknown-role"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-role",
+     "text": "Customers",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-3f813b255e"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-admin-open",
+   "base": "shop",
+   "group": "held-out",
+   "category": "authz",
+   "title": "AdminService loses @requires (TS app)",
+   "bug": "Anonymous callers can change books and orders.",
+   "checks": [
+    "risk:open-svc"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:open-svc",
+     "text": "AdminService",
+     "hit": true,
+     "ids": [
+      "F-risk-f5054aedbc"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-method-reference",
+   "base": "shop",
+   "group": "held-out",
+   "category": "shape",
+   "title": "Handlers as class methods without bind (TS)",
+   "bug": "No bug: this.on(\"cancel\", Orders, this.onCancel) with the guard inside the method.",
+   "checks": [],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 6,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [
+    {
+     "rel": "handles",
+     "to": "^action:CatalogService\\.Orders\\.cancel$",
+     "hit": true
+    }
+   ],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-stock-unchecked",
+   "base": "shop",
+   "group": "held-out",
+   "category": "cap",
+   "title": "submitOrder no longer checks the stock",
+   "bug": "Stock can go negative. No annotation states the rule, so only @assert.range on stock (not checked on UPDATE with -=) or a test would catch it.",
+   "checks": [
+    "risk:*"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": false,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "risk:*",
+     "text": "stock",
+     "hit": false,
+     "ids": []
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": false
+  },
+  {
+   "id": "ui5-deprecated-jquery-sap",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "jQuery.sap.log in a controller",
+   "bug": "Deprecated jQuery.sap API (removed in UI5 2.x).",
+   "checks": [
+    "lint:ui5-lint:*"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 1,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "lint:ui5-lint:*",
+     "hit": true,
+     "ids": [
+      "F-lint-1a4b64cb7c"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui5-global-access",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "sap.m.MessageToast used as a global",
+   "bug": "Global access instead of a module dependency: breaks with async loading and UI5 2.x.",
+   "checks": [
+    "lint:ui5-lint:no-globals"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 1,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "lint:ui5-lint:no-globals",
+     "hit": true,
+     "ids": [
+      "F-lint-b7b568add5"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui5-sync-loading",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "sap.ui.requireSync in a controller",
+   "bug": "Synchronous module loading (deprecated, blocks the UI thread).",
+   "checks": [
+    "lint:ui5-lint:*"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 1,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "lint:ui5-lint:*",
+     "hit": true,
+     "ids": [
+      "F-lint-a7cd2f9859"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui5-binding-unknown-set",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "List bound to '/Bookz'",
+   "bug": "The view binds an entity set the service does not have: the list stays empty at runtime.",
+   "checks": [
+    "rule:ui5-unknown-binding*"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:ui5-unknown-binding*",
+     "text": "Bookz",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-b49fb1ef69"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui5-action-unknown",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "Controller calls '/submitOrdr(...)'",
+   "bug": "Typo in the action path: the order button always fails.",
+   "checks": [
+    "rule:ui5-unknown-binding*"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:ui5-unknown-binding*",
+     "text": "submitOrdr",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-9af57416e6"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui5-datasource-wrong-path",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "manifest dataSource uri /catalogue/",
+   "bug": "The app talks to a path the server does not serve (the service is at /catalog).",
+   "checks": [
+    "rule:ui5-unknown-binding*"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:ui5-unknown-binding*",
+     "text": "catalogue",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-407dd85ef1"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ui5-inline-script",
+   "base": "shop",
+   "group": "held-out",
+   "category": "ui5",
+   "title": "Inline script in index.html",
+   "bug": "An inline <script> breaks a strict Content Security Policy.",
+   "checks": [
+    "lint:ui5-lint:csp-unsafe-inline-script"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 1,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "lint:ui5-lint:csp-unsafe-inline-script",
+     "hit": true,
+     "ids": [
+      "F-lint-8b6d51923e"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  }
+ ]
+}
