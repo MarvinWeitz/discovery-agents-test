@@ -54,7 +54,7 @@ const TOPICS = {
       '', 'OPEN = readable without the role you would expect. "(tested)" = an existing test exercises the cell.'].join('\n')
   },
   PAT: D => table(['Pattern', 'Where', 'Uses', 'Health', 'Note', 'Layers', 'Evidence'], D.PATTERNS.map(p => [p.n, p.w, p.k, { gd: 'idiomatic', wn: 'works, enforced in the wrong place', cr: 'causes a defect or exposure' }[p.h], p.x || '', p.L.map(l => (D.LAYERS.find(x => x[0] === l) || [l, l])[1]).join(', '), '`' + p.ev + '`'])),
-  UIS: D => [table(['Rule', 'UI promises', 'Node server', 'Verdict', 'Evidence'], D.PARITY.map(([b, u, n, v, e]) => [b, u, n, D.PV[v][2], evid(e)])), '',
+  UIS: D => [table(['Rule', 'UI promises', 'Node server', 'Verdict', 'Evidence'], D.PARITY.map(([b, u, n, v, e]) => [b, u, n, D.PV[v]?.[2] ?? v, evid(e)])), '',
     'Verdicts: ' + Object.entries(D.PV).map(([k, v]) => `${v[2]} (${D.PARITY.filter(p => p[3] === k).length})`).join(', ') + '.'].join('\n'),
   RSK: D => {
     const R = [...D.RISKS].sort((a, b) => b.i * b.l - a.i * a.l)
@@ -152,6 +152,15 @@ function check(D) {
   return want.filter(([l, v]) => kpi(l) !== undefined && kpi(l) !== v).map(([l, v]) => `KPI "${l}" says ${kpi(l)}, facts say ${v}`)
 }
 
+// one topic whose Markdown generator crashes on unexpected data gets a note instead of failing the atlas
+function topicText(code, D, extra) {
+  const gen = TOPICS[code] || addons.find(a => a.topics?.[code])?.topics[code] || (() => '_No Markdown generator for this topic._')
+  try { return gen(D, extra) } catch (e) {
+    console.error(`::warning::atlas topic ${code} Markdown failed: ${e?.stack || e}`)
+    return `_The Markdown table for this topic could not be written in this run (${String(e?.message || e).split('\n')[0]}). The facts are in atlas-data.json and index.html._`
+  }
+}
+
 async function main() {
   const [dataFile, outDir] = process.argv.slice(2)
   if (!dataFile || !outDir) { console.error('usage: atlas.js <atlas-data.json> <out-dir>'); process.exit(2) }
@@ -172,7 +181,7 @@ async function main() {
     files.push([s, file])
     const views = s.views.flatMap(v => [`**${s.code}-${v.k} ${v.label}**`, '', img(s.code, v.k, v.label), '', ...(s.code === 'STA' && v.k === 'A' ? ['Same machine, Node layer (red = differs from the UI):', '', `![STA-A Node layer](../images/STA-A-node.png)`, ''] : [])])
     const out = ['---', `app: ${m.app}`, `scope: ${m.scope}`, `run: ${m.run}`, `topic: ${s.code}`, `title: ${s.name}`, `views: [${s.views.map(v => s.code + '-' + v.k).join(', ')}]`, 'source: atlas-data.json', `facts: ${(m.sources || {})[s.code] || 'curated'}`, '---', '',
-      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || ((m.sources || {})[s.code] ? (m.sources || {})[s.code] : 'curated from the deep read (not yet generated)')}._`, '', (TOPICS[s.code] || addons.find(a => a.topics?.[s.code])?.topics[s.code] || (() => '_No Markdown generator for this topic._'))(D, extra), '', ...addons.map(a => a.topicAppend?.(s.code, D)).filter(Boolean).flatMap(t => [t, '']), '## Views', '', ...views,
+      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || ((m.sources || {})[s.code] ? (m.sources || {})[s.code] : 'curated from the deep read (not yet generated)')}._`, '', topicText(s.code, D, extra), '', ...addons.map(a => a.topicAppend?.(s.code, D)).filter(Boolean).flatMap(t => [t, '']), '## Views', '', ...views,
       `[Back to the index](../README.md)`, '']
     fs.writeFileSync(path.join(outDir, 'topics', file), out.join('\n'))
   })
