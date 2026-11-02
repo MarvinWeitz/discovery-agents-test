@@ -14,7 +14,7 @@ module.exports = {
     if (!g || !csn) return out
     const declared = n => ['event', 'action', 'function'].includes(csn.definitions[n]?.kind)
     for (const e of g.edges.filter(e => e.rel === 'emits')) {
-      const svc = g.nodes.get(e.from)?.props?.service
+      const svc = e.props?.on || g.nodes.get(e.from)?.props?.service
       const name = e.to.replace(/^event:/, ''), ev = name.startsWith(svc + '.') ? name.slice(svc.length + 1) : name
       if (!svc || !local(csn, svc) || declared(`${svc}.${ev}`)) continue
       const known = Object.keys(csn.definitions).filter(n => n.startsWith(svc + '.') && csn.definitions[n].kind === 'event').map(short)

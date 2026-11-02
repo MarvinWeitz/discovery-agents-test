@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="806" viewBox="0 0 760 806" font-family="system-ui, sans-serif" font-size="12">
-<rect width="760" height="806" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="828" viewBox="0 0 760 828" font-family="system-ui, sans-serif" font-size="12">
+<rect width="760" height="828" fill="#fff"/>
 <text x="12" y="20" font-size="14" font-weight="600">Seeded bugs per check: found, missed, false alarms</text>
 <g transform="translate(254,28)"><rect width="10" height="10" fill="#188038"/><text x="14" y="9">found</text><rect x="70" width="10" height="10" fill="#d93025"/><text x="84" y="9">missed</text><rect x="150" width="10" height="10" fill="#f29900"/><text x="164" y="9">false alarm</text></g>
 <text x="244" y="58" text-anchor="end">rule:unknown-role</text>
@@ -59,14 +59,16 @@
 <rect x="250" y="618" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="630" fill="#fff" font-size="11">1</text>
 <text x="244" y="652" text-anchor="end">rule:commented-out-grant</text>
 <rect x="250" y="640" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="652" fill="#fff" font-size="11">1</text>
-<text x="244" y="674" text-anchor="end">rule:hard-coded-currency</text>
+<text x="244" y="674" text-anchor="end">rule:event-never-emitted</text>
 <rect x="250" y="662" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="674" fill="#fff" font-size="11">1</text>
-<text x="244" y="696" text-anchor="end">rule:max-plus-one-id</text>
+<text x="244" y="696" text-anchor="end">rule:hard-coded-currency</text>
 <rect x="250" y="684" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="696" fill="#fff" font-size="11">1</text>
-<text x="244" y="718" text-anchor="end">rule:unknown-grant</text>
+<text x="244" y="718" text-anchor="end">rule:max-plus-one-id</text>
 <rect x="250" y="706" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="718" fill="#fff" font-size="11">1</text>
-<text x="244" y="740" text-anchor="end">rule:writable-owner-field</text>
+<text x="244" y="740" text-anchor="end">rule:unknown-grant</text>
 <rect x="250" y="728" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="740" fill="#fff" font-size="11">1</text>
-<text x="244" y="762" text-anchor="end">ui-promise:*</text>
+<text x="244" y="762" text-anchor="end">rule:writable-owner-field</text>
 <rect x="250" y="750" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="762" fill="#fff" font-size="11">1</text>
+<text x="244" y="784" text-anchor="end">ui-promise:*</text>
+<rect x="250" y="772" width="20" height="16" fill="#188038" rx="2"/><text x="254" y="784" fill="#fff" font-size="11">1</text>
 </svg>

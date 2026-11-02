@@ -1,6 +1,6 @@
 {
- "at": "2026-11-01T23:56:30.906Z",
- "seconds": 23,
+ "at": "2026-11-02T00:11:08.105Z",
+ "seconds": 26,
  "bases": [
   {
    "base": "shop",
@@ -84,7 +84,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -163,7 +163,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -242,7 +242,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -306,7 +306,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -365,7 +365,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -649,7 +649,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -692,7 +692,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -751,7 +751,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -1843,7 +1843,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -1886,7 +1886,50 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "probe-write-grant-not-actions",
+   "base": "orders",
+   "group": "orders",
+   "category": "authz",
+   "title": "WRITE does not grant bound actions",
+   "bug": "No bug: Buyers have READ, WRITE and submit; approve is not theirs. The authorization matrix must say denied, not unclear.",
+   "checks": [],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": true,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -2203,60 +2246,6 @@
    "detected": true
   },
   {
-   "id": "event-emit-undeclared",
-   "base": "orders",
-   "group": "orders",
-   "category": "events",
-   "title": "emit('OrderApprovedd')",
-   "bug": "Typo in the emitted event name: subscribers of OrderApproved never hear about approvals.",
-   "checks": [
-    "rule:unknown-event"
-   ],
-   "file": "seeds/orders.js",
-   "hasProof": false,
-   "probe": false,
-   "detectable": true,
-   "valid": {
-    "compile": {
-     "ok": true
-    },
-    "tests": {
-     "ok": true,
-     "pass": 1,
-     "fail": 0
-    },
-    "ts": null,
-    "ui5": [
-     {
-      "dir": "app/orders",
-      "ok": true,
-      "lint": 0,
-      "fatal": []
-     }
-    ],
-    "ok": true
-   },
-   "negative": null,
-   "discover": {
-    "ok": true
-   },
-   "expect": [
-    {
-     "check": "rule:unknown-event",
-     "text": "OrderApprovedd",
-     "hit": true,
-     "ids": [
-      "F-rule-hit-b07a7c810a"
-     ]
-    }
-   ],
-   "graph": [],
-   "noise": [],
-   "forbidden": [],
-   "lost": [],
-   "detected": true
-  },
-  {
    "id": "event-subscribe-typo",
    "base": "orders",
    "group": "orders",
@@ -2489,7 +2478,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -2548,7 +2537,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -2607,7 +2596,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -2666,7 +2655,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -2725,7 +2714,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -2784,7 +2773,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 7,
      "fail": 0
     },
     "ts": null,
@@ -3010,62 +2999,6 @@
      "hit": true,
      "ids": [
       "F-risk-4e47ef2db9"
-     ]
-    }
-   ],
-   "graph": [],
-   "noise": [],
-   "forbidden": [],
-   "lost": [],
-   "detected": true
-  },
-  {
-   "id": "shape-loop-guard-removed",
-   "base": "orders",
-   "group": "shapes",
-   "category": "shape",
-   "title": "Loop registration, approve no longer checks the status",
-   "bug": "Transitions table says approve may start anywhere (from = null); the UI still hides it unless S.",
-   "checks": [
-    "ui-promise:*"
-   ],
-   "file": "seeds/shapes.js",
-   "hasProof": true,
-   "probe": false,
-   "detectable": false,
-   "valid": {
-    "compile": {
-     "ok": true
-    },
-    "tests": {
-     "ok": true,
-     "pass": 1,
-     "fail": 0
-    },
-    "ts": null,
-    "ui5": [
-     {
-      "dir": "app/orders",
-      "ok": true,
-      "lint": 0,
-      "fatal": []
-     }
-    ],
-    "ok": true
-   },
-   "negative": {
-    "failsOnBase": true
-   },
-   "discover": {
-    "ok": true
-   },
-   "expect": [
-    {
-     "check": "ui-promise:*",
-     "text": "approve",
-     "hit": true,
-     "ids": [
-      "F-ui-promise-289643c958"
      ]
     }
    ],
@@ -3332,62 +3265,6 @@
    "detected": true
   },
   {
-   "id": "ts-emit-typo",
-   "base": "shop",
-   "group": "held-out",
-   "category": "events",
-   "title": "emit('BookOrderd') (TS)",
-   "bug": "Typo in the emitted event: BookOrdered subscribers never fire.",
-   "checks": [
-    "rule:unknown-event"
-   ],
-   "file": "seeds/shop.js",
-   "hasProof": false,
-   "probe": false,
-   "detectable": true,
-   "valid": {
-    "compile": {
-     "ok": true
-    },
-    "tests": {
-     "ok": true,
-     "pass": 1,
-     "fail": 0
-    },
-    "ts": {
-     "ok": true
-    },
-    "ui5": [
-     {
-      "dir": "app/shop",
-      "ok": true,
-      "lint": 0,
-      "fatal": []
-     }
-    ],
-    "ok": true
-   },
-   "negative": null,
-   "discover": {
-    "ok": true
-   },
-   "expect": [
-    {
-     "check": "rule:unknown-event",
-     "text": "BookOrderd",
-     "hit": true,
-     "ids": [
-      "F-rule-hit-9b8446f691"
-     ]
-    }
-   ],
-   "graph": [],
-   "noise": [],
-   "forbidden": [],
-   "lost": [],
-   "detected": true
-  },
-  {
    "id": "ts-role-typo",
    "base": "shop",
    "group": "held-out",
@@ -3521,7 +3398,7 @@
     },
     "tests": {
      "ok": true,
-     "pass": 1,
+     "pass": 6,
      "fail": 0
     },
     "ts": {
@@ -3999,16 +3876,18 @@
    "detected": true
   },
   {
-   "id": "probe-write-grant-not-actions",
+   "id": "event-emit-undeclared",
    "base": "orders",
    "group": "orders",
-   "category": "authz",
-   "title": "WRITE does not grant bound actions",
-   "bug": "No bug: Buyers have READ, WRITE and submit; approve is not theirs. The authorization matrix must say denied, not unclear.",
-   "checks": [],
+   "category": "events",
+   "title": "emit('OrderApprovedd')",
+   "bug": "Typo in the emitted event name: subscribers of OrderApproved never hear about approvals.",
+   "checks": [
+    "rule:unknown-event"
+   ],
    "file": "seeds/orders.js",
-   "hasProof": true,
-   "probe": true,
+   "hasProof": false,
+   "probe": false,
    "detectable": true,
    "valid": {
     "compile": {
@@ -4034,7 +3913,184 @@
    "discover": {
     "ok": true
    },
-   "expect": [],
+   "expect": [
+    {
+     "check": "rule:unknown-event",
+     "text": "OrderApprovedd",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-b07a7c810a"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "event-emit-removed",
+   "base": "orders",
+   "group": "orders",
+   "category": "events",
+   "title": "approve no longer emits OrderApproved",
+   "bug": "The emit was lost (found by the AI pass on a refactored shape, 2026-11-02): consumers of OrderApproved never hear of an approval.",
+   "checks": [
+    "rule:event-never-emitted"
+   ],
+   "file": "seeds/orders.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:event-never-emitted",
+     "text": "OrderApproved",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-8268451ba5"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "ts-emit-typo",
+   "base": "shop",
+   "group": "held-out",
+   "category": "events",
+   "title": "emit('BookOrderd') (TS)",
+   "bug": "Typo in the emitted event: BookOrdered subscribers never fire.",
+   "checks": [
+    "rule:unknown-event"
+   ],
+   "file": "seeds/shop.js",
+   "hasProof": false,
+   "probe": false,
+   "detectable": true,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": {
+     "ok": true
+    },
+    "ui5": [
+     {
+      "dir": "app/shop",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": null,
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "rule:unknown-event",
+     "text": "BookOrderd",
+     "hit": true,
+     "ids": [
+      "F-rule-hit-9b8446f691"
+     ]
+    }
+   ],
+   "graph": [],
+   "noise": [],
+   "forbidden": [],
+   "lost": [],
+   "detected": true
+  },
+  {
+   "id": "shape-loop-guard-removed",
+   "base": "orders",
+   "group": "shapes",
+   "category": "shape",
+   "title": "Loop registration, approve no longer checks the status",
+   "bug": "Transitions table says approve may start anywhere (from = null); the UI still hides it unless S.",
+   "checks": [
+    "ui-promise:*"
+   ],
+   "file": "seeds/shapes.js",
+   "hasProof": true,
+   "probe": false,
+   "detectable": false,
+   "valid": {
+    "compile": {
+     "ok": true
+    },
+    "tests": {
+     "ok": true,
+     "pass": 1,
+     "fail": 0
+    },
+    "ts": null,
+    "ui5": [
+     {
+      "dir": "app/orders",
+      "ok": true,
+      "lint": 0,
+      "fatal": []
+     }
+    ],
+    "ok": true
+   },
+   "negative": {
+    "failsOnBase": true
+   },
+   "discover": {
+    "ok": true
+   },
+   "expect": [
+    {
+     "check": "ui-promise:*",
+     "text": "approve",
+     "hit": true,
+     "ids": [
+      "F-ui-promise-289643c958"
+     ]
+    }
+   ],
    "graph": [],
    "noise": [],
    "forbidden": [],

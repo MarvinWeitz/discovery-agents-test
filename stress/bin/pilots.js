@@ -50,8 +50,10 @@ async function pool(items, n, fn) { const out = []; let i = 0; await Promise.all
 function copy(from, to) {
   fs.mkdirSync(to, { recursive: true })
   for (const e of fs.readdirSync(from, { withFileTypes: true })) {
-    if (['node_modules', '.git', 'gen', 'dist', 'mta_archives'].includes(e.name)) continue
     const a = path.join(from, e.name), b = path.join(to, e.name)
+    // installed packages are linked, not copied: the model imports them (@sap/cds-common-content, @capire/*)
+    if (e.name === 'node_modules') { fs.symlinkSync(a, b, 'dir'); continue }
+    if (['.git', 'gen', 'dist', 'mta_archives'].includes(e.name)) continue
     if (e.isDirectory()) copy(a, b); else if (e.isFile()) fs.copyFileSync(a, b)
   }
 }

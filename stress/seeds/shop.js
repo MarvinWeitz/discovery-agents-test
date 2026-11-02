@@ -57,6 +57,7 @@ exports.seeds = [
     bug: 'Typo in the emitted event: BookOrdered subscribers never fire.',
     edits: [{ file: IMPL, find: "this.emit('BookOrdered'", replace: "this.emit('BookOrderd'" }],
     expect: [{ check: 'rule:unknown-event', text: 'BookOrderd' }],
+    also: [{ check: 'rule:event-never-emitted', why: 'true: the declared event is no longer emitted under its real name' }],
   },
   {
     id: 'ts-role-typo', category: 'authz', title: "@requires: 'Customers' on submitOrder",

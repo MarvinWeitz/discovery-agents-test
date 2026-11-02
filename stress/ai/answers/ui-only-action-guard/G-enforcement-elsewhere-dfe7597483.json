@@ -1,0 +1,35 @@
+{
+  "gap": "G-enforcement-elsewhere-dfe7597483",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "None found: the only server code for Orders.approve (srv/order-service.js:25-32) checks that the order exists and then sets status_code to 'A' without checking status_code = 'S', unlike submit and reject which do check it; the schema has no constraint on status, package.json adds no plugin, and the app has no proxy config. Files read: srv/order-service.js, srv/order-service.cds, srv/admin-service.cds, db/schema.cds, package.json, app/services.cds, app/orders/annotations.cds, test/orders.test.js. A POST approve on an order in state O as an Approver would settle it (the repo's own test expects 409).",
+  "findings": [
+    {
+      "title": "approve handler does not check status_code = 'S'",
+      "statement": "The on('approve') handler rejects only a missing order and then unconditionally updates status_code to 'A'. The sibling handlers submit and reject do check the current status (409 otherwise), so the state guard for approve exists only as the UI annotation Core.OperationAvailable. An Approver calling the action directly can likely approve an order in any state (Open, Approved, Rejected), and the OrderApproved event would be emitted again.",
+      "confidence": "high",
+      "layer": "service-handler",
+      "subjects": ["uirule:OrderService.Orders.approve:available"],
+      "severity": { "level": "warning", "impact": 4, "likelihood": 3 },
+      "evidence": [
+        { "file": "srv/order-service.js", "line": 28, "quote": "if (!order) return req.reject(404, 'Order not found')" },
+        { "file": "srv/order-service.js", "line": 29, "quote": "await UPDATE(Orders, ID).with({ status_code: 'A' })" },
+        { "file": "srv/order-service.js", "line": 38, "quote": "if (order.status_code !== 'S') return req.reject(409, 'Only submitted orders can be rejected')" },
+        { "file": "srv/order-service.cds", "line": 14, "quote": "@(Core.OperationAvailable: { $edmJson: { $Eq: [ { $Path: 'in/status_code' }, 'S' ] } })" }
+      ],
+      "test": "POST /orders/Orders(ID=aaaaaaaa-0000-0000-0000-000000000001,IsActiveEntity=true)/OrderService.approve as carol (Approver) on an order with status O: 409 means enforced elsewhere, 200 with status_code 'A' confirms the gap (test/orders.test.js 'approve only in state S' expects 409)."
+    },
+    {
+      "title": "No database constraint or plugin guards the status transition",
+      "statement": "The status field is a plain association to the OrderStatus code list with default 'O'; no @assert or constraint ties transitions to the prior state, and package.json declares only @sap/cds with no plugin that could add a check.",
+      "confidence": "medium",
+      "layer": "db",
+      "subjects": ["uirule:OrderService.Orders.approve:available"],
+      "evidence": [
+        { "file": "db/schema.cds", "line": 19, "quote": "status   : Association to OrderStatus default 'O';" },
+        { "file": "package.json", "line": 7, "quote": "\"@sap/cds\": \"^9\"" }
+      ],
+      "test": "Same request as above; additionally check the deployed environment for an approuter or proxy rule on /orders/*/OrderService.approve (none is in the repo)."
+    }
+  ]
+}

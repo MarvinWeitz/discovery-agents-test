@@ -1,11 +1,11 @@
 {
- "at": "2026-11-01T23:41:38.188Z",
+ "at": "2026-11-01T23:56:51.857Z",
  "pilots": [
   {
    "id": "incidents",
    "app": ".",
    "ui": null,
-   "seconds": 23,
+   "seconds": 9,
    "findings": 55,
    "alarms": 18,
    "gaps": 6,
@@ -14,6 +14,13 @@
     "findings": true,
     "atlas": true,
     "diff": null
+   },
+   "compare": {
+    "before": 18,
+    "after": 18,
+    "newAlarms": [],
+    "goneAlarms": [],
+    "changedAlarms": []
    },
    "mutants": [
     {
@@ -34,7 +41,7 @@
    "id": "sflight",
    "app": ".",
    "ui": null,
-   "seconds": 50,
+   "seconds": 23,
    "findings": 127,
    "alarms": 57,
    "gaps": 23,
@@ -43,6 +50,13 @@
     "findings": true,
     "atlas": true,
     "diff": null
+   },
+   "compare": {
+    "before": 57,
+    "after": 57,
+    "newAlarms": [],
+    "goneAlarms": [],
+    "changedAlarms": []
    },
    "mutants": [
     {
@@ -93,36 +107,6 @@
      "by": []
     },
     {
-     "op": "rename-handler",
-     "file": "app/.karma/karma-cap-middleware.js",
-     "line": 20,
-     "before": "proc.on(\"close\", reject);",
-     "after": "proc.on(\"closeMutant\", reject);",
-     "killed": false,
-     "alarm": false,
-     "by": []
-    },
-    {
-     "op": "rename-handler",
-     "file": "app/.karma/karma-cap-middleware.js",
-     "line": 21,
-     "before": "proc.stdout.on(\"data\", (data) => {",
-     "after": "proc.stdout.on(\"dataMutant\", (data) => {",
-     "killed": false,
-     "alarm": false,
-     "by": []
-    },
-    {
-     "op": "rename-handler",
-     "file": "app/.karma/karma-cap-middleware.js",
-     "line": 27,
-     "before": "process.on(\"exit\", () => {",
-     "after": "process.on(\"exitMutant\", () => {",
-     "killed": false,
-     "alarm": false,
-     "by": []
-    },
-    {
      "op": "drop-constraint",
      "file": "db/master-data.cds",
      "line": 5,
@@ -157,6 +141,85 @@
      ]
     }
    ]
+  },
+  {
+   "id": "event-app",
+   "app": "packages/server",
+   "ui": "../ui-admin,../ui-form",
+   "seconds": 14,
+   "findings": 57,
+   "alarms": 31,
+   "gaps": 10,
+   "determinism": {
+    "same": true,
+    "findings": true,
+    "atlas": true,
+    "diff": null
+   },
+   "compare": {
+    "before": 30,
+    "after": 31,
+    "newAlarms": [
+     {
+      "check": "rule:auth-not-for-production",
+      "title": "Production uses mocked authentication",
+      "ev": ".cdsrc.json:3"
+     }
+    ],
+    "goneAlarms": [],
+    "changedAlarms": []
+   },
+   "mutants": [
+    {
+     "op": "drop-restrict-where",
+     "file": "srv/eventregistration-service.cds",
+     "line": 22,
+     "before": "where : 'Email = $user.id' // users can only see and modify their own data",
+     "after": "// users can only see and modify their own data",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "~ authz",
+      "~ risk:ui5-errors",
+      "~ risk:inherit",
+      "- risk:row-level",
+      "- rule:writable-owner-field"
+     ]
+    },
+    {
+     "op": "rename-handler",
+     "file": "server.js",
+     "line": 3,
+     "before": "cds.on('bootstrap', (app) => {",
+     "after": "cds.on('bootstrapMutant', (app) => {",
+     "killed": true,
+     "alarm": false,
+     "by": [
+      "- custom-route"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "codejam",
+   "app": "solution/MyHANAApp",
+   "ui": null,
+   "seconds": 1,
+   "error": "discover.js: srv/interaction_srv.cds:2:18-43: Error: Can't find package module ‘@sap/cds-common-content’\n    at throwWithError (/home/user/discovery-agents-test/node_modules/@sap/cds/node_modules/@sap/cds-compiler/lib/base/messages.js:589:13)\n    at compileDoX (/home/user/discovery-agents-test/node_modules/@sap/cds/node_modules/@sap/cds-compiler/lib/compiler/index.js:573:3)\n    at async extractModel (/home/user/discovery-agents-test/lib/extract/model.js:68:15)\n    at async main (/home/user/discovery-agents-test/bin/discover.js:42:15)"
+  },
+  {
+   "id": "bookstore",
+   "app": "bookstore",
+   "ui": null,
+   "seconds": 1,
+   "error": "discover.js: app/common.cds:5:42-60: Error: Can't find package module ‘@capire/bookshop’\n    at throwWithError (/home/user/discovery-agents-test/node_modules/@sap/cds/node_modules/@sap/cds-compiler/lib/base/messages.js:589:13)\n    at compileDoX (/home/user/discovery-agents-test/node_modules/@sap/cds/node_modules/@sap/cds-compiler/lib/compiler/index.js:573:3)\n    at async extractModel (/home/user/discovery-agents-test/lib/extract/model.js:68:15)\n    at async main (/home/user/discovery-agents-test/bin/discover.js:42:15)"
+  },
+  {
+   "id": "poetry-slam",
+   "app": ".",
+   "ui": null,
+   "seconds": 2,
+   "error": "discover.js: db/poetrySlamManagerModel.cds:10:12-37: Error: Can't find package module ‘@sap/cds-common-content’\n    at throwWithError (/home/user/discovery-agents-test/node_modules/@sap/cds/node_modules/@sap/cds-compiler/lib/base/messages.js:589:13)\n    at compileDoX (/home/user/discovery-agents-test/node_modules/@sap/cds/node_modules/@sap/cds-compiler/lib/compiler/index.js:573:3)\n    at async extractModel (/home/user/discovery-agents-test/lib/extract/model.js:68:15)\n    at async main (/home/user/discovery-agents-test/bin/discover.js:42:15)"
   }
  ]
 }

@@ -1,0 +1,33 @@
+{
+  "gap": "G-authz-unclear-0f6be04765",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "Yes, but only for their own rows: alice and bob both have role Buyer, which grants READ with where createdBy = $user, so GET /orders/Orders returns 200 filtered to own orders (alice: seed orders 1 and 2; bob: order 3). Reading another user's order by key is expected to give 404 (filtered out), not 403; a measured run should confirm the statuses.",
+  "findings": [
+    {
+      "title": "Buyers alice and bob may READ Orders, filtered to createdBy = $user",
+      "statement": "The Buyer grant on OrderService.Orders includes READ with the instance condition createdBy = $user, and the mocked users alice and bob both have only the Buyer role. Collection reads succeed (200) but contain only rows they created; the existing test asserts this for alice.",
+      "confidence": "medium",
+      "subjects": ["svcentity:OrderService.Orders"],
+      "evidence": [
+        { "file": "srv/order-service.cds", "line": 8, "quote": "{ grant: ['READ', 'WRITE', 'submit'], to: 'Buyer', where: 'createdBy = $user' }," },
+        { "file": "package.json", "line": 14, "quote": "\"alice\": {" },
+        { "file": "package.json", "line": 16, "quote": "\"roles\": [" },
+        { "file": "package.json", "line": 20, "quote": "\"bob\": {" },
+        { "file": "test/orders.test.js", "line": 17, "quote": "assert.ok(r.data.value.every(o => o.createdBy === 'alice'))" }
+      ],
+      "test": "GET /orders/Orders?$filter=IsActiveEntity eq true as alice -> 200 with orders ...001 and ...002; as bob -> 200 with only ...003; GET /orders/Orders(ID=aaaaaaaa-0000-0000-0000-000000000003,IsActiveEntity=true) as alice -> expected 404."
+    },
+    {
+      "title": "Seed data gives each buyer a distinct own set",
+      "statement": "Orders 1 and 2 are created by alice and order 3 by bob, so the row filter yields different, non-empty results per buyer, which makes the per-user measurement meaningful.",
+      "confidence": "high",
+      "subjects": ["svcentity:OrderService.Orders"],
+      "evidence": [
+        { "file": "db/data/sales-Orders.csv", "line": 2, "quote": "aaaaaaaa-0000-0000-0000-000000000001;Laptops;11111111-1111-1111-1111-111111111111;O;0;alice" },
+        { "file": "db/data/sales-Orders.csv", "line": 4, "quote": "aaaaaaaa-0000-0000-0000-000000000003;Desks;22222222-2222-2222-2222-222222222222;A;0;bob" }
+      ],
+      "test": "Compare the ID sets returned to alice and bob for GET /orders/Orders?$filter=IsActiveEntity eq true."
+    }
+  ]
+}

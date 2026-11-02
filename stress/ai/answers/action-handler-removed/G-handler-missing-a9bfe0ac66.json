@@ -1,0 +1,23 @@
+{
+  "gap": "G-handler-missing-a9bfe0ac66",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "Nowhere in the app: srv/order-service.js registers on-handlers only for submit and approve, and package.json depends only on @sap/cds (no plugin), so nothing registers reject; a POST to the reject action is expected to return 501 Not Implemented. A recurring 'declared action, no handler, no plugin dependency' pattern is a candidate for a deterministic rule.",
+  "findings": [
+    {
+      "title": "Bound action reject has no implementation",
+      "statement": "reject is declared on OrderService.Orders and granted to Approver, but the service implementation only registers this.on('submit') and this.on('approve'); no loop, string-built or generic registration exists, and the only dependency is @sap/cds, so no plugin supplies it. The Fiori UI still offers a Reject button, so users can trigger an action that has no implementation.",
+      "confidence": "high",
+      "severity": { "level": "warning", "impact": 3, "likelihood": 4 },
+      "subjects": ["action:OrderService.Orders.reject"],
+      "evidence": [
+        { "file": "srv/order-service.cds", "line": 17, "quote": "action reject(reason : String) returns Orders;" },
+        { "file": "srv/order-service.js", "line": 16, "quote": "this.on('submit', Orders, async req => {" },
+        { "file": "srv/order-service.js", "line": 25, "quote": "this.on('approve', Orders, async req => {" },
+        { "file": "package.json", "line": 7, "quote": "\"@sap/cds\": \"^9\"" },
+        { "file": "app/orders/annotations.cds", "line": 13, "quote": "Action: 'OrderService.reject', Label: 'Reject'" }
+      ],
+      "test": "POST /orders/Orders(ID=aaaaaaaa-0000-0000-0000-000000000002,IsActiveEntity=true)/OrderService.reject {\"reason\":\"x\"} as carol; expected 501 Not Implemented"
+    }
+  ]
+}

@@ -14,13 +14,16 @@ const SAME = `test('approve: 409 on an open order, 200 on a submitted one', asyn
   assert.strictEqual((await POST('${act(O2, 'approve')}', {}, as('carol'))).status, 200)
 })`
 
-// transition handler body shared by the shapes: (Orders, ID, from, to, req) -> row
-const STEP = `async function step(Orders, req, from, to) {
+// transition handler body shared by the shapes: (srv, req, from, to) -> row; approving emits OrderApproved
+// like the base does (the base app's own tests run on every bug-free shape and check the event)
+const STEP = `async function step(srv, req, from, to) {
+  const { Orders } = srv.entities
   const ID = req.params[0].ID ?? req.params[0]
-  const order = await SELECT.one.from(Orders, ID).columns('status_code')
+  const order = await SELECT.one.from(Orders, ID).columns('status_code', 'total')
   if (!order) return req.reject(404, 'Order not found')
   if (order.status_code !== from) return req.reject(409, \`Only orders in status \${from} can do this\`)
   await UPDATE(Orders, ID).with({ status_code: to })
+  if (to === 'A') await srv.emit('OrderApproved', { order: ID, total: order.total })
   return SELECT.one.from(Orders, ID)
 }`
 
@@ -42,7 +45,7 @@ module.exports = class OrderService extends cds.ApplicationService {
       const order = await SELECT.one.from(Orders, req.data.ID).columns('status_code')
       if (order && order.status_code !== 'O') req.reject(409, 'Only open orders can be changed')
     })
-    for (const [action, from, to] of TRANSITIONS) this.on(action, Orders, req => step(Orders, req, from, to))
+    for (const [action, from, to] of TRANSITIONS) this.on(action, Orders, req => step(this, req, from, to))
     return super.init()
   }
 }
@@ -53,7 +56,7 @@ module.exports = class OrderService extends cds.ApplicationService {
     id: 'shape-handler-modules', category: 'shape', title: 'Handlers in their own modules, passed as require(...)',
     bug: 'No bug: this.on("approve", Orders, require("./handlers/approve")).',
     edits: [
-      { file: 'srv/handlers/transition.js', write: `${STEP}\nmodule.exports = (from, to) => function (req) { return step(this.entities.Orders, req, from, to) }\n` },
+      { file: 'srv/handlers/transition.js', write: `${STEP}\nmodule.exports = (from, to) => function (req) { return step(this, req, from, to) }\n` },
       { file: 'srv/handlers/approve.js', write: `module.exports = require('./transition')('S', 'A')\n` },
       { file: 'srv/handlers/reject.js', write: `module.exports = require('./transition')('S', 'R')\n` },
       { file: 'srv/handlers/submit.js', write: `module.exports = require('./transition')('O', 'S')\n` },
@@ -86,9 +89,9 @@ module.exports = class OrderService extends cds.ApplicationService {
     this.on('reject', Orders, this.onReject.bind(this))
     return super.init()
   }
-  onSubmit(req) { return step(this.entities.Orders, req, 'O', 'S') }
-  onApprove(req) { return step(this.entities.Orders, req, 'S', 'A') }
-  onReject(req) { return step(this.entities.Orders, req, 'S', 'R') }
+  onSubmit(req) { return step(this, req, 'O', 'S') }
+  onApprove(req) { return step(this, req, 'S', 'A') }
+  onReject(req) { return step(this, req, 'S', 'R') }
 }
 ` }],
     graph: bound, forbid: noFalseMissing, proof: SAME,
@@ -101,9 +104,9 @@ ${STEP}
 
 module.exports = cds.service.impl(function () {
   const { Orders } = this.entities
-  this.on('submit', 'Orders', req => step(Orders, req, 'O', 'S'))
-  this.on('approve', 'Orders', req => step(Orders, req, 'S', 'A'))
-  this.on('reject', 'Orders', req => step(Orders, req, 'S', 'R'))
+  this.on('submit', 'Orders', req => step(this, req, 'O', 'S'))
+  this.on('approve', 'Orders', req => step(this, req, 'S', 'A'))
+  this.on('reject', 'Orders', req => step(this, req, 'S', 'R'))
 })
 ` }],
     graph: bound, forbid: noFalseMissing, proof: SAME,
@@ -116,8 +119,8 @@ ${STEP}
 
 module.exports = srv => {
   const { Orders } = srv.entities
-  srv.on('submit', Orders, req => step(Orders, req, 'O', 'S'))
-  srv.on(['approve', 'reject'], Orders, req => step(Orders, req, 'S', req.event === 'approve' ? 'A' : 'R'))
+  srv.on('submit', Orders, req => step(srv, req, 'O', 'S'))
+  srv.on(['approve', 'reject'], Orders, req => step(srv, req, 'S', req.event === 'approve' ? 'A' : 'R'))
 }
 ` }],
     graph: bound, forbid: noFalseMissing, proof: SAME,
@@ -191,7 +194,7 @@ module.exports = class OrderService extends cds.ApplicationService {
 }
 ` }],
     expect: [{ check: 'ui-promise:*', text: 'approve' }],
-    also: ['risk:ui-only', 'risk:partial', 'state-transition', 'ui-promise:ui-only', 'ui-promise:partial'],
+    also: ['risk:ui-only', 'risk:partial', 'state-transition', 'ui-promise:ui-only', 'ui-promise:partial', { check: 'rule:event-never-emitted', why: 'true: this rewrite has no emit' }],
     detectable: false,
     proof: `test('carol approves an open order', async () => { assert.strictEqual((await POST('${act(O1, 'approve')}', {}, as('carol'))).status, 200) })`,
   },

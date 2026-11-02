@@ -40,6 +40,23 @@ function svg(rows) {
   return out.join('\n')
 }
 
+// seeds counted clean (found or understood, nothing forbidden, no noise) in results-main.json vs now
+const clean = s => s && !s.error && s.detected && !(s.forbidden || []).length && !(s.noise || []).length
+function beforeAfter(results, dir) {
+  const f = path.join(dir, 'results-main.json')
+  if (!fs.existsSync(f)) return []
+  const old = new Map(JSON.parse(fs.readFileSync(f, 'utf8')).seeds.map(s => [s.id, s]))
+  const cats = {}
+  for (const s of results.seeds) {
+    if (s.detectable === false) continue
+    const c = cats[s.category || 'other'] ||= { cat: s.category || 'other', n: 0, before: 0, after: 0 }
+    c.n++; if (clean(old.get(s.id))) c.before++; if (clean(s)) c.after++
+  }
+  const rows = Object.values(cats)
+  rows.push(rows.reduce((t, r) => ({ cat: '**all**', n: t.n + r.n, before: t.before + r.before, after: t.after + r.after }), { n: 0, before: 0, after: 0 }))
+  return rows
+}
+
 function render(results, dir) {
   const rows = perCheck(results)
   const seeds = results.seeds.filter(s => !s.error)
@@ -65,6 +82,14 @@ function render(results, dir) {
   md.push(`| Cases proven valid | ${results.bases.length + seeds.length - invalid.length} of ${results.bases.length + results.seeds.length}${invalid.length ? ` (invalid: ${invalid.join(', ')})` : ''} |`)
   md.push(`| Bugs proven real at runtime | ${proofOk.length} of ${proofs.length} seeds with a proof test (passes on the seeded app, fails on the clean one) |`)
   md.push('')
+  const before = beforeAfter(results, dir)
+  if (before.length) {
+    md.push('## Before and after this round of fixes', '')
+    md.push('The same seeds scored with the toolkit of `main` before the fixes (`report/results-main.json`). A seed counts when its bug is found (or a bug-free variant is understood) with no false alarm.', '')
+    md.push('| Category | Seeds | Before | After |', '| --- | ---: | ---: | ---: |')
+    for (const r of before) md.push(`| ${r.cat} | ${r.n} | ${r.before} | ${r.after} |`)
+    md.push('')
+  }
   md.push('## Per check', '')
   md.push('Recall = seeds found / seeds that expect the check. False alarms count alarms on clean control apps plus unexpected new alarms in seeded variants.', '')
   md.push('| Check | Seeds | Found | Missed | Recall | False alarms | Missed seeds |', '| --- | ---: | ---: | ---: | ---: | ---: | --- |')

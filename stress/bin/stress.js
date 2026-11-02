@@ -84,7 +84,7 @@ async function runAll() {
     const conf = baseConf(s.base)
     let c
     try { c = materialize(s.id, s.base, s.edits, [proofEdit(s)]) } catch (e) { log(`seed ${s.id}: edits failed: ${e.message}`); return { ...meta(s), error: e.message } }
-    const v = doValidate ? await validate(s.proofDir ? path.join(c.root, s.proofDir) : c.root, { ...conf, ...(s.ui5 ? { ui5: s.ui5 } : {}) }, { proof: proofName(s) }) : null
+    const v = doValidate ? await validate(s.proofDir ? path.join(c.root, s.proofDir) : c.root, { ...conf, ...(s.ui5 ? { ui5: s.ui5 } : {}) }, { proof: proofName(s), all: !s.expect?.length }) : null
     // the proof must fail on the clean base: otherwise it does not show the seeded bug
     let neg = null
     if (doValidate && negative && s.proof && !s.probe && s.expect?.length) {

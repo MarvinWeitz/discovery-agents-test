@@ -246,6 +246,7 @@ exports.seeds = [
     bug: 'Typo in the emitted event name: subscribers of OrderApproved never hear about approvals.',
     edits: [{ file: IMPL, find: "this.emit('OrderApproved'", replace: "this.emit('OrderApprovedd'" }],
     expect: [{ check: 'rule:unknown-event', text: 'OrderApprovedd' }],
+    also: [{ check: 'rule:event-never-emitted', why: 'true: the declared event is no longer emitted under its real name' }],
   },
   {
     id: 'event-subscribe-typo', category: 'events', title: "Subscriber listens to 'OrderAproved'",
@@ -256,6 +257,19 @@ exports.seeds = [
     ],
     expect: [{ check: 'rule:unknown-event', text: 'OrderAproved' }],
     also: ['risk:events-untested'],
+  },
+  {
+    id: 'event-emit-removed', category: 'events', title: 'approve no longer emits OrderApproved',
+    bug: 'The emit was lost (found by the AI pass on a refactored shape, 2026-11-02): consumers of OrderApproved never hear of an approval.',
+    edits: [{ file: IMPL, find: "      await this.emit('OrderApproved', { order: ID, total: order.total })\n", replace: '' }],
+    expect: [{ check: 'rule:event-never-emitted', text: 'OrderApproved' }],
+    also: ['risk:events-untested'],
+    proof: `test('approving emits nothing', async () => {
+  const srv = await cds.connect.to('OrderService'); let got
+  srv.on('OrderApproved', msg => { got = msg.data })
+  assert.strictEqual((await POST('${act(O2, 'approve')}', {}, as('carol'))).status, 200)
+  assert.strictEqual(got, undefined)
+})`,
   },
   {
     id: 'event-subscriber-untested', category: 'events', title: 'Audit subscriber without a test',

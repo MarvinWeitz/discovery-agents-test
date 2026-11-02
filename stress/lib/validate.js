@@ -59,9 +59,10 @@ async function tsc(root) {
 }
 
 // conf: stress.json of the base; proof: test file name (variants) or null (bases: the app's own tests)
-async function validate(root, conf, { proof } = {}) {
+// all: run the app's own tests next to the proof (bug-free variants must keep every behaviour of the base)
+async function validate(root, conf, { proof, all } = {}) {
   const v = { compile: await compile(root) }
-  v.tests = await nodeTest(root, proof ? testFiles(root, proof) : testFiles(root))
+  v.tests = await nodeTest(root, proof ? [...(all ? testFiles(root) : []), ...testFiles(root, proof)] : testFiles(root))
   v.ts = await tsc(root)
   v.ui5 = conf.ui5?.length ? await ui5(root, conf.ui5) : []
   v.ok = v.compile.ok && v.tests.ok && (!v.ts || v.ts.ok) && v.ui5.every(u => u.ok)

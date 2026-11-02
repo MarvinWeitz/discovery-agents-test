@@ -1,5 +1,5 @@
 {
- "at": "2026-11-01T23:56:30.906Z",
+ "at": "2026-11-02T00:11:08.105Z",
  "detected": [
   "action-handler-removed",
   "action-handler-typo",
@@ -29,6 +29,7 @@
   "config-ui5-custom-webapp-path",
   "config-xs-security-complete",
   "config-xs-security-missing-scope",
+  "event-emit-removed",
   "event-emit-undeclared",
   "event-subscribe-typo",
   "event-subscriber-untested",
@@ -98,6 +99,7 @@
   "config-ui5-custom-webapp-path",
   "config-xs-security-complete",
   "config-xs-security-missing-scope",
+  "event-emit-removed",
   "event-emit-undeclared",
   "event-subscribe-typo",
   "event-subscriber-untested",
