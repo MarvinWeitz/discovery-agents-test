@@ -1,0 +1,32 @@
+{
+  "gap": "G-rule-confirmation-949df753a9",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "True positive: the searchCustomers handler builds a native SQL string with the caller-supplied q interpolated inside quotes and passes it to cds.run, so a quote in q changes the query; the function is reachable by any authenticated user. The rule should be accepted; fix by binding the value, e.g. SELECT.from(Customers).columns('ID','name').where({ name: { like: `%${q}%` } }).",
+  "findings": [
+    {
+      "title": "SQL injection in searchCustomers (true positive)",
+      "statement": "req.data.q is the unbound String parameter of the unbound function searchCustomers and is placed verbatim into a SQL string literal that cds.run executes as native SQL; nothing escapes or validates q before. A value containing a single quote breaks out of the LIKE literal, allowing reads of other columns/tables (e.g. Customers email and phone, which the service projection hides).",
+      "confidence": "high",
+      "severity": { "level": "critical", "impact": 4, "likelihood": 4 },
+      "layer": "service handler",
+      "subjects": ["file:srv/order-service.js"],
+      "evidence": [
+        { "file": "srv/order-service.js", "line": 52, "quote": "return cds.run(`SELECT ID, name FROM sales_Customers WHERE name LIKE '%${req.data.q}%'`)" },
+        { "file": "srv/order-service.cds", "line": 22, "quote": "function searchCustomers(q : String) returns array of { ID : UUID; name : String };" }
+      ],
+      "test": "GET /orders/searchCustomers(q='zz'' OR 1=1 --') as alice: a 200 returning all customers (instead of none) confirms the injection."
+    },
+    {
+      "title": "Only authentication guards the function",
+      "statement": "searchCustomers has no @restrict of its own; the only check is the service-level @requires 'authenticated-user', so every logged-in user (Buyer, Approver, or a user without roles) can send the injectable request.",
+      "confidence": "high",
+      "subjects": ["file:srv/order-service.js"],
+      "evidence": [
+        { "file": "srv/order-service.cds", "line": 4, "quote": "@requires: 'authenticated-user'" },
+        { "file": "srv/order-service.cds", "line": 22, "quote": "function searchCustomers(q : String)" }
+      ],
+      "test": "GET /orders/searchCustomers(q='a') as dave (no roles) returns 200."
+    }
+  ]
+}

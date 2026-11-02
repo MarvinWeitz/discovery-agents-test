@@ -1,0 +1,19 @@
+{
+  "name": "cap-discovery-stress",
+  "private": true,
+  "description": "Tools that prove the stress corpus apps are valid (cds compile, cds.test, tsc, UI5 lint and build). The toolkit itself is not installed here.",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@cap-js/cds-test": "^0.4.0",
+    "@cap-js/cds-types": "^0.14.0",
+    "@cap-js/sqlite": "^2.0.0",
+    "@sap/cds": "^9.9.4",
+    "@sap/cds-dk": "^9.4.0",
+    "@types/node": "^22.0.0",
+    "@ui5/cli": "^4.0.0",
+    "@ui5/linter": "^1.23.7",
+    "@types/openui5": "^1.136.0",
+    "tsx": "^4.19.0",
+    "typescript": "5.9.3"
+  }
+}

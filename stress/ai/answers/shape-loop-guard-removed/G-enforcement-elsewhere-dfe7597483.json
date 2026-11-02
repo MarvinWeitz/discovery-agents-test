@@ -1,0 +1,24 @@
+{
+  "gap": "G-enforcement-elsewhere-dfe7597483",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "No. The only approve handler comes from the TRANSITIONS table, whose approve row has from = null, so the status guard is skipped and any order (O, A, R) can be set to A; nothing else enforces it (files read: srv/order-service.js, srv/order-service.cds, srv/admin-service.cds, db/schema.cds, package.json, app/services.cds, app/orders/annotations.cds). The repo's own test 'approve only in state S' expects 409 and would fail against this code.",
+  "findings": [
+    {
+      "title": "Orders.approve has no server-side status_code = S check",
+      "statement": "The UI hides approve unless status_code = 'S', but the generic transition handler registers approve with from = null, and the guard `if (from && order.status_code !== from)` is therefore skipped for approve; the handler goes straight to UPDATE status_code = 'A'. No other handler, DB constraint (status is a plain association with default 'O') or plugin is configured, so an Approver can approve an Open or already Rejected order by calling the action directly.",
+      "confidence": "high",
+      "severity": { "level": "warning", "impact": 3, "likelihood": 3 },
+      "layer": "handler",
+      "subjects": ["uirule:OrderService.Orders.approve:available"],
+      "evidence": [
+        { "file": "srv/order-service.js", "line": 3, "quote": "['approve', null, 'A']" },
+        { "file": "srv/order-service.js", "line": 12, "quote": "if (from && order.status_code !== from) return req.reject(409, `Only orders in status ${from} can do this`)" },
+        { "file": "srv/order-service.js", "line": 13, "quote": "await UPDATE(Orders, ID).with({ status_code: to })" },
+        { "file": "db/schema.cds", "line": 19, "quote": "status   : Association to OrderStatus default 'O';" },
+        { "file": "test/orders.test.js", "line": 23, "quote": "test('approve only in state S', async () => {" }
+      ],
+      "test": "As carol (Approver): POST /orders/Orders(ID=aaaaaaaa-0000-0000-0000-000000000001,IsActiveEntity=true)/OrderService.approve on an order in status O; expected 409 if enforced, the code suggests 200 with status_code 'A'."
+    }
+  ]
+}

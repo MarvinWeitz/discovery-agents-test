@@ -1,0 +1,46 @@
+# Stress corpus: seeded-bug apps (CAP JS, CAP TS, Fiori elements, freestyle UI5, config variants) scored
+# against the static checks. Every case is first proved valid (cds compile, cds.test, tsc, ui5lint, ui5 build)
+# and every planted bug is proved by a test that fails on the clean app. --strict fails the job when a bug
+# found in stress/report/baseline.json is missed now, or a new false alarm appears.
+name: Stress corpus
+
+on:
+  pull_request:
+    paths:
+      - 'lib/**'
+      - 'bin/**'
+      - 'addons/rules/**'
+      - 'curated/**'
+      - 'stress/**'
+      - '.github/workflows/stress.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: Install toolkit
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: Install corpus tools
+        working-directory: stress
+        run: npm ci --no-audit --no-fund
+      - name: Run the corpus
+        env:
+          DISCOVERY_IMAGES: 'off'
+        run: node stress/bin/stress.js run --jobs 4 --strict
+      - name: Scorecard
+        if: always()
+        run: test -f stress/report/SCORECARD.md && cat stress/report/SCORECARD.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stress-report
+          path: stress/report/

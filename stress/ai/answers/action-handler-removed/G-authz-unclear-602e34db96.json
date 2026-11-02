@@ -1,0 +1,21 @@
+{
+  "gap": "G-authz-unclear-602e34db96",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "Authorization allows it: carol has the Approver role and the Approver grant includes reject with no where condition. But no handler implements reject, so the call is expected to pass the authorization check and then fail with 501 Not Implemented rather than succeed.",
+  "findings": [
+    {
+      "title": "carol passes the reject grant but the action has no handler",
+      "statement": "The mocked user carol has role Approver, and @restrict grants READ, approve and reject to Approver without a where clause, so the authorization layer lets her call reject. srv/order-service.js registers handlers only for submit and approve, so the request is expected to reach CAP's generic dispatch and return 501 instead of 200.",
+      "confidence": "medium",
+      "subjects": ["svcentity:OrderService.Orders"],
+      "evidence": [
+        { "file": "srv/order-service.cds", "line": 9, "quote": "{ grant: ['READ', 'approve', 'reject'], to: 'Approver' }" },
+        { "file": "package.json", "line": 26, "quote": "\"carol\": {" },
+        { "file": "package.json", "line": 29, "quote": "\"Approver\"" },
+        { "file": "srv/order-service.js", "line": 25, "quote": "this.on('approve', Orders, async req => {" }
+      ],
+      "test": "POST /orders/Orders(ID=aaaaaaaa-0000-0000-0000-000000000002,IsActiveEntity=true)/OrderService.reject {\"reason\":\"x\"} as carol; expected 501 (not 403)"
+    }
+  ]
+}

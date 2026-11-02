@@ -10,7 +10,8 @@ module.exports = {
   test: 'Seed amounts in two currencies; assert the result converts or groups by currency instead of labelling all with one code.',
   detect({ files }) {
     const out = []
-    const re = new RegExp(`['"](${ISO})['"]\\s*(?:as\\s+(\\w*[Cc]urrency\\w*)|,|\\)|;)`)
+    // 'EUR' as currency, 'EUR', 'EUR') 'EUR'; and an assignment to a currency field: x.currency = 'EUR' }
+    const re = new RegExp(`['"](${ISO})['"]\\s*(?:as\\s+(\\w*[Cc]urrency\\w*)|,|\\)|;|}|$)`)
     for (const f of files.filter(f => /\.(cds|js|ts)$/.test(f.path))) {
       f.text.split('\n').forEach((ln, i) => {
         if (/^\s*(\/\/|\*|@)/.test(ln) || /@(title|description|Common\.Label)|\bdefault\b/.test(ln)) return

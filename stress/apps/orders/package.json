@@ -1,0 +1,45 @@
+{
+  "name": "stress-orders",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Stress corpus base app: orders with approval flow, roles, personal data, draft, events",
+  "dependencies": {
+    "@sap/cds": "^9"
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "alice": {
+            "password": "",
+            "roles": [
+              "Buyer"
+            ]
+          },
+          "bob": {
+            "password": "",
+            "roles": [
+              "Buyer"
+            ]
+          },
+          "carol": {
+            "password": "",
+            "roles": [
+              "Approver"
+            ]
+          },
+          "admin": {
+            "password": "",
+            "roles": [
+              "Admin"
+            ]
+          }
+        }
+      },
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
+  }
+}

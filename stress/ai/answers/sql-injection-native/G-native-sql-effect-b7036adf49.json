@@ -1,0 +1,33 @@
+{
+  "gap": "G-native-sql-effect-b7036adf49",
+  "agent": "gap-resolver",
+  "status": "answered",
+  "answer": "The SQL in the searchCustomers handler only reads: it selects ID and name from the database table of sales.Customers (sales_Customers), filtered by name LIKE '%<q>%', and writes nothing. Because q is spliced into the string, the effective read set is not bounded by this text: an injected value can read other columns (email, phone) or other tables.",
+  "findings": [
+    {
+      "title": "searchCustomers reads sales.Customers ID and name, no writes",
+      "statement": "The native SQL is a single SELECT of columns ID and name from table sales_Customers (entity sales.Customers, db/schema.cds:4) with condition name LIKE '%' || q || '%'; there is no INSERT, UPDATE or DELETE. It runs on the database directly, not on the OrderService.Customers projection, so projection-level restrictions do not apply to it.",
+      "confidence": "high",
+      "subjects": ["file:srv/order-service.js", "entity:sales.Customers", "element:sales.Customers.name"],
+      "evidence": [
+        { "file": "srv/order-service.js", "line": 52, "quote": "return cds.run(`SELECT ID, name FROM sales_Customers WHERE name LIKE '%${req.data.q}%'`)" },
+        { "file": "srv/order-service.js", "line": 51, "quote": "this.on('searchCustomers', async req => {" },
+        { "file": "db/schema.cds", "line": 4, "quote": "entity Customers : cuid, managed {" },
+        { "file": "srv/order-service.cds", "line": 22, "quote": "function searchCustomers(q : String) returns array of { ID : UUID; name : String };" }
+      ],
+      "test": "GET /orders/searchCustomers(q='Acme') as alice returns the Acme row with only ID and name."
+    },
+    {
+      "title": "Interpolated q widens the read set to personal data",
+      "statement": "The OrderService.Customers projection exposes only ID and name, deliberately hiding email and phone, which are marked as personal data. Since q is interpolated into the SQL text, a crafted value (e.g. a UNION SELECT) can make this statement read email and phone or any other table, so the declared read set (ID, name) is only an upper bound for benign input.",
+      "confidence": "medium",
+      "subjects": ["entity:sales.Customers", "element:sales.Customers.email", "element:sales.Customers.phone"],
+      "evidence": [
+        { "file": "srv/order-service.cds", "line": 19, "quote": "@readonly entity Customers as projection on sales.Customers { ID, name };" },
+        { "file": "db/schema.cds", "line": 6, "quote": "email  : String(200) @PersonalData.IsPotentiallyPersonal;" },
+        { "file": "srv/order-service.js", "line": 52, "quote": "WHERE name LIKE '%${req.data.q}%'" }
+      ],
+      "test": "GET /orders/searchCustomers(q='x%25'' UNION SELECT email, phone FROM sales_Customers --') as alice; a 200 listing emails shows the wider read."
+    }
+  ]
+}

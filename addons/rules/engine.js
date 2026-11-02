@@ -15,24 +15,29 @@ const { layout } = require('../../lib/project/layout')
 
 const LIB = path.join(__dirname, 'library')
 
+// UI5 sources (webapp, src of a UI5 TypeScript project) are skipped under app/ only: srv/src/ is service code
+// (the stress corpus seed shape-src-folder-bug), and a .mjs/.cjs handler is code like a .js one
+const SKIP = ['node_modules', '.git', 'gen', '@cds-models', 'dist', 'test']
 function sources(root) {
   const out = []
-  const walk = (d, rel) => {
+  const walk = (d, rel, skip) => {
     let es = []; try { es = fs.readdirSync(d, { withFileTypes: true }) } catch { return }
     for (const e of es) {
-      if (['node_modules', '.git', 'gen', '@cds-models', 'webapp', 'dist', 'test', 'src'].includes(e.name)) continue
+      if (skip.includes(e.name)) continue
       const p = path.join(d, e.name), r = rel ? `${rel}/${e.name}` : e.name
-      if (e.isDirectory()) walk(p, r)
-      else if (/\.(cds|js|ts)$/.test(e.name) && !/\.d\.ts$|\.test\./.test(e.name)) out.push({ path: r, text: fs.readFileSync(p, 'utf8') })
+      if (e.isDirectory()) walk(p, r, skip)
+      else if (/\.(cds|[cm]?js|ts)$/.test(e.name) && !/\.d\.ts$|\.test\./.test(e.name) && !out.some(o => o.path === r)) out.push({ path: r, text: fs.readFileSync(p, 'utf8') })
     }
   }
   const L = layout(root)
-  for (const d of [L.srv, L.db, L.app]) walk(path.join(root, d), d)
+  walk(path.join(root, L.srv), L.srv, SKIP)
+  walk(path.join(root, L.db), L.db, [...SKIP, 'src'])
+  walk(path.join(root, L.app), L.app, [...SKIP, 'webapp', 'src'])
   return out
 }
 
 function library() {
-  return fs.readdirSync(LIB).filter(f => f.endsWith('.js') && !f.endsWith('.test.js')).sort().map(f => require(path.join(LIB, f)))
+  return fs.readdirSync(LIB).filter(f => f.endsWith('.js') && !f.endsWith('.test.js') && !f.startsWith('_')).sort().map(f => require(path.join(LIB, f)))
 }
 
 const OG = path.join(__dirname, 'opengrep')
