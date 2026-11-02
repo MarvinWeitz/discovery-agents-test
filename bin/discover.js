@@ -39,19 +39,29 @@ async function main() {
   cds.root = root
   const project = cap(root)                                                    // 1b  what CAP says: config per profile, model files, endpoints, impls, seed data
   const g = new Graph(run)
+  // Every step after the model is optional: one that crashes on an unexpected construct is logged and recorded
+  // (metrics.json "failedSteps") and the run goes on with what the other steps found. The model itself is required.
+  const failedSteps = []
+  const step = async (name, fn, fallback) => {
+    try { return (await fn()) ?? fallback } catch (e) {
+      failedSteps.push({ step: name, error: String(e?.message || e).split('\n')[0], at: String(e?.stack || '').split('\n')[1]?.trim() || null })
+      console.error(`::warning::discover step "${name}" failed and was skipped: ${e?.stack || e}`)
+      return fallback
+    }
+  }
   const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
-  const handlers = extractHandlersAst(root, g, csn)                            // 3   handlers, rules, reads/writes, events
-  const uiRules = reflexionUi(root, g, csn)                                   // 4   UI annotations vs handler rules
-  uiRules.metadata = metadataPromises(root, g, project.edmx)                  // 4b  what the UI receives ($metadata)
-  await extractUI5(root, g, uiDirs)                                           // 5a  UI5 apps, routes, views
-  const config = extractConfig(root, g)                                       // 5b  remote services, brokers, HDI files
-  config.auth = extractAuth(root, g, cds)                                     // 5c  mock users, roles
-  config.cdsDeps = extractCdsDeps(root, g, csn)                               // 5f  CDS file layers
-  config.native = extractNative(root, g)                                      // 5g  HANA-native objects
-  extractTests(root, g)                                                       // 5d  existing tests
-  config.bootstrap = extractBootstrap(root, g)                                // 5i  server.js routes, local plugin code
-  const lint = extractLint(root, g, uiDirs)                                   // 5h  cds lint, ui5 lint
-  const history = extractHistory(root)                                        // 5e  git churn
+  const handlers = await step('handlers', () => extractHandlersAst(root, g, csn), {})                            // 3   handlers, rules, reads/writes, events
+  const uiRules = await step('ui-rules', () => reflexionUi(root, g, csn), {})                                   // 4   UI annotations vs handler rules
+  uiRules.metadata = await step('metadata', () => metadataPromises(root, g, project.edmx), {})                  // 4b  what the UI receives ($metadata)
+  await step('ui5', () => extractUI5(root, g, uiDirs))                                           // 5a  UI5 apps, routes, views
+  const config = await step('config', () => extractConfig(root, g), {})                                       // 5b  remote services, brokers, HDI files
+  config.auth = await step('auth', () => extractAuth(root, g, cds), {})                                     // 5c  mock users, roles
+  config.cdsDeps = await step('cds-deps', () => extractCdsDeps(root, g, csn), {})                               // 5f  CDS file layers
+  config.native = await step('native', () => extractNative(root, g), {})                                      // 5g  HANA-native objects
+  await step('tests', () => extractTests(root, g))                                                       // 5d  existing tests
+  config.bootstrap = await step('bootstrap', () => extractBootstrap(root, g), {})                                // 5i  server.js routes, local plugin code
+  const lint = await step('lint', () => extractLint(root, g, uiDirs), {})                                   // 5h  cds lint, ui5 lint
+  const history = await step('history', () => extractHistory(root), {})                                        // 5e  git churn
 
   const slices = splitSlices(g, rank(g, cutSlices(g), history))               // 6   slices ranked by risk
   const cov = coverage(g)
@@ -69,10 +79,10 @@ async function main() {
   fs.writeFileSync(path.join(outDir, 'graph', 'edges.jsonl'), edges)
   fs.writeFileSync(path.join(outDir, 'slices', 'catalog.json'), JSON.stringify(slices.map(({ members, ...s }) => ({ ...s, members, status: 'planned' })), null, 2))
   fs.writeFileSync(path.join(outDir, 'tests', 'class-seeds.json'), JSON.stringify(classes, null, 2))
-  fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify({ run, app, root, commit, handlers, uiRules, auth: config.auth, cdsDeps: config.cdsDeps, native: config.native, bootstrap: config.bootstrap, lint, coverage: { ...cov, unassigned: cov.unassigned.length } }, null, 2))
+  fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify({ run, app, root, commit, failedSteps, handlers, uiRules, auth: config.auth, cdsDeps: config.cdsDeps, native: config.native, bootstrap: config.bootstrap, lint, coverage: { ...cov, unassigned: cov.unassigned.length } }, null, 2))
   fs.writeFileSync(path.join(outDir, 'discovery-report.md'), render({ app, commit, g, slices, cov, lint, config, classes, history, run }))
   const diagrams = await renderDiagrams(path.join(outDir, 'discovery-report.md'))
-  console.log(`${app}: ${g.nodes.size} nodes, ${g.edges.length} edges, ${slices.length} slices, coverage ${Math.round(cov.ratio * 100)}%, ${diagrams.rendered} diagrams rendered`)
+  console.log(`${app}: ${g.nodes.size} nodes, ${g.edges.length} edges, ${slices.length} slices, coverage ${Math.round(cov.ratio * 100)}%, ${diagrams.rendered} diagrams rendered${failedSteps.length ? `; ${failedSteps.length} step(s) skipped: ${failedSteps.map(f => f.step).join(', ')}` : ''}`)
 }
 
 main().catch(e => { console.error(e); process.exit(1) })
