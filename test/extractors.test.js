@@ -120,3 +120,13 @@ test('projection sources: filtered paths, joins and sub-selects give the entity 
   await extractModel(cds, root, g)
   assert.ok(g.edges.some(e => e.rel === 'projects_on' && e.from === 'svcentity:Cat.InStock' && e.to === 'entity:my.Books'))
 })
+
+test('test design: OperationAvailable given as a path expression (no field, no domain) does not crash (smart-core)', () => {
+  const { design } = require('../lib/analyse/test-design')
+  const g = new Graph()
+  g.node('uirule:S.Orders.approve:available', 'UiRule', { kind: 'operation-available', entity: 'S.Orders', action: 'approve', ui: '$self.canApprove', verdict: 'unknown' })
+  g.node('handler:h1', 'Handler', { events: ['approve'] })
+  for (const r of ['rule:a', 'rule:b']) { g.node(r, 'Rule', { guard: 'x == null' }); g.edge('handler:h1', 'enforces', r) }
+  const td = design(g, fs.mkdtempSync(path.join(os.tmpdir(), 'td-')), {})
+  assert.strictEqual(td.DD, null)
+})

@@ -21,7 +21,12 @@ function main() {
   if (!runDir) throw new Error('usage: gen-tests <run-dir> [out-dir]')
   const metrics = JSON.parse(fs.readFileSync(path.join(runDir, 'metrics.json'), 'utf8'))
   const { g } = loadRun(runDir)
-  const td = design(g, metrics.root, { restrictAll: metrics.auth?.restrictAll })
+  let td
+  try { td = design(g, metrics.root, { restrictAll: metrics.auth?.restrictAll }) } catch (e) {
+    // the findings stage already reports this as an analysis-limit finding; generate no tests instead of failing the run
+    console.error(`::warning::test design failed, no tests generated: ${e?.stack || e}`)
+    td = design(new (require('../lib/graph').Graph)(), metrics.root, { restrictAll: metrics.auth?.restrictAll })
+  }
   const out = outArg || path.join(runDir, 'tests', 'generated')
   fs.mkdirSync(out, { recursive: true })
   const userFor = (entity, action) => {
