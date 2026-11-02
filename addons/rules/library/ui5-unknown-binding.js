@@ -22,7 +22,9 @@ module.exports = {
     if (!g || !root) return out
     const services = g.byType('Service').filter(s => !s.props.remote && s.props.path).map(s => ({ name: s.props.name, path: norm(s.props.path) }))
     if (!services.length) return out
-    const svcOf = uri => services.find(s => norm(uri) === s.path || norm(uri).endsWith('/' + s.path))
+    // a relative uri ("browse/") resolves against wherever the app is served (approuter routes, cds serving app/):
+    // accept it when a service path ends with it (/odata/v4/browse); an absolute one must name the path
+    const svcOf = uri => services.find(s => norm(uri) === s.path || norm(uri).endsWith('/' + s.path) || (!/^\//.test(uri || '') && s.path.endsWith('/' + norm(uri))))
     for (const app of g.byType('UI5App')) {
       const mf = path.join(root, app.props.manifest || '')
       let m; try { m = JSON.parse(fs.readFileSync(mf, 'utf8')) } catch { continue }

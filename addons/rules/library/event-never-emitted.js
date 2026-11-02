@@ -22,6 +22,9 @@ module.exports = {
       if (d.kind !== 'event') continue
       const svc = Object.keys(csn.definitions).filter(n => csn.definitions[n].kind === 'service' && name.startsWith(n + '.')).sort((a, b) => b.length - a.length)[0]
       if (!svc || !local(csn, svc)) continue
+      // the service must be implemented here: a reused package (../orders, node_modules) emits from its own code
+      if (!g.byType('Handler').some(h => h.props.service === svc)) continue
+      if (/^\.\.\/|node_modules/.test(d.$location?.file || '')) continue
       const ev = name.slice(svc.length + 1)
       if (emitted.has(name) || emitted.has(ev) || [...emitted].some(x => x.endsWith('.' + ev))) continue
       const subs = g.edges.filter(e => e.rel === 'subscribes' && e.to.replace(/^event:/, '') === name).length
