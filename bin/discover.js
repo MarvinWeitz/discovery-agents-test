@@ -41,12 +41,17 @@ async function main() {
   const g = new Graph(run)
   // Every step after the model is optional: one that crashes on an unexpected construct is logged and recorded
   // (metrics.json "failedSteps") and the run goes on with what the other steps found. The model itself is required.
-  const failedSteps = []
+  const failedSteps = [], timings = {}
   const step = async (name, fn, fallback) => {
+    const t = Date.now()
     try { return (await fn()) ?? fallback } catch (e) {
       failedSteps.push({ step: name, error: String(e?.message || e).split('\n')[0], at: String(e?.stack || '').split('\n')[1]?.trim() || null })
       console.error(`::warning::discover step "${name}" failed and was skipped: ${e?.stack || e}`)
       return fallback
+    } finally {
+      const sec = (Date.now() - t) / 1000
+      timings[name] = +sec.toFixed(1)
+      if (sec > 20) console.error(`[discover] step "${name}" took ${sec.toFixed(0)}s`)
     }
   }
   const csn = await extractModel(cds, root, g)                                // 2   CDS -> services, entities, grants
@@ -79,7 +84,7 @@ async function main() {
   fs.writeFileSync(path.join(outDir, 'graph', 'edges.jsonl'), edges)
   fs.writeFileSync(path.join(outDir, 'slices', 'catalog.json'), JSON.stringify(slices.map(({ members, ...s }) => ({ ...s, members, status: 'planned' })), null, 2))
   fs.writeFileSync(path.join(outDir, 'tests', 'class-seeds.json'), JSON.stringify(classes, null, 2))
-  fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify({ run, app, root, commit, failedSteps, handlers, uiRules, auth: config.auth, cdsDeps: config.cdsDeps, native: config.native, bootstrap: config.bootstrap, lint, coverage: { ...cov, unassigned: cov.unassigned.length } }, null, 2))
+  fs.writeFileSync(path.join(outDir, 'metrics.json'), JSON.stringify({ run, app, root, commit, failedSteps, timings, handlers, uiRules, auth: config.auth, cdsDeps: config.cdsDeps, native: config.native, bootstrap: config.bootstrap, lint, coverage: { ...cov, unassigned: cov.unassigned.length } }, null, 2))
   fs.writeFileSync(path.join(outDir, 'discovery-report.md'), render({ app, commit, g, slices, cov, lint, config, classes, history, run }))
   const diagrams = await renderDiagrams(path.join(outDir, 'discovery-report.md'))
   console.log(`${app}: ${g.nodes.size} nodes, ${g.edges.length} edges, ${slices.length} slices, coverage ${Math.round(cov.ratio * 100)}%, ${diagrams.rendered} diagrams rendered${failedSteps.length ? `; ${failedSteps.length} step(s) skipped: ${failedSteps.map(f => f.step).join(', ')}` : ''}`)

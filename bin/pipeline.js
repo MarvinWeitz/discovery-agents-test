@@ -34,17 +34,20 @@ let pkg = {}
 try { pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')) } catch {}
 const M = manifest.start(out, { mode, root, app: pkg.name, addons: Object.fromEntries(Object.keys(addons.config().addons || {}).map(a => [a, addons.enabled(a)])) })
 
+// per stage; big apps need more than the old fixed 10 minutes (DISCOVERY_STAGE_TIMEOUT in minutes)
+const STEP_TIMEOUT = (+process.env.DISCOVERY_STAGE_TIMEOUT || 45) * 60000
+
 function step(id, file, a, { optional = false } = {}) {
   const started = new Date().toISOString(), t = Date.now()
   try {
-    const o = execFileSync(process.execPath, [bin(file), ...a], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], timeout: 600000 })
+    const o = execFileSync(process.execPath, [bin(file), ...a], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], timeout: STEP_TIMEOUT })
     const said = o.trim().split('\n').pop()
     manifest.record(M, { id, status: 'ran', started, seconds: +((Date.now() - t) / 1000).toFixed(1), said, outputs: manifest.outputs(out, id) })
     console.log(`[${id}] ${said} (${((Date.now() - t) / 1000).toFixed(1)}s)`)
   } catch (e) {
-    manifest.record(M, { id, status: 'failed', started, seconds: +((Date.now() - t) / 1000).toFixed(1), said: String(e.stdout || e.message).trim().split('\n').pop().slice(0, 300) })
+    manifest.record(M, { id, status: 'failed', started, seconds: +((Date.now() - t) / 1000).toFixed(1), said: (e.signal === 'SIGTERM' && Date.now() - t >= STEP_TIMEOUT - 1000 ? `timed out after ${STEP_TIMEOUT / 60000} min (DISCOVERY_STAGE_TIMEOUT)` : String(e.stdout || e.message).trim().split('\n').pop()).slice(0, 300) })
     manifest.save(out, M)
-    if (!optional) { console.error(`[${id}] failed; see ${path.join(out, 'manifest.json')}`); process.exit(1) }
+    if (!optional) { console.error(`[${id}] failed: ${M.stages?.at?.(-1)?.said || ''}; see ${path.join(out, 'manifest.json')}`); process.exit(1) }
     console.error(`[${id}] failed (optional stage, run continues)`)
   }
   manifest.save(out, M)
