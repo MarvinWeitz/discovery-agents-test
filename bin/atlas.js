@@ -25,7 +25,8 @@ const tone = x => { const m = String(x).match(/^(ac|jv|cr|wn|gd):(.*)$/); return
 function table(head, rows) {
   return [`| ${head.join(' | ')} |`, `| ${head.map(() => '---').join(' | ')} |`, ...rows.map(r => `| ${r.map(cell).join(' | ')} |`)].join('\n')
 }
-const img = (code, k, label) => `![${code}-${k} ${label}](../images/${code}-${k}.png)`
+let SHOTS = null // set after rendering; null = images were not attempted (keep the links as before)
+const img = (code, k, label) => !SHOTS || SHOTS.has(`${code}-${k}`) ? `![${code}-${k} ${label}](../images/${code}-${k}.png)` : `_No image for ${code}-${k} ${label} in this run; open [index.html](../index.html) for the interactive view._`
 
 // ---------- one generator per topic; each returns the Markdown body ----------
 const TOPICS = {
@@ -104,22 +105,35 @@ async function render(html, outDir, D) {
   await p.evaluate(() => { document.documentElement.dataset.layout = 'single' })
   await p.addStyleTag({ content: '.topbar,.tray{display:none!important} nav.codes{position:static!important}' })
   const extra = {}, shots = []
+  const t0 = Date.now(), BUDGET = (+process.env.DISCOVERY_IMAGE_MINUTES || 8) * 60000
+  let misses = 0 // after 3 failed captures the page is likely stuck: stop trying instead of waiting a minute per view
   for (const s of D.SECTIONS) {
+    if (misses >= 3) { errors.push(`${s.code}: images skipped after ${misses} failed captures`); continue }
+    // big apps: huge views take long to capture; after the budget the remaining sections get no PNGs
+    if (Date.now() - t0 > BUDGET) { errors.push(`${s.code}: images skipped, time budget of ${BUDGET / 60000} min used (DISCOVERY_IMAGE_MINUTES)`); continue }
     const sec = await p.$('#' + s.code.toLowerCase())
+    if (!sec) continue
     for (const v of s.views) {
-      await (await sec.$(`[data-v="${v.k}"]`)).click()
-      await p.waitForTimeout(v.label.includes('Force') ? 2500 : 400)
-      const view = await sec.$('.view')
-      // an empty view (tiny app, nothing to draw) has no box: skip its image instead of failing the atlas
-      if (!(await view.boundingBox())?.height) { errors.push(`${s.code}-${v.k}: empty view, no image`); continue }
-      await view.screenshot({ path: path.join(outDir, 'images', `${s.code}-${v.k}.png`) })
-      shots.push(`${s.code}-${v.k}`)
-      if (s.code === 'STA' && v.k === 'A' && D.STATES) {
-        await (await sec.$('[data-l="node"]')).click(); await p.waitForTimeout(200)
-        await view.screenshot({ path: path.join(outDir, 'images', 'STA-A-node.png') }); shots.push('STA-A-node')
-        await (await sec.$('[data-l="ui"]')).click()
+      // one view that cannot be captured (a very large force graph never settles) loses its PNG; the rest go on
+      try {
+        await (await sec.$(`[data-v="${v.k}"]`)).click()
+        await p.waitForTimeout(v.label.includes('Force') ? 2500 : 400)
+        const view = await sec.$('.view')
+        // an empty view (tiny app, nothing to draw) has no box: skip its image instead of failing the atlas
+        if (!(await view.boundingBox())?.height) { errors.push(`${s.code}-${v.k}: empty view, no image`); continue }
+        await view.screenshot({ path: path.join(outDir, 'images', `${s.code}-${v.k}.png`), animations: 'disabled', timeout: 30000 })
+        shots.push(`${s.code}-${v.k}`)
+        if (s.code === 'STA' && v.k === 'A' && D.STATES) {
+          await (await sec.$('[data-l="node"]')).click(); await p.waitForTimeout(200)
+          await view.screenshot({ path: path.join(outDir, 'images', 'STA-A-node.png'), animations: 'disabled', timeout: 30000 }); shots.push('STA-A-node')
+          await (await sec.$('[data-l="ui"]')).click()
+        }
+        if (s.code === 'TST' && v.k === 'B') extra.pairwise = await sec.$$eval('#pwt tr', trs => trs.map(tr => [...tr.children].map(td => td.textContent.trim())))
+      } catch (e) {
+        misses++
+        errors.push(`${s.code}-${v.k}: no image (${String(e.message).split('\n')[0]})`)
+        console.error(`::warning::atlas image ${s.code}-${v.k} skipped: ${String(e.message).split('\n')[0]}`)
       }
-      if (s.code === 'TST' && v.k === 'B') extra.pairwise = await sec.$$eval('#pwt tr', trs => trs.map(tr => [...tr.children].map(td => td.textContent.trim())))
     }
   }
   await b.close()
@@ -150,6 +164,7 @@ async function main() {
   fs.writeFileSync(path.join(outDir, 'index.html'), html)
   fs.writeFileSync(path.join(outDir, 'atlas-data.json'), JSON.stringify(D, null, 1))
   const { extra, shots, errors } = await render(html, outDir, D)
+  if (shots.length) SHOTS = new Set(shots)
 
   const m = D.META, files = []
   D.SECTIONS.forEach((s, i) => {
