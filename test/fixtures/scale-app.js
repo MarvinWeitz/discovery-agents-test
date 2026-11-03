@@ -45,7 +45,10 @@ function scaleApp(dir, { entities = 60, services = 12, roles = 15 } = {}) {
       `  order  : Association to Orders;`, `}`)
   })
   // the view SQLite cannot deploy: a parameterized view
-  db.push('', `entity StockAtDates(p_date : Date) as select from ${E[0]} { key ID, name, amount } where createdAt <= :p_date;`, '')
+  db.push('', `entity StockAtDates(p_date : Date) as select from ${E[0]} { key ID, name, amount } where createdAt <= :p_date;`,
+    // a plain view on the parameterized one (and a view on that): SQLite cannot hold them either (smart-core run 11)
+    `entity StockAtToday as select from StockAtDates(p_date: $now) { key ID, name, amount };`,
+    `entity StockSummary as select from StockAtToday { key ID, amount };`, '')
   files['db/schema.cds'] = db.join('\n')
   files['db/ops.cds'] = [`namespace scale.ops;`, `using { cuid } from '@sap/cds/common';`, '',
     `entity UserAccess : cuid {`, `  email : String(200) @PersonalData.IsPotentiallyPersonal;`, `  scope : String(20);`, `}`, ''].join('\n')
@@ -77,6 +80,7 @@ function scaleApp(dir, { entities = 60, services = 12, roles = 15 } = {}) {
         `  @readonly entity UserAccess as projection on core.UserAccess;`,
         `  @readonly entity OpsUserAccess as projection on ops.UserAccess;`,
         `  @readonly entity StockAtDates(p_date : Date) as select from core.StockAtDates(p_date: :p_date) { * };`,
+        `  @readonly entity StockToday as projection on core.StockSummary;`,
         `  action rebuildIndex();`)
     }
     lines.push('}', '')

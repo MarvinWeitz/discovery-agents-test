@@ -76,6 +76,9 @@ test('tests: one mock user per role and the SQLite setup in every generated file
   const D = json('atlas-data.json')
   // every role of xs-security.json has a user in the matrix (alice and bob hold Role01 and Role02, 13 are added)
   for (let i = 1; i <= 15; i++) { const r = `Role${String(i).padStart(2, '0')}`; assert.ok(D.ROLES.some(x => x[1].includes(r)), r) }
+  // a view on a view on the parameterized view is HANA-only too (requests to it get no generated test)
+  const hana = jsonl('run/graph/nodes.jsonl').filter(n => n.props?.hanaOnly).map(n => n.id)
+  for (const v of ['StockAtDates', 'StockAtToday', 'StockSummary', 'Svc00.StockToday']) assert.ok(hana.some(id => id.endsWith(v)), `${v} not HANA-only: ${hana}`)
   for (const f of fs.readdirSync(path.join(out, 'run', 'tests', 'generated')).filter(f => f.endsWith('.test.js')))
     assert.match(read(`run/tests/generated/${f}`), /@cds\.persistence\.skip/)
 })
