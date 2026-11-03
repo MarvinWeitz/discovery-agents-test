@@ -46,7 +46,7 @@ function main() {
   const files = [], counts = {}, manifest = [], hanaOnly = []
   const users = syntheticUsers(td)
   // requests to a parameterized view need HANA (SQLite cannot deploy it; the shim skips it): no request test
-  const hanaPath = p => g.byType('ServiceEntity').some(e => e.props.params && new RegExp(`/${short(e.id)}(\\(|\\?|/|$)`).test(p))
+  const hanaPath = p => g.byType('ServiceEntity').some(e => e.props.hanaOnly && new RegExp(`/${short(e.id)}(\\(|\\?|/|$)`).test(p))
   for (const c of td.categories) {
     const cls = c.classes.filter(x => x.req && !(hanaPath(x.req.path) && hanaOnly.push(x.id)))
     if (!cls.length) continue
