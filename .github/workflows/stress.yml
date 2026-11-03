@@ -9,7 +9,10 @@ on:
     paths:
       - 'lib/**'
       - 'bin/**'
-      - 'addons/rules/**'
+      - 'addons/**'
+      - 'atlas/**'
+      - 'test/scale.test.js'
+      - 'test/fixtures/**'
       - 'curated/**'
       - 'stress/**'
       - '.github/workflows/stress.yml'
@@ -36,6 +39,8 @@ jobs:
         env:
           DISCOVERY_IMAGES: 'off'
         run: node stress/bin/stress.js run --jobs 4 --strict
+      - name: Big app stays readable and its generated tests run (synthetic, test/scale.test.js)
+        run: node --test test/scale.test.js
       - name: Scorecard
         if: always()
         run: test -f stress/report/SCORECARD.md && cat stress/report/SCORECARD.md >> "$GITHUB_STEP_SUMMARY" || true

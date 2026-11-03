@@ -52,7 +52,7 @@ Each rule has a fixed impact (i) and likelihood (l) from 1 to 5, so scores can b
 | `partial:<rule>` | a UI rule is `partial` | 3 × 3 |
 | `noimpl:<action>` | an action has no handler (actions of services served remotely are skipped) | 2 × 3 |
 | `open-svc:<service>` | a service and all its entities have no grant | 3 × 3, or 3 × 1 with `restrict_all_services` |
-| `row-level:<entity>` | a grant with a `where` clause | 4 × 2 |
+| `row-level:<service>` | grants with a `where` clause, one risk per service with the count (a real app had 550, one per grant) | 4 × 2 |
 | `global:<type>` | an annotate or extend on a built-in `cds.*` type | 2 × 3 |
 | `layering` | other layer violations (piece 5f) | 2 × 2 |
 | `ui5-errors` | UI5 lint errors | 2 × 2 |

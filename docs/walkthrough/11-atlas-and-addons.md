@@ -75,5 +75,11 @@ Goal: one fact file (`atlas-data.json`) that holds every section, and three view
 | addon switch file `discovery.config.json`, env `DISCOVERY_ADDONS_OFF` | lib/addons.js | – |
 | next-steps thresholds P1 ≥ 16, P2 ≥ 9 | addons/nextsteps | – |
 
+## Big apps (smart-core review, 2026-11-03)
+A real app with 530 entities, 31 services and 15 roles made a 25 MB page, 19 MB of Markdown and views up to 930,000 px tall. Now:
+- **Markdown:** every table stops at 150 rows (`DISCOVERY_MD_ROWS`) with "first N of M"; UI promises the server keeps are counted, not listed; risk details for the first 60; the NXT topic lists the top 25 steps (`DISCOVERY_NEXT_TOP`), the full list stays in `atlas-data.json` (`NEXT.items`).
+- **Page:** `index.html` embeds a lighter copy of the facts (`pageData` in `bin/atlas.js`; `CUT` says what was cut, each view says "first N of M"). Long tables and card lists show 50 rows with a filter box and "Show more". Big graphs get a "Show" picker instead of one huge drawing: the 40 most connected entities or one entity with its neighbours (DAT), files grouped by folder at the deepest level that gives at most 36 boxes (DEP), one service (API map), one role (role chain); the container map wraps zones into rows of 5 and shows 15 boxes per zone. Diagrams scale to the page width, so the page never scrolls sideways.
+- **Next steps:** untested classes of one category, and access checks in one service, are one step each.
+
 ## Output
 `<out>/atlas-data.json` (also copied into `atlas/`), `<out>/atlas/index.html`, `README.md`, `topics/*.md`, `images/*.png`, and from the addons `<out>/docs/`, `<out>/pr/*.md` and `run/tests/ui/`.
