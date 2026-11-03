@@ -59,7 +59,16 @@ section.s{margin-top:34px;background:var(--surface);border:1px solid var(--line)
 .tabs button .k{font-family:var(--mono);margin-right:5px;opacity:.75}
 .view{min-width:0}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-svg.dg{display:block;width:100%;height:auto;min-width:640px;font-family:var(--body)}
+svg.dg{display:block;width:100%;height:auto;min-width:0;max-width:100%;font-family:var(--body)}
+[hidden]{display:none!important}
+.tame{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 8px}
+.tame input{font:13px var(--body);padding:5px 9px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--fg);min-width:0;flex:0 1 260px}
+.tame .tc{color:var(--muted)}
+.tmore{margin-top:8px}
+.fbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px}
+.fbar select{max-width:100%;font:13px var(--body)}
+.heat th.rot{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;text-align:left;vertical-align:bottom;max-height:170px;padding:6px 2px;font-size:12px}
+.heat.many .hc{height:28px;font-size:11px;min-width:26px}
 svg.dg.sm{min-width:0}
 svg text{fill:var(--fg)}
 svg .mt{fill:var(--muted);font-size:11.5px}
@@ -236,11 +245,37 @@ const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){retu
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))
 let uid=0
 function svg(w,h,body,cls=''){const id='m'+(++uid);const mk=['','ac','jv','cr','wn','fg'].map(c=>`<marker id="${id}${c}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="ah ${c}"/></marker>`).join('');return `<svg class="dg ${cls}" viewBox="0 0 ${w} ${h}" role="img"><defs>${mk}</defs>${body.replace(/MARK\((\w*)\)/g,(_,c)=>`url(#${id}${c})`)}</svg>`}
-function box(x,y,w,h,title,lines=[],cls=''){return `<g class="nd ${cls}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/><text x="${x+10}" y="${y+20}" class="ttl">${esc(title)}</text>${lines.map((l,i)=>`<text x="${x+10}" y="${y+37+i*15}" class="${l.startsWith('§')?'mono':'mt'}">${esc(l.replace(/^§/,''))}</text>`).join('')}</g>`}
+function box(x,y,w,h,title,lines=[],cls=''){return `<g class="nd ${cls}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/><text x="${x+10}" y="${y+20}" class="ttl">${esc(title)}</text>${lines.map(l=>String(l??'')).map((l,i)=>`<text x="${x+10}" y="${y+37+i*15}" class="${l.startsWith('§')?'mono':'mt'}">${esc(l.replace(/^§/,''))}</text>`).join('')}</g>`}
 function line(x1,y1,x2,y2,cls='',label='',lx,ly,head=true){const c=cls.split(' ')[0];return `<path d="M${x1} ${y1}L${x2} ${y2}" class="e ${cls}" ${head?`marker-end="MARK(${['ac','jv','cr','wn'].includes(c)?c:c==='comp'?'fg':''})"`:''}/>`+(label?`<text x="${lx??(x1+x2)/2+4}" y="${ly??(y1+y2)/2-4}" class="el ${c==='cr'?'cr':''}">${esc(label)}</text>`:'')}
 function curve(x1,y1,x2,y2,cls='',label='',bend=40){const mx=(x1+x2)/2,my=(y1+y2)/2-bend;const c=cls.split(' ')[0];return `<path d="M${x1} ${y1}Q${mx} ${my} ${x2} ${y2}" class="e ${cls}" marker-end="MARK(${['ac','jv','cr','wn'].includes(c)?c:''})"/>`+(label?`<text x="${mx}" y="${my+(bend>0?6:-2)}" text-anchor="middle" class="el ${c==='cr'?'cr':''}">${esc(label)}</text>`:'')}
 const chip=(t,c='')=>`<span class="chip ${c}">${esc(t)}</span>`
 const ev=t=>chip(t)
+/* ---------- big apps ---------- */
+// Long tables and card lists: every view gets the first TAME rows, a filter box and "Show more" once it has rendered.
+const TAME=50
+function tame(root){
+ root.querySelectorAll('table.mx>tbody,.cards').forEach(list=>{
+  if(list.dataset.tamed)return;const items=[...list.children];if(items.length<=TAME+10)return
+  list.dataset.tamed=1;let shown=TAME,q=''
+  const host=list.closest('.scroll')||list,bar=document.createElement('div'),more=document.createElement('button')
+  bar.className='tame';bar.innerHTML=`<input type="search" placeholder="Filter ${items.length} rows" aria-label="Filter rows"><span class="mono tc"></span>`
+  more.type='button';more.className='btn tmore'
+  host.before(bar);host.after(more)
+  const apply=()=>{const m=q?items.filter(i=>i.textContent.toLowerCase().includes(q)):items;items.forEach(i=>i.hidden=true);m.slice(0,shown).forEach(i=>i.hidden=false)
+   bar.querySelector('.tc').textContent=`${Math.min(shown,m.length)} of ${m.length}${q?' matching':''}`
+   const rest=m.length-shown;more.hidden=rest<=0;more.textContent=`Show ${Math.min(100,rest)} more of ${rest}`}
+  bar.querySelector('input').oninput=e=>{q=e.target.value.trim().toLowerCase();shown=TAME;apply()}
+  more.onclick=()=>{shown+=100;apply()}
+  apply()})
+}
+// Big graphs: draw one focused part and let the reader pick another. opts: [[key,label]]
+function focusView(el,opts,draw,note=''){
+ el.innerHTML=`<div class="fbar"><label class="mono">Show <select class="btn fsel">${opts.map(([k,l])=>`<option value="${esc(k)}">${esc(l)}</option>`).join('')}</select></label><span class="mono" style="color:var(--muted)">${opts.length-1>0?`${opts.length} choices`:''}</span></div><div class="fv"></div>${note?`<p class="note">${note}</p>`:''}`
+ const fv=el.querySelector('.fv'),sel=el.querySelector('.fsel'),go=()=>{fv.innerHTML='';const out=draw(sel.value,fv);if(typeof out==='string')fv.innerHTML=out;tame(fv)}
+ sel.onchange=go;go()
+}
+// what the page holds when atlas-data.json had more (bin/atlas.js cuts long lists for the page)
+const cutNote=k=>D.CUT&&D.CUT[k]?`<p class="note">The page holds the first ${D.CUT[k][0]} of ${D.CUT[k][1]}; all of them are in atlas-data.json.</p>`:''
 
 const D=/*ATLAS_DATA*/null;
 const {ARC_LAYERS,DAT_ROWS,HOOK_EVENTS,HOOK_NODE,HOOK_UI,SANKEY_NODES,SANKEY_LINKS}=D
@@ -270,15 +305,17 @@ const RENDER={...ADDON_RENDER,'ARC-A':arcMap,'ARC-B':arcLayers,'DAT-A':datTree,'
 
 /* ---------- ARC ---------- */
 function arcMap(){
- const Z=D.ARC.zones,W=960,pos={};let b='',y=8
- Z.forEach(z=>{const n=z.boxes.length,bw=Math.min(240,(W-60-(n-1)*24)/Math.max(n,1)),bh=Math.max(46,...z.boxes.map(x=>30+x.lines.length*15)),zh=bh+44
-  b+=`<rect x="10" y="${y}" width="${W-20}" height="${zh}" rx="10" class="zone"/><text x="22" y="${y+16}" class="zl">${esc(z.label)}</text>`
-  const x0=(W-(n*bw+(n-1)*24))/2
-  z.boxes.forEach((x,i)=>{const bx=x0+i*(bw+24),by=y+28;pos[x.id]={x:bx,y:by,w:bw,h:bh};b+=box(bx,by,bw,bh,x.t.length*7.4>bw-16?x.t.slice(0,Math.floor((bw-16)/7.4))+'…':x.t,x.lines.map(l=>l.length*6.2>bw-16?l.slice(0,Math.floor((bw-16)/6.2))+'…':l),x.cls||'')})
+ // a zone with many boxes (76 UI5 apps) wraps into rows of PER and shows MAXB boxes plus one "+n more" box
+ const PER=5,MAXB=15,W=960,pos={};let b='',y=8
+ D.ARC.zones.forEach(z=>{const all=z.boxes,bx0=all.length>MAXB?[...all.slice(0,MAXB-1),{id:'more:'+z.label,t:`+${all.length-MAXB+1} more`,lines:['§see the layer stack (B) and the Markdown'],cls:'sk',more:all.slice(MAXB-1).map(x=>x.id)}]:all
+  const n=Math.min(PER,Math.max(bx0.length,1)),bw=Math.min(240,(W-60-(n-1)*24)/n),bh=Math.max(46,...bx0.map(x=>30+(x.lines||[]).length*15)),rows=Math.ceil(bx0.length/PER)||1,zh=rows*(bh+16)+28
+  b+=`<rect x="10" y="${y}" width="${W-20}" height="${zh}" rx="10" class="zone"/><text x="22" y="${y+16}" class="zl">${esc(z.label)}${all.length>MAXB?` · ${all.length}`:''}</text>`
+  bx0.forEach((x,i)=>{const r=Math.floor(i/PER),inRow=Math.min(PER,bx0.length-r*PER),x0=(W-(inRow*bw+(inRow-1)*24))/2,bx=x0+(i%PER)*(bw+24),by=y+28+r*(bh+16);const p={x:bx,y:by,w:bw,h:bh};pos[x.id]=p;(x.more||[]).forEach(id=>pos[id]=p)
+   const t=String(x.t??''),ls=(x.lines||[]).map(l=>String(l??''));b+=box(bx,by,bw,bh,t.length*7.4>bw-16?t.slice(0,Math.floor((bw-16)/7.4))+'…':t,ls.map(l=>l.length*6.2>bw-16?l.slice(0,Math.floor((bw-16)/6.2))+'…':l),x.cls||'')})
   y+=zh+26})
- const cnt={};D.ARC.links.forEach(([f,t,l])=>{const a=pos[f],c=pos[t];if(!a||!c)return;const k=f;cnt[k]=(cnt[k]||0)+1
-  const x1=a.x+a.w/2,y1=a.y+a.h,x2=c.x+c.w/2,y2=c.y-2;b+=`<path d="M${x1} ${y1}C${x1} ${y1+24} ${x2} ${y2-24} ${x2} ${y2}" class="e ${t.startsWith('generic:')||t==='model'?'da':'ac'}" marker-end="MARK(${t.startsWith('generic:')?'':'ac'})"/>`+(l?`<text x="${(x1+x2)/2+6}" y="${(y1+y2)/2}" class="el">${esc(l)}</text>`:'')})
- return `<div class="scroll">${svg(W,y,b)}</div><p class="note">Boxes come from manifests, the CSN, handler files and package.json. Red: a service that exposes personal data without any grant. Grey: generic or local-only parts.</p>`
+ const seen=new Set();D.ARC.links.forEach(([f,t,l])=>{const a=pos[f],c=pos[t];if(!a||!c||a===c)return;const k=a.x+','+a.y+'>'+c.x+','+c.y;if(seen.has(k))return;seen.add(k)
+  const x1=a.x+a.w/2,y1=a.y+a.h,x2=c.x+c.w/2,y2=c.y-2;b+=`<path d="M${x1} ${y1}C${x1} ${y1+24} ${x2} ${y2-24} ${x2} ${y2}" class="e ${String(t).startsWith('generic:')||t==='model'?'da':'ac'}" marker-end="MARK(${String(t).startsWith('generic:')?'':'ac'})" style="${seen.size>40?'opacity:.35':''}"/>`+(l&&seen.size<=12?`<text x="${(x1+x2)/2+6}" y="${(y1+y2)/2}" class="el">${esc(l)}</text>`:'')})
+ return `<div class="scroll">${svg(W,y,b)}</div><p class="note">Boxes come from manifests, the CSN, handler files and package.json. Red: a service that exposes personal data without any grant. Grey: generic or local-only parts${D.ARC.zones.some(z=>z.boxes.length>MAXB)?`; a zone with more than ${MAXB} parts shows the first ${MAXB-1} and one box for the rest`:''}.</p>`
 }
 function arcLayers(){
  const L=ARC_LAYERS
@@ -288,7 +325,7 @@ function arcLayers(){
 /* ---------- DAT ---------- */
 const ENT=D.ENT
 const REL=D.REL
-function datTree(){
+function datTreeOf(ENT,REL){
  const W=960,tx=ENT.filter(e=>e[1]==='tx'),rest=ENT.filter(e=>e[1]!=='tx'),pos={}
  let b='',y=48
  const lx=30,lw=210,rx=300,cols=3,cw=200,gap=22
@@ -305,7 +342,7 @@ function datTree(){
  b+=`<text x="26" y="${H-4}" class="mt">thick: composition (owned, deleted with parent) · dashed: association · red: personal data · grey: code list / common</text>`
  return `<div class="scroll">${svg(W,H+6,b)}</div>`
 }
-function datForce(el){
+function datForceOf(el,ENT,REL){
  el.innerHTML=`<div class="scroll"><svg class="dg" viewBox="0 0 960 520" id="fg"></svg></div><p class="note">Drag nodes. Size = constrained elements, colour = kind (teal transactional, white master data, grey code list or common, red PII). Thick links are compositions.</p>`
  if(!window.d3){el.querySelector('.note').textContent='d3 did not load; use view A or C.';return}
  const s=d3.select(el).select('#fg'),W=960,H=520
@@ -318,6 +355,20 @@ function datForce(el){
  g.call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null}))
  sim.on('tick',()=>{nodes.forEach(d=>{d.x=Math.max(75,Math.min(W-75,d.x));d.y=Math.max(45,Math.min(H-20,d.y))});lk.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);g.attr('transform',d=>`translate(${d.x},${d.y})`)})
 }
+// big models: the 40 most connected entities, or one entity with its neighbours
+const DATMAX=40
+const datDeg=(()=>{const d={};REL.forEach(([f,t])=>{d[f]=(d[f]||0)+1;d[t]=(d[t]||0)+1});return d})()
+function datPick(k){
+ let keep
+ if(k==='top')keep=new Set([...ENT].sort((a,b)=>(datDeg[b[0]]||0)-(datDeg[a[0]]||0)||(b[1]==='tx')-(a[1]==='tx')).slice(0,DATMAX).map(e=>e[0]))
+ else if(k==='pii')keep=new Set(ENT.filter(e=>e[4]).map(e=>e[0]).concat(REL.filter(r=>ENT.some(e=>e[4]&&(e[0]===r[0]||e[0]===r[1]))).flatMap(r=>[r[0],r[1]])).slice(0,DATMAX))
+ else{const n=REL.filter(r=>r[0]===k||r[1]===k).flatMap(r=>[r[0],r[1]]);keep=new Set([k,...n].slice(0,DATMAX))}
+ return [ENT.filter(e=>keep.has(e[0])),REL.filter(r=>keep.has(r[0])&&keep.has(r[1]))]
+}
+const datOpts=()=>[['top',`The ${DATMAX} most connected of ${ENT.length} entities`],...(ENT.some(e=>e[4])?[['pii','Personal data and what links to it']]:[]),...[...ENT].sort((a,b)=>(b[1]==='tx')-(a[1]==='tx')||(datDeg[b[0]]||0)-(datDeg[a[0]]||0)).slice(0,300).map(e=>[e[0],`Around ${e[0]} (${datDeg[e[0]]||0} links)`])]
+const datNote=`${ENT.length} entities are too many for one drawing; pick a part. The entity matrix (C) lists all of them.`
+function datTree(el){if(ENT.length<=DATMAX)return datTreeOf(ENT,REL);focusView(el,datOpts(),k=>{const [E,R]=datPick(k);return datTreeOf(E,R)},datNote)}
+function datForce(el){if(ENT.length<=DATMAX)return datForceOf(el,ENT,REL);focusView(el,datOpts(),(k,fv)=>{const [E,R]=datPick(k);datForceOf(fv,E,R)},datNote)}
 function datMatrix(){
  const C=['Kind','Draft','Exposed in','@restrict','PII','Node hooks','Seed CSV']
  const R=DAT_ROWS
@@ -330,9 +381,33 @@ function datMatrix(){
 /* ---------- DEP ---------- */
 const FILES=D.FILES
 const DEPS=D.DEPS
-const lay=id=>FILES.find(f=>f[0]===id)[2]
-function depGraph(){
- const col={app:30,srv:330,db:560,ext:790},pos={},rows=Math.max(...FILES.map(f=>f[3]))+1,H=60+rows*58
+// big apps: files grouped by folder (one box per folder, edges counted), and a folder can be opened
+const DEPMAX=36
+// the deepest folder level that still gives at most DEPMAX boxes (app/a/b/c → app/a/b → app/a → app)
+const depDepth=(()=>{const n=d=>new Set(FILES.map(f=>f[2]+'|'+String(f[1]).split('/').slice(0,-1).slice(0,d).join('/'))).size;let d=Math.max(1,...FILES.map(f=>String(f[1]).split('/').length-1));while(d>1&&n(d)>DEPMAX)d--;return d})()
+const depDir=n=>{const p=String(n).split('/');return p.length>1?p.slice(0,-1).slice(0,depDepth).join('/'):'.'}
+function depFolders(){
+ const dir=depDir,key=f=>f[2]+'|'+dir(f[1]),grp={},rowOf={}
+ FILES.forEach(f=>{const k=key(f);(grp[k]||=[]).push(f)})
+ const F=Object.entries(grp).map(([k,fs])=>{const lay=fs[0][2];rowOf[lay]=(rowOf[lay]||0);return ['dir:'+k,`${dir(fs[0][1])}/ (${fs.length})`,lay,rowOf[lay]++]})
+ const idOf=Object.fromEntries(FILES.map(f=>[f[0],'dir:'+key(f)]))
+ const M={};DEPS.forEach(([f,t,k,l,e])=>{const a=idOf[f],b=idOf[t];if(!a||!b||a===b)return;const m=M[a+'>'+b]||=[a,b,'ok',0,e];m[3]++;if(k==='bad'||(k==='skip'&&m[2]==='ok'))m[2]=k;if(k==='bad')m[4]=e})
+ return [F,Object.values(M).map(([a,b,k,n,e])=>[a,b,k,n>1?`${n} uses`:'',e])]
+}
+function depOpen(k){ // one folder: its files and every file they use or are used by
+ const inDir=new Set(FILES.filter(f=>'dir:'+f[2]+'|'+depDir(f[1])===k).map(f=>f[0]))
+ const Dp=DEPS.filter(d=>inDir.has(d[0])||inDir.has(d[1])),ids=new Set([...inDir,...Dp.flatMap(d=>[d[0],d[1]])]),rowOf={}
+ const F=FILES.filter(f=>ids.has(f[0])).slice(0,60).map(f=>{rowOf[f[2]]=rowOf[f[2]]||0;return [f[0],f[1],f[2],rowOf[f[2]]++]})
+ const keep=new Set(F.map(f=>f[0]));return [F,Dp.filter(d=>keep.has(d[0])&&keep.has(d[1]))]
+}
+function depGraph(el){
+ if(FILES.length<=DEPMAX)return depGraphOf(FILES,DEPS)
+ const [F]=depFolders()
+ focusView(el,[['all',`All ${FILES.length} files, grouped into ${F.length} folders`],...F.map(f=>[f[0],`Folder ${f[1]}`])],k=>k==='all'?depGraphOf(...depFolders()):depGraphOf(...depOpen(k)),'Pick a folder to see its files and what they use. The Markdown (DEP topic) lists every file and dependency.')
+}
+function depGraphOf(FILES,DEPS){
+ const lay=id=>(FILES.find(f=>f[0]===id)||[])[2]
+ const col={app:30,srv:330,db:560,ext:790},pos={},rows=Math.max(0,...FILES.map(f=>f[3]))+1,H=60+rows*58
  let b=''
  ;[['app','APP · UI annotations'],['srv','SRV · services'],['db','DB · domain'],['ext','FRAMEWORK']].forEach(([k,l])=>{b+=`<rect x="${col[k]-14}" y="10" width="${k==='app'?250:200}" height="${H-20}" rx="10" class="zone"/><text x="${col[k]-2}" y="28" class="zl">${l}</text>`})
  FILES.forEach(([id,name,lay,row])=>{const x=col[lay],y=44+row*58,w=lay==='app'?222:172;pos[id]={x,y,w};const bad=DEPS.some(d=>d[0]===id&&d[2]==='bad');const nm=name.length*7>w-14?'…'+name.slice(-Math.floor((w-20)/7)):name;b+=box(x,y,w,38,nm,[],bad?'cr':lay==='ext'?'sk':'')})
@@ -348,6 +423,7 @@ function depGraph(){
  return `<div class="scroll">${svg(1000,H,b)}</div><p class="note">Red: a file reaches past its layer and changes something it does not own (${nb}). Amber dashed: UI annotations placed straight on domain entities; common in CAP samples, but it couples labels and value helps to db/ instead of the service.</p>`
 }
 function depDsm(){
+ const [FILES,DEPS]=D.FILES.length>DEPMAX?depFolders():[D.FILES,D.DEPS]
  const ids=FILES.map(f=>f[0]),nm=Object.fromEntries(FILES.map(f=>[f[0],f[1].replace('app/…/','').replace('.cds','')]))
  const M={};DEPS.forEach(([f,t,k])=>M[f+'>'+t]=k)
  const sym={ok:['●','y'],bad:['✕','r'],skip:['◐','a']}
@@ -380,7 +456,7 @@ function flwHooks(){
  const EV=HOOK_EVENTS
  const NODE=HOOK_NODE
  const UIH=HOOK_UI
- const cell=(hs,c)=>`<div class="cl">${hs.length?hs.map(([t,e,bad])=>`<div class="hook ${c} ${bad?'cr':''}">${esc(t)}<code>${e}</code></div>`).join(''):'<span class="mono" style="color:var(--faint)">nothing</span>'}</div>`
+ const cell=(hs,c)=>{const sh=[...hs].sort((a,b)=>(b[2]?1:0)-(a[2]?1:0)).slice(0,8);return `<div class="cl">${hs.length?sh.map(([t,e,bad])=>`<div class="hook ${c} ${bad?'cr':''}">${esc(t)}<code>${e}</code></div>`).join('')+(hs.length>8?`<span class="mono" style="color:var(--muted)">+${hs.length-8} more (FLW topic)</span>`:''):'<span class="mono" style="color:var(--faint)">nothing</span>'}</div>`}
  return `<div class="scroll"><div class="lanes" style="grid-template-columns:90px repeat(${EV.length},minmax(140px,1fr));min-width:${Math.min(820,90+EV.length*150)}px"><div class="hd"></div>${EV.map(e=>`<div class="hd">${e}</div>`).join('')}<div class="rt nd">Node</div>${NODE.map(h=>cell(h,'nd')).join('')}<div class="rt jv">UI</div>${UIH.map(h=>cell(h,'jv')).join('')}</div></div><p class="note">Draft lifecycle from left to right: what the Node server does at each event, and what the Fiori UI does at the same moment. Red outline: a rule that exists on one side only (a UI rule with no server check).</p>`
 }
 
@@ -415,8 +491,8 @@ function staTable(){
 }
 /* ---------- AUT ---------- */
 function autHeat(){
- const L={y:['allowed','y'],n:['denied','n'],r:['open','r'],a:['?','a']}
- return `<div class="scroll heat"><table class="mx" style="min-width:760px"><thead><tr><th>Operation</th>${ROLES.map(r=>`<th style="text-align:center">${r[1]}</th>`).join('')}<th>Evidence</th></tr></thead><tbody>${AUTH.map(a=>`<tr><td><b>${a.op}</b>${a.note?`<div class="mono" style="color:var(--muted)">${a.note}</div>`:''}</td>${a.c.map(c=>{const o=typeof c==='string'?{v:c}:c;return `<td class="h"><div class="hc ${L[o.v][1]}">${L[o.v][0]}${o.t?'<i title="covered by a test"></i>':''}</div></td>`}).join('')}<td>${ev(a.ev)}</td></tr>`).join('')}</tbody></table></div><p class="note">Derived from @requires / @restrict, @cds.autoexpose and the mock users (package.json, .cdsrc, CAP defaults). Teal dot: an existing test exercises the cell (${AUTH.reduce((a,r)=>a+r.c.filter(c=>c&&c.t).length,0)} of ${AUTH.length*ROLES.length}). Red "open": readable without the role you would expect.</p>`
+ const L={y:['allowed','y'],n:['denied','n'],r:['open','r'],a:['?','a']},many=ROLES.length>6
+ return `<div class="scroll heat ${many?'many':''}"><table class="mx" style="min-width:${many?0:760}px"><thead><tr><th>Operation</th>${ROLES.map(r=>`<th class="${many?'rot':''}" style="text-align:center" title="${esc(r[1])}">${esc(many?String(r[1]).split(' · ')[0]:r[1])}</th>`).join('')}<th>Evidence</th></tr></thead><tbody>${AUTH.map(a=>`<tr><td><b>${a.op}</b>${a.note?`<div class="mono" style="color:var(--muted)">${a.note}</div>`:''}</td>${a.c.map(c=>{const o=typeof c==='string'?{v:c}:c;return `<td class="h"><div class="hc ${L[o.v][1]}">${L[o.v][0]}${o.t?'<i title="covered by a test"></i>':''}</div></td>`}).join('')}<td>${ev(a.ev)}</td></tr>`).join('')}</tbody></table></div><p class="note">Derived from @requires / @restrict, @cds.autoexpose and the mock users (package.json, .cdsrc, CAP defaults). Teal dot: an existing test exercises the cell (${AUTH.reduce((a,r)=>a+r.c.filter(c=>c&&c.t).length,0)} of ${AUTH.length*ROLES.length}). Red "open": readable without the role you would expect.</p>${cutNote('AUTH')}`
 }
 function autPii(){
  const P=D.PIIREACH,U=P.users,E=P.endpoints,X=P.entities,rowH=Math.max(56,Math.ceil(300/Math.max(U.length,E.length))),H=40+Math.max(U.length,E.length)*rowH
@@ -429,8 +505,14 @@ function autPii(){
   const k=X.findIndex(x=>x[0]===e.ent);if(k>=0){const ty=40+k*(xh+16)+20;b+=`<path d="M600 ${ey(j)}C660 ${ey(j)} 660 ${ty} 718 ${ty}" class="e ${e.c.includes('r')?'cr':''}" marker-end="MARK(${e.c.includes('r')?'cr':''})"/>`}})
  return `<div class="scroll">${svg(950,Math.max(H,40+X.length*(xh+16)),b)}</div><p class="note">Every read path into personal data, from the authorization matrix. Red: reachable without the expected role. Anonymous access also depends on the auth setup in front of the service (verify with a request).</p>`
 }
-function autChain(){
- const C=D.CHAIN,R=C.roles,G=C.grants,n=Math.max(C.users.length,R.length,G.length),H=50+n*64
+function autChain(el){
+ const C=D.CHAIN
+ if(C.roles.length<=8&&C.grants.length<=30)return autChainOf(C.users,C.roles,C.grants)
+ const cnt=r=>C.grants.filter(g=>g[1].includes(r)).length,roles=[...C.roles].sort((a,b)=>cnt(b)-cnt(a))
+ focusView(el,roles.map(r=>[r,`Role ${r} (${cnt(r)} grants, ${C.users.filter(u=>u[1].includes(r)).length} mock users)`]),r=>autChainOf(C.users.filter(u=>u[1].includes(r)),[r],C.grants.filter(g=>g[1].includes(r)).slice(0,20)),`${C.roles.length} roles and ${C.grants.length} grants; pick a role. A role with no mock user cannot be tested until one exists (the generated tests add one per role).`)
+}
+function autChainOf(users,R,G){
+ const C={users,roles:R,grants:G},n=Math.max(C.users.length,R.length,G.length,1),H=50+n*64
  let b=`<text x="20" y="22" class="zl">MOCK USER</text><text x="260" y="22" class="zl">ROLE</text><text x="520" y="22" class="zl">GRANT</text>`
  const uy=i=>30+i*64+20,ry=i=>30+i*64+22,gy=i=>30+i*64+24
  C.users.forEach(([u,,t],i)=>b+=box(20,uy(i)-20,150,40,u+(t?' · tests':''),[],t?'wn':''))
@@ -451,14 +533,15 @@ function patGrid(){
 
 /* ---------- PAR ---------- */
 function parMatrix(){
- return `<div class="scroll"><table class="mx"><thead><tr><th></th><th>Behaviour</th><th><span class="chip jv">UI promises</span></th><th><span class="chip ac">Node server</span></th><th>Evidence</th></tr></thead><tbody>${PARITY.map(([b,n,j,v,e])=>`<tr><td class="c"><span class="cell ${PV[v][1]}" title="${PV[v][2]}">${PV[v][0]}</span></td><td><b>${b}</b></td><td>${esc(n)}</td><td>${esc(j)}</td><td>${e.split(' · ').map(ev).join(' ')}</td></tr>`).join('')}</tbody></table></div><p class="note">${Object.entries(PV).map(([k,v])=>`<span class="cell ${v[1]}">${v[0]}</span> ${v[2]}`).join(' &nbsp; ')}</p>`
+ return `<div class="scroll"><table class="mx"><thead><tr><th></th><th>Behaviour</th><th><span class="chip jv">UI promises</span></th><th><span class="chip ac">Node server</span></th><th>Evidence</th></tr></thead><tbody>${PARITY.map(([b,n,j,v,e])=>`<tr><td class="c"><span class="cell ${PV[v][1]}" title="${PV[v][2]}">${PV[v][0]}</span></td><td><b>${b}</b></td><td>${esc(n)}</td><td>${esc(j)}</td><td>${e.split(' · ').map(ev).join(' ')}</td></tr>`).join('')}</tbody></table></div><p class="note">${Object.entries(PV).map(([k,v])=>`<span class="cell ${v[1]}">${v[0]}</span> ${v[2]}`).join(' &nbsp; ')}. Promises the server does not keep come first.</p>${cutNote('PARITY')}`
 }
 function parBars(){
- const cnt={};PARITY.forEach(p=>cnt[p[3]]=(cnt[p[3]]||0)+1)
+ const cnt=D.PARITY_COUNTS?{...D.PARITY_COUNTS}:{};if(!D.PARITY_COUNTS)PARITY.forEach(p=>cnt[p[3]]=(cnt[p[3]]||0)+1);const total=Object.values(cnt).reduce((a,b)=>a+b,0)
  const order=Object.keys(PV),tone={y:'var(--good)',a:'var(--warn)',r:'var(--crit)',n:'var(--faint)',g:'var(--accent)'},col=Object.fromEntries(order.map(k=>[k,tone[PV[k][1]]||'var(--faint)']))
- let x=0;const W=900,used=order.filter(k=>cnt[k]),seg=used.map(k=>{const w=cnt[k]/PARITY.length*W;const r=`<rect x="${x}" y="20" width="${w}" height="44" style="fill:${col[k]}"/><text x="${x+8}" y="48" style="fill:#fff;font-weight:700;font-size:15px">${cnt[k]}</text>`;x+=w;return r}).join('')+used.map((k,i)=>`<rect x="${(i%3)*300}" y="${80+Math.floor(i/3)*22}" width="12" height="12" rx="3" style="fill:${col[k]}"/><text x="${(i%3)*300+18}" y="${91+Math.floor(i/3)*22}" class="mt">${cnt[k]} · ${PV[k][2]}</text>`).join('')
- const top=110+Math.ceil(order.filter(k=>cnt[k]).length/3)*22,rows=PARITY.map((p,i)=>`<g transform="translate(0,${top+i*26})"><rect x="0" y="2" width="14" height="14" rx="3" style="fill:${col[p[3]]}"/><text x="22" y="14" class="mono">${esc(p[3])}</text><text x="130" y="14" style="font-size:12.5px">${esc(p[0])}</text></g>`).join('')
- return `<div class="scroll">${svg(920,top+PARITY.length*26,seg+rows)}</div>`
+ let x=0;const W=900,used=order.filter(k=>cnt[k]),seg=used.map(k=>{const w=cnt[k]/total*W;const r=`<rect x="${x}" y="20" width="${w}" height="44" style="fill:${col[k]}"/><text x="${x+8}" y="48" style="fill:#fff;font-weight:700;font-size:15px">${cnt[k]}</text>`;x+=w;return r}).join('')+used.map((k,i)=>`<rect x="${(i%3)*300}" y="${80+Math.floor(i/3)*22}" width="12" height="12" rx="3" style="fill:${col[k]}"/><text x="${(i%3)*300+18}" y="${91+Math.floor(i/3)*22}" class="mt">${cnt[k]} · ${PV[k][2]}</text>`).join('')
+ const kept=new Set(['enforced','consistent','framework']),R=PARITY.filter(p=>!kept.has(p[3])).slice(0,60)
+ const top=110+Math.ceil(order.filter(k=>cnt[k]).length/3)*22,rows=R.map((p,i)=>`<g transform="translate(0,${top+i*26})"><rect x="0" y="2" width="14" height="14" rx="3" style="fill:${col[p[3]]}"/><text x="22" y="14" class="mono">${esc(p[3])}</text><text x="130" y="14" style="font-size:12.5px">${esc(p[0])}</text></g>`).join('')
+ return `<div class="scroll">${svg(920,top+R.length*26,seg+rows)}</div><p class="note">The bar counts every promise${D.PARITY_COUNTS?' (all of them, also those the page does not hold)':''}; the rows list the ones the server does not keep or keeps differently${PARITY.filter(p=>!kept.has(p[3])).length>60?' (first 60; the matrix A has a filter)':''}. Kept promises are counted, not listed.</p>`
 }
 
 /* ---------- RSK ---------- */
@@ -504,8 +587,17 @@ function tstBars(){
 }
 /* ---------- API ---------- */
 const API=D.API
-function apiMap(){
+function apiMap(el){
+ const n=API.reduce((a,s)=>a+s.sets.length+s.acts.length,0)
+ if(API.length<=3&&n<=60)return apiMapOf(API)
+ const risky=s=>s.sets.filter(x=>x[2]==='open').length*3+s.acts.filter(x=>/no handler/.test(x[2]||'')).length
+ const order=[...API].sort((a,b)=>risky(b)-risky(a)||(b.sets.length+b.acts.length)-(a.sets.length+a.acts.length))
+ focusView(el,order.map(s=>[s.root,`${s.root} · ${s.svc} (${s.sets.length} sets, ${s.acts.length} actions${risky(s)?', open or unimplemented parts':''})`]),k=>apiMapOf(API.filter(s=>s.root===k)),`${API.length} services; pick one (services with open or unimplemented parts first). The interface list (B) has every endpoint.`)
+}
+function apiMapOf(API){
  let b='',y=20
+ const CAPS=40 // per service: open and PII sets first, then the rest; the list (B) has all
+ API=API.map(s=>{if(s.sets.length<=CAPS&&s.acts.length<=CAPS)return s;const w=x=>x[2]==='open'?(/PII/.test(x[3])?0:1):x[2]==='auth?'?2:3;const sets=[...s.sets].sort((a,b)=>w(a)-w(b)).slice(0,CAPS-1);const acts=s.acts.slice(0,CAPS);if(s.sets.length>CAPS)sets.push([`+${s.sets.length-CAPS+1} more sets`,'','','see the interface list (B)']);return {...s,sets,acts}})
  API.forEach(s=>{const h=Math.max(s.sets.length,s.acts.length,2)*26+50,open=s.sets.some(x=>x[2]==='open'&&/PII/.test(x[3]))
   b+=box(20,y+h/2-30,170,60,s.root.length>20?'…'+s.root.slice(-19):s.root,[s.svc],open?'cr':'ac')
   s.sets.forEach(([n,m,a,t],i)=>{const yy=y+20+i*26;const c=a==='open'?(/PII/.test(t)?'cr':'wn'):a==='auth?'?'wn':'';const tt=t.length>34?t.slice(0,33)+'…':t;b+=`<path d="M190 ${y+h/2}C240 ${y+h/2} 240 ${yy+10} 290 ${yy+10}" class="e" style="opacity:.4"/><g class="nd ${c==='cr'?'cr':''}"><rect x="290" y="${yy}" width="200" height="20" rx="4"/></g><text x="298" y="${yy+14}" style="font-size:12px;font-weight:600">${esc(n)}</text><text x="500" y="${yy+14}" class="mono">${esc(m)}</text><text x="660" y="${yy+14}" class="mono" style="fill:${c==='cr'?'var(--crit)':c==='wn'?'var(--warn)':'var(--good)'}">${esc(a)}</text><text x="720" y="${yy+14}" class="mono">${esc(tt)}</text>`})
@@ -541,7 +633,7 @@ ORDER.forEach(s=>{
  const view=sec.querySelector('.view')
  const show=k=>{const v=s.views.find(x=>x.k===k)||s.views[0];chosen[s.code]=v.k;store.set('atlas.views',chosen)
   sec.querySelectorAll('[data-v]').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v.k))
-  view.innerHTML='';try{const out=v.r(view);if(typeof out==='string')view.innerHTML=out}catch(e){view.innerHTML=`<p class="note">This view failed to render (${esc(e.message)}).</p>`}}
+  view.innerHTML='';try{const out=v.r(view);if(typeof out==='string')view.innerHTML=out;tame(view)}catch(e){view.innerHTML=`<p class="note">This view failed to render (${esc(e.message)}).</p>`}}
  sec.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>show(b.dataset.v))
  show(chosen[s.code]||s.views[0].k)
  ADDON_PANELS.forEach(f=>{try{f(s,sec)}catch(e){}})
