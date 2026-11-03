@@ -66,6 +66,9 @@ inputs:
   fail-on-error:
     description: Fail the step when the pipeline or the after-tests validation fails
     default: 'true'
+  fail-on-startup:
+    description: Fail the job (after the summary and the artifact) when the app did not start under cds.test, so no runtime test ran
+    default: 'true'
   token:
     description: Token for the PR comment (and the Opengrep download on github.com)
     default: ${{ github.token }}
@@ -225,4 +228,14 @@ runs:
       shell: bash
       run: |
         echo "::error::Discovery failed (pipeline, or the after-tests validation). See the log of the Run discovery step."
+        exit 1
+
+    - if: inputs.fail-on-startup == 'true' && steps.run.outputs.startup == 'failure'
+      name: Fail when the app did not start
+      shell: bash
+      env:
+        REPORTS: ${{ steps.run.outputs.reports }}
+      run: |
+        why=$(jq -r '.why // ""' "$REPORTS/tests.json" 2>/dev/null)
+        echo "::error::No runtime test ran: ${why:-the app did not start under cds.test}. See the job summary; set fail-on-startup: false to keep the job green."
         exit 1
