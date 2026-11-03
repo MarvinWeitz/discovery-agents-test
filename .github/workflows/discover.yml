@@ -172,6 +172,7 @@ jobs:
           summary: 'false'
           artifact: ''
           fail-on-error: 'false'
+          fail-on-startup: 'false' # the gate step below decides per pilot
 
       - name: Job summary
         if: always()

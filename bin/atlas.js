@@ -22,8 +22,25 @@ const md = s => String(s ?? '').replace(/<b>(.*?)<\/b>/g, '**$1**').replace(/<co
 const cell = s => md(s).replace(/\|/g, '\\|').replace(/\n/g, ' ')
 const evid = e => String(e).split(' · ').map(x => '`' + x + '`').join(', ')
 const tone = x => { const m = String(x).match(/^(ac|jv|cr|wn|gd):(.*)$/); return m ? (m[1] === 'cr' ? `**${m[2]}** (finding)` : m[1] === 'wn' ? `${m[2]} (warning)` : m[2]) : x }
-function table(head, rows) {
-  return [`| ${head.join(' | ')} |`, `| ${head.map(() => '---').join(' | ')} |`, ...rows.map(r => `| ${r.map(cell).join(' | ')} |`)].join('\n')
+// Big apps: a Markdown table stops at MAX_ROWS ("first N of M"); every row stays in atlas-data.json
+const MAX_ROWS = +process.env.DISCOVERY_MD_ROWS || 150
+function table(head, rows, where = 'atlas-data.json') {
+  const shown = rows.length > MAX_ROWS ? rows.slice(0, MAX_ROWS) : rows
+  return [`| ${head.join(' | ')} |`, `| ${head.map(() => '---').join(' | ')} |`, ...shown.map(r => `| ${r.map(cell).join(' | ')} |`),
+    ...(rows.length > MAX_ROWS ? ['', `_First ${MAX_ROWS} of ${rows.length} rows; all of them are in ${where} and on the page (index.html)._`] : [])].join('\n')
+}
+// any Markdown table an addon writes gets the same cap (the generators above already cap their own)
+function capTables(text) {
+  const L = String(text).split('\n'), out = []
+  for (let i = 0; i < L.length;) {
+    if (!L[i].startsWith('|')) { out.push(L[i++]); continue }
+    let j = i; while (j < L.length && L[j].startsWith('|')) j++
+    const rows = j - i - 2
+    out.push(...L.slice(i, Math.min(j, i + 2 + MAX_ROWS)))
+    if (rows > MAX_ROWS) out.push('', `_First ${MAX_ROWS} of ${rows} rows; all of them are in atlas-data.json and on the page (index.html)._`)
+    i = j
+  }
+  return out.join('\n')
 }
 let SHOTS = null // set after rendering; null = images were not attempted (keep the links as before)
 const img = (code, k, label) => !SHOTS || SHOTS.has(`${code}-${k}`) ? `![${code}-${k} ${label}](../images/${code}-${k}.png)` : `_No image for ${code}-${k} ${label} in this run; open [index.html](../index.html) for the interactive view._`
@@ -46,6 +63,7 @@ const TOPICS = {
     '### Hooks per lifecycle event', '', table(['Event', 'Node server', 'Fiori UI'], D.HOOK_EVENTS.map((e, i) => [e, hooks(D.HOOK_NODE[i]), hooks(D.HOOK_UI[i])])),
     '', 'A hook marked **(one side only)** is a rule without a counterpart on the other side, or a defect.'].join('\n'),
   STA: D => [`States of \`${D.STATES.entity}.${D.STATES.field}\`: ${D.STATES.codes.map(c => `${c}${D.STATES.names[c] ? ' (' + D.STATES.names[c] + ')' : ''}`).join(', ')}${D.STATES.default ? `; default ${D.STATES.default}` : ''}.`, '',
+    ...(D.STATES.others?.length ? [`Other fields that decide which actions the UI offers (scored lower: fewer states, a flag, or a path): ${D.STATES.others.slice(0, 12).map(o => `\`${o.entity}.${o.field}\` (${o.actions.join(', ')})`).join('; ')}${D.STATES.others.length > 12 ? `; and ${D.STATES.others.length - 12} more` : ''}.`, ''] : []),
     table(['Action', 'From', 'To', 'UI offers it', 'Node allows it', 'Verdict', 'Evidence'], D.TR.map(t => [t.a, t.f, t.t, yn(t.ui ? 'y' : 'n'), yn(t.node ? 'y' : 'n'),
     t.ui === t.node ? 'consistent' : t.node ? 'reachable only via OData (UI hides it)' : 'UI offers it, server refuses', (t.ev || []).slice(0, 2).map(e => '`' + e + '`').join(', ')]))].join('\n'),
   AUT: D => {
@@ -54,12 +72,18 @@ const TOPICS = {
       '', 'OPEN = readable without the role you would expect. "(tested)" = an existing test exercises the cell.'].join('\n')
   },
   PAT: D => table(['Pattern', 'Where', 'Uses', 'Health', 'Note', 'Layers', 'Evidence'], D.PATTERNS.map(p => [p.n, p.w, p.k, { gd: 'idiomatic', wn: 'works, enforced in the wrong place', cr: 'causes a defect or exposure' }[p.h], p.x || '', p.L.map(l => (D.LAYERS.find(x => x[0] === l) || [l, l])[1]).join(', '), '`' + p.ev + '`'])),
-  UIS: D => [table(['Rule', 'UI promises', 'Node server', 'Verdict', 'Evidence'], D.PARITY.map(([b, u, n, v, e]) => [b, u, n, D.PV[v]?.[2] ?? v, evid(e)])), '',
-    'Verdicts: ' + Object.entries(D.PV).map(([k, v]) => `${v[2]} (${D.PARITY.filter(p => p[3] === k).length})`).join(', ') + '.'].join('\n'),
+  // confirmations (the server or CAP keeps the promise) are counted; the table lists what needs a decision
+  UIS: D => {
+    const ok = new Set(['enforced', 'consistent', 'framework']), todo = D.PARITY.filter(p => !ok.has(p[3])), fine = D.PARITY.length - todo.length
+    return ['Verdicts: ' + Object.entries(D.PV).map(([k, v]) => `${v[2]} (${D.PARITY.filter(p => p[3] === k).length})`).join(', ') + '.', '',
+      ...(fine ? [`${fine} promise${fine === 1 ? ' is' : 's are'} kept by the server or by CAP and not listed here (all in atlas-data.json, PARITY).`, ''] : []),
+      todo.length ? table(['Rule', 'UI promises', 'Node server', 'Verdict', 'Evidence'], todo.map(([b, u, n, v, e]) => [b, u, n, D.PV[v]?.[2] ?? v, evid(e)]), 'atlas-data.json (PARITY)') : '_Every UI promise is kept._'].join('\n')
+  },
   RSK: D => {
     const R = [...D.RISKS].sort((a, b) => b.i * b.l - a.i * a.l)
     return [table(['Id', 'Risk', 'Layer', 'Impact', 'Likelihood', 'Score', 'Found by', 'Evidence'], R.map(r => [r.id, r.t, r.lay, r.i, r.l, r.i * r.l, r.src === 'agent' ? 'agent review' : 'rule ' + r.key, '`' + r.ev + '`'])), '',
-      ...R.flatMap(r => [`#### ${r.id} ${r.t}`, '', r.d, '', `- Evidence: \`${r.ev}\``, `- Test that catches it: ${r.test}`, ''])].join('\n')
+      ...R.slice(0, 60).flatMap(r => [`#### ${r.id} ${r.t}`, '', r.d, '', `- Evidence: \`${r.ev}\`${r.count > 1 ? ` (and ${r.count - 1} more places of the same kind)` : ''}`, `- Test that catches it: ${r.test}`, '']),
+      ...(R.length > 60 ? [`_Details for the first 60 of ${R.length} risks; all of them are in atlas-data.json (RISKS)._`, ''] : [])].join('\n')
   },
   TST: (D, extra) => [table(['Category', 'Technique', 'Classes', 'Covered today', 'How the classes were cut'], [...D.TESTCATS].sort((a, b) => b.cls - a.cls).map(c => [c.n, c.k, c.cls, c.cov, c.why])), '',
     `Total: ${D.TESTCATS.reduce((a, c) => a + c.cls, 0)} classes, ${D.TESTCATS.reduce((a, c) => a + c.cov, 0)} covered.`, '',
@@ -73,13 +97,42 @@ function yn(v) { return { y: 'yes', n: 'no', a: 'unclear (verify)', r: 'EXPOSED'
 function hooks(hs) { return (hs || []).map(([t, e, bad]) => `${t} \`${e}\`${bad ? ' **(one side only)**' : ''}`).join('<br>') || '-' }
 
 // ---------- HTML ----------
+// The page embeds a lighter copy of the facts (a real app made a 25 MB page that browsers and the screenshot
+// step choked on): long lists are cut to what a person pages through, the cut is noted in CUT so the views can
+// say "first N of M", and lists only Markdown or files use stay out. atlas-data.json keeps everything.
+const PAGE_MAX = { CLASSES: 600, PARITY: 800, NEXT: 400, COVERAGE: 1500, HEAT: 300, AUTH: 2500, UITESTS: 150 }
+function pageData(D) {
+  const P = { ...D }, CUT = {}
+  const cut = (key, list, n) => { if (!Array.isArray(list) || list.length <= n) return list; CUT[key] = [n, list.length]; return list.slice(0, n) }
+  if (D.CLASSES) P.CLASSES = cut('CLASSES', D.CLASSES, PAGE_MAX.CLASSES)
+  if (D.PARITY) {
+    P.PARITY_COUNTS = D.PARITY.reduce((a, p) => (a[p[3]] = (a[p[3]] || 0) + 1, a), {})
+    const kept = new Set(['enforced', 'consistent', 'framework'])
+    P.PARITY = cut('PARITY', [...D.PARITY.filter(p => !kept.has(p[3])), ...D.PARITY.filter(p => kept.has(p[3]))], PAGE_MAX.PARITY)
+  }
+  if (D.AUTH) P.AUTH = cut('AUTH', D.AUTH, PAGE_MAX.AUTH)
+  if (D.NEXT?.items) P.NEXT = { ...D.NEXT, items: cut('NEXT', D.NEXT.items, PAGE_MAX.NEXT) }
+  if (D.DOCS?.sentences) P.DOCS = { ...D.DOCS, sentences: [] } // the docs/ folder holds them; no view reads them
+  if (D.UITESTS?.skipped) P.UITESTS = { ...D.UITESTS, skipped: cut('UITESTS', D.UITESTS.skipped, PAGE_MAX.UITESTS) }
+  if (D.COVERAGE?.classes) {
+    const C = D.COVERAGE, rank = { fail: 0, none: 1, likely: 2, spec: 3, gen: 4, tested: 5 }
+    let heat = C.heat
+    if (heat?.rows?.length > PAGE_MAX.HEAT) { CUT.HEAT = [PAGE_MAX.HEAT, heat.rows.length]; heat = { ...heat, rows: heat.rows.slice(0, PAGE_MAX.HEAT), cells: heat.cells.slice(0, PAGE_MAX.HEAT) } }
+    const need = new Set([...(heat?.cells || []).flat(2), ...(C.next || []).map(n => n.id)])
+    const classes = C.classes.length <= PAGE_MAX.COVERAGE ? C.classes : C.classes.filter(c => need.has(c.id)).concat(C.classes.filter(c => !need.has(c.id)).sort((a, b) => (rank[a.st] ?? 9) - (rank[b.st] ?? 9))).slice(0, Math.max(PAGE_MAX.COVERAGE, need.size))
+    if (classes.length < C.classes.length) CUT.COVERAGE = [classes.length, C.classes.length]
+    P.COVERAGE = { ...C, heat, classes }
+  }
+  P.CUT = CUT
+  return P
+}
 function buildHtml(D) {
   const t = fs.readFileSync(path.join(ROOT, 'atlas', 'template.html'), 'utf8')
   const m = D.META
   return t.replace(/\{\{TITLE\}\}/g, m.title).replace('{{EYEBROW}}', `Discovery run · ${m.app} · ${m.license} · ${m.scope} · ${m.run}`)
     .replace('{{LEDE}}', m.lede).replace('{{LAYOUT}}', LAYOUT === 'single' ? 'single' : 'pages').replace('{{URL}}', m.url).replace('{{APP}}', m.app.replace(/^/, 'github.com/'))
     .replace('/*ADDON_VIEWS*/', () => addons.filter(a => a.views).map(a => fs.readFileSync(a.views, 'utf8')).join('\n'))
-    .replace('/*ATLAS_DATA*/null', () => JSON.stringify(D).replace(/</g, '\\u003c'))
+    .replace('/*ATLAS_DATA*/null', () => JSON.stringify(pageData(D)).replace(/</g, '\\u003c'))
 }
 
 // ---------- images: one PNG per view, plus extras the Markdown needs ----------
@@ -181,7 +234,7 @@ async function main() {
     files.push([s, file])
     const views = s.views.flatMap(v => [`**${s.code}-${v.k} ${v.label}**`, '', img(s.code, v.k, v.label), '', ...(s.code === 'STA' && v.k === 'A' ? ['Same machine, Node layer (red = differs from the UI):', '', `![STA-A Node layer](../images/STA-A-node.png)`, ''] : [])])
     const out = ['---', `app: ${m.app}`, `scope: ${m.scope}`, `run: ${m.run}`, `topic: ${s.code}`, `title: ${s.name}`, `views: [${s.views.map(v => s.code + '-' + v.k).join(', ')}]`, 'source: atlas-data.json', `facts: ${(m.sources || {})[s.code] || 'curated'}`, '---', '',
-      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || ((m.sources || {})[s.code] ? (m.sources || {})[s.code] : 'curated from the deep read (not yet generated)')}._`, '', topicText(s.code, D, extra), '', ...addons.map(a => a.topicAppend?.(s.code, D)).filter(Boolean).flatMap(t => [t, '']), '## Views', '', ...views,
+      `# ${s.code} · ${s.name}`, '', `> ${md(s.take)}`, '', '## Facts', '', `_Facts ${({ generated: 'generated from the knowledge graph', 'generated + agent': 'generated from the knowledge graph, plus agent findings (marked "agent review")' })[(m.sources || {})[s.code]] || ((m.sources || {})[s.code] ? (m.sources || {})[s.code] : 'curated from the deep read (not yet generated)')}._`, '', capTables(topicText(s.code, D, extra)), '', ...addons.map(a => a.topicAppend?.(s.code, D)).filter(Boolean).flatMap(t => [capTables(t), '']), '## Views', '', ...views,
       `[Back to the index](../README.md)`, '']
     fs.writeFileSync(path.join(outDir, 'topics', file), out.join('\n'))
   })

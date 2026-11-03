@@ -57,7 +57,7 @@ Each collector calls the same functions the atlas uses, so the two never disagre
 | `handler-check` | addon `runtime` in CI: registered but not parsed, or parsed but not registered | confirmed / suspected | settles `handler-missing` for that action |
 | `ai-finding` | `bin/ai-merge.js`: an AI answer that passed the gate | suspected | settles the gap it answers as `answered` |
 
-Gaps without a finding: `class-expectation` (an equivalence class whose expected outcome says "verify"), `slice-review` (the 10 fixed questions per slice, piece 12) and `business-criticality` (a person sets the slice weight, piece 6).
+Gaps without a finding: `class-expectation` (an equivalence class whose expected outcome says "verify"), `slice-review` (the 10 fixed questions per slice, piece 12; only for the 20 riskiest slices, `DISCOVERY_SLICE_REVIEWS`) and `business-criticality` (a person sets the weight once per service, for all its slices, piece 6). An operation that is allowed for own rows only (a `where` clause) is no `authz-unclear` gap: the per-service row-level risk asks for the cross-user test.
 
 ### D4. Every finding says how it was found and how sure it is
 - `method`: static (files and CAP's compiler), measured (the running app), ai (an LLM, through the gate), human (a person, e.g. the curated file).

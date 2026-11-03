@@ -57,5 +57,11 @@ Goal: turn every class from piece 8 that has a concrete request into a test that
 | startup pass = ≥ 1 ApplicationService served | discover.yml | – |
 | test timeout 60 s, startup timeout 120 s | discover.yml | slow apps time out |
 
+## Test setup in every file (lib/runtime/sqlite-shim.js)
+Each generated file, the startup check and the authorization probe start with a short setup block:
+- **HANA-only views on SQLite:** parameterized views (`entity X(p : Date) as select …`) cannot be deployed to SQLite, and one of them failed the whole in-memory deployment of a real app, so no test ran. They are marked `@cds.persistence.skip` for the test run (re-applied on `connect`, because compile steps between load and deploy drop the mark); requests to them need HANA and get no generated test (`hanaOnly` in `manifest.json`). Off: `DISCOVERY_SQLITE_SHIM=off`.
+- **One mock user per role:** every role from `xs-security.json` and `@requires`/`@restrict` that no configured mock user holds gets `discovery-<role>` (and `discovery-norole` when every user has a role), added to the mocked users at bootstrap; the app's own users win. They appear in the AUT matrix as "added for tests". Off: `DISCOVERY_SYNTHETIC_USERS=off`.
+- **Startup failure is red:** the job summary opens with a caution block and the first error line, and the action fails the job after summary and artifact (`fail-on-startup`, default true).
+
 ## Output
 `run/tests/generated/*.test.js`, `manifest.json` and `README.md`. In CI also `out/jest-startup.json` and `out/jest-generated.json`, which the addons read in piece 11.

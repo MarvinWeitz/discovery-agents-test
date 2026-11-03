@@ -20,13 +20,14 @@ Goal: cut the graph into vertical feature slices (UI route â†’ service entity â†
   - a composition child of another service entity.
 - Plus each service that has actions but no seed entity (for example, a job API with only actions).
 - **Why:** one business object (a draft root with its children) is one feature. Code lists and texts are shared master data, not features.
+- **One slice per domain entity:** seeds that project on the same persisted entity (the same entity exposed in several services) form one slice, named `<Entity> in <Service>, <Service> +n`. A real app exposed its entities in up to five services each, which made 971 slices out of one feature set.
 
 ### D2. What joins the slice
 Starting from the seed, in this order:
 1. its service,
 2. its compositions, recursively,
 3. the projection chain down to persisted entities, and their compositions,
-4. associations, projections and compositions transitively, **up to 4 hops**, but never into another seed (master data, code lists and value helps come along),
+4. associations, projections and compositions transitively, **up to 4 hops**, but never into another seed or into the persisted entity another slice is built around (master data, code lists and value helps come along; on a densely associated model the biggest slice used to hold 921 members),
 5. elements and bound actions of every entity in the slice; unbound actions join the first slice of their service, once,
 6. UI: routes that show a member, views that bind to one, their apps and UI handlers; views of those apps that bind to nothing specific (Fiori elements extensions),
 7. handlers on a member, or on the whole service with no target, plus event subscribers that write to a member; with their rules, events, service calls and file, and the remote systems reached from that file and the files it imports (up to 3 levels),

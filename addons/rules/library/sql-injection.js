@@ -33,7 +33,7 @@ module.exports = {
         })
       }
       // a string built from parts: an untagged template with ${...} or a + concatenation
-      const built = a => a && (ts.isTemplateExpression(a) ? a.templateSpans.some(s => isTainted(s.expression)) : ts.isBinaryExpression(a) && a.operatorToken.kind === ts.SyntaxKind.PlusToken ? isTainted(a) : ts.isIdentifier(a) && ts.isTemplateExpression(decl(a)) ? built(decl(a)) : false)
+      const built = a => a && (ts.isTemplateExpression(a) ? a.templateSpans.some(s => isTainted(s.expression)) : ts.isBinaryExpression(a) && a.operatorToken.kind === ts.SyntaxKind.PlusToken ? isTainted(a) : ts.isIdentifier(a) && decl(a) && ts.isTemplateExpression(decl(a)) ? built(decl(a)) : false)
       const decl = id => { let d = null; sf.forEachChild(function v(n) { if (!d && ts.isVariableDeclaration(n) && ts.isIdentifier(n.name) && n.name.text === id.text) d = n.initializer; n.forEachChild(v) }); return d }
       sf.forEachChild(function visit(n) {
         if (ts.isCallExpression(n) && SINK.test(src(n.expression).replace(/\s+/g, '')) && n.arguments.length && built(n.arguments[0])) {

@@ -33,7 +33,7 @@ The toolkit is meant to sit in a **private repo on your GitHub Enterprise** (Clo
        comment: true                    # one PR comment, updated on every push
    ```
 
-   Inputs: `path`, `app`, `ui`, `mode`, `tests`, `install`, `out`, `docs`, `images`, `opengrep`, `summary`, `comment`, `artifact`, `fail-on-error` (see [action.yml](action.yml)). Outputs: `status`, `startup`, `generated`, `aftertests`, `out`, `app`, `ui`.
+   Inputs: `path`, `app`, `ui`, `mode`, `tests`, `install`, `out`, `docs`, `images`, `opengrep`, `summary`, `comment`, `artifact`, `fail-on-error`, `fail-on-startup` (default true: the job fails when the app did not start under cds.test, so no runtime test ran) (see [action.yml](action.yml)). Outputs: `status`, `startup`, `generated`, `aftertests`, `out`, `app`, `ui`.
 
 2. **CLI** (laptop, any other CI such as Azure DevOps, GitLab, Jenkins). Install it once outside the project; git reads the private repo with your normal credentials for that host:
 
