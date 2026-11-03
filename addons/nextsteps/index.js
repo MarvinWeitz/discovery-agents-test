@@ -8,6 +8,8 @@ const path = require('path')
 const { build, KIND } = require('./nextsteps')
 
 const cell = s => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ')
+// the Markdown lists the top steps only; the rest stays in atlas-data.json (NEXT.items) and on the page
+const TOP = +process.env.DISCOVERY_NEXT_TOP || 25
 
 function prepare(D) {
   D.NEXT = build(D)
@@ -25,13 +27,15 @@ const head = ['| Priority | Id | Step | What | Sections | Evidence | Score |', '
 const topics = {
   NXT: D => {
     const N = D.NEXT, P = N.prompt
-    return [`Priority = impact × likelihood (1–5 each): P1 ≥ 16, P2 ≥ 9, P3 below. An item that several sections point at (same file:line) is listed once.`, '',
-      ...head, ...N.items.map(row), '',
+    const top = N.items.slice(0, TOP)
+    return [`Priority = impact × likelihood (1–5 each): P1 ≥ 16, P2 ≥ 9, P3 below. An item that several sections point at (same file:line) is listed once; many similar items (untested classes of one category, access checks in one service) are one step.`, '',
+      ...(N.items.length > TOP ? [`The ${TOP} highest-ranked of ${N.items.length} steps (${N.counts.P1} P1, ${N.counts.P2} P2, ${N.counts.P3} P3). The full ranked list with every prompt is in \`atlas-data.json\` under \`NEXT.items\`, and on the NXT page of index.html.`, ''] : []),
+      ...head, ...top.map(row), '',
       '## Prompts', '',
       'To hand items to a coding agent, paste the header, then the blocks of the items you want, then one closing instruction.', '',
       '### Header', '', '```text', P.header, '```', '',
       ...Object.values(P.modes).flatMap(m => [`### Closing: ${m.label}`, '', '```text', m.text, '```', '']),
-      '### Item blocks', '', ...N.items.flatMap(x => ['```text', x.block, '```', ''])].join('\n')
+      `### Item blocks${N.items.length > TOP ? ` (top ${TOP})` : ''}`, '', ...top.flatMap(x => ['```text', x.block, '```', ''])].join('\n')
   }
 }
 

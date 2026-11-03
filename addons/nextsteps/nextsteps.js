@@ -45,12 +45,18 @@ function items(D) {
   }
 
   const roles = (D.ROLES || []).map(r => r[1])
+  const unclearBy = new Map() // one "check access" step per service, not per operation (big apps have hundreds)
   for (const a of D.AUTH || []) {
     const cells = a.c.map(c => typeof c === 'string' ? { v: c } : c)
     const open = roles.filter((_, k) => cells[k]?.v === 'r'), unclear = roles.filter((_, k) => cells[k]?.v === 'a')
     const pii = /PII/.test(a.op)
     if (open.length) add({ sec: 'AUT', ref: a.op, kind: 'fix', title: `${a.op} open to ${open.length === roles.length ? 'every caller' : open.join(', ')}`, why: `${a.svc || ''}: allowed without the role you would expect${pii ? '; the entity holds personal data' : ''}.${a.note ? ' ' + a.note : ''}`, ev: a.ev, i: pii ? 5 : 3, l: 4, done: `A cds.test calls ${a.op.replace(/ \(.*/, '')} as ${open[0]} and expects 401/403.` })
-    if (unclear.length) add({ sec: 'AUT', ref: a.op + ' (unclear)', kind: 'verify', title: `Check access: ${a.op} as ${unclear.join(', ')}`, why: 'The grant depends on inheritance or on the auth setup in front of the service.', ev: a.ev, i: 2, l: 3, join: false, done: 'Observed status per user, recorded in a cds.test.' })
+    if (unclear.length) { const k = a.svc || a.service || 'app'; if (!unclearBy.has(k)) unclearBy.set(k, []); unclearBy.get(k).push({ a, unclear }) }
+  }
+  for (const [svc, l] of unclearBy) {
+    const { a, unclear } = l[0]
+    if (l.length === 1) add({ sec: 'AUT', ref: a.op + ' (unclear)', kind: 'verify', title: `Check access: ${a.op} as ${unclear.join(', ')}`, why: 'The grant depends on inheritance or on the auth setup in front of the service.', ev: a.ev, i: 2, l: 3, join: false, done: 'Observed status per user, recorded in a cds.test.' })
+    else add({ sec: 'AUT', ref: `${svc} (unclear)`, kind: 'verify', title: `Check access: ${l.length} operations in ${svc} depend on row filters or inheritance`, why: `${l.slice(0, 6).map(x => `${x.a.op} as ${x.unclear.slice(0, 3).join(', ')}`).join('; ')}${l.length > 6 ? `; and ${l.length - 6} more (AUT matrix)` : ''}. The grant depends on a where clause, on inheritance or on the auth setup in front of the service.`, ev: l.slice(0, 3).map(x => x.a.ev), i: 2, l: 3, join: false, done: 'Observed status per user and operation, recorded in cds.test (one test per filter shape is enough to start).' })
   }
 
   for (const t of D.TR || []) {
@@ -73,7 +79,20 @@ function items(D) {
   const rows = new Map((D.CLASSES || []).map(r => [r[1], r]))
   const classes = D.COVERAGE?.classes?.filter(c => c.st === 'none' || c.st === 'likely' || c.st === 'fail')
     ?? (D.CLASSES || []).filter(r => !r[6]).map(r => ({ id: r[1], name: r[2], cat: r[0], st: 'none' }))
+  // one step per category and state for untested classes when there are many; failing tests stay one step each
+  const GROUP_AT = 8
+  const bucket = new Map()
+  for (const c of classes) { const k = `${c.cat}|${c.st}`; if (!bucket.has(k)) bucket.set(k, []); bucket.get(k).push(c) }
+  for (const [k, cs] of bucket) {
+    const [cat, st] = k.split('|')
+    if (st === 'fail' || cs.length < GROUP_AT) continue
+    add({ sec: D.COVERAGE ? 'COV' : 'TST', also: D.COVERAGE ? ['TST'] : [], ref: `${cat}: ${cs.length} ${st === 'likely' ? 'maybe covered' : 'untested'}`, kind: 'test',
+      title: `Test ${cs.length} ${cat} classes${st === 'likely' ? ' that an existing test may touch' : ' no test touches'}`,
+      why: `${cat}. For example: ${cs.slice(0, 5).map(c => `${c.id} (${c.name})`).join('; ')}${cs.length > 5 ? `; and ${cs.length - 5} more (COV / TST topic, atlas-data.json)` : ''}.${st === 'likely' ? ' Name match only.' : ''}`,
+      ev: '', i: CW[cat] ?? 2, l: st === 'none' ? 3 : 2, join: false, done: `Passing cds.test cases whose titles start with the class ids, starting with the first ${Math.min(10, cs.length)}: ${cs.slice(0, 10).map(c => c.id).join(', ')}.` })
+  }
   for (const c of classes) {
+    if (c.st !== 'fail' && bucket.get(`${c.cat}|${c.st}`).length >= GROUP_AT) continue
     const r = rows.get(c.id) || []
     add({ sec: D.COVERAGE ? 'COV' : 'TST', also: D.COVERAGE ? ['TST'] : [], ref: c.id, kind: 'test', title: `${c.st === 'fail' ? 'Fix failing test' : 'Test'}: ${c.name}`, why: `${c.cat}. ${r[3] ? 'Input: ' + r[3] + '. ' : ''}${r[4] && r[4] !== 'verify' ? 'Expected: ' + r[4] + '. ' : r[4] ? 'Expected: not known yet, record what the app does. ' : ''}${c.st === 'likely' ? 'An existing test may touch it (name match only).' : c.st === 'fail' ? 'Its test fails.' : 'No test touches it.'}`, ev: '', i: CW[c.cat] ?? 2, l: c.st === 'fail' ? 4 : c.st === 'none' ? 3 : 2, join: false, done: `A passing cds.test whose title starts with "${c.id}".` })
   }
