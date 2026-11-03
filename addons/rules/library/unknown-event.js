@@ -1,7 +1,7 @@
 // From the stress corpus (seeds event-emit-undeclared, event-subscribe-typo): an event emitted on, or subscribed
 // to on, a service of this app that does not declare it. Emitter and subscribers must use the same name; an
 // undeclared name is usually a typo, and the subscriber then never runs.
-const { short, local } = require('./_cap')
+const { short, local, internalEvents } = require('./_cap')
 module.exports = {
   key: 'unknown-event',
   title: 'Event emitted or subscribed to that the service does not declare',
@@ -16,7 +16,7 @@ module.exports = {
     for (const e of g.edges.filter(e => e.rel === 'emits')) {
       const svc = e.props?.on || g.nodes.get(e.from)?.props?.service
       const name = e.to.replace(/^event:/, ''), ev = name.startsWith(svc + '.') ? name.slice(svc.length + 1) : name
-      if (!svc || !local(csn, svc) || declared(`${svc}.${ev}`)) continue
+      if (!svc || !local(csn, svc) || declared(`${svc}.${ev}`) || internalEvents(g, svc).has(ev)) continue // emit + own srv.on: in-process event
       const known = Object.keys(csn.definitions).filter(n => n.startsWith(svc + '.') && csn.definitions[n].kind === 'event').map(short)
       out.push({ ev: e.evidence, t: `emit('${ev}') on ${short(svc)}: event not declared`, d: `${e.evidence} emits '${ev}' on ${svc}, which declares ${known.length ? `only ${known.join(', ')}` : 'no events'}. Subscribers to the declared events never hear about it.` })
     }

@@ -28,7 +28,7 @@ function facts(D, { g, csn, root, out }) {
   if (out) {
     fs.mkdirSync(path.join(out, 'pr'), { recursive: true })
     fs.writeFileSync(path.join(out, 'pr', 'rules.md'), ['### Rules from agent findings', '', '| Rule | Status | Run by | Hits here | Reproduces |', '| --- | --- | --- | --- | --- |',
-      ...res.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${r.via} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '`').join(', ') || '–'} | ${r.reproduces.join(', ') || '–'} |`), ''].join('\n'))
+      ...res.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${r.via} | ${r.error ? '❌ **check failed** (counts as not run): ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '`').join(', ') || '–'} | ${r.reproduces.join(', ') || '–'} |`), ''].join('\n'))
   }
 }
 
@@ -49,7 +49,7 @@ function findings(B, { D }) {
 const topics = {
   RLS: D => ['Rules drafted by agents from their own findings, reviewed and accepted like code. A draft only reports; an accepted rule adds risks and retires the agent finding it reproduces. Each rule has a unit test in `addons/rules/library/<key>.test.js`.', '',
     '| Rule | Status | Drafted from | Run by | Hits on this app | Reproduces agent finding |', '| --- | --- | --- | --- | --- | --- |',
-    ...D.RULES.rules.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${cell(r.from)} | ${r.via || 'own detect()'} | ${r.error ? 'error: ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '` ' + cell(h.t)).join('<br>') || '–'} | ${r.reproduces.join(', ') || '–'} |`)].join('\n')
+    ...D.RULES.rules.map(r => `| \`${r.key}\` ${cell(r.title)} | ${r.status} | ${cell(r.from)} | ${r.via || 'own detect()'} | ${r.error ? '❌ **check failed** (counts as not run): ' + cell(r.error) : r.hits.map(h => '`' + h.ev + '` ' + cell(h.t)).join('<br>') || '–'} | ${r.reproduces.join(', ') || '–'} |`)].join('\n')
 }
 
 module.exports = { facts, findings, topics, views: path.join(__dirname, 'view.js') }

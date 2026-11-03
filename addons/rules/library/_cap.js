@@ -29,4 +29,14 @@ function lev(a, b) {
   return d[a.length][b.length]
 }
 
-module.exports = { PSEUDO_ROLES, GENERIC_EVENTS, isGeneric, short, local, operations, lev }
+// In-process async events: a service emits a name on itself and has its own srv.on for it (smart-core review,
+// 2026-11-03). CAP delivers it without an event declaration, so it is a pattern, not an unknown event plus an
+// orphan handler. Returns the event names (short) per service.
+function internalEvents(g, svc) {
+  const hs = g.byType('Handler').filter(h => h.props.service === svc)
+  const emitted = new Set(hs.flatMap(h => g.out(h.id, 'emits').filter(e => !e.props?.on || e.props.on === svc).map(e => e.to.replace(/^event:/, '').replace(svc + '.', ''))))
+  const handled = new Set(hs.filter(h => h.props.phase === 'on').flatMap(h => h.props.events || []))
+  return new Set([...emitted].filter(e => handled.has(e)))
+}
+
+module.exports = { PSEUDO_ROLES, GENERIC_EVENTS, isGeneric, short, local, operations, lev, internalEvents }
