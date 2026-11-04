@@ -69,7 +69,7 @@ jobs:
           DISCOVERY_TEST_PROFILE: pg
           DISCOVERY_TEST_BEFORE: test:db:before
         run: |
-          node ../toolkit/bin/cap-discovery.js test | tee ../profile.log
+          node ../toolkit/bin/cap-discovery.js test 2>&1 | tee ../profile.log   # Jest logs to stderr
           r=.discovery/reports/tests.json; jq -c . $r
           test "$(jq -r '[.startup,.generated,.db.mode,.db.kind,.db.deployed,.db.hanaTests]|join(",")' $r)" = "success,success,profile,postgres,true,skipped"
           grep -q "before hook ran with CDS_ENV=pg" ../profile.log
