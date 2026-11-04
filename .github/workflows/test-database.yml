@@ -1,0 +1,94 @@
+# Test database switch (discovery.config.json "test", docs/test-database.md) end to end on the synthetic app
+# test/fixtures/db-app (a parameterized HANA-only view, roles, an action, a [pg] profile), with a real Postgres:
+#   sqlite    no test block: in-memory SQLite + shim, HANA-only tests skipped (the default must not change)
+#   profile   DISCOVERY_TEST_PROFILE=pg: the app's own before script, the toolkit deploys the model into Postgres,
+#             @cap-js/postgres added to the test runtime, generated tests run against Postgres
+#   url       the app started by test.start (cds-serve on Postgres), tests over HTTP
+# Real HANA cannot run here (no HANA in a public CI); the HANA path differs only in "shim off + hana/ tests copied",
+# which the unit test test/test-database.test.js and the profile job's log lines cover.
+name: Test database
+
+on:
+  pull_request:
+    paths:
+      - 'lib/runtime/**'
+      - 'bin/gen-tests.js'
+      - 'bin/cap-discovery.js'
+      - 'test/fixtures/db-app/**'
+      - '.github/workflows/test-database.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: discovery
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DISCOVERY_IMAGES: 'off'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: toolkit
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - name: Install toolkit
+        working-directory: toolkit
+        run: npm ci --ignore-scripts --legacy-peer-deps --no-audit --no-fund
+      - name: The synthetic app as its own repository
+        run: |
+          cp -r toolkit/test/fixtures/db-app app
+          cd app && git init -q && git add -A && git -c user.email=ci@example.com -c user.name=ci commit -qm fixture
+          npm install --no-audit --no-fund
+      - name: Static run (once, shared by the three test runs)
+        working-directory: app
+        run: node ../toolkit/bin/cap-discovery.js run
+
+      - name: sqlite (no test block)
+        working-directory: app
+        run: |
+          node ../toolkit/bin/cap-discovery.js test
+          r=.discovery/reports/tests.json; jq -c . $r
+          test "$(jq -r '[.startup,.generated,.db.mode,.db.hanaTests]|join(",")' $r)" = "success,success,sqlite,skipped"
+
+      - name: profile pg (Postgres)
+        working-directory: app
+        env:
+          DISCOVERY_TEST_PROFILE: pg
+          DISCOVERY_TEST_BEFORE: test:db:before
+        run: |
+          node ../toolkit/bin/cap-discovery.js test | tee ../profile.log
+          r=.discovery/reports/tests.json; jq -c . $r
+          test "$(jq -r '[.startup,.generated,.db.mode,.db.kind,.db.deployed,.db.hanaTests]|join(",")' $r)" = "success,success,profile,postgres,true,skipped"
+          grep -q "before hook ran with CDS_ENV=pg" ../profile.log
+          grep -q "connect to db > postgres" ../profile.log
+          # the data really is in Postgres (the generated tests read it from there)
+          PGPASSWORD=postgres psql -h localhost -U postgres -d discovery -tAc 'select count(*) from shop_books' | grep -qx 2
+
+      - name: url (app started by test.start, on Postgres)
+        working-directory: app
+        env:
+          DISCOVERY_TEST_PROFILE: pg
+          DISCOVERY_TEST_URL: http://localhost:4555
+          DISCOVERY_TEST_START: npx cds-serve --port 4555
+        run: |
+          node ../toolkit/bin/cap-discovery.js test
+          r=.discovery/reports/tests.json; jq -c . $r
+          test "$(jq -r '[.startup,.generated,.db.mode,.measured]|join(",")' $r)" = "success,success,url,skipped"
+          ! curl -s -o /dev/null http://localhost:4555 # stopped again
+      - name: Summary
+        if: always()
+        working-directory: app
+        run: node ../toolkit/bin/cap-discovery.js summary >> "$GITHUB_STEP_SUMMARY" || true

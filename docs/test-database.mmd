@@ -1,0 +1,11 @@
+flowchart LR
+  CFG["discovery.config.json<br/>test: { profile, before, after, url, start }"]
+  CFG -->|no test block| S["sqlite (default)<br/>cds.test · in-memory SQLite<br/>HANA-only views skipped (shim)"]
+  CFG -->|profile| P["profile<br/>CDS_ENV=&lt;profile&gt;<br/>before → deploy → tests → after"]
+  CFG -->|url| U["url<br/>start (your script) → wait<br/>tests over HTTP → stop"]
+  P --> H["HANA (HDI container)<br/>shim off · hana/ tests run<br/>your before deploys"]
+  P --> G["Postgres / SQLite file<br/>toolkit deploys model<br/>HANA-only views skipped"]
+  S --> R["reports/tests.json · db<br/>job summary: which database"]
+  H --> R
+  G --> R
+  U --> R

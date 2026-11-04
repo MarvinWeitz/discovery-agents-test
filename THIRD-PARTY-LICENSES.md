@@ -1,6 +1,6 @@
 # Third-party tools and licences
 
-Tracked as we go; legal review happens later. Nothing is bundled: every package is installed from npm by whoever runs the toolkit. Status as of 2026-11-01.
+Tracked as we go; legal review happens later. Nothing is bundled: every package is installed from npm by whoever runs the toolkit. Status as of 2026-11-04.
 
 ## Used by the toolkit
 
@@ -65,6 +65,10 @@ Nothing new is bundled. The CLI install (`npm install -g git+https://<host>/<org
 | `actions/setup-node`, `actions/upload-artifact` | v4 | MIT | Steps inside `action.yml` | OK |
 | `@cap-js/cds-test`, `@cap-js/sqlite`, `jest` | the project's, else 0.x / 1.x–2.x / 29 | Apache-2.0 (cap-js), MIT (Jest) | Test runtime when the project does not bring them; installed from npm, not bundled | OK |
 | `@sap/cds-dk` | latest, CI only | SAP Developer License | `npm i -g` in the action for TypeScript / cds-typer apps (as before in the workflow) | Review needed. Installed by the customer's CI run, never bundled |
+| `@cap-js/postgres` (with `pg`), `@cap-js/hana` (with `hdb`) | the project's, else 2.x (cds 9) / 1.x (cds 8) | Apache-2.0 (cap-js), MIT (`pg`), Apache-2.0 (`hdb`) | Test database switch (`docs/test-database.md`): added to the test runtime only when the project's test profile needs the database and the project lacks the package; installed from npm, not bundled | OK |
+| `@sap/hdi-deploy` | the project's own build (`gen/db`) | SAP Developer License | Only in the documented HANA example: the customer's own `before` script deploys their HDI container | Review needed only for the customer's own use. The toolkit never installs or calls it |
+| `postgres:16` Docker image | 16 | PostgreSQL License (permissive) | CI service container in `.github/workflows/test-database.yml` for the synthetic fixture; the documented Docker example | OK |
+| `@mermaid-js/mermaid-cli` | 11.4.2, one-off | MIT | Rendered `docs/test-database.png` once (`npx`), not a dependency | OK |
 | Claude Code plugin format (`.claude-plugin/`) | n/a | our own files | Marketplace + plugin manifest so a project can enable the agents and skills | OK; using the plugin needs the user's own Claude Code licence |
 
 ## Reference only (not used, licence blocks commercial use)

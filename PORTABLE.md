@@ -66,7 +66,7 @@ Options: `--project`, `--app`, `--ui`, `--out` (default `.discovery`), `--report
 
 ## Configuration
 
-Your project's `discovery.config.json` is merged over the toolkit's defaults ([lib/config.js](lib/config.js)): objects key by key, everything else replaces. So `{"addons": {"mutation": false}}` turns one addon off and keeps the rest. Extra keys for portable mode: `"out"`, `"docs"`, `"app"`, `"ui"`. Environment switches (`DISCOVERY_MODE`, `DISCOVERY_ADDONS_OFF`, `DISCOVERY_STAGES_OFF`, `DISCOVERY_IMAGES=off`) still win.
+Your project's `discovery.config.json` is merged over the toolkit's defaults ([lib/config.js](lib/config.js)): objects key by key, everything else replaces. So `{"addons": {"mutation": false}}` turns one addon off and keeps the rest. Extra keys for portable mode: `"out"`, `"docs"`, `"app"`, `"ui"`. `"test"` chooses the database the generated tests run on: in-memory SQLite by default, or your own CDS profile (HANA HDI container, Postgres) with your own `before` and `after` scripts, or an app you start yourself (`url`). See [docs/test-database.md](docs/test-database.md). Environment switches (`DISCOVERY_MODE`, `DISCOVERY_ADDONS_OFF`, `DISCOVERY_STAGES_OFF`, `DISCOVERY_IMAGES=off`) still win.
 
 ## What it changes in your project
 
