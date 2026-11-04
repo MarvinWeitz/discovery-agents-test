@@ -43,7 +43,7 @@ When there is no `test` block, nothing changes: SQLite plus the shim, as before.
 
 ## What happens in each mode
 
-1. **The profile is read** with your app's own `@sap/cds` (`CDS_ENV=<profile>`) to learn the database kind. If the app lacks the database package (`@cap-js/hana`, `@cap-js/postgres`), it is added to the test runtime folder above the project, the same way Jest and SQLite are. Your `package.json` is not changed.
+1. **The profile is read** with your app's own `@sap/cds` (`CDS_ENV=<profile>`) to learn the database kind. If the app lacks the database package (`@cap-js/hana`, `@cap-js/postgres`), it is added to the test runtime folder above the project, the same way Jest and SQLite are. Your `package.json` is not changed. A package that is not in your `package.json` is not a CDS plugin of the app, so its database kind is passed to CAP through `CDS_CONFIG`. Add the package as a devDependency to skip this.
 2. **`before` runs** with `CDS_ENV` set.
 3. **Deploy:** for a database that is not HANA, the toolkit runs `cds.deploy` itself (`lib/runtime/deploy.js`). For HANA, your `before` script does it.
 4. **Startup check, generated tests, measured addon** run with `CDS_ENV=<profile>`. Test files run one after another (`--runInBand`), because they share one database.
