@@ -52,6 +52,12 @@ test('next steps: grouped, and the Markdown lists the top 25', () => {
   assert.ok(rows.length <= 25, `${rows.length} rows in the NXT table`)
 })
 
+test('no generated request targets an entity CAP only serves through its parent (auto-exposed, 405)', () => {
+  const nodes = jsonl('run/graph/nodes.jsonl').filter(n => n.type === 'ServiceEntity' && n.props.autoexposed && !n.props.autoexpose)
+  const body = read('run/tests/generated/authorization.test.js')
+  for (const n of nodes) { const e = n.id.split('.').pop(); assert.ok(!new RegExp(`GET /svc\\d+/${e}[?']`).test(body), `${n.id} requested directly`) }
+})
+
 test('page and Markdown stay small', () => {
   assert.ok(fs.statSync(path.join(out, 'atlas', 'index.html')).size < 1.6e6)
   for (const f of fs.readdirSync(path.join(out, 'atlas', 'topics'))) assert.ok(fs.statSync(path.join(out, 'atlas', 'topics', f)).size < 120000, f)
