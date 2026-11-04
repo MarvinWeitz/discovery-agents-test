@@ -81,7 +81,7 @@ function classify(classes, manifest, results = {}) {
   for (const c of classes) {
     const ts = tests[c.id] || []
     const today = ts.filter(t => t.kind === 'today'), spec = ts.filter(t => t.kind === 'spec')
-    c.tests = ts.map(t => ({ title: t.title, file: t.file, kind: t.kind, status: t.status || (ran ? 'missing' : 'not run') }))
+    c.tests = ts.map(t => ({ title: t.title, file: t.file, kind: t.kind, status: t.status || (t.db === 'hana' ? 'HANA only, not run' : ran ? 'missing' : 'not run') }))
     const hits = measured ? requestMatches({ dim: { entity: c.entity, op: c.op, users: c.users } }, measured) : null
     if (hits) c.measured = hits.length ? { n: hits.length, tests: [...new Set(hits.map(h => h.test || h.file))].slice(0, 3) } : null
     // with a measured run, the text scan is replaced by what the tests really sent
