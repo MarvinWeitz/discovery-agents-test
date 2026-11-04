@@ -147,7 +147,8 @@ function findings(B, { D }) {
     B.finding({ kind: 'authz-measured', key, method: 'measured', source: 'addons/measured (authz-probe.test.js)', status: differ.length ? 'refuted' : 'confirmed',
       title: `${r.method} ${r.url}: ${differ.length ? `${differ.length} cells differ from the static matrix` : 'as predicted'}`,
       statement: r.cells.map(c => `${c.user} ${c.status ?? c.measured}`).join(', ') + '.', severity: { level: differ.length ? 'warning' : 'good' }, evidence: s?.ev ? [s.ev] : [],
-      about: [findingId('authz', key)], resolves: hasGap && (settled.length || differ.length) ? [gapId('authz-unclear', key)] : [],
+      // resolve only a gap the static stage actually raised ("own rows only" rows raise none, lib/findings/static.js)
+      about: [findingId('authz', key)], resolves: hasGap && (!B.gaps || B.gaps.has(gapId('authz-unclear', key))) && (settled.length || differ.length) ? [gapId('authz-unclear', key)] : [],
       data: { op: r.op, method: r.method, url: r.url, cells: r.cells } })
   }
   for (const r of M?.rules?.never || []) {
