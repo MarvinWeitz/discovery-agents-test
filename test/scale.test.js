@@ -95,3 +95,25 @@ test('runtime: the app with a parameterized view boots on SQLite and the generat
   assert.ok(n('pass') > 100, `passed ${n('pass')}\n${r.stdout.slice(-2000)}`)
   assert.strictEqual(n('fail'), 0, r.stdout.split('\n').filter(l => /not ok|Error/.test(l)).slice(0, 10).join('\n'))
 })
+
+test('messaging without credentials runs locally; recognized by its class, not only its name', () => {
+  const { localMessaging } = require('../lib/runtime/sqlite-shim')
+  class MessagingService {}
+  global.__fakeMS = MessagingService
+  const dir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'lm-'))
+  fs.writeFileSync(path.join(dir, 'notifier.js'), 'module.exports = class extends global.__fakeMS {}')
+  fs.writeFileSync(path.join(dir, 'remote.js'), 'module.exports = class {}')
+  const requires = {
+    kinds: { 'local-messaging': { kind: 'local-messaging', impl: 'local.js' } },
+    bus: { impl: './notifier.js' },                                  // a plugin class, neutral name
+    messaging: { kind: 'enterprise-messaging', credentials: { url: 'x' } }, // bound: stays
+    API_X: { kind: 'odata', impl: './remote.js' },                    // remote service: stays
+    queue: { kind: 'persistent-queue' },                              // the outbox: stays
+  }
+  const out = localMessaging({ env: { requires }, MessagingService, root: dir })
+  fs.rmSync(dir, { recursive: true, force: true })
+  assert.deepStrictEqual(out, ['bus'])
+  assert.deepStrictEqual(requires.bus, { kind: 'local-messaging', impl: 'local.js' })
+  assert.strictEqual(requires.messaging.kind, 'enterprise-messaging')
+  assert.strictEqual(requires.API_X.kind, 'odata')
+})
