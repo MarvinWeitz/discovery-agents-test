@@ -24,7 +24,8 @@
     "discovery.config.json",
     "eslint.cds.config.mjs",
     "THIRD-PARTY-LICENSES.md",
-    "docs/stages.md"
+    "docs/stages.md",
+    "docs/test-database.md"
   ],
   "scripts": {
     "discover": "node bin/discover.js",

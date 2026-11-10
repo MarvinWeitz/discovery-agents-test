@@ -34,6 +34,8 @@ The app needs no `npm install`; the toolkit compiles the model with its own `@sa
 
 Run it in the project itself instead of from this repo: a GitHub Action step in the project's CI (`uses: <org>/<toolkit-repo>@main`), or the `cap-discovery` CLI (installed from the toolkit's git URL) with `run|all|docs` in any checkout, plus a Claude Code plugin for the AI pass. Private code never leaves the project, and the toolkit itself can live in a private GitHub Enterprise repo. `cap-discovery init` writes the workflow, a `discovery.config.json` (merged over the defaults here) and the Claude Code settings. Everything about it: [PORTABLE.md](PORTABLE.md); the files a project commits: [examples/consumer/](examples/consumer/).
 
+The generated tests run on in-memory SQLite by default. Apps with HANA-only views can run them on their own test database instead (a HANA HDI container, Postgres, or an app started with their own script) with a `test` block in `discovery.config.json`: [docs/test-database.md](docs/test-database.md).
+
 ## CI on a public sample
 
 `.github/workflows/sflight.yml` checks out `SAP-samples/cap-sflight` at a pinned commit, installs it the way its own CI does, runs `bin/pipeline.js` on it, then copies the generated cds.test files into the app and runs them with the app's Jest. With the `uitests` addon it also runs generated OPA5 UI tests for the UI promises in SFlight's Fiori app (headless Chromium, see [ADDONS.md](ADDONS.md)). The job summary lists every generated test with its result; the atlas, the run and the Jest reports are uploaded as the `sflight-discovery` artifact. SFlight's own `test/odata.test.ts` runs too, as a baseline.
@@ -93,4 +95,5 @@ Licences of every tool are tracked in [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICE
 
 - Coverage of existing tests is matched by user, entity and test name, so it is approximate.
 - Business criticality in the slice risk score is a placeholder (0.5).
+- On SQLite (the default) and Postgres, requests to HANA-only views are not tested; they run only with a HANA test profile ([docs/test-database.md](docs/test-database.md)).
 - Runtime behaviour (row-level filters during draft activation, anonymous access behind an approuter) is marked "verify" until a request confirms it.
