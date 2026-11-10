@@ -16,5 +16,9 @@
   },
   "atlas": {
     "layout": "pages"
+  },
+  "products": {
+    "inline": 12,
+    "preview": 10
   }
 }

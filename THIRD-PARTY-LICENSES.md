@@ -29,7 +29,7 @@ Tracked as we go; legal review happens later. Nothing is bundled: every package 
 | `ajv` | 8.17.1 | MIT | Validates findings, gaps, AI answers and the run manifest against the JSON Schemas in `schema/` | OK. Brings `fast-deep-equal` (MIT), `json-schema-traverse` (MIT), `fast-uri` (BSD-3-Clause), `require-from-string` (MIT) |
 | `git` | system | GPL-2.0 | Commit hash and churn (CLI only, not linked); step product "Hotspots and change coupling" reads `git log` | OK as a separate tool |
 | `marked` | 18.1.2 | MIT | Step products: renders each product's Markdown card as its HTML page | OK |
-| `d3-hierarchy` | 3.1.2 | ISC | Step products: squarified treemaps in the SVG cards (already pulled in by `d3`) | OK |
+| `d3-hierarchy` | 3.1.2 | ISC | Step products: squarified treemaps in the SVG cards and in `browse.html` (minified copy inlined, licence header kept; already pulled in by `d3`) | OK |
 | `@cap-js/openapi` | 1.4.x | Apache-2.0 | Step product "API surface": OpenAPI 3 per service from the compiled CSN | OK. Peer dependency on `@sap/cds` (the toolkit's or the customer's install, SAP Developer License, see above) |
 | `@cap-js/asyncapi` | 1.0.x | Apache-2.0 | Step product "API surface": AsyncAPI per service for declared events | OK. Same peer dependency as above |
 | Cytoscape.js | 3.30.2 | MIT | Step products: model and impact explorer page; loaded from cdnjs on the page, not bundled | OK |

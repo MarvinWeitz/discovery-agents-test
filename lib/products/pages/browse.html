@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>__TITLE__</title>
+<style>
+:root{--bg:#f6f8fa;--panel:#fff;--ink:#1f2328;--mute:#59636e;--line:#d1d9e0;--soft:#eef2f5;--accent:#0f6c8c}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mute:#9198a1;--line:#30363d;--soft:#1c232c;--accent:#4fb3d4;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--accent)}
+header{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+header h1{font-size:16px;margin:0}header span{color:var(--mute);font-size:13px}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;padding:10px 16px 0;max-width:1280px;margin:0 auto}
+.tabs button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px 6px 0 0;padding:5px 12px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tabs small{opacity:.75;margin-left:4px}
+main{max-width:1280px;margin:0 auto;padding:0 16px 60px}
+.what{color:var(--mute);margin:10px 0 6px;max-width:80ch}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;position:sticky;top:0;z-index:2}
+.bar label{display:flex;flex-direction:column;font-size:11.5px;color:var(--mute);gap:2px}
+input,select,button{font:inherit;font-size:13.5px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px;max-width:100%}
+input[type=search]{min-width:200px}select{max-width:230px}
+button{cursor:pointer}button:hover{border-color:var(--accent)}
+details.cols{position:relative}details.cols summary{list-style:none;cursor:pointer;border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:13.5px}
+details.cols div{position:absolute;z-index:3;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;max-height:300px;overflow:auto;min-width:220px;box-shadow:0 6px 20px #0003}
+details.cols div label{flex-direction:row;font-size:13px;color:var(--ink);gap:6px;align-items:center}
+.count{font-size:13px;color:var(--mute);margin:10px 0 4px}.count b{color:var(--ink)}
+.chart{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px;margin:6px 0 12px}
+.chart svg{display:block;max-width:none}
+.chart.fit svg{max-width:100%;height:auto}
+.tbl{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;font-size:13px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:5px 10px;text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--mute);position:sticky;top:0;background:var(--panel);cursor:pointer;white-space:nowrap}
+th[aria-sort=ascending]::after{content:" ▲"}th[aria-sort=descending]::after{content:" ▼"}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+td code{font-size:12px}
+.more{margin:8px 0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.hint{color:var(--mute);font-size:12.5px}
+.empty{padding:20px;color:var(--mute)}
+@media (max-width:640px){input[type=search]{min-width:0;width:100%}.bar label{flex:1 1 140px}.bar{position:static}}
+</style></head><body>
+<header><h1>__TITLE__</h1><span><a href="index.html">card</a> · <a href="README.md">Markdown</a> · <a href="../index.html">all products</a></span></header>
+<div class="tabs" role="tablist" id="tabs"></div>
+<main>
+  <p class="what" id="what"></p>
+  <div class="bar" id="bar"></div>
+  <div class="count" id="count"></div>
+  <div class="chart" id="chart"></div>
+  <div class="tbl" id="tbl"></div>
+  <div class="actions"><button id="copyMd">Copy as Markdown</button><button id="dlCsv">Download CSV</button><button id="copyLink">Copy link to this view</button><span class="hint" id="said"></span></div>
+</main>
+<script>__D3__</script>
+<script>window.SVG=(function(module,require){__SVGJS__;return module.exports})({exports:{}},function(){return d3})</script>
+<script>window.LV=(function(module){__LVJS__;return module.exports})({exports:{}})</script>
+<script type="application/json" id="data">__LISTS__</script>
+<script>
+const LISTS=JSON.parse(document.getElementById('data').textContent), IDS=Object.keys(LISTS)
+const $=id=>document.getElementById(id)
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))
+const link=s=>esc(s).replace(/\[([^\]]*)\]\(([^)\s]*)\)/g,(m,t,u)=>/^(https?:|[\w./#-]+$)/.test(u)?`<a href="${u}">${t}</a>`:t).replace(/`([^`]+)`/g,'<code>$1</code>')
+let cur=IDS[0], st={}, limit=200
+function readHash(){const h=decodeURIComponent(location.hash.slice(1)),[id,qs]=h.split('?');if(LISTS[id])cur=id
+  const p=new URLSearchParams(qs||''),L=LISTS[cur];st={q:p.get('q')||'',f:{},sort:p.get('sort')||'',dir:p.get('dir')||'',top:p.get('top')||'',pick:p.get('cols')?p.get('cols').split('~'):null}
+  for(const c of L.columns.filter(c=>c.facet))if(p.get(c.key))st.f[c.key]=p.get(c.key)}
+function writeHash(){const p=new URLSearchParams();if(st.q)p.set('q',st.q);for(const[k,v]of Object.entries(st.f))if(v)p.set(k,v)
+  if(st.sort)p.set('sort',st.sort);if(st.dir)p.set('dir',st.dir);if(st.top)p.set('top',st.top);if(st.pick)p.set('cols',st.pick.join('~'))
+  history.replaceState(null,'','#'+cur+(p.toString()?'?'+p:''))}
+function tabs(){$('tabs').innerHTML=IDS.length>1?IDS.map(id=>`<button role="tab" aria-selected="${id===cur}" data-id="${id}">${esc(LISTS[id].title)}<small>${LISTS[id].rows.length}</small></button>`).join(''):''
+  $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{cur=b.dataset.id;st={f:{}};limit=200;writeHash();draw(true)})}
+function bar(){const L=LISTS[cur],F=LV.facets(L),cols=L.chart?.cols||[]
+  let h=`<label>search<input type="search" id="q" value="${esc(st.q)}" placeholder="any text, several words"></label>`
+  for(const c of L.columns.filter(c=>c.facet)){h+=`<label>${esc(c.label)}<select data-f="${c.key}"><option value="">all (${F[c.key].length})</option>${F[c.key].map(([v,n])=>`<option value="${esc(v)}"${String(st.f[c.key]??'')===String(v)?' selected':''}>${esc(v||'(empty)')} · ${n}</option>`).join('')}</select></label>`}
+  const sk=L.columns
+  h+=`<label>sort by<select id="sort">${sk.map(c=>`<option value="${c.key}"${(st.sort||L.sort?.key)===c.key?' selected':''}>${esc(c.label)}</option>`).join('')}</select></label>`
+  h+=`<label>order<select id="dir"><option value="desc"${(st.dir||L.sort?.dir||'desc')==='desc'?' selected':''}>high → low / Z → A</option><option value="asc"${(st.dir||L.sort?.dir)==='asc'?' selected':''}>low → high / A → Z</option></select></label>`
+  if(L.chart)h+=`<label>picture shows<select id="top">${['10','25','50','100','all'].map(v=>`<option${(st.top||'25')===v?' selected':''}>${v}</option>`).join('')}</select></label>`
+  if(cols.length>6)h+=`<details class="cols"><summary>columns (${st.pick?st.pick.length:cols.length}/${cols.length})</summary><div>${cols.map(c=>`<label><input type="checkbox" value="${esc(c)}"${!st.pick||st.pick.includes(c)?' checked':''}>${esc(c)}</label>`).join('')}<button id="allCols" type="button">all</button></div></details>`
+  h+=`<button id="reset" type="button">reset</button>`
+  $('bar').innerHTML=h
+  $('q').oninput=e=>{st.q=e.target.value;limit=200;draw()}
+  $('bar').querySelectorAll('select[data-f]').forEach(s=>s.onchange=()=>{st.f[s.dataset.f]=s.value;limit=200;draw()})
+  $('sort').onchange=e=>{st.sort=e.target.value;draw()};$('dir').onchange=e=>{st.dir=e.target.value;draw()}
+  if($('top'))$('top').onchange=e=>{st.top=e.target.value;draw()}
+  $('bar').querySelectorAll('details.cols input').forEach(i=>i.onchange=()=>{const on=[...$('bar').querySelectorAll('details.cols input:checked')].map(x=>x.value);st.pick=on.length===cols.length?null:on;draw()})
+  if($('allCols'))$('allCols').onclick=()=>{st.pick=null;bar();draw()}
+  $('reset').onclick=()=>{st={f:{}};limit=200;bar();draw()}}
+function draw(full){const L=LISTS[cur];if(full){tabs();bar()}
+  $('what').textContent=L.what||''
+  const rows=LV.apply(L,st),n=rows.length,top=st.top==='all'?n:+(st.top||25)
+  const sortC=L.columns.find(c=>c.key===(st.sort||L.sort?.key))
+  $('count').innerHTML=`<b>${n}</b> of ${L.rows.length} ${esc(L.noun||'rows')}${n&&L.chart?` · picture: ${Math.min(n,top)} by ${esc(sortC?.label.toLowerCase()||'order')}`:''}`
+  const svg=L.chart?LV.chart(L,rows.slice(0,top),SVG,{pick:st.pick}):''
+  $('chart').style.display=svg?'':'none';$('chart').innerHTML=svg
+  $('chart').classList.toggle('fit',L.chart&&['tree','bars','stacked'].includes(L.chart.kind))
+  const T=LV.table(L,rows.slice(0,limit),{pick:st.pick}),nums=L.columns.filter(c=>!c.hide).map(c=>!!c.num)
+  const keys=L.columns.filter(c=>!c.hide).map(c=>c.key),sk=st.sort||L.sort?.key,dir=st.dir||L.sort?.dir||'desc'
+  $('tbl').innerHTML=n?`<table><thead><tr>${T.head.map((h,i)=>`<th data-k="${keys[i]||''}"${keys[i]===sk?` aria-sort="${dir==='asc'?'ascending':'descending'}"`:''}>${esc(h)}</th>`).join('')}</tr></thead><tbody>${T.body.map(r=>`<tr>${r.map((v,i)=>`<td${nums[i]?' class="num"':''}>${link(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>${n>limit?`<div class="more"><button id="more">show ${Math.min(n-limit,500)} more (${n-limit} hidden)</button></div>`:''}`:`<div class="empty">${esc(L.empty||'Nothing matches. Clear a filter or the search.')}</div>`
+  if($('more'))$('more').onclick=()=>{limit+=500;draw()}
+  $('tbl').querySelectorAll('th[data-k]').forEach(th=>{if(!th.dataset.k)return;th.onclick=()=>{const k=th.dataset.k;if((st.sort||L.sort?.key)===k)st.dir=(st.dir||L.sort?.dir||'desc')==='desc'?'asc':'desc';else{st.sort=k;st.dir=''};bar();draw()}})
+  writeHash()}
+function save(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const say=t=>{$('said').textContent=t;setTimeout(()=>$('said').textContent='',2500)}
+$('copyMd').onclick=()=>{const L=LISTS[cur],rows=LV.apply(L,st);navigator.clipboard.writeText(`## ${L.title}\n\n`+LV.markdown(L,rows,{pick:st.pick})+'\n').then(()=>say(`copied ${rows.length} rows`),()=>say('copy blocked by the browser'))}
+$('dlCsv').onclick=()=>{const L=LISTS[cur];save(cur+'.csv',LV.csv(L,LV.apply(L,st),{pick:st.pick}),'text/csv')}
+$('copyLink').onclick=()=>navigator.clipboard.writeText(location.href).then(()=>say('link copied'),()=>say('copy blocked by the browser'))
+addEventListener('hashchange',()=>{readHash();draw(true)})
+readHash();draw(true)
+</script></body></html>

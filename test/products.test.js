@@ -9,6 +9,9 @@ const os = require('os')
 const path = require('path')
 const { execFileSync } = require('child_process')
 const I = require('../lib/products/impact')
+const LV = require('../lib/products/listview')
+const svg = require('../lib/products/svg')
+const { build } = require('../lib/products')
 const { ORDER } = require('../lib/products')
 
 const BIN = f => path.join(__dirname, '..', 'bin', f)
@@ -38,6 +41,48 @@ test('impact: a db entity reaches its projection, the handler on it, the test th
   assert.match(I.markdown(G, 'entity:Orders', I.impact(G, 'entity:Orders', { depth: 3 }), { depth: 3 }), /Tests to run first: t/)
 })
 
+test('lists: filter, facet, sort; matrix drops empty columns; columns chart builds levels from paths', () => {
+  const L = { title: 'T', columns: [{ key: 'name', label: 'Name' }, { key: 'svc', label: 'Service', facet: true }, { key: 'tags', label: 'Tags', facet: true }, { key: 'n', label: 'N', num: true }],
+    rows: [{ name: 'Orders', svc: 'A', tags: ['x', 'y'], n: 3, _cells: [{ text: 'y' }, null, null], _path: [{ id: 'e:O', label: 'Orders' }, { id: 's:A.O', label: 'A.Orders' }] },
+      { name: 'Items', svc: 'B', tags: ['y'], n: 9, _cells: [null, { text: 'n' }, null], _path: [{ id: 'e:I', label: 'Items' }, { id: 's:B.I', label: 'B.Items' }] },
+      { name: 'Order notes', svc: 'A', tags: [], n: 1, _cells: [{ text: 'r' }, null, null], _path: [{ id: 'e:O', label: 'Orders' }, { id: 's:A.N', label: 'A.Notes' }] }],
+    sort: { key: 'n', dir: 'desc' }, chart: { kind: 'matrix', label: 'name', cols: ['c1', 'c2', 'c3'] } }
+  assert.deepStrictEqual(LV.apply(L).map(r => r.name), ['Items', 'Orders', 'Order notes'], 'default sort')
+  assert.deepStrictEqual(LV.apply(L, { q: 'order' }).map(r => r.name), ['Orders', 'Order notes'], 'search')
+  assert.deepStrictEqual(LV.apply(L, { f: { tags: 'y' }, sort: 'name', dir: 'asc' }).map(r => r.name), ['Items', 'Orders'], 'array facet + sort')
+  assert.deepStrictEqual(LV.facets(L).svc, [['A', 2], ['B', 1]])
+  assert.deepStrictEqual(LV.table(L, LV.apply(L, { f: { svc: 'A' } })).head, ['Name', 'Service', 'Tags', 'N', 'c1'], 'only live matrix columns')
+  assert.match(LV.markdown(L, L.rows), /^\| Name \| Service/)
+  assert.match(LV.csv(L, L.rows), /^Name,Service,Tags,N,c1,c2\n/)
+  assert.match(LV.chart({ ...L, chart: { kind: 'columns' } }, L.rows, svg), /A\.Notes/)
+})
+
+test('a large app: cards stay short (top rows + browse link), browse.html carries every row', () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'big-'))
+  const N = 400, nodes = [], edges = []
+  for (let i = 0; i < N; i++) {
+    nodes.push({ id: `entity:big.E${i}`, type: 'Entity', props: { name: `big.E${i}` }, evidence: `db/schema.cds:${i + 1}` }, { id: `svcentity:S.E${i}`, type: 'ServiceEntity', props: { name: `S.E${i}` }, evidence: `srv/s.cds:${i + 1}` })
+    edges.push({ from: `svcentity:S.E${i}`, rel: 'projects_on', to: `entity:big.E${i}` })
+  }
+  nodes.push({ id: 'service:S', type: 'Service', props: { name: 'S' }, evidence: 'srv/s.cds:1' })
+  for (let i = 0; i < N; i++) edges.push({ from: 'service:S', rel: 'exposes', to: `svcentity:S.E${i}` })
+  fs.mkdirSync(path.join(out, 'run', 'graph'), { recursive: true })
+  fs.writeFileSync(path.join(out, 'run', 'graph', 'nodes.jsonl'), nodes.map(n => JSON.stringify(n)).join('\n'))
+  fs.writeFileSync(path.join(out, 'run', 'graph', 'edges.jsonl'), edges.map(e => JSON.stringify(e)).join('\n'))
+  const { list } = build(out, { preview: 10, inline: 12 })
+  const model = list.find(s => s.id === 'model')
+  assert.strictEqual(model.status, 'ok', model.why)
+  assert.deepStrictEqual(model.lists, { entities: N, projections: N })
+  const card = fs.readFileSync(path.join(out, 'steps/model/README.md'), 'utf8')
+  assert.match(card, new RegExp(`Top 10 of ${N} entities`))
+  assert.ok(card.split('\n').length < 80, 'card stays short')
+  assert.ok(!/erDiagram/.test(card), 'no ER diagram for 400 entities')
+  const page = fs.readFileSync(path.join(out, 'steps/model/browse.html'), 'utf8')
+  const data = JSON.parse(page.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/)[1])
+  assert.strictEqual(data.entities.rows.length, N)
+  assert.strictEqual(read(path.join(out, 'steps/model/data/lists/projections.json')).rows.length, N)
+})
+
 test('a run publishes every step product in the same shape; query answers; CI results and a base run show up', { timeout: 300000 }, () => {
   const root = app({
     'package.json': JSON.stringify({ name: 'mini', dependencies: { '@sap/cds': '*' }, cds: { requires: { auth: { kind: 'mocked', users: { alice: { roles: ['admin'] }, bob: {} } } } } }),
@@ -62,6 +107,7 @@ test('a run publishes every step product in the same shape; query answers; CI re
   assert.strictEqual(by.model.status, 'ok')
   assert.ok(by.model.pages.includes('explorer.html'))
   assert.ok(by.model.data.includes('data/impact/Orders.md'))
+  assert.ok(by.model.pages.includes('browse.html'))
   assert.match(fs.readFileSync(path.join(out, 'steps/model/README.md'), 'utf8'), /```mermaid\nerDiagram/)
   assert.strictEqual(by.behaviour.kpis.find(k => k.label === 'handlers').value, 2)
   assert.strictEqual(by.tests.status, 'not-run', 'no Jest results in a static run')

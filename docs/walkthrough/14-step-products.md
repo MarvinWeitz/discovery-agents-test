@@ -1,6 +1,6 @@
 # 14 · Step products: every step publishes its own result
 
-**Code:** `bin/products.js`, `lib/products/` (one module per product in `lib/products/steps/`), `bin/query.js`
+**Code:** `bin/products.js`, `lib/products/` (one module per product in `lib/products/steps/`, lists in `lib/products/listview.js`), `bin/query.js`
 **Stage:** `products`, after `atlas` in `bin/pipeline.js`, again in `bin/after-tests.js` (CI, with the test results) and `bin/ai-merge.js`. Switch: `"stages": { "products": false }` or `DISCOVERY_STAGES_OFF=products`. Optional: a failure here never fails the run.
 
 ## What and why
@@ -11,8 +11,20 @@ The atlas is one big result at the end. Each step of the run already knows somet
 | --- | --- | --- |
 | L0 | `steps/<id>/summary.json` | 3-5 numbers and a status: start page tiles, PR comment, trends |
 | L1 | `steps/<id>/README.md` + `views/*.svg` | a short card with pictures and the top items. Agents read this first |
-| L2 | `steps/<id>/*.html` | an explorer: a proven viewer where one exists, our own only where none does |
+| L2 | `steps/<id>/*.html` | `browse.html` (every list, filterable) and an explorer: a proven viewer where one exists, our own only where none does |
 | L3 | `steps/<id>/data/` | the full data, in a standard format where one exists |
+
+## Large apps: nothing on a card grows with the app
+
+A card shows only what has a fixed size: numbers, charts over a fixed set of categories (stage timeline, profile matrix, severity × layer, findings by kind, verdicts, gate funnel, coverage per test category). Everything that grows with the app (entities, projections, entity sets, operations × users, handlers, pages, UI promises, files, findings, questions, classes, tests, requests) is a **list**:
+
+- On the card: the whole list while it has at most `products.inline` rows (12), otherwise the top `products.preview` rows (10) by the list's own order (most dependants, failures first, open without a role first, …), its picture drawn from those rows only, and "Top 10 of 1167 operations · Browse all 1167 with filters".
+- In `browse.html`: every row, with search, one filter per facet column (service, folder, severity, verdict, …), sort by any column, how many rows the picture draws, a column picker for wide matrices, and the current view in the link. Copy as Markdown or download CSV gives exactly the filtered rows.
+- In `data/lists/<id>.json`: the same rows as plain JSON, for agents.
+
+`"products": { "inline": 12, "preview": 10 }` in `discovery.config.json`; `preview: 0` keeps only the link. The Mermaid ER diagram is drawn up to 15 entities, the request sequence up to 12 handlers; past that the card links to the explorer or the filtered list. The model explorer draws only the part around the chosen entity once the graph has more than 300 nodes.
+
+Measured on a synthetic app with 240 entities, 12 services and 1,167 operations: the longest card is about 100 lines, the largest `browse.html` 1.2 MB (access, all 1,167 operations × 10 users).
 
 `steps/index.html` / `index.md` is the start page, `steps/products.json` the list. With `--base <other-out>`, every number also carries its change since that run.
 
@@ -61,4 +73,4 @@ Each answers in Markdown, so the cap-discovery skill or any agent can call it.
 - Portable mode (`cap-discovery all --docs <dir>`): copied to `<dir>/steps/`.
 - In every CI artifact under `<out>/steps/`.
 
-The pages load Cytoscape.js, Mermaid, Redoc and mutation-testing-elements from public CDNs (cdnjs, jsDelivr); the Markdown cards and SVGs work without them.
+The pages load Cytoscape.js, Mermaid, Redoc and mutation-testing-elements from public CDNs (cdnjs, jsDelivr); the Markdown cards, SVGs and `browse.html` (which carries its own copy of `svg.js`, `listview.js` and d3-hierarchy) work without them.
