@@ -4,7 +4,7 @@
 // lost class tests or newly open authorization cells appear (for a blocking check).
 const fs = require('fs')
 const path = require('path')
-const { diff } = require('./diff')
+const { diffWithBrief: diff } = require('./diff')
 const { render } = require('./report')
 
 const args = process.argv.slice(2)

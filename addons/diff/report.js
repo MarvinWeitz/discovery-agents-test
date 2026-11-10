@@ -1,6 +1,7 @@
 // Markdown for a run diff: the PR comment. GitHub renders the ```mermaid block as the
 // changed-nodes graph; everything else is plain tables so it also reads well for AI agents.
 const { short } = require('./diff')
+const { renderBrief } = require('./brief')
 
 const cell = s => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ')
 const code = s => s ? '`' + s + '`' : ''
@@ -62,6 +63,7 @@ function mermaid(d, max = 28) {
 function render(d, { title = 'Discovery diff', note = '' } = {}) {
   const h = headline(d), c = d.classes, L = []
   L.push(`## ${title}`, '', h.line, '', `<sub>${h.size} Base \`${String(d.base || '?').slice(0, 7)}\` → head \`${String(d.head || '?').slice(0, 7)}\`.${note ? ' ' + note : ''}</sub>`, '')
+  if (d.brief) L.push(...renderBrief(d.brief))
   if (d.risks.added.length) L.push('### 🔴 New risks', '', '| Id | Risk | Score | Found by | Evidence |', '| --- | --- | --- | --- | --- |', ...d.risks.added.map(r => `| ${r.id} | ${cell(r.t)} | ${r.i * r.l} | ${r.src === 'agent' ? 'agent' : 'rule ' + code(r.key)} | ${code(r.ev)} |`), '')
   if (d.patterns.breaks.length) L.push('### 🟠 Pattern breaks', '', '| Pattern | Where | Was → now | Evidence |', '| --- | --- | --- | --- |', ...d.patterns.breaks.map(p => `| ${cell(p.n)} | ${cell(p.w)} | ${p.was || 'new'} → **${p.h === 'cr' ? 'defect' : 'wrong place'}** | ${code(p.ev)} |`), '')
   const lost = [...c.lost.map(x => ({ ...x, how: `${ST[x.was]} → ${ST[x.st]}` })), ...c.removed.filter(x => x.lostTest).map(x => ({ ...x, how: `${ST[x.st]} → class gone` }))]

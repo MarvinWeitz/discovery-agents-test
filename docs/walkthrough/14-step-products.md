@@ -44,9 +44,11 @@ Measured on a synthetic app with 240 entities, 12 services and 1,167 operations:
 | API surface | EDMX, OpenAPI, AsyncAPI | Redoc per service | EDMX, OpenAPI 3 (`@cap-js/openapi`), AsyncAPI (`@cap-js/asyncapi`) |
 | Behaviour matrix | handler AST | – (Mermaid sequence in the card) | `handlers.json` |
 | Screen map | UI5, Fiori annotations | – | `ui-promises.json` |
+| Error messages | handler rejections, @mandatory / @assert | – | `messages.json` (status, entity, field, condition, translation, tested) |
 | Access map | authorization | – | `access.json` (static and measured) |
 | Code findings | lint, Opengrep, rules | VS Code SARIF Viewer, code scanning | SARIF 2.1.0 |
 | Hotspots and change coupling | git history | – | `hotspots.json`, `coupling.json` |
+| Risk per file | git history + findings + measured rules | – | `risk.json` (each signal scaled 0-1, score 0-3) |
 | Evidence ledger | findings and gaps | – | `findings.jsonl`, `gaps.jsonl` (JSON Schema) |
 | AI ledger | AI gap pass | – | `merge-log.json`, `requests.json` |
 | Classification tree | test design | – | `classes.json`, `class-seeds.json` |
@@ -71,6 +73,17 @@ node bin/query.js <out> tests-for srv/travel-service.ts:105
 ```
 
 Each answers in Markdown, so the cap-discovery skill or any agent can call it.
+
+## Changes since a base run, and the PR brief
+
+`node bin/products.js <out> --base <base-out>` adds two things to every card: numbers that moved (`Since the base run: rules -1`) and list items that are new or gone, by the list's key column (`+1 Customers`, `−1 Travel "…" has been approved already.`). `steps/changes.md` collects both for all products on one page.
+
+The PR comment of the diff addon (`addons/diff`) now opens with a review brief from `addons/diff/brief.js`:
+
+- **Tests to run.** Every changed handler, rule, helper, action, UI rule, entity or element is mapped to the entities it acts on (rule → its handler → what the handler handles, db entity ↔ the service entities that project on it). The existing tests that call those entities and the generated test files that name them are listed. When none does, the brief says the change ships untested.
+- **Messages users see.** Error messages added, removed or reworded by the change.
+
+Access changes, new risks and classes that lost their test keep their own sections below it. **Assumption:** "calls" means the graph's `mentions` edge (the test names the entity's URL or name); a test that reaches the entity only through a helper is missed, as in `tests-for`.
 
 ## Where it is shown
 

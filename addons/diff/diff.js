@@ -106,5 +106,7 @@ function diff(baseDir, headDir) {
   const nodes = new Map([...a.nodes, ...b.nodes, ...graph.removed.map(n => ({ ...n, id: 'base:' + n.id }))].map(n => [n.id, n]))
   return { nodes, base: a.D.META?.commit || null, head: b.D.META?.commit || null, graph, risks: riskDiff(a, b), patterns: patternDiff(a, b), parity: parityDiff(a, b), auth: authDiff(a, b), classes: classDiff(a, b, new Map([...graph.ids, ...graph.removed.filter(n => hasLine(n.id)).map(n => [n.id, n.id + '#removed'])])), kpis: kpiDiff(a, b), _b: b, _a: a }
 }
+// the review brief needs the head dir (generated test manifest)
+function diffWithBrief(baseDir, headDir) { const d = diff(baseDir, headDir); d.brief = require('./brief').brief(d, headDir); return d }
 
-module.exports = { diff, short }
+module.exports = { diff, diffWithBrief, short }

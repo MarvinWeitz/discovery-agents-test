@@ -142,4 +142,15 @@ test('a run publishes every step product in the same shape; query answers; CI re
   const ctrf = read(path.join(out, 'steps/tests/data/results.ctrf.json'))
   assert.deepStrictEqual([ctrf.reportFormat, ctrf.results.summary.passed, ctrf.results.summary.failed, ctrf.results.summary.skipped], ['CTRF', 1, 1, 1])
   assert.ok(read(path.join(out, 'steps/run/summary.json')).kpis.length)
+  // risk per file and the message catalogue pick up the handler and its rejection
+  const risk = read(path.join(out, 'steps/risk/data/lists/files.json'))
+  assert.ok(risk.rows.some(r => r.file === 'srv/service.js'), 'the handler file is ranked')
+  const msgs = read(path.join(out, 'steps/errors/data/lists/messages.json'))
+  assert.ok(msgs.rows.some(r => r.message === 'negative' && r.origin === 'code'), JSON.stringify(msgs.rows.map(r => r.message)))
+  // --base: a list item that is gone since the base run shows on the card and in changes.md
+  const bl = path.join(base, 'steps/errors/data/lists/messages.json'), B = read(bl)
+  B.rows.push({ ...B.rows[0], message: 'an old message' }); fs.writeFileSync(bl, JSON.stringify(B))
+  node('products.js', out, '--base', base)
+  assert.match(fs.readFileSync(path.join(out, 'steps/errors/README.md'), 'utf8'), /Since the base run: \*\*−1\*\* \(an old message\)/)
+  assert.match(fs.readFileSync(path.join(out, 'steps/changes.md'), 'utf8'), /\*\*messages\*\*: −1 an old message/)
 })
