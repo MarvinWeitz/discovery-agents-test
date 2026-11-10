@@ -120,6 +120,7 @@ function docs(dir) {
   copy('run/discovery-report.md', 'discovery-report.md')
   copy('run/tests/generated', 'tests')
   copy('docs', 'test-backed')
+  copy('steps', 'steps')
   if (fs.existsSync(path.join(out, 'manifest.json'))) {
     const r = spawnSync(process.execPath, [path.join(TOOLKIT, 'bin', 'stages.js'), 'show', out], { encoding: 'utf8' })
     if (r.status === 0) fs.writeFileSync(path.join(target, 'stages.md'), r.stdout)

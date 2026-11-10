@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Model and impact explorer</title>
+<style>
+:root{--bg:#f6f8fa;--panel:#fff;--ink:#1f2328;--mute:#59636e;--line:#d1d9e0;--accent:#0f6c8c;--sel:#c2414b}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mute:#9198a1;--line:#30363d;--accent:#4fb3d4;--sel:#ec7880;color-scheme:dark}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-rows:auto 1fr}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{font-size:15px;margin:0 8px 0 0}header a{color:var(--accent)}
+select,input,button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.seg button{border:0;border-radius:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+main{display:grid;grid-template-columns:1fr 360px;min-height:0}
+#cy{min-height:420px}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow:auto;padding:12px 16px}
+aside h2{font-size:15px;margin:4px 0 6px}aside h3{font-size:13px;margin:14px 0 4px;display:flex;align-items:center;gap:6px}
+aside ul{margin:0;padding-left:18px}aside li{margin:2px 0}aside code{font-size:11.5px;color:var(--mute)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.chip{border:1px solid var(--line);border-radius:99px;padding:1px 8px;font-size:12px}
+.hint{color:var(--mute);font-size:12.5px}
+button.copy{margin-top:10px}
+@media (max-width:760px){main{grid-template-columns:1fr;grid-template-rows:60vh auto}aside{border-left:0;border-top:1px solid var(--line)}}
+</style></head><body>
+<header>
+  <h1>Model and impact explorer</h1>
+  <label for="q" class="hint">change</label><input id="q" list="names" size="26" placeholder="entity, service entity, handler">
+  <datalist id="names"></datalist>
+  <div class="seg" role="group" aria-label="View"><button data-v="graph" aria-pressed="true">Graph</button><button data-v="rings" aria-pressed="false">Rings</button><button data-v="layers" aria-pressed="false">Layers</button></div>
+  <label class="hint" for="depth">depth</label><select id="depth"><option>1</option><option>2</option><option selected>3</option><option>4</option></select>
+  <label class="hint"><input type="checkbox" id="assoc"> follow associations</label>
+  <a href="README.md" class="hint">card (Markdown)</a>
+</header>
+<main><div id="cy" role="img" aria-label="Model graph"></div><aside id="side"></aside></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+<script>
+const G=__GRAPH__, L=__LAYERS__, R=__RULES__
+const N=new Map(G.nodes.map(n=>[n.id,n])), A=new Set(R.A), B=new Set(R.B), STOP=new Set(R.STOP)
+const dark=matchMedia('(prefers-color-scheme: dark)').matches, ink=dark?'#e6edf3':'#1f2328', mute=dark?'#3d444d':'#d1d9e0'
+function impact(start,depth,assoc){const dist=new Map([[start,0]]),via=new Map();let f=[start]
+  for(let d=1;d<=depth&&f.length;d++){const fs=new Set(f),nx=[]
+    for(const [a,r,b] of G.edges){if((A.has(r)||(assoc&&r==='associates'))&&fs.has(b)&&!dist.has(a)){dist.set(a,d);via.set(a,[b,r]);nx.push(a)}
+      if(B.has(r)&&fs.has(a)&&!dist.has(b)){dist.set(b,d);via.set(b,[a,r]);nx.push(b)}}
+    f=nx.filter(i=>!STOP.has(N.get(i).type))}
+  return {dist,via}}
+const dl=document.getElementById('names');G.nodes.filter(n=>['Entity','ServiceEntity','Handler','Action'].includes(n.type)).forEach(n=>{const o=document.createElement('option');o.value=n.label;o.label=n.type;dl.appendChild(o)})
+const cy=cytoscape({container:document.getElementById('cy'),wheelSensitivity:.3,
+  elements:[...G.nodes.map(n=>({data:{id:n.id,label:n.label,layer:n.layer,type:n.type}})),...G.edges.map(([a,r,b],i)=>({data:{id:'e'+i,source:a,target:b,rel:r}}))],
+  style:[{selector:'node',style:{'background-color':e=>L.colors[e.data('layer')]||'#888','label':'data(label)','font-size':9,'color':ink,'text-valign':'bottom','text-margin-y':3,'width':14,'height':14,'text-wrap':'ellipsis','text-max-width':110}},
+    {selector:'node[type="Entity"]',style:{'shape':'round-rectangle','width':22,'height':16,'font-size':11,'font-weight':600}},
+    {selector:'edge',style:{'width':1,'line-color':mute,'curve-style':'bezier','target-arrow-shape':'triangle','target-arrow-color':mute,'arrow-scale':.6}},
+    {selector:'.dim',style:{'opacity':.12}},{selector:'.hit',style:{'opacity':1}},
+    {selector:'.start',style:{'background-color':dark?'#ec7880':'#c2414b','width':26,'height':26,'font-size':13,'font-weight':700}},
+    {selector:'edge.path',style:{'line-color':dark?'#4fb3d4':'#0f6c8c','target-arrow-color':dark?'#4fb3d4':'#0f6c8c','width':2,'opacity':1}}]})
+let view='graph',start=(G.nodes.find(n=>n.type==='Entity'&&/(^|\.)Travel$/.test(n.label))||G.nodes.find(n=>n.type==='Entity')).id
+function run(){
+  const depth=+document.getElementById('depth').value,assoc=document.getElementById('assoc').checked
+  const {dist,via}=impact(start,depth,assoc)
+  cy.elements().removeClass('dim hit start path')
+  cy.nodes().forEach(n=>{n.addClass(dist.has(n.id())?'hit':'dim')});cy.getElementById(start).addClass('start')
+  for(const [id,[p,r]] of via){cy.edges().filter(e=>(e.source().id()===id&&e.target().id()===p)||(e.source().id()===p&&e.target().id()===id)).addClass('path')}
+  cy.edges().not('.path').addClass('dim')
+  const hit=cy.nodes('.hit')
+  cy.nodes().style('display','element')
+  if(view==='graph'){cy.layout({name:'cose',animate:false,nodeRepulsion:9000,idealEdgeLength:60,randomize:false}).run();cy.fit(hit,40)}
+  else{cy.nodes('.dim').style('display','none')
+    if(view==='rings')cy.layout({name:'concentric',animate:false,concentric:n=>10-(dist.get(n.id())??9),levelWidth:()=>1,minNodeSpacing:28}).run()
+    else{const cols=Object.keys(L.names),cnt={};hit.forEach(n=>{const l=n.id()===start?'start':n.data('layer');cnt[l]=(cnt[l]||0)+1;n.position({x:l==='start'?-180:cols.indexOf(l)*190,y:(cnt[l]-1)*34})})
+      cy.layout({name:'preset',fit:false}).run()}
+    cy.fit(hit,30)}
+  side(dist,via,depth)}
+function side(dist,via,depth){const s=N.get(start),by={};for(const [id,d] of dist)if(d>0)(by[N.get(id).layer]||=[]).push([id,d])
+  let h=`<h2>${esc(s.label)}</h2><div class="hint">${s.type} · <code>${esc(s.ev)}</code></div><div class="chips">`
+  for(const l in L.names)if(by[l])h+=`<span class="chip"><span class="dot" style="background:${L.colors[l]}"></span> ${L.names[l]} ${by[l].length}</span>`
+  h+=`</div><div class="hint">${dist.size-1} things within ${depth} steps. Click any node to start from it.</div>`
+  for(const l in L.names)if(by[l]){h+=`<h3><span class="dot" style="background:${L.colors[l]}"></span>${L.names[l]}</h3><ul>`
+    for(const [id,d] of by[l].sort((a,b)=>a[1]-b[1]))h+=`<li>${esc(N.get(id).label)} <span class="hint">${d} · via ${via.get(id)[1]}</span><br><code>${esc(N.get(id).ev)}</code></li>`;h+='</ul>'}
+  h+='<button class="copy" id="copy">Copy as Markdown</button>'
+  const el=document.getElementById('side');el.innerHTML=h
+  document.getElementById('copy').onclick=()=>{let md=`## Impact: change ${s.type} \`${s.label}\`\n`;for(const l in L.names)if(by[l])md+=`\n### ${L.names[l]}\n`+by[l].map(([id,d])=>`- ${N.get(id).label} (${d} away) \`${N.get(id).ev}\``).join('\n')+'\n';navigator.clipboard.writeText(md).catch(()=>{})}}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+cy.on('tap','node',e=>{start=e.target.id();document.getElementById('q').value=N.get(start).label;run()})
+document.getElementById('q').onchange=e=>{const v=e.target.value.toLowerCase();const n=G.nodes.find(n=>n.label.toLowerCase()===v)||G.nodes.find(n=>n.label.toLowerCase().includes(v));if(n){start=n.id;run()}}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));run()})
+document.getElementById('depth').onchange=run;document.getElementById('assoc').onchange=run
+document.getElementById('q').value=N.get(start).label;run()
+</script></body></html>

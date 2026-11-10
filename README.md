@@ -10,7 +10,10 @@ See [OVERVIEW.md](OVERVIEW.md) for the process (which steps are deterministic, w
 npm install --ignore-scripts
 node bin/pipeline.js <app-root> <out-dir> [--ui ../ui-a,../ui-b] [--base curated/<app>.json] [--mode static|static+ai]
 node bin/stages.js show <out-dir>      # what ran, how long, what each stage wrote (from <out-dir>/manifest.json)
+node bin/query.js <out-dir> impact Travel   # what is affected if I change it (also who-can, tests-for)
 ```
+
+**Step products.** Every step also publishes its own result under `<out-dir>/steps/<step>/`: numbers (`summary.json`), a short Markdown card with SVG pictures (`README.md`), an explorer where it helps (model and impact explorer, Redoc for OpenAPI, the Stryker report) and the full data in a standard format (EDMX, OpenAPI, SARIF, CTRF). Start at `<out-dir>/steps/index.html` or `index.md`. Details: [docs/walkthrough/14-step-products.md](docs/walkthrough/14-step-products.md).
 
 What runs when, with every input and output: [docs/stages.md](docs/stages.md) (generated from `lib/stages.js`).
 
@@ -22,6 +25,7 @@ What runs when, with every input and output: [docs/stages.md](docs/stages.md) (g
 | 2 facts | `bin/atlas-facts.js <out>/run <out>/atlas-data.json [--base curated.json]` | every atlas section, generated from the graph; agent risks merged from the curated file |
 | 2b findings | `bin/findings.js <out> [--mode m]` | `run/findings/findings.jsonl`, `gaps.jsonl`, `summary.json`, `README.md` (the middle layer; addons add measured findings after the tests) |
 | 3 tests | `bin/gen-tests.js <out>/run` | `run/tests/generated/*.test.js` (cds.test, syntax-checked) |
+| 4b products | `bin/products.js <out> [--base <other-out>] [--generated jest.json]` | `steps/<step>/` (summary, card, views, explorers, data) for 15 steps, `steps/index.html`, `index.md`; again after the tests and after an AI merge |
 | 5 ai-requests | `bin/ai-requests.js <out>` (mode `static+ai`) | `run/ai/requests/<gap>.md`, `index.json`, `run/ai/README.md` |
 | 6 validate | `bin/validate.js <out>` | nothing; fails the run when a schema or a link between findings, gaps, graph and code does not hold |
 | later | `bin/ai-pass.js plan\|check\|status <out>` | the AI pass: the gaps to answer with the agent prompt, one answer gated at once, what is left (no LLM call; Claude Code: `/cap-discovery:fill-gaps`) |
@@ -86,6 +90,7 @@ Code is grouped by task. Each step has a walkthrough in [docs/walkthrough/](docs
 | `lib/analyse/risks.js` | graph | 16 risk rules with impact, likelihood, evidence and the test that catches each (incl. HANA-only paths, native SQL, database branches, model per profile, remote systems without a test double, untested event subscriptions) |
 | `lib/atlas/` (`index.js`, `sections/<code>.js`) | all of the above | the atlas fact file, one builder per section |
 | `lib/report/` | graph | the Markdown discovery report and its rendered Mermaid diagrams |
+| `lib/products/` (`index.js`, `steps/<id>.js`, `impact.js`, `svg.js`, `html.js`) | everything above, plus git and the CI results | one product per step (card, SVG views, explorers, standard data), impact analysis, the start page; `bin/query.js` asks across them |
 
 Licences of every tool are tracked in [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
 
