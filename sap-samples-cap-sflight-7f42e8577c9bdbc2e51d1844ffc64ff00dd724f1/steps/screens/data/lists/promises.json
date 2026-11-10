@@ -1,0 +1,233 @@
+{
+ "title": "UI promises",
+ "columns": [
+  {
+   "key": "entity",
+   "label": "Entity",
+   "facet": true
+  },
+  {
+   "key": "promise",
+   "label": "Promise",
+   "facet": true
+  },
+  {
+   "key": "ui",
+   "label": "UI says"
+  },
+  {
+   "key": "server",
+   "label": "Server"
+  },
+  {
+   "key": "verdict",
+   "label": "Verdict",
+   "facet": true
+  },
+  {
+   "key": "rank",
+   "label": "Severity",
+   "num": true,
+   "hide": true
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  }
+ ],
+ "sort": {
+  "key": "rank",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "entity": "Travel",
+   "promise": "rejectTravel",
+   "ui": "TravelStatus != X",
+   "server": "no rule on this field",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:37"
+  },
+  {
+   "entity": "Travel",
+   "promise": "acceptTravel",
+   "ui": "TravelStatus != A",
+   "server": "no rule on this field",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:41"
+  },
+  {
+   "entity": "Travel",
+   "promise": "deductDiscount",
+   "ui": "TravelStatus = O",
+   "server": "allows TravelStatus in {X, O}; also X",
+   "verdict": "partial",
+   "rank": 2,
+   "where": "app/travel_processor/field-control.cds:45"
+  },
+  {
+   "entity": "Travel",
+   "promise": "field-control",
+   "ui": "5 fields controlled by TravelStatus.fieldControl",
+   "server": "no update handler checks it",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:29"
+  },
+  {
+   "entity": "Travel",
+   "promise": "side-effects",
+   "ui": "BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+   "server": "recomputed by 3 handler(s)",
+   "verdict": "consistent",
+   "rank": 1,
+   "where": "app/travel_processor/field-control.cds:20"
+  },
+  {
+   "entity": "Travel",
+   "promise": "side-effects",
+   "ui": "GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+   "server": "recomputed by 3 handler(s)",
+   "verdict": "consistent",
+   "rank": 1,
+   "where": "app/travel_processor/field-control.cds:20"
+  },
+  {
+   "entity": "Travel",
+   "promise": "side-effects",
+   "ui": "to_Booking → re-read TotalPrice",
+   "server": "recomputed by 5 handler(s)",
+   "verdict": "consistent",
+   "rank": 1,
+   "where": "app/travel_processor/field-control.cds:51"
+  },
+  {
+   "entity": "Travel",
+   "promise": "deductDiscount",
+   "ui": "percent in [1, 100]",
+   "server": "CAP generic handler",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "srv/travel-service.cds:20"
+  },
+  {
+   "entity": "Travel",
+   "promise": "readonly",
+   "ui": "TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+   "server": "CAP generic handler",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "db/schema.cds:14"
+  },
+  {
+   "entity": "Travel",
+   "promise": "mandatory",
+   "ui": "BeginDate, EndDate, to_Agency, to_Customer",
+   "server": "CAP generic handler",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "db/schema.cds:15"
+  },
+  {
+   "entity": "Booking",
+   "promise": "field-control",
+   "ui": "6 fields controlled by to_Travel.TravelStatus.fieldControl",
+   "server": "no update handler checks it",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:65"
+  },
+  {
+   "entity": "Booking",
+   "promise": "CreateHidden",
+   "ui": "hidden when [object Object]",
+   "server": "no before CREATE/NEW rejection",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:60"
+  },
+  {
+   "entity": "Booking",
+   "promise": "DeleteHidden",
+   "ui": "hidden when [object Object]",
+   "server": "no before DELETE rejection",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:61"
+  },
+  {
+   "entity": "Booking",
+   "promise": "mandatory",
+   "ui": "ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+   "server": "CAP generic handler",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "db/schema.cds:37"
+  },
+  {
+   "entity": "BookingSupplement",
+   "promise": "field-control",
+   "ui": "4 fields controlled by to_Travel.TravelStatus.fieldControl",
+   "server": "no update handler checks it",
+   "verdict": "ui-only",
+   "rank": 3,
+   "where": "app/travel_processor/field-control.cds:29"
+  },
+  {
+   "entity": "BookingSupplement",
+   "promise": "mandatory",
+   "ui": "Price, to_Supplement",
+   "server": "CAP generic handler",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "db/schema.cds:22"
+  },
+  {
+   "entity": "Bookings",
+   "promise": "capabilities",
+   "ui": "no create / update / delete",
+   "server": "CAP rejects with 405 (Capabilities)",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "srv/analytics-service.cds:9"
+  },
+  {
+   "entity": "Bookings",
+   "promise": "computed",
+   "ui": "TravelID, BookingID, CombinedID, CurrencyCode_code",
+   "server": "CAP ignores client values (Core.Computed / Immutable / ReadOnly)",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "srv/analytics-service.cds:9"
+  },
+  {
+   "entity": "Travels",
+   "promise": "capabilities",
+   "ui": "no create / update / delete",
+   "server": "CAP rejects with 405 (Capabilities)",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "srv/analytics-service.cds:68"
+  },
+  {
+   "entity": "Travels",
+   "promise": "computed",
+   "ui": "TravelID, TotalPrice, TravelStatus_code, GreenFee, TreesPlanted, CustomerName",
+   "server": "CAP ignores client values (Core.Computed / Immutable / ReadOnly)",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "srv/analytics-service.cds:68"
+  },
+  {
+   "entity": "Travel",
+   "promise": "computed",
+   "ui": "TravelStatus_code",
+   "server": "CAP ignores client values (Core.Computed / Immutable / ReadOnly)",
+   "verdict": "framework",
+   "rank": 0,
+   "where": "srv/travel-service.cds:11"
+  }
+ ]
+}

@@ -1,0 +1,51 @@
+{
+ "title": "Services",
+ "columns": [
+  {
+   "key": "name",
+   "label": "Service"
+  },
+  {
+   "key": "protocols",
+   "label": "Protocols",
+   "facet": true
+  },
+  {
+   "key": "endpoints",
+   "label": "Endpoints"
+  },
+  {
+   "key": "code",
+   "label": "Own code",
+   "facet": true
+  },
+  {
+   "key": "impl",
+   "label": "Implementation"
+  }
+ ],
+ "sort": {
+  "key": "name",
+  "dir": "asc"
+ },
+ "rows": [
+  {
+   "name": "AnalyticsService",
+   "protocols": [
+    "odata"
+   ],
+   "endpoints": "odata /analytics",
+   "code": "no",
+   "impl": "none (generic CAP)"
+  },
+  {
+   "name": "TravelService",
+   "protocols": [
+    "odata"
+   ],
+   "endpoints": "odata /processor",
+   "code": "yes",
+   "impl": "srv/travel-service.ts"
+  }
+ ]
+}

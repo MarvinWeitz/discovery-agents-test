@@ -1,0 +1,219 @@
+{
+ "title": "Service surface",
+ "columns": [
+  {
+   "key": "service",
+   "label": "Service",
+   "facet": true
+  },
+  {
+   "key": "set",
+   "label": "Entity set"
+  },
+  {
+   "key": "guard",
+   "label": "Guard",
+   "facet": true
+  },
+  {
+   "key": "note",
+   "label": "Note"
+  },
+  {
+   "key": "open",
+   "label": "Open without role",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "open",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "service": "AnalyticsService",
+   "set": "Passenger",
+   "ops": "GET",
+   "guard": "open",
+   "note": "PII: FirstName, LastName, Street, PhoneNumber, EMailAddress · auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "TravelAgency",
+   "ops": "GET",
+   "guard": "open",
+   "note": "PII: Street, PhoneNumber, EMailAddress · auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "Airline",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "Airport",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "Bookings",
+   "ops": "GET",
+   "guard": "open",
+   "note": "",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "BookingStatus",
+   "ops": "GET",
+   "guard": "open",
+   "note": "",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "Flight",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "FlightConnection",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "Travels",
+   "ops": "GET",
+   "guard": "open",
+   "note": "",
+   "open": 1
+  },
+  {
+   "service": "AnalyticsService",
+   "set": "TravelStatus",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "Passenger",
+   "ops": "GET",
+   "guard": "open",
+   "note": "PII: FirstName, LastName, Street, PhoneNumber, EMailAddress · auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "TravelAgency",
+   "ops": "GET",
+   "guard": "open",
+   "note": "PII: Street, PhoneNumber, EMailAddress · auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "Airline",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "Airport",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "Booking",
+   "ops": "via Travel draft",
+   "guard": "auth?",
+   "note": "",
+   "open": 0
+  },
+  {
+   "service": "TravelService",
+   "set": "BookingStatus",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "BookingSupplement",
+   "ops": "via Travel draft",
+   "guard": "auth?",
+   "note": "",
+   "open": 0
+  },
+  {
+   "service": "TravelService",
+   "set": "Flight",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "FlightConnection",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "Supplement",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "SupplementType",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  },
+  {
+   "service": "TravelService",
+   "set": "Travel",
+   "ops": "GET POST PATCH DELETE",
+   "guard": "auth",
+   "note": "draft",
+   "open": 0
+  },
+  {
+   "service": "TravelService",
+   "set": "TravelStatus",
+   "ops": "GET",
+   "guard": "open",
+   "note": "auto-exposed",
+   "open": 1
+  }
+ ]
+}

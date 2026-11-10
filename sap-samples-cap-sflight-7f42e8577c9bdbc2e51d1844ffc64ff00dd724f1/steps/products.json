@@ -17,7 +17,7 @@
    },
    {
     "label": "seconds",
-    "value": 315
+    "value": 614
    },
    {
     "label": "mode",
@@ -34,6 +34,7 @@
   "data": [
    "data/stages.json"
   ],
+  "lists": {},
   "does": "Which stages ran, in which mode, how long each took and what it reported."
  },
  {
@@ -67,10 +68,16 @@
   "views": [
    "views/profiles.svg"
   ],
-  "pages": [],
-  "data": [
-   "data/project.json"
+  "pages": [
+   "browse.html"
   ],
+  "data": [
+   "data/project.json",
+   "data/lists/services.json"
+  ],
+  "lists": {
+   "services": 2
+  },
   "does": "How CAP sees the project: profiles, database, auth and messaging per profile, plugins, model files, services and their implementations."
  },
  {
@@ -103,11 +110,12 @@
    "run/graph/"
   ],
   "views": [
-   "views/blast-radius.svg",
+   "views/entities.svg",
    "views/projections.svg"
   ],
   "pages": [
-   "explorer.html"
+   "explorer.html",
+   "browse.html"
   ],
   "data": [
    "data/model-graph.json",
@@ -124,8 +132,14 @@
    "data/impact/FlightConnection.md",
    "data/impact/Passenger.md",
    "data/impact/TravelAgency.md",
-   "data/impact/SupplementType.md"
+   "data/impact/SupplementType.md",
+   "data/lists/entities.json",
+   "data/lists/projections.json"
   ],
+  "lists": {
+   "entities": 13,
+   "projections": 23
+  },
   "does": "Entities, compositions, associations and the projection chain from database to service, plus what depends on each entity when it changes."
  },
  {
@@ -164,14 +178,19 @@
   ],
   "pages": [
    "openapi-AnalyticsService.html",
-   "openapi-TravelService.html"
+   "openapi-TravelService.html",
+   "browse.html"
   ],
   "data": [
    "data/edmx/AnalyticsService.xml",
    "data/edmx/TravelService.xml",
    "data/openapi/AnalyticsService.json",
-   "data/openapi/TravelService.json"
+   "data/openapi/TravelService.json",
+   "data/lists/surface.json"
   ],
+  "lists": {
+   "surface": 23
+  },
   "does": "Every service, entity set, operation and action as standard API documents (OData EDMX, OpenAPI 3, AsyncAPI), with the guard on each."
  },
  {
@@ -205,10 +224,18 @@
   "views": [
    "views/matrix.svg"
   ],
-  "pages": [],
-  "data": [
-   "data/handlers.json"
+  "pages": [
+   "browse.html"
   ],
+  "data": [
+   "data/handlers.json",
+   "data/lists/matrix.json",
+   "data/lists/handlers.json"
+  ],
+  "lists": {
+   "matrix": 3,
+   "handlers": 13
+  },
   "does": "Which code runs for which entity, event and phase, which rules it applies and which helpers it calls."
  },
  {
@@ -241,13 +268,21 @@
    "run/graph/ (UI5App, Route, UiRule)"
   ],
   "views": [
-   "views/screens.svg",
-   "views/verdicts.svg"
+   "views/verdicts.svg",
+   "views/screens.svg"
   ],
-  "pages": [],
+  "pages": [
+   "browse.html"
+  ],
   "data": [
-   "data/ui-promises.json"
+   "data/ui-promises.json",
+   "data/lists/screens.json",
+   "data/lists/promises.json"
   ],
+  "lists": {
+   "screens": 5,
+   "promises": 21
+  },
   "does": "Apps, pages and the entities they show, and every UI promise with the server verdict (does the backend enforce what the UI shows?)."
  },
  {
@@ -282,10 +317,16 @@
   "views": [
    "views/matrix.svg"
   ],
-  "pages": [],
-  "data": [
-   "data/access.json"
+  "pages": [
+   "browse.html"
   ],
+  "data": [
+   "data/access.json",
+   "data/lists/matrix.json"
+  ],
+  "lists": {
+   "matrix": 13
+  },
   "does": "Who can do what: operation × user/role, declared in CDS, and measured against the running app when the CI run sent the probe."
  },
  {
@@ -319,13 +360,21 @@
    "run/findings/findings.jsonl"
   ],
   "views": [
-   "views/hotspots.svg",
-   "views/kinds.svg"
+   "views/kinds.svg",
+   "views/files.svg"
   ],
-  "pages": [],
+  "pages": [
+   "browse.html"
+  ],
   "data": [
-   "data/checks.sarif"
+   "data/checks.sarif",
+   "data/lists/files.json",
+   "data/lists/findings.json"
   ],
+  "lists": {
+   "files": 21,
+   "findings": 71
+  },
   "does": "Every static finding with a code location in one standard format (SARIF), by file and by rule."
  },
  {
@@ -357,13 +406,22 @@
    "git log of the app checkout"
   ],
   "views": [
-   "views/hotspots.svg"
+   "views/hotspots.svg",
+   "views/coupling.svg"
   ],
-  "pages": [],
+  "pages": [
+   "browse.html"
+  ],
   "data": [
    "data/hotspots.json",
-   "data/coupling.json"
+   "data/coupling.json",
+   "data/lists/hotspots.json",
+   "data/lists/coupling.json"
   ],
+  "lists": {
+   "hotspots": 113,
+   "coupling": 39
+  },
   "does": "Where the code changes most, which files change in the same commits, and how many people touch each file."
  },
  {
@@ -401,11 +459,19 @@
    "views/ladder.svg",
    "views/severity.svg"
   ],
-  "pages": [],
+  "pages": [
+   "browse.html"
+  ],
   "data": [
    "data/findings.jsonl",
-   "data/gaps.jsonl"
+   "data/gaps.jsonl",
+   "data/lists/gaps.json",
+   "data/lists/findings.json"
   ],
+  "lists": {
+   "gaps": 21,
+   "findings": 142
+  },
   "does": "Every claim with how it was found (static, measured, AI, human), its status and evidence, and every open question with who can answer it."
  },
  {
@@ -428,6 +494,7 @@
   "views": [],
   "pages": [],
   "data": [],
+  "lists": {},
   "does": "Questions handed to an AI, its answers, and what the evidence gate accepted or rejected, with the reason."
  },
  {
@@ -462,11 +529,17 @@
   "views": [
    "views/tree.svg"
   ],
-  "pages": [],
+  "pages": [
+   "browse.html"
+  ],
   "data": [
    "data/classes.json",
-   "data/class-seeds.json"
+   "data/class-seeds.json",
+   "data/lists/classes.json"
   ],
+  "lists": {
+   "classes": 122
+  },
   "does": "Equivalence classes per category (authorization, UI promises, status transitions, handler rules, …) and the pairwise rows that cover the combinations."
  },
  {
@@ -501,13 +574,23 @@
    "atlas-data.json MEASURED.requests (CI)"
   ],
   "views": [
-   "views/results.svg"
+   "views/files.svg"
   ],
-  "pages": [],
+  "pages": [
+   "browse.html"
+  ],
   "data": [
    "data/results.ctrf.json",
-   "data/generated.json"
+   "data/generated.json",
+   "data/lists/files.json",
+   "data/lists/tests.json",
+   "data/lists/requests.json"
   ],
+  "lists": {
+   "files": 2,
+   "tests": 19,
+   "requests": 15
+  },
   "does": "The generated tests, and after a CI run their results (CTRF) and the requests they sent."
  },
  {
@@ -543,10 +626,18 @@
   "views": [
    "views/classes.svg"
   ],
-  "pages": [],
-  "data": [
-   "data/coverage.json"
+  "pages": [
+   "browse.html"
   ],
+  "data": [
+   "data/coverage.json",
+   "data/lists/next.json",
+   "data/lists/never.json"
+  ],
+  "lists": {
+   "next": 15,
+   "never": 2
+  },
   "does": "Which business cases are tested (per equivalence class), and which handler rules a test executed in CI."
  },
  {
@@ -569,6 +660,7 @@
   "views": [],
   "pages": [],
   "data": [],
+  "lists": {},
   "does": "Which small code changes the tests notice (killed) and which go unnoticed (survived), per file and per business class."
  }
 ]

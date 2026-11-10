@@ -34,12 +34,17 @@
  ],
  "pages": [
   "openapi-AnalyticsService.html",
-  "openapi-TravelService.html"
+  "openapi-TravelService.html",
+  "browse.html"
  ],
  "data": [
   "data/edmx/AnalyticsService.xml",
   "data/edmx/TravelService.xml",
   "data/openapi/AnalyticsService.json",
-  "data/openapi/TravelService.json"
- ]
+  "data/openapi/TravelService.json",
+  "data/lists/surface.json"
+ ],
+ "lists": {
+  "surface": 23
+ }
 }

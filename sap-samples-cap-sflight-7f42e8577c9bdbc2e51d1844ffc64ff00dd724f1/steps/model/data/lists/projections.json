@@ -1,0 +1,140 @@
+{
+ "title": "Projection chain",
+ "columns": [
+  {
+   "key": "entity",
+   "label": "Database entity",
+   "facet": true
+  },
+  {
+   "key": "svcentity",
+   "label": "Service entity"
+  },
+  {
+   "key": "service",
+   "label": "Service",
+   "facet": true
+  }
+ ],
+ "sort": {
+  "key": "entity",
+  "dir": "asc"
+ },
+ "rows": [
+  {
+   "entity": "Booking",
+   "svcentity": "AnalyticsService.Bookings",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "BookingStatus",
+   "svcentity": "AnalyticsService.BookingStatus",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "Travel",
+   "svcentity": "AnalyticsService.Travels",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "Travel",
+   "svcentity": "TravelService.Travel",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Airline",
+   "svcentity": "AnalyticsService.Airline",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "Flight",
+   "svcentity": "AnalyticsService.Flight",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "TravelStatus",
+   "svcentity": "AnalyticsService.TravelStatus",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "TravelAgency",
+   "svcentity": "AnalyticsService.TravelAgency",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "Passenger",
+   "svcentity": "AnalyticsService.Passenger",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "TravelStatus",
+   "svcentity": "TravelService.TravelStatus",
+   "service": "TravelService"
+  },
+  {
+   "entity": "TravelAgency",
+   "svcentity": "TravelService.TravelAgency",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Passenger",
+   "svcentity": "TravelService.Passenger",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Booking",
+   "svcentity": "TravelService.Booking",
+   "service": "TravelService"
+  },
+  {
+   "entity": "FlightConnection",
+   "svcentity": "AnalyticsService.FlightConnection",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "BookingStatus",
+   "svcentity": "TravelService.BookingStatus",
+   "service": "TravelService"
+  },
+  {
+   "entity": "BookingSupplement",
+   "svcentity": "TravelService.BookingSupplement",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Airline",
+   "svcentity": "TravelService.Airline",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Flight",
+   "svcentity": "TravelService.Flight",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Airport",
+   "svcentity": "AnalyticsService.Airport",
+   "service": "AnalyticsService"
+  },
+  {
+   "entity": "Supplement",
+   "svcentity": "TravelService.Supplement",
+   "service": "TravelService"
+  },
+  {
+   "entity": "FlightConnection",
+   "svcentity": "TravelService.FlightConnection",
+   "service": "TravelService"
+  },
+  {
+   "entity": "SupplementType",
+   "svcentity": "TravelService.SupplementType",
+   "service": "TravelService"
+  },
+  {
+   "entity": "Airport",
+   "svcentity": "TravelService.Airport",
+   "service": "TravelService"
+  }
+ ]
+}

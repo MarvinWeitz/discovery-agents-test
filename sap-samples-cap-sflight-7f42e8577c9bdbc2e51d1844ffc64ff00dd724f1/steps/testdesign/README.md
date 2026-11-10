@@ -2,7 +2,7 @@
 product: testdesign
 step: Test design
 status: ok
-generated: 2026-11-10T15:00Z
+generated: 2026-11-10T15:49Z
 ---
 
 # Classification tree
@@ -65,19 +65,10 @@ _Test design_ · Equivalence classes per category (authorization, UI promises, s
 | Authorization | Travel create / edit / delete as amy/admin/alice | user amy | 200 |  |
 | Authorization | Travel createTravelByTemplate as anonymous/rose/martha | user rose | 403 |  |
 | Authorization | Travel createTravelByTemplate as amy/admin/alice | user amy | verify |  |
-| Authorization | Travel rejectTravel as anonymous/rose | user rose | 403 |  |
-| Authorization | Travel rejectTravel as martha/amy/admin/alice | user martha | 200 |  |
-| Authorization | Travel acceptTravel as anonymous/rose | user rose | 403 |  |
-| Authorization | Travel acceptTravel as martha/amy/admin/alice | user martha | 200 |  |
-| Authorization | Travel deductDiscount as anonymous/rose | user rose | 403 |  |
-| Authorization | Travel deductDiscount as martha/amy/admin/alice | user martha | 200 |  |
-| Authorization | Booking / BookingSupplement (via Travel draft) as anonymous | user anonymous | 401 |  |
-| Authorization | Booking / BookingSupplement (via Travel draft) as rose/martha | user rose | verify |  |
-| Authorization | Booking / BookingSupplement (via Travel draft) as amy/admin/alice | user amy | 200 |  |
-| Authorization | TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha | user rose | 403 (today 200: open) |  |
-| … 102 more rows in the data file | | | | |
+
+**Top 10 of 122 classes** by category (ascending). [Browse all 122 with filters](browse.html#classes) · [classes.json](data/lists/classes.json)
 
 
-**Deeper:** [classes.json](data/classes.json) · [class-seeds.json](data/class-seeds.json)
+**Deeper:** [browse.html](browse.html) · [classes.json](data/classes.json) · [class-seeds.json](data/class-seeds.json)
 
 Read from: `atlas-data.json TESTCATS, CLASSES, DD`, `run/tests/class-seeds.json` · [all products](../index.md)

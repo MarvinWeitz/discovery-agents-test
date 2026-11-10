@@ -1,0 +1,1470 @@
+{
+ "title": "Findings",
+ "columns": [
+  {
+   "key": "severity",
+   "label": "Severity",
+   "facet": true
+  },
+  {
+   "key": "kind",
+   "label": "Kind",
+   "facet": true
+  },
+  {
+   "key": "method",
+   "label": "Found by",
+   "facet": true
+  },
+  {
+   "key": "status",
+   "label": "Status",
+   "facet": true
+  },
+  {
+   "key": "layer",
+   "label": "Layer",
+   "facet": true
+  },
+  {
+   "key": "title",
+   "label": "Title"
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  },
+  {
+   "key": "rank",
+   "label": "Severity rank",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "rank",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "severity": "warning",
+   "kind": "action-without-handler",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Service",
+   "title": "createTravelByTemplate: no handler found",
+   "where": "srv/travel-service.cds:12",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "agent-risk",
+   "method": "human",
+   "status": "confirmed",
+   "layer": "Node",
+   "title": "deductDiscount 404 path crashes",
+   "where": "srv/travel-service.ts:105",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "agent-risk",
+   "method": "human",
+   "status": "confirmed",
+   "layer": "Node",
+   "title": "TravelID = max + 1 race",
+   "where": "srv/travel-service.ts:17",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "agent-risk",
+   "method": "human",
+   "status": "confirmed",
+   "layer": "Service",
+   "title": "Hard-coded USD in analytics",
+   "where": "srv/analytics-service.cds:24",
+   "rank": 1
+  },
+  {
+   "severity": "critical",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "where": "db/master-data.cds:86",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "AnalyticsService: Passenger READ (PII: FirstName, LastName, Street, …)",
+   "where": "db/master-data.cds:73",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: Passenger READ (PII: FirstName, LastName, Street, …)",
+   "where": "db/master-data.cds:73",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "AnalyticsService: TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "where": "db/master-data.cds:86",
+   "rank": 3
+  },
+  {
+   "severity": "warning",
+   "kind": "authz",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Model",
+   "title": "TravelService: Booking / BookingSupplement (via Travel draft)",
+   "where": "srv/travel-service.cds:11",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "authz",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Model",
+   "title": "AnalyticsService: /analytics: 8 other entities READ",
+   "where": "srv/analytics-service.cds:9",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "authz",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Model",
+   "title": "TravelService: Travel createTravelByTemplate",
+   "where": "srv/travel-service.cds:11",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "authz",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Model",
+   "title": "TravelService: /processor: 8 other entities READ",
+   "where": "db/schema.cds:82",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: Travel deductDiscount",
+   "where": "srv/travel-service.cds:11",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: Travel READ",
+   "where": "srv/travel-service.cds:11",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: Travel acceptTravel",
+   "where": "srv/travel-service.cds:11",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: Travel create / edit / delete",
+   "where": "srv/travel-service.cds:11",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "authz",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelService: Travel rejectTravel",
+   "where": "srv/travel-service.cds:11",
+   "rank": 1
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "GET /processor/TravelAgency?$top=1: as predicted",
+   "where": "db/master-data.cds:86",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "GET /processor/Passenger?$top=1: as predicted",
+   "where": "db/master-data.cds:73",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "POST /processor/Booking: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "POST /processor/Travel: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "POST /processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.deductDiscount: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "GET /analytics/Passenger?$top=1: as predicted",
+   "where": "db/master-data.cds:73",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "GET /processor/Travel?$top=1: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "GET /analytics/TravelAgency?$top=1: as predicted",
+   "where": "db/master-data.cds:86",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "POST /processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.createTravelByTemplate: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "POST /processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.acceptTravel: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "authz-measured",
+   "method": "measured",
+   "status": "confirmed",
+   "layer": "other",
+   "title": "POST /processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.rejectTravel: as predicted",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "srv/analytics-service.cds annotates sap.fe.cap.travel.FlightConnection",
+   "where": "srv/analytics-service.cds:77",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "app/travel_processor/field-control.cds extends sap.fe.cap.travel.TravelStatus",
+   "where": "app/travel_processor/field-control.cds:12",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "app/common.cds annotates cds.UUID",
+   "where": "app/common.cds:5",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "srv/analytics-service.cds annotates sap.fe.cap.travel.Airport",
+   "where": "srv/analytics-service.cds:76",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:12",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/manifest.json:97",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/manifest.json:70",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-outdated-manifest-version",
+   "where": "app/travel_analytics/webapp/manifest.json:2",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:9",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:12",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/manifest.json:99",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:9",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-outdated-manifest-version",
+   "where": "app/travel_processor/webapp/manifest.json:2",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:23",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:26",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:21",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.js:10",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:13",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:72",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/testsuite.qunit.html:5",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.js:8",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:26",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:27",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/testsuite.qunit.js:5",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:22",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:21",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:23",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:14",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:70",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/testsuite.qunit.html:5",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:9",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:14",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:73",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:13",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:22",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint csp-unsafe-inline-script",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:78",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint csp-unsafe-inline-script",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:25",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/testsuite.qunit.js:5",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "method": "static",
+   "status": "detected",
+   "layer": "other",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:9",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "native-sql",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "SQL string in travel-service.ts",
+   "where": "srv/travel-service.ts:57",
+   "rank": 1
+  },
+  {
+   "severity": "critical",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "DB",
+   "title": "Auto-exposed master data",
+   "where": "db/master-data.cds:5",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations, DB",
+   "title": "Annotations placed outside their layer",
+   "where": "app/common.cds:5",
+   "rank": 3
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "Declarative authorization (@requires / @restrict)",
+   "where": "srv/travel-service.cds:11",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "Raw SQL via cds.run",
+   "where": "srv/travel-service.ts:57",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service, Node",
+   "title": "Bound actions",
+   "where": "srv/travel-service.cds:12",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node, Config",
+   "title": "Service tests (cds.test)",
+   "where": "test/odata.test.ts:1",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "State rules in UI annotations",
+   "where": "app/travel_processor/field-control.cds:37",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations, DB",
+   "title": "UI annotations directly on domain entities",
+   "where": "app/labels.cds:7",
+   "rank": 2
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "Shared helper called from handlers",
+   "where": "srv/travel-service.ts:52",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "DB",
+   "title": "Localized texts",
+   "where": "db/master-data.cds:25",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations, Service",
+   "title": "Analytical annotations",
+   "where": "app/travel_analytics/annotations.cds:9",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations, Node",
+   "title": "SideEffects re-read after a change",
+   "where": "app/travel_processor/field-control.cds:20",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "Derived fields set in before-handlers",
+   "where": "srv/travel-service.ts:18",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "cds-typer generated types",
+   "where": "srv/travel-service.ts:2",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "Service projections on the domain",
+   "where": "srv/analytics-service.cds:3",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "DB",
+   "title": "Enum types on elements",
+   "where": "app/travel_processor/field-control.cds:14",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "UI",
+   "title": "OPA5 journeys",
+   "where": "app/travel_analytics/webapp/test/integration/OpaJourney.js:1",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "DB, Config",
+   "title": "CSV seed data",
+   "where": "db/data/sap.common-Countries.csv:1",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "on-handlers",
+   "where": "srv/travel-service.ts:45",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "UI",
+   "title": "Fiori elements apps",
+   "where": "app/travel_analytics/webapp/manifest.json:1",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "DB",
+   "title": "Aspect managed",
+   "where": "db/master-data.cds:25",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations, DB",
+   "title": "Labels and titles in CDS",
+   "where": "app/labels.cds:7",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "Value helps",
+   "where": "app/travel_analytics/annotations.cds:171",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "@readonly service entities",
+   "where": "srv/analytics-service.cds:9",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "DB",
+   "title": "Code lists (sap.common.CodeList)",
+   "where": "db/master-data.cds:103",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "Validation with req.reject / req.error",
+   "where": "srv/travel-service.ts:36",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "UI",
+   "title": "UI extensions (fragments, controller ext)",
+   "where": "app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml:1",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "Fiori elements layout annotations",
+   "where": "app/travel_analytics/annotations.cds:81",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "before-handlers",
+   "where": "srv/travel-service.ts:16",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "Handlers on draft tables",
+   "where": "srv/travel-service.ts:21",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations, Service, Node",
+   "title": "Draft root with compositions",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "pattern",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "Class-based service (extends cds.ApplicationService)",
+   "where": "srv/travel-service.ts:6",
+   "rank": 0
+  },
+  {
+   "severity": "critical",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "Passenger personal data open to any caller",
+   "where": "db/master-data.cds:73",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "TravelAgency personal data open to any caller",
+   "where": "db/master-data.cds:86",
+   "rank": 3
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "rejectTravel, acceptTravel callable in states the UI hides",
+   "where": "app/travel_processor/field-control.cds:37",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "UI",
+   "title": "Read-only and hidden-create rules exist only in the UI (5)",
+   "where": "app/travel_processor/field-control.cds:29",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Tests",
+   "title": "Tests run as one user only (alice)",
+   "where": "test/odata.test.ts:1",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Node",
+   "title": "deductDiscount enforced only partly",
+   "where": "app/travel_processor/field-control.cds:45",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "AnalyticsService has no @requires or @restrict",
+   "where": "srv/analytics-service.cds:3",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "createTravelByTemplate declared and granted, no handler",
+   "where": "srv/travel-service.cds:12",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "Global annotation on built-in cds.UUID",
+   "where": "app/common.cds:5",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "UI",
+   "title": "9 UI5 lint errors",
+   "where": "app/travel_analytics/webapp/manifest.json:2",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "Booking / BookingSupplement: access inherited from the draft root",
+   "where": "srv/travel-service.cds:11",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "method": "static",
+   "status": "detected",
+   "layer": "Model",
+   "title": "3 CDS files change models of another layer",
+   "where": "app/travel_processor/field-control.cds:12",
+   "rank": 1
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "method": "static",
+   "status": "suspected",
+   "layer": "other",
+   "title": "Commented-out authorization",
+   "where": "srv/analytics-service.cds:5",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "method": "static",
+   "status": "suspected",
+   "layer": "other",
+   "title": "travel.$P read where travel is missing",
+   "where": "srv/travel-service.ts:105",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "method": "static",
+   "status": "suspected",
+   "layer": "other",
+   "title": "req.data.TravelID assigned as max + 1",
+   "where": "srv/travel-service.ts:18",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "method": "static",
+   "status": "suspected",
+   "layer": "other",
+   "title": "'USD' hard-coded as currency",
+   "where": "srv/analytics-service.cds:24",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-reached",
+   "method": "measured",
+   "status": "detected",
+   "layer": "other",
+   "title": "No test runs the rejection at srv/travel-service.ts:107",
+   "where": "srv/travel-service.ts:107",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-reached",
+   "method": "measured",
+   "status": "detected",
+   "layer": "other",
+   "title": "No test runs the derivation at srv/travel-service.ts:29",
+   "where": "srv/travel-service.ts:29",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "state-transition",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "acceptTravel in state A: UI hides it, server accepts",
+   "where": "app/travel_processor/field-control.cds:41",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "state-transition",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "rejectTravel in state X: UI hides it, server accepts",
+   "where": "app/travel_processor/field-control.cds:37",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "state-transition",
+   "method": "static",
+   "status": "detected",
+   "layer": "Service",
+   "title": "deductDiscount in state X: UI hides it, server accepts",
+   "where": "app/travel_processor/field-control.cds:45",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "field-control on BookingSupplement (Price, to_Booking, to_Travel, to_Supplement): ui-only",
+   "where": "app/travel_processor/field-control.cds:29",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "DeleteHidden on Booking: ui-only",
+   "where": "app/travel_processor/field-control.cds:61",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "operation-available on Travel.acceptTravel: ui-only",
+   "where": "app/travel_processor/field-control.cds:41",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "field-control on Booking (ConnectionID, FlightDate, FlightPrice, BookingStatus, …): ui-only",
+   "where": "app/travel_processor/field-control.cds:65",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "operation-available on Travel.rejectTravel: ui-only",
+   "where": "app/travel_processor/field-control.cds:37",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "CreateHidden on Booking: ui-only",
+   "where": "app/travel_processor/field-control.cds:60",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "field-control on Travel (BeginDate, EndDate, BookingFee, to_Agency, …): ui-only",
+   "where": "app/travel_processor/field-control.cds:29",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "suspected",
+   "layer": "Annotations",
+   "title": "operation-available on Travel.deductDiscount: partial",
+   "where": "app/travel_processor/field-control.cds:45",
+   "rank": 1
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "capabilities on Bookings (create, update, delete): framework",
+   "where": "srv/analytics-service.cds:9",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "capabilities on Travels (create, update, delete): framework",
+   "where": "srv/analytics-service.cds:68",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "assert.range on Travel.deductDiscount: framework",
+   "where": "srv/travel-service.cds:20",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "computed on Travels (TravelID, TotalPrice, TravelStatus_code, GreenFee, …): framework",
+   "where": "srv/analytics-service.cds:68",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "side-effects on Travel: consistent",
+   "where": "app/travel_processor/field-control.cds:20",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "computed on Bookings (TravelID, BookingID, CombinedID, CurrencyCode_code): framework",
+   "where": "srv/analytics-service.cds:9",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "computed on Travel (TravelStatus_code): framework",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "mandatory on BookingSupplement (Price, to_Supplement): framework",
+   "where": "db/schema.cds:22",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "side-effects on Travel: consistent",
+   "where": "app/travel_processor/field-control.cds:20",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "readonly on Travel (TravelID, TotalPrice, TravelStatus, GreenFee, …): framework",
+   "where": "db/schema.cds:14",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "mandatory on Booking (ConnectionID, FlightDate, FlightPrice, BookingStatus, …): framework",
+   "where": "db/schema.cds:37",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "mandatory on Travel (BeginDate, EndDate, to_Agency, to_Customer): framework",
+   "where": "db/schema.cds:15",
+   "rank": 0
+  },
+  {
+   "severity": "good",
+   "kind": "ui-promise",
+   "method": "static",
+   "status": "detected",
+   "layer": "Annotations",
+   "title": "side-effects on Travel: consistent",
+   "where": "app/travel_processor/field-control.cds:51",
+   "rank": 0
+  }
+ ]
+}

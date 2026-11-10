@@ -2,7 +2,7 @@
 product: model
 step: cds compile (CSN)
 status: ok
-generated: 2026-11-10T15:00Z
+generated: 2026-11-10T15:49Z
 ---
 
 # Model map
@@ -13,33 +13,45 @@ _cds compile (CSN)_ · Entities, compositions, associations and the projection c
 
 13 database entities in `sap.fe.cap.travel` · 29 service entities · 6 compositions · 21 associations.
 
-**Explore it:** [interactive model and impact explorer](explorer.html) (click an entity to see what it affects; graph, rings or layers).
+**Explore it:** [interactive model and impact explorer](explorer.html) (pick any entity, see what it affects; graph, rings or layers).
 
 ### What depends on each entity
 
-![blast radius](views/blast-radius.svg)
+![What depends on each entity (3 steps)](views/entities.svg)
 
-| Entity | Depends on it | Model | Service | Code | UI | Access | Tests | Detail |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Travel | 53 | 2 | 11 | 20 | 13 | 4 | 3 | [impact](data/impact/Travel.md) |
-| Booking | 45 | 2 | 11 | 15 | 10 | 4 | 3 | [impact](data/impact/Booking.md) |
-| BookingSupplement | 26 | 2 | 7 | 8 | 7 |  | 2 | [impact](data/impact/BookingSupplement.md) |
-| BookingStatus | 9 | 1 | 6 |  | 2 |  |  | [impact](data/impact/BookingStatus.md) |
-| TravelStatus | 9 | 1 | 6 |  | 2 |  |  | [impact](data/impact/TravelStatus.md) |
-| Flight | 8 |  | 4 |  | 2 |  | 2 | [impact](data/impact/Flight.md) |
-| Supplement | 7 | 1 | 3 |  | 1 |  | 2 | [impact](data/impact/Supplement.md) |
-| Airline | 6 |  | 4 |  | 2 |  |  | [impact](data/impact/Airline.md) |
-| Airport | 6 |  | 4 |  | 2 |  |  | [impact](data/impact/Airport.md) |
-| FlightConnection | 6 |  | 4 |  | 2 |  |  | [impact](data/impact/FlightConnection.md) |
-| Passenger | 6 |  | 4 |  | 2 |  |  | [impact](data/impact/Passenger.md) |
-| TravelAgency | 6 |  | 4 |  | 2 |  |  | [impact](data/impact/TravelAgency.md) |
-| SupplementType | 5 | 1 | 3 |  | 1 |  |  | [impact](data/impact/SupplementType.md) |
+| Entity | Exposed by | Depends on it | Model | Service | Code | UI | Access | Tests | Detail |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Travel | AnalyticsService, TravelService | 53 | 2 | 11 | 20 | 13 | 4 | 3 | [impact](data/impact/Travel.md) |
+| Booking | AnalyticsService, TravelService | 45 | 2 | 11 | 15 | 10 | 4 | 3 | [impact](data/impact/Booking.md) |
+| BookingSupplement | TravelService | 26 | 2 | 7 | 8 | 7 | 0 | 2 | [impact](data/impact/BookingSupplement.md) |
+| BookingStatus | AnalyticsService, TravelService | 9 | 1 | 6 | 0 | 2 | 0 | 0 | [impact](data/impact/BookingStatus.md) |
+| TravelStatus | AnalyticsService, TravelService | 9 | 1 | 6 | 0 | 2 | 0 | 0 | [impact](data/impact/TravelStatus.md) |
+| Flight | AnalyticsService, TravelService | 8 | 0 | 4 | 0 | 2 | 0 | 2 | [impact](data/impact/Flight.md) |
+| Supplement | TravelService | 7 | 1 | 3 | 0 | 1 | 0 | 2 | [impact](data/impact/Supplement.md) |
+| Airline | AnalyticsService, TravelService | 6 | 0 | 4 | 0 | 2 | 0 | 0 | [impact](data/impact/Airline.md) |
+| Airport | AnalyticsService, TravelService | 6 | 0 | 4 | 0 | 2 | 0 | 0 | [impact](data/impact/Airport.md) |
+| FlightConnection | AnalyticsService, TravelService | 6 | 0 | 4 | 0 | 2 | 0 | 0 | [impact](data/impact/FlightConnection.md) |
+
+**Top 10 of 13 entities** by depends on it. [Browse all 13 with filters](browse.html#entities) · [entities.json](data/lists/entities.json)
 
 ### Projection chain
 
-Each database entity and the service entities that project on it (a change to the left reaches everything to its right).
+![Projection chain: database entity → service entities](views/projections.svg)
 
-![projection chain](views/projections.svg)
+| Database entity | Service entity | Service |
+| --- | --- | --- |
+| Airline | AnalyticsService.Airline | AnalyticsService |
+| Airline | TravelService.Airline | TravelService |
+| Airport | AnalyticsService.Airport | AnalyticsService |
+| Airport | TravelService.Airport | TravelService |
+| Booking | AnalyticsService.Bookings | AnalyticsService |
+| Booking | TravelService.Booking | TravelService |
+| BookingStatus | AnalyticsService.BookingStatus | AnalyticsService |
+| BookingStatus | TravelService.BookingStatus | TravelService |
+| BookingSupplement | TravelService.BookingSupplement | TravelService |
+| Flight | AnalyticsService.Flight | AnalyticsService |
+
+**Top 10 of 23 projections** by database entity (ascending). [Browse all 23 with filters](browse.html#projections) · [projections.json](data/lists/projections.json)
 
 ### Entity relationships
 
@@ -68,6 +80,6 @@ erDiagram
 
 Ask the same from the command line: `node bin/query.js <out> impact <Entity> [--depth 3] [--assoc]`.
 
-**Deeper:** [explorer.html](explorer.html) · [model-graph.json](data/model-graph.json) · [impact.json](data/impact.json)
+**Deeper:** [explorer.html](explorer.html) · [browse.html](browse.html) · [model-graph.json](data/model-graph.json) · [impact.json](data/impact.json)
 
 Read from: `run/csn.json`, `run/graph/` · [all products](../index.md)

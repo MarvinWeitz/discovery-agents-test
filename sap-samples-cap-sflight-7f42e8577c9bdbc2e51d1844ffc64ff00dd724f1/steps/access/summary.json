@@ -30,8 +30,14 @@
  "views": [
   "views/matrix.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
-  "data/access.json"
- ]
+  "data/access.json",
+  "data/lists/matrix.json"
+ ],
+ "lists": {
+  "matrix": 13
+ }
 }

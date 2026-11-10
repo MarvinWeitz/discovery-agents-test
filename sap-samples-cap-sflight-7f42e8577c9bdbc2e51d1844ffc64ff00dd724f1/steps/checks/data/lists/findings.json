@@ -1,0 +1,608 @@
+{
+ "title": "All findings",
+ "columns": [
+  {
+   "key": "severity",
+   "label": "Severity",
+   "facet": true
+  },
+  {
+   "key": "kind",
+   "label": "Kind",
+   "facet": true
+  },
+  {
+   "key": "title",
+   "label": "Title"
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  },
+  {
+   "key": "folder",
+   "label": "Folder",
+   "facet": true
+  },
+  {
+   "key": "rank",
+   "label": "Severity rank",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "rank",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "severity": "warning",
+   "kind": "action-without-handler",
+   "title": "createTravelByTemplate: no handler found",
+   "where": "srv/travel-service.cds:12",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "agent-risk",
+   "title": "deductDiscount 404 path crashes",
+   "where": "srv/travel-service.ts:105",
+   "folder": "srv",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "agent-risk",
+   "title": "TravelID = max + 1 race",
+   "where": "srv/travel-service.ts:17",
+   "folder": "srv",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "agent-risk",
+   "title": "Hard-coded USD in analytics",
+   "where": "srv/analytics-service.cds:24",
+   "folder": "srv",
+   "rank": 1
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "title": "srv/analytics-service.cds annotates sap.fe.cap.travel.FlightConnection",
+   "where": "srv/analytics-service.cds:77",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "title": "app/travel_processor/field-control.cds extends sap.fe.cap.travel.TravelStatus",
+   "where": "app/travel_processor/field-control.cds:12",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "title": "app/common.cds annotates cds.UUID",
+   "where": "app/common.cds:5",
+   "folder": "app",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "layer-violation",
+   "title": "srv/analytics-service.cds annotates sap.fe.cap.travel.Airport",
+   "where": "srv/analytics-service.cds:76",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:12",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/manifest.json:97",
+   "folder": "app/travel_processor/webapp",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/manifest.json:70",
+   "folder": "app/travel_processor/webapp",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-outdated-manifest-version",
+   "where": "app/travel_analytics/webapp/manifest.json:2",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:9",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:12",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/manifest.json:99",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:9",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "lint",
+   "title": "ui5-lint no-outdated-manifest-version",
+   "where": "app/travel_processor/webapp/manifest.json:2",
+   "folder": "app/travel_processor/webapp",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:23",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:26",
+   "folder": "app/travel_processor/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:21",
+   "folder": "app/travel_processor/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.js:10",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:13",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:72",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/testsuite.qunit.html:5",
+   "folder": "app/travel_processor/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.js:8",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:26",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:27",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/testsuite.qunit.js:5",
+   "folder": "app/travel_processor/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:22",
+   "folder": "app/travel_processor/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:21",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/index.html:23",
+   "folder": "app/travel_processor/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:14",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:70",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/testsuite.qunit.html:5",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:9",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:14",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:73",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_processor/webapp/test/integration/Opa.qunit.html:13",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint no-deprecated-api",
+   "where": "app/travel_analytics/webapp/index.html:22",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint csp-unsafe-inline-script",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:78",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint csp-unsafe-inline-script",
+   "where": "app/travel_analytics/webapp/test/flpSandbox.html:25",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/testsuite.qunit.js:5",
+   "folder": "app/travel_analytics/webapp/test",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "lint",
+   "title": "ui5-lint prefer-test-starter",
+   "where": "app/travel_analytics/webapp/test/integration/Opa.qunit.html:9",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "native-sql",
+   "title": "SQL string in travel-service.ts",
+   "where": "srv/travel-service.ts:57",
+   "folder": "srv",
+   "rank": 1
+  },
+  {
+   "severity": "critical",
+   "kind": "pattern",
+   "title": "Auto-exposed master data",
+   "where": "db/master-data.cds:5",
+   "folder": "db",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "pattern",
+   "title": "Annotations placed outside their layer",
+   "where": "app/common.cds:5",
+   "folder": "app",
+   "rank": 3
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "title": "Declarative authorization (@requires / @restrict)",
+   "where": "srv/travel-service.cds:11",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "title": "Raw SQL via cds.run",
+   "where": "srv/travel-service.ts:57",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "title": "Bound actions",
+   "where": "srv/travel-service.cds:12",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "title": "Service tests (cds.test)",
+   "where": "test/odata.test.ts:1",
+   "folder": "test",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "title": "State rules in UI annotations",
+   "where": "app/travel_processor/field-control.cds:37",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "pattern",
+   "title": "UI annotations directly on domain entities",
+   "where": "app/labels.cds:7",
+   "folder": "app",
+   "rank": 2
+  },
+  {
+   "severity": "critical",
+   "kind": "risk",
+   "title": "Passenger personal data open to any caller",
+   "where": "db/master-data.cds:73",
+   "folder": "db",
+   "rank": 3
+  },
+  {
+   "severity": "critical",
+   "kind": "risk",
+   "title": "TravelAgency personal data open to any caller",
+   "where": "db/master-data.cds:86",
+   "folder": "db",
+   "rank": 3
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "title": "rejectTravel, acceptTravel callable in states the UI hides",
+   "where": "app/travel_processor/field-control.cds:37",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "title": "Read-only and hidden-create rules exist only in the UI (5)",
+   "where": "app/travel_processor/field-control.cds:29",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "title": "Tests run as one user only (alice)",
+   "where": "test/odata.test.ts:1",
+   "folder": "test",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "title": "deductDiscount enforced only partly",
+   "where": "app/travel_processor/field-control.cds:45",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "risk",
+   "title": "AnalyticsService has no @requires or @restrict",
+   "where": "srv/analytics-service.cds:3",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "title": "createTravelByTemplate declared and granted, no handler",
+   "where": "srv/travel-service.cds:12",
+   "folder": "srv",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "title": "Global annotation on built-in cds.UUID",
+   "where": "app/common.cds:5",
+   "folder": "app",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "title": "9 UI5 lint errors",
+   "where": "app/travel_analytics/webapp/manifest.json:2",
+   "folder": "app/travel_analytics/webapp",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "title": "Booking / BookingSupplement: access inherited from the draft root",
+   "where": "srv/travel-service.cds:11",
+   "folder": "srv",
+   "rank": 1
+  },
+  {
+   "severity": "info",
+   "kind": "risk",
+   "title": "3 CDS files change models of another layer",
+   "where": "app/travel_processor/field-control.cds:12",
+   "folder": "app/travel_processor",
+   "rank": 1
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "title": "Commented-out authorization",
+   "where": "srv/analytics-service.cds:5",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "title": "travel.$P read where travel is missing",
+   "where": "srv/travel-service.ts:105",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "title": "req.data.TravelID assigned as max + 1",
+   "where": "srv/travel-service.ts:18",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "rule-hit",
+   "title": "'USD' hard-coded as currency",
+   "where": "srv/analytics-service.cds:24",
+   "folder": "srv",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "state-transition",
+   "title": "acceptTravel in state A: UI hides it, server accepts",
+   "where": "app/travel_processor/field-control.cds:41",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "state-transition",
+   "title": "rejectTravel in state X: UI hides it, server accepts",
+   "where": "app/travel_processor/field-control.cds:37",
+   "folder": "app/travel_processor",
+   "rank": 2
+  },
+  {
+   "severity": "warning",
+   "kind": "state-transition",
+   "title": "deductDiscount in state X: UI hides it, server accepts",
+   "where": "app/travel_processor/field-control.cds:45",
+   "folder": "app/travel_processor",
+   "rank": 2
+  }
+ ]
+}

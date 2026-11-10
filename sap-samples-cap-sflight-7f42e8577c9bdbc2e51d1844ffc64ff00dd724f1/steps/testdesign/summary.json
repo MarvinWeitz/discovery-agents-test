@@ -30,9 +30,15 @@
  "views": [
   "views/tree.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
   "data/classes.json",
-  "data/class-seeds.json"
- ]
+  "data/class-seeds.json",
+  "data/lists/classes.json"
+ ],
+ "lists": {
+  "classes": 122
+ }
 }

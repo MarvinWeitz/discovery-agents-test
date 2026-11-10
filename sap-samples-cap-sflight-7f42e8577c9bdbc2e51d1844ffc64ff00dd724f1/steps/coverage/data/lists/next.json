@@ -1,0 +1,120 @@
+{
+ "title": "Test next",
+ "columns": [
+  {
+   "key": "name",
+   "label": "Class"
+  },
+  {
+   "key": "cat",
+   "label": "Category",
+   "facet": true
+  },
+  {
+   "key": "st",
+   "label": "Status",
+   "facet": true
+  },
+  {
+   "key": "score",
+   "label": "Score",
+   "num": true
+  }
+ ],
+ "sort": {
+  "key": "score",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "name": "/analytics: 8 other entities READ as anonymous",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "/processor: 8 other entities READ as anonymous",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "Travel acceptTravel as anonymous/rose",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "Travel acceptTravel as martha/amy/admin/alice",
+   "cat": "Authorization",
+   "st": "likely",
+   "score": 45
+  },
+  {
+   "name": "Travel create / edit / delete as anonymous/rose/martha",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "Travel createTravelByTemplate as amy/admin/alice",
+   "cat": "Authorization",
+   "st": "likely",
+   "score": 45
+  },
+  {
+   "name": "Travel createTravelByTemplate as anonymous/rose/martha",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "Travel deductDiscount as anonymous/rose",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "Travel rejectTravel as anonymous/rose",
+   "cat": "Authorization",
+   "st": "none",
+   "score": 45
+  },
+  {
+   "name": "acceptTravel from A",
+   "cat": "Status transitions",
+   "st": "none",
+   "score": 42
+  },
+  {
+   "name": "acceptTravel from O",
+   "cat": "Status transitions",
+   "st": "none",
+   "score": 42
+  },
+  {
+   "name": "acceptTravel from X",
+   "cat": "Status transitions",
+   "st": "none",
+   "score": 42
+  },
+  {
+   "name": "deductDiscount from A",
+   "cat": "Status transitions",
+   "st": "likely",
+   "score": 42
+  }
+ ]
+}

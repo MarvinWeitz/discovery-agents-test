@@ -1,0 +1,171 @@
+{
+ "title": "Handlers",
+ "columns": [
+  {
+   "key": "phase",
+   "label": "Phase",
+   "facet": true
+  },
+  {
+   "key": "events",
+   "label": "Events",
+   "facet": true
+  },
+  {
+   "key": "entity",
+   "label": "Entity",
+   "facet": true
+  },
+  {
+   "key": "rules",
+   "label": "Rules"
+  },
+  {
+   "key": "nrules",
+   "label": "Rule count",
+   "num": true,
+   "hide": true
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  }
+ ],
+ "sort": {
+  "key": "nrules",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "phase": "before",
+   "events": [
+    "CREATE"
+   ],
+   "entity": "Travel",
+   "rules": "derivation TravelID",
+   "nrules": 1,
+   "where": "srv/travel-service.ts:16"
+  },
+  {
+   "phase": "before",
+   "events": [
+    "NEW"
+   ],
+   "entity": "Booking",
+   "rules": "derivation BookingID, derivation BookingDate",
+   "nrules": 2,
+   "where": "srv/travel-service.ts:21"
+  },
+  {
+   "phase": "before",
+   "events": [
+    "NEW"
+   ],
+   "entity": "BookingSupplement",
+   "rules": "derivation BookingSupplementID",
+   "nrules": 1,
+   "where": "srv/travel-service.ts:27"
+  },
+  {
+   "phase": "before",
+   "events": [
+    "SAVE"
+   ],
+   "entity": "Travel",
+   "rules": "rejection, rejection",
+   "nrules": 2,
+   "where": "srv/travel-service.ts:34"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "UPDATE"
+   ],
+   "entity": "Travel",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:45"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "UPDATE"
+   ],
+   "entity": "Booking",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:46"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "UPDATE"
+   ],
+   "entity": "BookingSupplement",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:47"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "DELETE"
+   ],
+   "entity": "Booking",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:48"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "DELETE"
+   ],
+   "entity": "BookingSupplement",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:49"
+  },
+  {
+   "phase": "before",
+   "events": [
+    "acceptTravel",
+    "rejectTravel"
+   ],
+   "entity": "Travel",
+   "rules": "rejection",
+   "nrules": 1,
+   "where": "srv/travel-service.ts:86"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "acceptTravel"
+   ],
+   "entity": "Travel",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:95"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "rejectTravel"
+   ],
+   "entity": "Travel",
+   "rules": "",
+   "nrules": 0,
+   "where": "srv/travel-service.ts:96"
+  },
+  {
+   "phase": "on",
+   "events": [
+    "deductDiscount"
+   ],
+   "entity": "Travel",
+   "rules": "conditional-write, rejection, rejection, rejection",
+   "nrules": 4,
+   "where": "srv/travel-service.ts:97"
+  }
+ ]
+}

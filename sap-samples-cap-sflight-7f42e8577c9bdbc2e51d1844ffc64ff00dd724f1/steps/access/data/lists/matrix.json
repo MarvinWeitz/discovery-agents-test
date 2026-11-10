@@ -1,0 +1,144 @@
+{
+ "title": "Operation × user",
+ "columns": [
+  {
+   "key": "service",
+   "label": "Service",
+   "facet": true
+  },
+  {
+   "key": "op",
+   "label": "Operation"
+  },
+  {
+   "key": "open",
+   "label": "Open without role",
+   "facet": true
+  },
+  {
+   "key": "measured",
+   "label": "Measured",
+   "facet": true
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  },
+  {
+   "key": "rank",
+   "label": "Attention",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "rank",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "service": "AnalyticsService",
+   "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "open": "yes",
+   "measured": "agrees",
+   "where": "db/master-data.cds:86",
+   "rank": 10
+  },
+  {
+   "service": "AnalyticsService",
+   "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+   "open": "yes",
+   "measured": "agrees",
+   "where": "db/master-data.cds:73",
+   "rank": 10
+  },
+  {
+   "service": "AnalyticsService",
+   "op": "/analytics: 8 other entities READ",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/analytics-service.cds:9",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Travel READ",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Travel create / edit / delete",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Travel createTravelByTemplate",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Travel rejectTravel",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Travel acceptTravel",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Travel deductDiscount",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "Booking / BookingSupplement (via Travel draft)",
+   "open": "no",
+   "measured": "agrees",
+   "where": "srv/travel-service.cds:11",
+   "rank": 0
+  },
+  {
+   "service": "TravelService",
+   "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "open": "yes",
+   "measured": "agrees",
+   "where": "db/master-data.cds:86",
+   "rank": 10
+  },
+  {
+   "service": "TravelService",
+   "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+   "open": "yes",
+   "measured": "agrees",
+   "where": "db/master-data.cds:73",
+   "rank": 10
+  },
+  {
+   "service": "TravelService",
+   "op": "/processor: 8 other entities READ",
+   "open": "no",
+   "measured": "agrees",
+   "where": "db/schema.cds:82",
+   "rank": 0
+  }
+ ]
+}

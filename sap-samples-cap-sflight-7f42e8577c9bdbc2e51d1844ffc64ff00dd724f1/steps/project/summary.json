@@ -29,8 +29,14 @@
  "views": [
   "views/profiles.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
-  "data/project.json"
- ]
+  "data/project.json",
+  "data/lists/services.json"
+ ],
+ "lists": {
+  "services": 2
+ }
 }

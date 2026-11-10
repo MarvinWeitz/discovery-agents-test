@@ -28,11 +28,19 @@
   "run/graph/ (UI5App, Route, UiRule)"
  ],
  "views": [
-  "views/screens.svg",
-  "views/verdicts.svg"
+  "views/verdicts.svg",
+  "views/screens.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
-  "data/ui-promises.json"
- ]
+  "data/ui-promises.json",
+  "data/lists/screens.json",
+  "data/lists/promises.json"
+ ],
+ "lists": {
+  "screens": 5,
+  "promises": 21
+ }
 }

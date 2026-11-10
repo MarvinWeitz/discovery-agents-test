@@ -1,0 +1,943 @@
+{
+ "title": "Hotspots",
+ "columns": [
+  {
+   "key": "file",
+   "label": "File"
+  },
+  {
+   "key": "folder",
+   "label": "Folder",
+   "facet": true
+  },
+  {
+   "key": "commits",
+   "label": "Commits",
+   "num": true
+  },
+  {
+   "key": "lines",
+   "label": "Lines changed",
+   "num": true
+  },
+  {
+   "key": "authors",
+   "label": "Authors",
+   "num": true
+  },
+  {
+   "key": "last",
+   "label": "Last change"
+  }
+ ],
+ "sort": {
+  "key": "commits",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "file": "package.json",
+   "folder": ".",
+   "commits": 83,
+   "lines": 999,
+   "authors": 16,
+   "last": "2026-10-14"
+  },
+  {
+   "file": "app/travel_processor/package.json",
+   "folder": "app/travel_processor",
+   "commits": 42,
+   "lines": 315,
+   "authors": 7,
+   "last": "2026-08-19"
+  },
+  {
+   "file": "app/travel_analytics/package.json",
+   "folder": "app/travel_analytics",
+   "commits": 25,
+   "lines": 190,
+   "authors": 7,
+   "last": "2026-08-19"
+  },
+  {
+   "file": "app/travel_processor/webapp/manifest.json",
+   "folder": "app/travel_processor/webapp",
+   "commits": 25,
+   "lines": 1480,
+   "authors": 8,
+   "last": "2025-08-26"
+  },
+  {
+   "file": "srv/travel-service.js",
+   "folder": "srv",
+   "commits": 21,
+   "lines": 532,
+   "authors": 10,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "srv/travel-service.ts",
+   "folder": "srv",
+   "commits": 19,
+   "lines": 349,
+   "authors": 5,
+   "last": "2025-10-17"
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "commits": 18,
+   "lines": 702,
+   "authors": 8,
+   "last": "2025-05-14"
+  },
+  {
+   "file": "app/travel_processor/layouts.cds",
+   "folder": "app/travel_processor",
+   "commits": 17,
+   "lines": 447,
+   "authors": 7,
+   "last": "2025-07-03"
+  },
+  {
+   "file": "app/travel_processor/field-control.cds",
+   "folder": "app/travel_processor",
+   "commits": 16,
+   "lines": 286,
+   "authors": 6,
+   "last": "2025-07-03"
+  },
+  {
+   "file": "db/schema.cds",
+   "folder": "db",
+   "commits": 14,
+   "lines": 202,
+   "authors": 7,
+   "last": "2025-07-03"
+  },
+  {
+   "file": "app/travel_processor/karma.conf.js",
+   "folder": "app/travel_processor",
+   "commits": 12,
+   "lines": 557,
+   "authors": 5,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_analytics/webapp/manifest.json",
+   "folder": "app/travel_analytics/webapp",
+   "commits": 11,
+   "lines": 1417,
+   "authors": 4,
+   "last": "2025-08-26"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Booking.csv",
+   "folder": "db/data",
+   "commits": 10,
+   "lines": 120834,
+   "authors": 4,
+   "last": "2025-05-12"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-TravelStatus.csv",
+   "folder": "db/data",
+   "commits": 9,
+   "lines": 59,
+   "authors": 4,
+   "last": "2025-07-03"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Flight.csv",
+   "folder": "db/data",
+   "commits": 8,
+   "lines": 524,
+   "authors": 4,
+   "last": "2025-12-11"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Travel.csv",
+   "folder": "db/data",
+   "commits": 8,
+   "lines": 47120,
+   "authors": 4,
+   "last": "2025-05-12"
+  },
+  {
+   "file": "srv/workarounds.js",
+   "folder": "srv",
+   "commits": 8,
+   "lines": 234,
+   "authors": 5,
+   "last": "2024-07-17"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-BookingSupplement.csv",
+   "folder": "db/data",
+   "commits": 7,
+   "lines": 145756,
+   "authors": 3,
+   "last": "2025-05-12"
+  },
+  {
+   "file": "app/travel_processor/karma/cap-server.js",
+   "folder": "app/travel_processor/karma",
+   "commits": 7,
+   "lines": 244,
+   "authors": 2,
+   "last": "2022-03-01"
+  },
+  {
+   "file": "app/services.cds",
+   "folder": "app",
+   "commits": 6,
+   "lines": 19,
+   "authors": 3,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "db/master-data.cds",
+   "folder": "db",
+   "commits": 6,
+   "lines": 116,
+   "authors": 2,
+   "last": "2023-09-29"
+  },
+  {
+   "file": "srv/travel-service.cds",
+   "folder": "srv",
+   "commits": 6,
+   "lines": 34,
+   "authors": 4,
+   "last": "2023-03-15"
+  },
+  {
+   "file": "app/travel_processor/capabilities.cds",
+   "folder": "app/travel_processor",
+   "commits": 5,
+   "lines": 30,
+   "authors": 3,
+   "last": "2023-05-26"
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "commits": 5,
+   "lines": 55,
+   "authors": 4,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/.karma/karma.conf.js",
+   "folder": "app/.karma",
+   "commits": 4,
+   "lines": 46,
+   "authors": 4,
+   "last": "2026-08-19"
+  },
+  {
+   "file": "app/labels.cds",
+   "folder": "app",
+   "commits": 4,
+   "lines": 41,
+   "authors": 3,
+   "last": "2025-07-03"
+  },
+  {
+   "file": "app/travel_analytics/annotations.cds",
+   "folder": "app/travel_analytics",
+   "commits": 4,
+   "lines": 632,
+   "authors": 2,
+   "last": "2024-01-08"
+  },
+  {
+   "file": "srv/analytics-service.cds",
+   "folder": "srv",
+   "commits": 4,
+   "lines": 93,
+   "authors": 2,
+   "last": "2023-08-21"
+  },
+  {
+   "file": "db/data/sap.common-Countries.texts.csv",
+   "folder": "db/data",
+   "commits": 4,
+   "lines": 116,
+   "authors": 2,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "db/data/sap.common-Currencies.texts.csv",
+   "folder": "db/data",
+   "commits": 4,
+   "lines": 52,
+   "authors": 2,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Supplement.texts.csv",
+   "folder": "db/data",
+   "commits": 4,
+   "lines": 291,
+   "authors": 2,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "app/travel_processor/value-helps.cds",
+   "folder": "app/travel_processor",
+   "commits": 4,
+   "lines": 333,
+   "authors": 2,
+   "last": "2022-01-10"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-BookingStatus.texts.csv",
+   "folder": "db/data",
+   "commits": 4,
+   "lines": 26,
+   "authors": 3,
+   "last": "2021-10-19"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Airline.csv",
+   "folder": "db/data",
+   "commits": 4,
+   "lines": 65,
+   "authors": 3,
+   "last": "2021-09-17"
+  },
+  {
+   "file": "app/travel_analytics/karma.conf.js",
+   "folder": "app/travel_analytics",
+   "commits": 3,
+   "lines": 71,
+   "authors": 2,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_analytics/webapp/Component.js",
+   "folder": "app/travel_analytics/webapp",
+   "commits": 3,
+   "lines": 36,
+   "authors": 2,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/testsuite.qunit.js",
+   "folder": "app/travel_analytics/webapp/test",
+   "commits": 3,
+   "lines": 33,
+   "authors": 2,
+   "last": "2024-04-22"
+  },
+  {
+   "file": "app/travel_processor/xs-security.json",
+   "folder": "app/travel_processor",
+   "commits": 3,
+   "lines": 47,
+   "authors": 2,
+   "last": "2022-03-31"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Supplement.csv",
+   "folder": "db/data",
+   "commits": 3,
+   "lines": 52,
+   "authors": 2,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-FlightConnection.csv",
+   "folder": "db/data",
+   "commits": 3,
+   "lines": 101,
+   "authors": 2,
+   "last": "2021-10-19"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/manifest.json",
+   "folder": "app/travel_processor_java/webapp",
+   "commits": 3,
+   "lines": 348,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor/webapp/Component.js",
+   "folder": "app/travel_processor/webapp",
+   "commits": 2,
+   "lines": 12,
+   "authors": 2,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/common.cds",
+   "folder": "app",
+   "commits": 2,
+   "lines": 9,
+   "authors": 2,
+   "last": "2024-10-30"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/FirstJourney.js",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "commits": 2,
+   "lines": 76,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/opaTests.qunit.js",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "commits": 2,
+   "lines": 54,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/pages/BookingsList.js",
+   "folder": "app/travel_analytics/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 47,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/pages/BookingsObjectPage.js",
+   "folder": "app/travel_analytics/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 47,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/pages/ItemObjectPage.js",
+   "folder": "app/travel_processor/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 20,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/pages/MainListReport.js",
+   "folder": "app/travel_processor/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 20,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/pages/MainObjectPage.js",
+   "folder": "app/travel_processor/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 20,
+   "authors": 2,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_processor/webapp/test/testsuite.qunit.js",
+   "folder": "app/travel_processor/webapp/test",
+   "commits": 2,
+   "lines": 18,
+   "authors": 1,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_processor/labels.cds",
+   "folder": "app/travel_processor",
+   "commits": 2,
+   "lines": 119,
+   "authors": 2,
+   "last": "2022-04-07"
+  },
+  {
+   "file": "db/data/sap.common-Countries.csv",
+   "folder": "db/data",
+   "commits": 2,
+   "lines": 32,
+   "authors": 1,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "db/data/sap.common-Currencies.csv",
+   "folder": "db/data",
+   "commits": 2,
+   "lines": 16,
+   "authors": 1,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Airport.csv",
+   "folder": "db/data",
+   "commits": 2,
+   "lines": 56,
+   "authors": 1,
+   "last": "2022-02-19"
+  },
+  {
+   "file": "db/common.cds",
+   "folder": "db",
+   "commits": 2,
+   "lines": 101,
+   "authors": 1,
+   "last": "2021-11-08"
+  },
+  {
+   "file": "app/travel_processor/xs-app.json",
+   "folder": "app/travel_processor",
+   "commits": 2,
+   "lines": 45,
+   "authors": 2,
+   "last": "2021-09-17"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-Passenger.csv",
+   "folder": "db/data",
+   "commits": 2,
+   "lines": 731,
+   "authors": 2,
+   "last": "2021-09-17"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-TravelStatus.texts.csv",
+   "folder": "db/data",
+   "commits": 2,
+   "lines": 15,
+   "authors": 2,
+   "last": "2021-09-17"
+  },
+  {
+   "file": "app/travel_processor_java/package.json",
+   "folder": "app/travel_processor_java",
+   "commits": 2,
+   "lines": 42,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/Component.js",
+   "folder": "app/travel_processor_java/webapp",
+   "commits": 2,
+   "lines": 18,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/travel_processor_java/webapp/test/integration",
+   "commits": 2,
+   "lines": 56,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/test/integration/OpaJourney.js",
+   "folder": "app/travel_processor_java/webapp/test/integration",
+   "commits": 2,
+   "lines": 408,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/test/integration/pages/MainListReport.js",
+   "folder": "app/travel_processor_java/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 36,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/test/integration/pages/MainObjectPage.js",
+   "folder": "app/travel_processor_java/webapp/test/integration/pages",
+   "commits": 2,
+   "lines": 36,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/travel_processor_java/webapp/test/testsuite.qunit.js",
+   "folder": "app/travel_processor_java/webapp/test",
+   "commits": 2,
+   "lines": 22,
+   "authors": 1,
+   "last": "2021-07-22"
+  },
+  {
+   "file": "app/.karma/karma-cap-middleware.js",
+   "folder": "app/.karma",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2025-03-17"
+  },
+  {
+   "file": "app/travel_analytics/tsconfig.json",
+   "folder": "app/travel_analytics",
+   "commits": 1,
+   "lines": 28,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_analytics/webapp/Component.ts",
+   "folder": "app/travel_analytics/webapp",
+   "commits": 1,
+   "lines": 20,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/tsconfig.json",
+   "folder": "app/travel_processor",
+   "commits": 1,
+   "lines": 28,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/webapp/Component.ts",
+   "folder": "app/travel_processor/webapp",
+   "commits": 1,
+   "lines": 20,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/webapp/ext/controller/ControllerExtension.d.ts",
+   "folder": "app/travel_processor/webapp/ext/controller",
+   "commits": 1,
+   "lines": 11,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/webapp/ext/controller/ObjectPageExtension.controller.ts",
+   "folder": "app/travel_processor/webapp/ext/controller",
+   "commits": 1,
+   "lines": 63,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml",
+   "folder": "app/travel_processor/webapp/ext/fragment",
+   "commits": 1,
+   "lines": 11,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/webapp/ext/fragment/CustomSection.ts",
+   "folder": "app/travel_processor/webapp/ext/fragment",
+   "commits": 1,
+   "lines": 13,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/travel_processor/webapp/ext/fragment/Trees4Tickets.fragment.xml",
+   "folder": "app/travel_processor/webapp/ext/fragment",
+   "commits": 1,
+   "lines": 46,
+   "authors": 1,
+   "last": "2024-12-02"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/annotations.cds",
+   "folder": "app/{travel_alp => travel_analytics}",
+   "commits": 1,
+   "lines": 4,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/karma.conf.js",
+   "folder": "app/{travel_alp => travel_analytics}",
+   "commits": 1,
+   "lines": 0,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/package.json",
+   "folder": "app/{travel_alp => travel_analytics}",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/Component.js",
+   "folder": "app/{travel_alp => travel_analytics}/webapp",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/manifest.json",
+   "folder": "app/{travel_alp => travel_analytics}/webapp",
+   "commits": 1,
+   "lines": 8,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/{travel_alp => travel_analytics}/webapp/test/integration",
+   "commits": 1,
+   "lines": 8,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/test/integration/OpaJourney.js",
+   "folder": "app/{travel_alp => travel_analytics}/webapp/test/integration",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/test/integration/pages/BookingsList.js",
+   "folder": "app/{travel_alp => travel_analytics}/webapp/test/integration/pages",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/test/integration/pages/BookingsObjectPage.js",
+   "folder": "app/{travel_alp => travel_analytics}/webapp/test/integration/pages",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/webapp/test/testsuite.qunit.js",
+   "folder": "app/{travel_alp => travel_analytics}/webapp/test",
+   "commits": 1,
+   "lines": 0,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/xs-app.json",
+   "folder": "app/{travel_alp => travel_analytics}",
+   "commits": 1,
+   "lines": 4,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_alp => travel_analytics}/xs-security.json",
+   "folder": "app/{travel_alp => travel_analytics}",
+   "commits": 1,
+   "lines": 0,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/annotations.cds",
+   "folder": "app/{travel_analytics => travel_alp}",
+   "commits": 1,
+   "lines": 4,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/karma.conf.js",
+   "folder": "app/{travel_analytics => travel_alp}",
+   "commits": 1,
+   "lines": 0,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/package.json",
+   "folder": "app/{travel_analytics => travel_alp}",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/Component.js",
+   "folder": "app/{travel_analytics => travel_alp}/webapp",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/manifest.json",
+   "folder": "app/{travel_analytics => travel_alp}/webapp",
+   "commits": 1,
+   "lines": 8,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/{travel_analytics => travel_alp}/webapp/test/integration",
+   "commits": 1,
+   "lines": 8,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/test/integration/OpaJourney.js",
+   "folder": "app/{travel_analytics => travel_alp}/webapp/test/integration",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/test/integration/pages/BookingsList.js",
+   "folder": "app/{travel_analytics => travel_alp}/webapp/test/integration/pages",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/test/integration/pages/BookingsObjectPage.js",
+   "folder": "app/{travel_analytics => travel_alp}/webapp/test/integration/pages",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/webapp/test/testsuite.qunit.js",
+   "folder": "app/{travel_analytics => travel_alp}/webapp/test",
+   "commits": 1,
+   "lines": 0,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/xs-app.json",
+   "folder": "app/{travel_analytics => travel_alp}",
+   "commits": 1,
+   "lines": 4,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_analytics => travel_alp}/xs-security.json",
+   "folder": "app/{travel_analytics => travel_alp}",
+   "commits": 1,
+   "lines": 0,
+   "authors": 1,
+   "last": "2024-10-04"
+  },
+  {
+   "file": "app/{travel_processor => }/labels.cds",
+   "folder": "app/{travel_processor => }",
+   "commits": 1,
+   "lines": 2,
+   "authors": 1,
+   "last": "2023-05-26"
+  },
+  {
+   "file": "app/{travel_processor => }/value-helps.cds",
+   "folder": "app/{travel_processor => }",
+   "commits": 1,
+   "lines": 25,
+   "authors": 1,
+   "last": "2023-05-26"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "commits": 1,
+   "lines": 27,
+   "authors": 1,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/OpaJourney.js",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "commits": 1,
+   "lines": 21,
+   "authors": 1,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_processor/karma/cap-server.js => karma-cap-middleware.js",
+   "folder": "app/travel_processor/karma",
+   "commits": 1,
+   "lines": 19,
+   "authors": 1,
+   "last": "2023-02-17"
+  },
+  {
+   "file": "app/travel_analytics/xs-app.json",
+   "folder": "app/travel_analytics",
+   "commits": 1,
+   "lines": 19,
+   "authors": 1,
+   "last": "2022-12-20"
+  },
+  {
+   "file": "app/travel_analytics/xs-security.json",
+   "folder": "app/travel_analytics",
+   "commits": 1,
+   "lines": 43,
+   "authors": 1,
+   "last": "2022-12-20"
+  },
+  {
+   "file": "app/travel_processor/webapp/changes/changes-bundle.json",
+   "folder": "app/travel_processor/webapp/changes",
+   "commits": 1,
+   "lines": 1,
+   "authors": 1,
+   "last": "2022-11-23"
+  },
+  {
+   "file": "app/travel_processor/webapp/changes/flexibility-bundle.json",
+   "folder": "app/travel_processor/webapp/changes",
+   "commits": 1,
+   "lines": 4,
+   "authors": 1,
+   "last": "2022-11-23"
+  },
+  {
+   "file": "db/package.json",
+   "folder": "db",
+   "commits": 1,
+   "lines": 9,
+   "authors": 1,
+   "last": "2022-07-15"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-BookingStatus.csv",
+   "folder": "db/data",
+   "commits": 1,
+   "lines": 4,
+   "authors": 1,
+   "last": "2021-05-26"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-SupplementType.csv",
+   "folder": "db/data",
+   "commits": 1,
+   "lines": 5,
+   "authors": 1,
+   "last": "2021-05-26"
+  },
+  {
+   "file": "db/data/sap.fe.cap.travel-TravelAgency.csv",
+   "folder": "db/data",
+   "commits": 1,
+   "lines": 51,
+   "authors": 1,
+   "last": "2021-05-26"
+  }
+ ]
+}

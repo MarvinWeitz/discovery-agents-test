@@ -33,9 +33,17 @@
   "views/ladder.svg",
   "views/severity.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
   "data/findings.jsonl",
-  "data/gaps.jsonl"
- ]
+  "data/gaps.jsonl",
+  "data/lists/gaps.json",
+  "data/lists/findings.json"
+ ],
+ "lists": {
+  "gaps": 21,
+  "findings": 142
+ }
 }

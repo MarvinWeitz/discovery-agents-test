@@ -2,7 +2,7 @@
 product: project
 step: Probe and intake
 status: ok
-generated: 2026-11-10T15:00Z
+generated: 2026-11-10T15:49Z
 ---
 
 # Project passport
@@ -17,10 +17,12 @@ CAP 10.1.0 (app) · TypeScript · 14 model files · 2 services · 20 seed files
 
 ### Services
 
-| Service | Endpoints | Implementation |
-| --- | --- | --- |
-| AnalyticsService | odata /analytics | none (generic CAP) |
-| TravelService | odata /processor | srv/travel-service.ts |
+| Service | Protocols | Endpoints | Own code | Implementation |
+| --- | --- | --- | --- | --- |
+| AnalyticsService | odata | odata /analytics | no | none (generic CAP) |
+| TravelService | odata | odata /processor | yes | srv/travel-service.ts |
+
+_2 services_ · [browse with filters](browse.html#services) · [services.json](data/lists/services.json)
 
 ### Plugins
 
@@ -35,6 +37,6 @@ CAP 10.1.0 (app) · TypeScript · 14 model files · 2 services · 20 seed files
 CAP answered every probe question.
 
 
-**Deeper:** [project.json](data/project.json)
+**Deeper:** [browse.html](browse.html) · [project.json](data/project.json)
 
 Read from: `run/project.json` · [all products](../index.md)

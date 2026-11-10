@@ -54,77 +54,6 @@
   "evidence": "app/travel_processor/field-control.cds:41"
  },
  {
-  "id": "uirule:TravelService.Travel:fieldcontrol:TravelStatus.fieldControl",
-  "kind": "field-control",
-  "entity": "TravelService.Travel",
-  "ui": "5 fields controlled by TravelStatus.fieldControl",
-  "fields": [
-   "BeginDate",
-   "EndDate",
-   "BookingFee",
-   "to_Agency",
-   "to_Customer"
-  ],
-  "server": "no update handler checks it",
-  "verdict": "ui-only",
-  "sent": true,
-  "evidence": "app/travel_processor/field-control.cds:29"
- },
- {
-  "id": "uirule:TravelService.Booking:fieldcontrol:to_Travel.TravelStatus.fieldControl",
-  "kind": "field-control",
-  "entity": "TravelService.Booking",
-  "ui": "6 fields controlled by to_Travel.TravelStatus.fieldControl",
-  "fields": [
-   "ConnectionID",
-   "FlightDate",
-   "FlightPrice",
-   "BookingStatus",
-   "to_Carrier",
-   "to_Customer"
-  ],
-  "server": "no update handler checks it",
-  "verdict": "ui-only",
-  "sent": true,
-  "evidence": "app/travel_processor/field-control.cds:65"
- },
- {
-  "id": "uirule:TravelService.Booking:CreateHidden",
-  "kind": "CreateHidden",
-  "entity": "TravelService.Booking",
-  "ui": "hidden when [object Object]",
-  "server": "no before CREATE/NEW rejection",
-  "verdict": "ui-only",
-  "sent": true,
-  "evidence": "app/travel_processor/field-control.cds:60"
- },
- {
-  "id": "uirule:TravelService.Booking:DeleteHidden",
-  "kind": "DeleteHidden",
-  "entity": "TravelService.Booking",
-  "ui": "hidden when [object Object]",
-  "server": "no before DELETE rejection",
-  "verdict": "ui-only",
-  "sent": true,
-  "evidence": "app/travel_processor/field-control.cds:61"
- },
- {
-  "id": "uirule:TravelService.BookingSupplement:fieldcontrol:to_Travel.TravelStatus.fieldControl",
-  "kind": "field-control",
-  "entity": "TravelService.BookingSupplement",
-  "ui": "4 fields controlled by to_Travel.TravelStatus.fieldControl",
-  "fields": [
-   "Price",
-   "to_Booking",
-   "to_Travel",
-   "to_Supplement"
-  ],
-  "server": "no update handler checks it",
-  "verdict": "ui-only",
-  "sent": true,
-  "evidence": "app/travel_processor/field-control.cds:29"
- },
- {
   "id": "uirule:TravelService.Travel.deductDiscount:available",
   "kind": "operation-available",
   "entity": "TravelService.Travel",
@@ -148,6 +77,23 @@
   "verdict": "partial",
   "sent": true,
   "evidence": "app/travel_processor/field-control.cds:45"
+ },
+ {
+  "id": "uirule:TravelService.Travel:fieldcontrol:TravelStatus.fieldControl",
+  "kind": "field-control",
+  "entity": "TravelService.Travel",
+  "ui": "5 fields controlled by TravelStatus.fieldControl",
+  "fields": [
+   "BeginDate",
+   "EndDate",
+   "BookingFee",
+   "to_Agency",
+   "to_Customer"
+  ],
+  "server": "no update handler checks it",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:29"
  },
  {
   "id": "uirule:TravelService.Travel:sideeffects",
@@ -243,6 +189,44 @@
   "evidence": "db/schema.cds:15"
  },
  {
+  "id": "uirule:TravelService.Booking:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+  "kind": "field-control",
+  "entity": "TravelService.Booking",
+  "ui": "6 fields controlled by to_Travel.TravelStatus.fieldControl",
+  "fields": [
+   "ConnectionID",
+   "FlightDate",
+   "FlightPrice",
+   "BookingStatus",
+   "to_Carrier",
+   "to_Customer"
+  ],
+  "server": "no update handler checks it",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:65"
+ },
+ {
+  "id": "uirule:TravelService.Booking:CreateHidden",
+  "kind": "CreateHidden",
+  "entity": "TravelService.Booking",
+  "ui": "hidden when [object Object]",
+  "server": "no before CREATE/NEW rejection",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:60"
+ },
+ {
+  "id": "uirule:TravelService.Booking:DeleteHidden",
+  "kind": "DeleteHidden",
+  "entity": "TravelService.Booking",
+  "ui": "hidden when [object Object]",
+  "server": "no before DELETE rejection",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:61"
+ },
+ {
   "id": "uirule:TravelService.Booking:mandatory",
   "kind": "mandatory",
   "entity": "TravelService.Booking",
@@ -258,6 +242,22 @@
   "server": "CAP generic handler",
   "verdict": "framework",
   "evidence": "db/schema.cds:37"
+ },
+ {
+  "id": "uirule:TravelService.BookingSupplement:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+  "kind": "field-control",
+  "entity": "TravelService.BookingSupplement",
+  "ui": "4 fields controlled by to_Travel.TravelStatus.fieldControl",
+  "fields": [
+   "Price",
+   "to_Booking",
+   "to_Travel",
+   "to_Supplement"
+  ],
+  "server": "no update handler checks it",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:29"
  },
  {
   "id": "uirule:TravelService.BookingSupplement:mandatory",

@@ -1,0 +1,48 @@
+{
+ "title": "Entity × phase and event",
+ "columns": [
+  {
+   "key": "entity",
+   "label": "Entity"
+  },
+  {
+   "key": "service",
+   "label": "Service",
+   "facet": true
+  },
+  {
+   "key": "handlers",
+   "label": "Handlers",
+   "num": true
+  },
+  {
+   "key": "rules",
+   "label": "Rules",
+   "num": true
+  }
+ ],
+ "sort": {
+  "key": "handlers",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "entity": "Booking",
+   "service": "TravelService",
+   "handlers": 3,
+   "rules": 2
+  },
+  {
+   "entity": "BookingSupplement",
+   "service": "TravelService",
+   "handlers": 3,
+   "rules": 1
+  },
+  {
+   "entity": "Travel",
+   "service": "TravelService",
+   "handlers": 7,
+   "rules": 8
+  }
+ ]
+}

@@ -29,8 +29,16 @@
  "views": [
   "views/matrix.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
-  "data/handlers.json"
- ]
+  "data/handlers.json",
+  "data/lists/matrix.json",
+  "data/lists/handlers.json"
+ ],
+ "lists": {
+  "matrix": 3,
+  "handlers": 13
+ }
 }

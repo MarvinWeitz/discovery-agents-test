@@ -2,7 +2,7 @@
 product: screens
 step: UI5 and Fiori annotations
 status: warn
-generated: 2026-11-10T15:00Z
+generated: 2026-11-10T15:49Z
 ---
 
 # Screen map
@@ -13,11 +13,27 @@ _UI5 and Fiori annotations_ · Apps, pages and the entities they show, and every
 
 2 apps · 5 pages · 21 UI promises, **7 only in the UI** (an OData client can bypass them).
 
-![screen tree](views/screens.svg)
-
-Page colour = worst verdict of the promises on the entity it shows (red UI only, amber partial, green consistent, blue CAP).
-
 ![verdicts](views/verdicts.svg)
+
+### Pages
+
+Pages with the most UI-only promises first.
+
+![App → page → entity](views/screens.svg)
+
+| App | Page | Entity | Worst verdict | Promises | UI only |
+| --- | --- | --- | --- | --- | --- |
+| sap.fe.cap.travel | TravelList | TravelService.Travel | ui-only | 11 | 3 |
+| sap.fe.cap.travel | TravelObjectPage | TravelService.Travel | ui-only | 11 | 3 |
+| sap.fe.cap.travel | BookingObjectPage | TravelService.Booking | ui-only | 4 | 3 |
+| sap.fe.cap.travel_analytics | BookingsList | AnalyticsService.Bookings | framework | 2 | 0 |
+| sap.fe.cap.travel_analytics | BookingsObjectPage | AnalyticsService.Bookings | framework | 2 | 0 |
+
+_5 pages_ · [browse with filters](browse.html#screens) · [screens.json](data/lists/screens.json)
+
+### UI promises
+
+UI-only first.
 
 | Entity | Promise | UI says | Server | Verdict | Where |
 | --- | --- | --- | --- | --- | --- |
@@ -31,19 +47,10 @@ Page colour = worst verdict of the promises on the entity it shows (red UI only,
 | Travel | deductDiscount | TravelStatus = O | allows TravelStatus in {X, O}; also X | partial | app/travel_processor/field-control.cds:45 |
 | Travel | side-effects | BookingFee → re-read TotalPrice, GreenFee, TreesPlanted | recomputed by 3 handler(s) | consistent | app/travel_processor/field-control.cds:20 |
 | Travel | side-effects | GoGreen → re-read TotalPrice, GreenFee, TreesPlanted | recomputed by 3 handler(s) | consistent | app/travel_processor/field-control.cds:20 |
-| Travel | side-effects | to_Booking → re-read TotalPrice | recomputed by 5 handler(s) | consistent | app/travel_processor/field-control.cds:51 |
-| Travel | deductDiscount | percent in [1, 100] | CAP generic handler | framework | srv/travel-service.cds:20 |
-| Travel | readonly | TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted | CAP generic handler | framework | db/schema.cds:14 |
-| Travel | mandatory | BeginDate, EndDate, to_Agency, to_Customer | CAP generic handler | framework | db/schema.cds:15 |
-| Booking | mandatory | ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer | CAP generic handler | framework | db/schema.cds:37 |
-| BookingSupplement | mandatory | Price, to_Supplement | CAP generic handler | framework | db/schema.cds:22 |
-| Bookings | capabilities | no create / update / delete | CAP rejects with 405 (Capabilities) | framework | srv/analytics-service.cds:9 |
-| Bookings | computed | TravelID, BookingID, CombinedID, CurrencyCode_code | CAP ignores client values (Core.Computed / Immutable / ReadOnly) | framework | srv/analytics-service.cds:9 |
-| Travels | capabilities | no create / update / delete | CAP rejects with 405 (Capabilities) | framework | srv/analytics-service.cds:68 |
-| Travels | computed | TravelID, TotalPrice, TravelStatus_code, GreenFee, TreesPlanted, CustomerName | CAP ignores client values (Core.Computed / Immutable / ReadOnly) | framework | srv/analytics-service.cds:68 |
-| Travel | computed | TravelStatus_code | CAP ignores client values (Core.Computed / Immutable / ReadOnly) | framework | srv/travel-service.cds:11 |
+
+**Top 10 of 21 promises** by severity. [Browse all 21 with filters](browse.html#promises) · [promises.json](data/lists/promises.json)
 
 
-**Deeper:** [ui-promises.json](data/ui-promises.json)
+**Deeper:** [browse.html](browse.html) · [ui-promises.json](data/ui-promises.json)
 
 Read from: `run/graph/ (UI5App, Route, UiRule)` · [all products](../index.md)

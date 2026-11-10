@@ -31,8 +31,16 @@
  "views": [
   "views/classes.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
-  "data/coverage.json"
- ]
+  "data/coverage.json",
+  "data/lists/next.json",
+  "data/lists/never.json"
+ ],
+ "lists": {
+  "next": 15,
+  "never": 2
+ }
 }

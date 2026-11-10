@@ -1,0 +1,40 @@
+{
+ "title": "Rules no test reaches",
+ "columns": [
+  {
+   "key": "id",
+   "label": "Rule"
+  },
+  {
+   "key": "kind",
+   "label": "Kind",
+   "facet": true
+  },
+  {
+   "key": "guard",
+   "label": "Guard"
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  }
+ ],
+ "sort": {
+  "key": "kind",
+  "dir": "asc"
+ },
+ "rows": [
+  {
+   "id": "rule:srv/travel-service.ts:29",
+   "kind": "derivation",
+   "guard": "BookingSupplementID",
+   "where": "srv/travel-service.ts:29"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:107",
+   "kind": "rejection",
+   "guard": "!succeeded && travel.BookingFee == null",
+   "where": "srv/travel-service.ts:107"
+  }
+ ]
+}

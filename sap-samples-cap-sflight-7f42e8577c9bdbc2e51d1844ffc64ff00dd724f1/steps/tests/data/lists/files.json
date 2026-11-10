@@ -1,0 +1,42 @@
+{
+ "title": "Results per test file",
+ "columns": [
+  {
+   "key": "file",
+   "label": "Test file"
+  },
+  {
+   "key": "passed",
+   "label": "passed",
+   "num": true
+  },
+  {
+   "key": "failed",
+   "label": "failed",
+   "num": true
+  },
+  {
+   "key": "skipped",
+   "label": "skipped (spec tests)",
+   "num": true
+  }
+ ],
+ "sort": {
+  "key": "failed",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "file": "authorization.test.js",
+   "passed": 8,
+   "failed": 0,
+   "skipped": 4
+  },
+  {
+   "file": "ui-vs-server-rules.test.js",
+   "passed": 4,
+   "failed": 0,
+   "skipped": 3
+  }
+ ]
+}

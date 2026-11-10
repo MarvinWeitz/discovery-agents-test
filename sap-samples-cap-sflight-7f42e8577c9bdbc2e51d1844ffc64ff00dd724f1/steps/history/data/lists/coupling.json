@@ -1,0 +1,263 @@
+{
+ "title": "Change together",
+ "columns": [
+  {
+   "key": "a",
+   "label": "File A"
+  },
+  {
+   "key": "b",
+   "label": "File B"
+  },
+  {
+   "key": "shared",
+   "label": "Shared commits",
+   "num": true
+  },
+  {
+   "key": "degree",
+   "label": "Coupling %",
+   "num": true
+  }
+ ],
+ "sort": {
+  "key": "degree",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "a": "app/labels.cds",
+   "b": "package.json",
+   "shared": 4,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/karma.conf.js",
+   "b": "app/travel_analytics/package.json",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/karma.conf.js",
+   "b": "app/travel_processor/karma.conf.js",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/karma.conf.js",
+   "b": "app/travel_processor/package.json",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/karma.conf.js",
+   "b": "package.json",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/package.json",
+   "b": "app/travel_analytics/webapp/Component.js",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/webapp/Component.js",
+   "b": "app/travel_analytics/webapp/manifest.json",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "app/travel_analytics/webapp/test/testsuite.qunit.js",
+   "b": "package.json",
+   "shared": 3,
+   "degree": 100
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-Booking.csv",
+   "b": "db/data/sap.fe.cap.travel-BookingSupplement.csv",
+   "shared": 6,
+   "degree": 86
+  },
+  {
+   "a": "app/travel_analytics/webapp/manifest.json",
+   "b": "app/travel_processor/webapp/manifest.json",
+   "shared": 9,
+   "degree": 82
+  },
+  {
+   "a": "app/travel_analytics/annotations.cds",
+   "b": "srv/analytics-service.cds",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "db/data/sap.common-Countries.texts.csv",
+   "b": "db/data/sap.common-Currencies.texts.csv",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "db/data/sap.common-Countries.texts.csv",
+   "b": "db/data/sap.fe.cap.travel-Supplement.texts.csv",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "db/data/sap.common-Currencies.texts.csv",
+   "b": "db/data/sap.fe.cap.travel-Supplement.texts.csv",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "app/travel_processor/webapp/manifest.json",
+   "b": "db/data/sap.fe.cap.travel-BookingStatus.texts.csv",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "app/travel_processor/webapp/manifest.json",
+   "b": "db/data/sap.fe.cap.travel-Airline.csv",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-Airline.csv",
+   "b": "db/data/sap.fe.cap.travel-Booking.csv",
+   "shared": 3,
+   "degree": 75
+  },
+  {
+   "a": "app/travel_processor/karma.conf.js",
+   "b": "app/travel_processor/package.json",
+   "shared": 8,
+   "degree": 67
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-TravelStatus.csv",
+   "b": "db/schema.cds",
+   "shared": 6,
+   "degree": 67
+  },
+  {
+   "a": "package.json",
+   "b": "srv/travel-service.cds",
+   "shared": 4,
+   "degree": 67
+  },
+  {
+   "a": "app/travel_analytics/package.json",
+   "b": "app/travel_analytics/webapp/manifest.json",
+   "shared": 7,
+   "degree": 64
+  },
+  {
+   "a": "app/travel_analytics/webapp/manifest.json",
+   "b": "package.json",
+   "shared": 7,
+   "degree": 64
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-Booking.csv",
+   "b": "db/data/sap.fe.cap.travel-Travel.csv",
+   "shared": 5,
+   "degree": 63
+  },
+  {
+   "a": "srv/travel-service.js",
+   "b": "srv/workarounds.js",
+   "shared": 5,
+   "degree": 63
+  },
+  {
+   "a": "app/travel_processor/karma.conf.js",
+   "b": "package.json",
+   "shared": 7,
+   "degree": 58
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-BookingSupplement.csv",
+   "b": "db/data/sap.fe.cap.travel-Flight.csv",
+   "shared": 4,
+   "degree": 57
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-BookingSupplement.csv",
+   "b": "db/data/sap.fe.cap.travel-Travel.csv",
+   "shared": 4,
+   "degree": 57
+  },
+  {
+   "a": "app/travel_processor/karma.conf.js",
+   "b": "app/travel_processor/karma/cap-server.js",
+   "shared": 4,
+   "degree": 57
+  },
+  {
+   "a": "app/travel_processor/field-control.cds",
+   "b": "db/data/sap.fe.cap.travel-TravelStatus.csv",
+   "shared": 5,
+   "degree": 56
+  },
+  {
+   "a": "app/travel_processor/layouts.cds",
+   "b": "db/data/sap.fe.cap.travel-TravelStatus.csv",
+   "shared": 5,
+   "degree": 56
+  },
+  {
+   "a": "app/travel_processor/field-control.cds",
+   "b": "db/schema.cds",
+   "shared": 7,
+   "degree": 50
+  },
+  {
+   "a": "app/travel_processor/layouts.cds",
+   "b": "db/schema.cds",
+   "shared": 7,
+   "degree": 50
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-Booking.csv",
+   "b": "db/data/sap.fe.cap.travel-Flight.csv",
+   "shared": 4,
+   "degree": 50
+  },
+  {
+   "a": "db/data/sap.fe.cap.travel-Flight.csv",
+   "b": "db/data/sap.fe.cap.travel-Travel.csv",
+   "shared": 4,
+   "degree": 50
+  },
+  {
+   "a": "app/services.cds",
+   "b": "package.json",
+   "shared": 3,
+   "degree": 50
+  },
+  {
+   "a": "db/master-data.cds",
+   "b": "db/schema.cds",
+   "shared": 3,
+   "degree": 50
+  },
+  {
+   "a": "app/travel_processor/layouts.cds",
+   "b": "db/master-data.cds",
+   "shared": 3,
+   "degree": 50
+  },
+  {
+   "a": "app/travel_processor/webapp/manifest.json",
+   "b": "db/master-data.cds",
+   "shared": 3,
+   "degree": 50
+  },
+  {
+   "a": "app/travel_processor/field-control.cds",
+   "b": "db/master-data.cds",
+   "shared": 3,
+   "degree": 50
+  }
+ ]
+}

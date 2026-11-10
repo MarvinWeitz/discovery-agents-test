@@ -2,7 +2,7 @@
 product: coverage
 step: Coverage
 status: warn
-generated: 2026-11-10T15:00Z
+generated: 2026-11-10T15:49Z
 ---
 
 # Coverage by class
@@ -29,9 +29,8 @@ _Coverage_ · Which business cases are tested (per equivalence class), and which
 | Travel createTravelByTemplate as amy/admin/alice | Authorization | likely | 45 |
 | Travel createTravelByTemplate as anonymous/rose/martha | Authorization | none | 45 |
 | Travel deductDiscount as anonymous/rose | Authorization | none | 45 |
-| Travel rejectTravel as anonymous/rose | Authorization | none | 45 |
-| acceptTravel from A | Status transitions | none | 42 |
-| … 3 more rows in the data file | | | |
+
+**Top 10 of 15 classes** by score. [Browse all 15 with filters](browse.html#next) · [next.json](data/lists/next.json)
 
 ### Rules no test reaches
 
@@ -40,7 +39,9 @@ _Coverage_ · Which business cases are tested (per equivalence class), and which
 | rule:srv/travel-service.ts:29 | derivation | BookingSupplementID | srv/travel-service.ts:29 |
 | rule:srv/travel-service.ts:107 | rejection | !succeeded && travel.BookingFee == null | srv/travel-service.ts:107 |
 
+_2 rules_ · [browse with filters](browse.html#never) · [never.json](data/lists/never.json)
 
-**Deeper:** [coverage.json](data/coverage.json)
+
+**Deeper:** [browse.html](browse.html) · [coverage.json](data/coverage.json)
 
 Read from: `atlas-data.json COVERAGE`, `atlas-data.json MEASURED.rules (CI)` · [all products](../index.md)

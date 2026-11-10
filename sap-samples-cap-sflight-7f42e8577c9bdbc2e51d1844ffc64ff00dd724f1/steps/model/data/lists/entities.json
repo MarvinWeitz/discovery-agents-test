@@ -1,0 +1,251 @@
+{
+ "title": "What depends on each entity",
+ "columns": [
+  {
+   "key": "entity",
+   "label": "Entity"
+  },
+  {
+   "key": "exposedBy",
+   "label": "Exposed by",
+   "facet": true
+  },
+  {
+   "key": "total",
+   "label": "Depends on it",
+   "num": true
+  },
+  {
+   "key": "model",
+   "label": "Model",
+   "num": true
+  },
+  {
+   "key": "service",
+   "label": "Service",
+   "num": true
+  },
+  {
+   "key": "code",
+   "label": "Code",
+   "num": true
+  },
+  {
+   "key": "ui",
+   "label": "UI",
+   "num": true
+  },
+  {
+   "key": "access",
+   "label": "Access",
+   "num": true
+  },
+  {
+   "key": "tests",
+   "label": "Tests",
+   "num": true
+  },
+  {
+   "key": "detail",
+   "label": "Detail"
+  }
+ ],
+ "sort": {
+  "key": "total",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "entity": "Travel",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 53,
+   "model": 2,
+   "service": 11,
+   "code": 20,
+   "ui": 13,
+   "access": 4,
+   "tests": 3,
+   "detail": "[impact](data/impact/Travel.md)"
+  },
+  {
+   "entity": "Booking",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 45,
+   "model": 2,
+   "service": 11,
+   "code": 15,
+   "ui": 10,
+   "access": 4,
+   "tests": 3,
+   "detail": "[impact](data/impact/Booking.md)"
+  },
+  {
+   "entity": "BookingSupplement",
+   "exposedBy": [
+    "TravelService"
+   ],
+   "total": 26,
+   "model": 2,
+   "service": 7,
+   "code": 8,
+   "ui": 7,
+   "access": 0,
+   "tests": 2,
+   "detail": "[impact](data/impact/BookingSupplement.md)"
+  },
+  {
+   "entity": "BookingStatus",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 9,
+   "model": 1,
+   "service": 6,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/BookingStatus.md)"
+  },
+  {
+   "entity": "TravelStatus",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 9,
+   "model": 1,
+   "service": 6,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/TravelStatus.md)"
+  },
+  {
+   "entity": "Flight",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 8,
+   "model": 0,
+   "service": 4,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 2,
+   "detail": "[impact](data/impact/Flight.md)"
+  },
+  {
+   "entity": "Supplement",
+   "exposedBy": [
+    "TravelService"
+   ],
+   "total": 7,
+   "model": 1,
+   "service": 3,
+   "code": 0,
+   "ui": 1,
+   "access": 0,
+   "tests": 2,
+   "detail": "[impact](data/impact/Supplement.md)"
+  },
+  {
+   "entity": "Airline",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 6,
+   "model": 0,
+   "service": 4,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/Airline.md)"
+  },
+  {
+   "entity": "Airport",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 6,
+   "model": 0,
+   "service": 4,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/Airport.md)"
+  },
+  {
+   "entity": "FlightConnection",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 6,
+   "model": 0,
+   "service": 4,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/FlightConnection.md)"
+  },
+  {
+   "entity": "Passenger",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 6,
+   "model": 0,
+   "service": 4,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/Passenger.md)"
+  },
+  {
+   "entity": "TravelAgency",
+   "exposedBy": [
+    "AnalyticsService",
+    "TravelService"
+   ],
+   "total": 6,
+   "model": 0,
+   "service": 4,
+   "code": 0,
+   "ui": 2,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/TravelAgency.md)"
+  },
+  {
+   "entity": "SupplementType",
+   "exposedBy": [
+    "TravelService"
+   ],
+   "total": 5,
+   "model": 1,
+   "service": 3,
+   "code": 0,
+   "ui": 1,
+   "access": 0,
+   "tests": 0,
+   "detail": "[impact](data/impact/SupplementType.md)"
+  }
+ ]
+}

@@ -1,0 +1,240 @@
+{
+ "title": "Findings by file",
+ "columns": [
+  {
+   "key": "file",
+   "label": "File"
+  },
+  {
+   "key": "folder",
+   "label": "Folder",
+   "facet": true
+  },
+  {
+   "key": "worst",
+   "label": "Worst",
+   "facet": true
+  },
+  {
+   "key": "kinds",
+   "label": "Kinds",
+   "facet": true
+  },
+  {
+   "key": "findings",
+   "label": "Findings",
+   "num": true
+  }
+ ],
+ "sort": {
+  "key": "findings",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "file": "srv/travel-service.cds",
+   "folder": "srv",
+   "worst": "warning",
+   "kinds": [
+    "action-without-handler",
+    "pattern",
+    "risk"
+   ],
+   "findings": 5
+  },
+  {
+   "file": "srv/travel-service.ts",
+   "folder": "srv",
+   "worst": "warning",
+   "kinds": [
+    "agent-risk",
+    "native-sql",
+    "pattern",
+    "rule-hit"
+   ],
+   "findings": 6
+  },
+  {
+   "file": "srv/analytics-service.cds",
+   "folder": "srv",
+   "worst": "warning",
+   "kinds": [
+    "agent-risk",
+    "layer-violation",
+    "risk",
+    "rule-hit"
+   ],
+   "findings": 6
+  },
+  {
+   "file": "app/travel_processor/field-control.cds",
+   "folder": "app/travel_processor",
+   "worst": "warning",
+   "kinds": [
+    "layer-violation",
+    "pattern",
+    "risk",
+    "state-transition"
+   ],
+   "findings": 9
+  },
+  {
+   "file": "app/common.cds",
+   "folder": "app",
+   "worst": "critical",
+   "kinds": [
+    "layer-violation",
+    "pattern",
+    "risk"
+   ],
+   "findings": 3
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/Opa.qunit.html",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "worst": "warning",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 5
+  },
+  {
+   "file": "app/travel_processor/webapp/manifest.json",
+   "folder": "app/travel_processor/webapp",
+   "worst": "warning",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 3
+  },
+  {
+   "file": "app/travel_analytics/webapp/manifest.json",
+   "folder": "app/travel_analytics/webapp",
+   "worst": "warning",
+   "kinds": [
+    "lint",
+    "risk"
+   ],
+   "findings": 3
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/Opa.qunit.html",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "worst": "warning",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 5
+  },
+  {
+   "file": "app/travel_analytics/webapp/index.html",
+   "folder": "app/travel_analytics/webapp",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 5
+  },
+  {
+   "file": "app/travel_processor/webapp/index.html",
+   "folder": "app/travel_processor/webapp",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 4
+  },
+  {
+   "file": "app/travel_processor/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/travel_processor/webapp/test/integration",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 1
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/flpSandbox.html",
+   "folder": "app/travel_analytics/webapp/test",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 5
+  },
+  {
+   "file": "app/travel_processor/webapp/test/testsuite.qunit.html",
+   "folder": "app/travel_processor/webapp/test",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 1
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/integration/Opa.qunit.js",
+   "folder": "app/travel_analytics/webapp/test/integration",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 1
+  },
+  {
+   "file": "app/travel_processor/webapp/test/testsuite.qunit.js",
+   "folder": "app/travel_processor/webapp/test",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 1
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/testsuite.qunit.html",
+   "folder": "app/travel_analytics/webapp/test",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 1
+  },
+  {
+   "file": "app/travel_analytics/webapp/test/testsuite.qunit.js",
+   "folder": "app/travel_analytics/webapp/test",
+   "worst": "info",
+   "kinds": [
+    "lint"
+   ],
+   "findings": 1
+  },
+  {
+   "file": "db/master-data.cds",
+   "folder": "db",
+   "worst": "critical",
+   "kinds": [
+    "pattern",
+    "risk"
+   ],
+   "findings": 3
+  },
+  {
+   "file": "test/odata.test.ts",
+   "folder": "test",
+   "worst": "warning",
+   "kinds": [
+    "pattern",
+    "risk"
+   ],
+   "findings": 2
+  },
+  {
+   "file": "app/labels.cds",
+   "folder": "app",
+   "worst": "warning",
+   "kinds": [
+    "pattern"
+   ],
+   "findings": 1
+  }
+ ]
+}

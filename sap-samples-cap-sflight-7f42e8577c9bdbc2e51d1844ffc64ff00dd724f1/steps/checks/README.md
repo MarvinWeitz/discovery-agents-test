@@ -2,7 +2,7 @@
 product: checks
 step: Lint, Opengrep, rules
 status: bad
-generated: 2026-11-10T15:00Z
+generated: 2026-11-10T15:49Z
 ---
 
 # Code findings
@@ -13,37 +13,45 @@ _Lint, Opengrep, rules_ · Every static finding with a code location in one stan
 
 71 findings in 21 files · 36 critical or warning. Full list as SARIF: [checks.sarif](data/checks.sarif) (open it in VS Code's SARIF Viewer or upload it to code scanning).
 
-![hotspots](views/hotspots.svg)
-
 ![by kind](views/kinds.svg)
 
-### Critical and warnings
+### Hotspot files
 
-| Severity | Kind | Title | Where |
-| --- | --- | --- | --- |
-| critical | pattern | Auto-exposed master data | db/master-data.cds:5 |
-| critical | pattern | Annotations placed outside their layer | app/common.cds:5 |
-| critical | risk | Passenger personal data open to any caller | db/master-data.cds:73 |
-| critical | risk | TravelAgency personal data open to any caller | db/master-data.cds:86 |
-| warning | action-without-handler | createTravelByTemplate: no handler found | srv/travel-service.cds:12 |
-| warning | layer-violation | srv/analytics-service.cds annotates sap.fe.cap.travel.FlightConnection | srv/analytics-service.cds:77 |
-| warning | layer-violation | app/travel_processor/field-control.cds extends sap.fe.cap.travel.TravelStatus | app/travel_processor/field-control.cds:12 |
-| warning | layer-violation | app/common.cds annotates cds.UUID | app/common.cds:5 |
-| warning | layer-violation | srv/analytics-service.cds annotates sap.fe.cap.travel.Airport | srv/analytics-service.cds:76 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_processor/webapp/test/integration/Opa.qunit.html:12 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_processor/webapp/manifest.json:97 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_processor/webapp/manifest.json:70 |
-| warning | lint | ui5-lint no-outdated-manifest-version | app/travel_analytics/webapp/manifest.json:2 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_processor/webapp/test/integration/Opa.qunit.html:9 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_analytics/webapp/test/integration/Opa.qunit.html:12 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_analytics/webapp/manifest.json:99 |
-| warning | lint | ui5-lint no-deprecated-api | app/travel_analytics/webapp/test/integration/Opa.qunit.html:9 |
-| warning | lint | ui5-lint no-outdated-manifest-version | app/travel_processor/webapp/manifest.json:2 |
-| warning | pattern | Declarative authorization (@requires / @restrict) | srv/travel-service.cds:11 |
-| warning | pattern | Raw SQL via cds.run | srv/travel-service.ts:57 |
-| … 16 more rows in the data file | | | |
+![Findings by file (red has a critical, amber a warning)](views/files.svg)
+
+| File | Folder | Worst | Kinds | Findings |
+| --- | --- | --- | --- | --- |
+| app/travel_processor/field-control.cds | app/travel_processor | warning | layer-violation, pattern, risk, state-transition | 9 |
+| srv/travel-service.ts | srv | warning | agent-risk, native-sql, pattern, rule-hit | 6 |
+| srv/analytics-service.cds | srv | warning | agent-risk, layer-violation, risk, rule-hit | 6 |
+| srv/travel-service.cds | srv | warning | action-without-handler, pattern, risk | 5 |
+| app/travel_processor/webapp/test/integration/Opa.qunit.html | app/travel_processor/webapp/test/integration | warning | lint | 5 |
+| app/travel_analytics/webapp/test/integration/Opa.qunit.html | app/travel_analytics/webapp/test/integration | warning | lint | 5 |
+| app/travel_analytics/webapp/index.html | app/travel_analytics/webapp | info | lint | 5 |
+| app/travel_analytics/webapp/test/flpSandbox.html | app/travel_analytics/webapp/test | info | lint | 5 |
+| app/travel_processor/webapp/index.html | app/travel_processor/webapp | info | lint | 4 |
+| app/common.cds | app | critical | layer-violation, pattern, risk | 3 |
+
+**Top 10 of 21 files** by findings. [Browse all 21 with filters](browse.html#files) · [files.json](data/lists/files.json)
+
+### Findings
+
+| Severity | Kind | Title | Where | Folder |
+| --- | --- | --- | --- | --- |
+| critical | pattern | Auto-exposed master data | db/master-data.cds:5 | db |
+| critical | pattern | Annotations placed outside their layer | app/common.cds:5 | app |
+| critical | risk | Passenger personal data open to any caller | db/master-data.cds:73 | db |
+| critical | risk | TravelAgency personal data open to any caller | db/master-data.cds:86 | db |
+| warning | action-without-handler | createTravelByTemplate: no handler found | srv/travel-service.cds:12 | srv |
+| warning | layer-violation | srv/analytics-service.cds annotates sap.fe.cap.travel.FlightConnection | srv/analytics-service.cds:77 | srv |
+| warning | layer-violation | app/travel_processor/field-control.cds extends sap.fe.cap.travel.TravelStatus | app/travel_processor/field-control.cds:12 | app/travel_processor |
+| warning | layer-violation | app/common.cds annotates cds.UUID | app/common.cds:5 | app |
+| warning | layer-violation | srv/analytics-service.cds annotates sap.fe.cap.travel.Airport | srv/analytics-service.cds:76 | srv |
+| warning | lint | ui5-lint no-deprecated-api | app/travel_processor/webapp/test/integration/Opa.qunit.html:12 | app/travel_processor/webapp/test/integration |
+
+**Top 10 of 71 findings** by severity rank. [Browse all 71 with filters](browse.html#findings) · [findings.json](data/lists/findings.json)
 
 
-**Deeper:** [checks.sarif](data/checks.sarif)
+**Deeper:** [browse.html](browse.html) · [checks.sarif](data/checks.sarif)
 
 Read from: `run/findings/findings.jsonl` · [all products](../index.md)

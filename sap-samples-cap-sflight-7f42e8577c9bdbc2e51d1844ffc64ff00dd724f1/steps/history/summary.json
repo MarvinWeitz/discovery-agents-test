@@ -27,11 +27,20 @@
   "git log of the app checkout"
  ],
  "views": [
-  "views/hotspots.svg"
+  "views/hotspots.svg",
+  "views/coupling.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
   "data/hotspots.json",
-  "data/coupling.json"
- ]
+  "data/coupling.json",
+  "data/lists/hotspots.json",
+  "data/lists/coupling.json"
+ ],
+ "lists": {
+  "hotspots": 113,
+  "coupling": 39
+ }
 }

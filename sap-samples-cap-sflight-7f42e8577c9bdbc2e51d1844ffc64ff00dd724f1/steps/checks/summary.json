@@ -29,11 +29,19 @@
   "run/findings/findings.jsonl"
  ],
  "views": [
-  "views/hotspots.svg",
-  "views/kinds.svg"
+  "views/kinds.svg",
+  "views/files.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
-  "data/checks.sarif"
- ]
+  "data/checks.sarif",
+  "data/lists/files.json",
+  "data/lists/findings.json"
+ ],
+ "lists": {
+  "files": 21,
+  "findings": 71
+ }
 }

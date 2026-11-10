@@ -1,0 +1,293 @@
+{
+ "title": "Questions (gaps)",
+ "columns": [
+  {
+   "key": "id",
+   "label": "Gap"
+  },
+  {
+   "key": "question",
+   "label": "Question"
+  },
+  {
+   "key": "kind",
+   "label": "Kind",
+   "facet": true
+  },
+  {
+   "key": "priority",
+   "label": "Priority",
+   "facet": true
+  },
+  {
+   "key": "status",
+   "label": "Status",
+   "facet": true
+  },
+  {
+   "key": "by",
+   "label": "Can answer",
+   "facet": true
+  },
+  {
+   "key": "rank",
+   "label": "Open first",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "rank",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "id": "G-enforcement-elsewhere-070d05fefb",
+   "question": "Does anything on the server enforce \"TravelStatus != A\" for Travel.acceptTravel: another handler, a database constraint, a plugin, a reverse proxy?",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-enforcement-elsewhere-270962cf80",
+   "question": "Does anything on the server enforce \"5 fields controlled by TravelStatus.fieldControl\" for Travel (BeginDate, EndDate, BookingFee, to_Agency, …): another handle",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-enforcement-elsewhere-33ac0981f8",
+   "question": "Does anything on the server enforce \"TravelStatus != X\" for Travel.rejectTravel: another handler, a database constraint, a plugin, a reverse proxy?",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-enforcement-elsewhere-464979f637",
+   "question": "Does anything on the server enforce \"hidden when [object Object]\" for Booking: another handler, a database constraint, a plugin, a reverse proxy?",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-enforcement-elsewhere-47e9076f20",
+   "question": "Does anything on the server enforce \"6 fields controlled by to_Travel.TravelStatus.fieldControl\" for Booking (ConnectionID, FlightDate, FlightPrice, BookingStat",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-enforcement-elsewhere-48811c9e6d",
+   "question": "Does anything on the server enforce \"hidden when [object Object]\" for Booking: another handler, a database constraint, a plugin, a reverse proxy?",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-enforcement-elsewhere-bb8f6ea400",
+   "question": "Does anything on the server enforce \"4 fields controlled by to_Travel.TravelStatus.fieldControl\" for BookingSupplement (Price, to_Booking, to_Travel, to_Supplem",
+   "kind": "enforcement-elsewhere",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-slice-review-e4efc65cb2",
+   "question": "Slice S01 Travel in AnalyticsService, TravelService: answer the 10 fixed questions (entry points, path, authorization, rules in business terms, states, events, ",
+   "kind": "slice-review",
+   "priority": "high",
+   "status": "open",
+   "by": [
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-authz-unclear-0d3b5fd55f",
+   "question": "Is Booking / BookingSupplement (via Travel draft) allowed for rose, martha?",
+   "kind": "authz-unclear",
+   "priority": "medium",
+   "status": "resolved",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 0
+  },
+  {
+   "id": "G-authz-unclear-c16e566bdc",
+   "question": "Is /analytics: 8 other entities READ allowed for anonymous?",
+   "kind": "authz-unclear",
+   "priority": "medium",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-authz-unclear-d84c33237f",
+   "question": "Is /processor: 8 other entities READ allowed for anonymous?",
+   "kind": "authz-unclear",
+   "priority": "medium",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-authz-unclear-f4a6aef25e",
+   "question": "Is Travel createTravelByTemplate allowed for amy, admin, alice?",
+   "kind": "authz-unclear",
+   "priority": "medium",
+   "status": "resolved",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 0
+  },
+  {
+   "id": "G-enforcement-elsewhere-13105b2034",
+   "question": "Does anything on the server enforce \"TravelStatus = O\" for Travel.deductDiscount: another handler, a database constraint, a plugin, a reverse proxy?",
+   "kind": "enforcement-elsewhere",
+   "priority": "medium",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-handler-missing-51b1ab34cc",
+   "question": "Where is createTravelByTemplate implemented, if anywhere (a plugin, a dynamic registration, a generic handler)?",
+   "kind": "handler-missing",
+   "priority": "medium",
+   "status": "open",
+   "by": [
+    "measured",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-business-criticality-d44cbff21d",
+   "question": "How critical is AnalyticsService for the business (1 to 5)? It carries 1 slice: Travel in AnalyticsService, TravelService.",
+   "kind": "business-criticality",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "human"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-business-criticality-d5b61156d9",
+   "question": "How critical is TravelService for the business (1 to 5)? It carries 1 slice: Travel in AnalyticsService, TravelService.",
+   "kind": "business-criticality",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "human"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-native-sql-effect-6e885a1d59",
+   "question": "Which entities and fields does this SQL read and write, and under which condition?",
+   "kind": "native-sql-effect",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-rule-confirmation-2f6d56d8ff",
+   "question": "Is the draft rule hard-coded-currency right here (srv/analytics-service.cds:24), and should it be accepted?",
+   "kind": "rule-confirmation",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "human",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-rule-confirmation-c46fccda18",
+   "question": "Is the draft rule null-deref-in-guard right here (srv/travel-service.ts:105), and should it be accepted?",
+   "kind": "rule-confirmation",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "human",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-rule-confirmation-c8c830f59e",
+   "question": "Is the draft rule commented-out-grant right here (srv/analytics-service.cds:5), and should it be accepted?",
+   "kind": "rule-confirmation",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "human",
+    "ai"
+   ],
+   "rank": 1
+  },
+  {
+   "id": "G-rule-confirmation-e0e142fb88",
+   "question": "Is the draft rule max-plus-one-id right here (srv/travel-service.ts:18), and should it be accepted?",
+   "kind": "rule-confirmation",
+   "priority": "low",
+   "status": "open",
+   "by": [
+    "human",
+    "ai"
+   ],
+   "rank": 1
+  }
+ ]
+}

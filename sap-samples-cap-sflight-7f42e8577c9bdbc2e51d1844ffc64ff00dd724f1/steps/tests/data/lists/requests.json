@@ -1,0 +1,213 @@
+{
+ "title": "Requests the tests sent",
+ "columns": [
+  {
+   "key": "entity",
+   "label": "Entity",
+   "facet": true
+  },
+  {
+   "key": "event",
+   "label": "Event",
+   "facet": true
+  },
+  {
+   "key": "n",
+   "label": "Count",
+   "num": true
+  },
+  {
+   "key": "users",
+   "label": "Users",
+   "facet": true
+  },
+  {
+   "key": "outcomes",
+   "label": "Outcomes"
+  }
+ ],
+ "sort": {
+  "key": "n",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "entity": "Travel",
+   "event": "READ",
+   "n": 24,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "200×22 401×2"
+  },
+  {
+   "entity": "Passenger",
+   "event": "READ",
+   "n": 16,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "200×16"
+  },
+  {
+   "entity": "TravelAgency",
+   "event": "READ",
+   "n": 15,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "200×15"
+  },
+  {
+   "entity": "Travel",
+   "event": "deductDiscount",
+   "n": 12,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "200×5 400×5 401×1 403×1"
+  },
+  {
+   "entity": "Travel",
+   "event": "rejectTravel",
+   "n": 8,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "200×6 401×1 403×1"
+  },
+  {
+   "entity": "Travel",
+   "event": "acceptTravel",
+   "n": 7,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "200×5 401×1 403×1"
+  },
+  {
+   "entity": "Travel",
+   "event": "createTravelByTemplate",
+   "n": 6,
+   "users": [
+    "admin",
+    "alice",
+    "amy",
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "401×1 403×2 501×3"
+  },
+  {
+   "entity": "Travel",
+   "event": "UPDATE",
+   "n": 5,
+   "users": [
+    "alice"
+   ],
+   "outcomes": "200×5"
+  },
+  {
+   "entity": "Travel",
+   "event": "NEW",
+   "n": 4,
+   "users": [
+    "admin",
+    "alice",
+    "amy"
+   ],
+   "outcomes": "200×4"
+  },
+  {
+   "entity": "Travel",
+   "event": "CREATE",
+   "n": 3,
+   "users": [
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "401×1 403×2"
+  },
+  {
+   "entity": "Booking",
+   "event": "CREATE",
+   "n": 3,
+   "users": [
+    "anonymous",
+    "martha",
+    "rose"
+   ],
+   "outcomes": "401×1 403×2"
+  },
+  {
+   "entity": "Booking",
+   "event": "NEW",
+   "n": 3,
+   "users": [
+    "admin",
+    "alice",
+    "amy"
+   ],
+   "outcomes": "422×3"
+  },
+  {
+   "entity": "Travel",
+   "event": "EDIT",
+   "n": 2,
+   "users": [
+    "alice"
+   ],
+   "outcomes": "200×2"
+  },
+  {
+   "entity": "Booking",
+   "event": "UPDATE",
+   "n": 1,
+   "users": [
+    "alice"
+   ],
+   "outcomes": "200×1"
+  },
+  {
+   "entity": "BookingSupplement",
+   "event": "UPDATE",
+   "n": 1,
+   "users": [
+    "alice"
+   ],
+   "outcomes": "200×1"
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "title": "App → page → entity",
+ "columns": [
+  {
+   "key": "app",
+   "label": "App",
+   "facet": true
+  },
+  {
+   "key": "page",
+   "label": "Page"
+  },
+  {
+   "key": "entity",
+   "label": "Entity"
+  },
+  {
+   "key": "worst",
+   "label": "Worst verdict",
+   "facet": true
+  },
+  {
+   "key": "promises",
+   "label": "Promises",
+   "num": true
+  },
+  {
+   "key": "uiOnly",
+   "label": "UI only",
+   "num": true
+  }
+ ],
+ "sort": {
+  "key": "uiOnly",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "app": "sap.fe.cap.travel_analytics",
+   "page": "BookingsList",
+   "entity": "AnalyticsService.Bookings",
+   "promises": 2,
+   "worst": "framework",
+   "uiOnly": 0
+  },
+  {
+   "app": "sap.fe.cap.travel_analytics",
+   "page": "BookingsObjectPage",
+   "entity": "AnalyticsService.Bookings",
+   "promises": 2,
+   "worst": "framework",
+   "uiOnly": 0
+  },
+  {
+   "app": "sap.fe.cap.travel",
+   "page": "TravelList",
+   "entity": "TravelService.Travel",
+   "promises": 11,
+   "worst": "ui-only",
+   "uiOnly": 3
+  },
+  {
+   "app": "sap.fe.cap.travel",
+   "page": "TravelObjectPage",
+   "entity": "TravelService.Travel",
+   "promises": 11,
+   "worst": "ui-only",
+   "uiOnly": 3
+  },
+  {
+   "app": "sap.fe.cap.travel",
+   "page": "BookingObjectPage",
+   "entity": "TravelService.Booking",
+   "promises": 4,
+   "worst": "ui-only",
+   "uiOnly": 3
+  }
+ ]
+}

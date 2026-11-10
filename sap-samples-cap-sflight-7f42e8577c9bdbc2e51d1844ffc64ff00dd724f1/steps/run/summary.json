@@ -16,7 +16,7 @@
   },
   {
    "label": "seconds",
-   "value": 315
+   "value": 614
   },
   {
    "label": "mode",
@@ -32,5 +32,6 @@
  "pages": [],
  "data": [
   "data/stages.json"
- ]
+ ],
+ "lists": {}
 }

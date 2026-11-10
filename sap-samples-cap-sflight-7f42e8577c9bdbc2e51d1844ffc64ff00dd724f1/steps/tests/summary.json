@@ -30,11 +30,21 @@
   "atlas-data.json MEASURED.requests (CI)"
  ],
  "views": [
-  "views/results.svg"
+  "views/files.svg"
  ],
- "pages": [],
+ "pages": [
+  "browse.html"
+ ],
  "data": [
   "data/results.ctrf.json",
-  "data/generated.json"
- ]
+  "data/generated.json",
+  "data/lists/files.json",
+  "data/lists/tests.json",
+  "data/lists/requests.json"
+ ],
+ "lists": {
+  "files": 2,
+  "tests": 19,
+  "requests": 15
+ }
 }

@@ -28,11 +28,12 @@
   "run/graph/"
  ],
  "views": [
-  "views/blast-radius.svg",
+  "views/entities.svg",
   "views/projections.svg"
  ],
  "pages": [
-  "explorer.html"
+  "explorer.html",
+  "browse.html"
  ],
  "data": [
   "data/model-graph.json",
@@ -49,6 +50,12 @@
   "data/impact/FlightConnection.md",
   "data/impact/Passenger.md",
   "data/impact/TravelAgency.md",
-  "data/impact/SupplementType.md"
- ]
+  "data/impact/SupplementType.md",
+  "data/lists/entities.json",
+  "data/lists/projections.json"
+ ],
+ "lists": {
+  "entities": 13,
+  "projections": 23
+ }
 }
