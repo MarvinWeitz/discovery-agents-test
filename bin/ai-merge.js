@@ -40,4 +40,5 @@ manifest.record(M, { id: 'ai-merge', status: 'ran', started, seconds: +((Date.no
 manifest.record(M, { id: 'findings', status: 'ran', started: new Date(t1).toISOString(), seconds: +((Date.now() - t1) / 1000).toFixed(1), said, outputs: manifest.outputs(out, 'findings') })
 manifest.save(out, M)
 console.log(said)
+try { console.log(node('products.js', out)) } catch { console.error('step products failed (optional)') }
 try { console.log(node('validate.js', out)) } catch { process.exit(1) }

@@ -43,6 +43,7 @@ flowchart LR
   class findings static
   class tests static
   class atlas static
+  class products static
   class ai_requests static
   class validate static
   class run_tests measured
@@ -73,9 +74,9 @@ Set it with `--mode`, `DISCOVERY_MODE`, or `"mode"` in `discovery.config.json` (
 | 7 | **ai-requests** Prepare AI requests | bin/pipeline.js | static | `mode` | run/findings/gaps.jsonl, run/findings/findings.jsonl, run/graph/ | run/ai/requests/<gap>.md, run/ai/requests/index.json, run/ai/README.md |
 | 8 | **validate** Validate the run | bin/pipeline.js | static | always | manifest.json, run/findings/, run/ai/answers/, run/graph/ | exit code, problems on stderr |
 | 9 | **run-tests** Run the app and its tests | needs the running app (cap-discovery test, CI) | **measured** | `addons.measured, addons.runtime` | run/tests/generated/, run/measured/plan.json, the installed app | jest-generated.json, run/runtime.json, run/measured/authz.json, run/measured/requests*.jsonl, run/measured/coverage-*/ |
-| 10 | **after-tests** Fold in what the running app answered | needs the running app (cap-discovery test, CI) | **measured** | always | jest-generated.json, run/runtime.json, run/measured/ | atlas-data.json, atlas/, run/findings/, manifest.json |
+| 10 | **after-tests** Fold in what the running app answered | needs the running app (cap-discovery test, CI) | **measured** | always | jest-generated.json, run/runtime.json, run/measured/ | atlas-data.json, atlas/, run/findings/, steps/, manifest.json |
 | 11 | **ai-answer** Answer the requests | by an AI agent or a person | **AI** | `mode` | run/ai/requests/, the app source | run/ai/answers/<gap>.json |
-| 12 | **ai-merge** Gate and merge AI answers | on demand | static | `mode` | run/ai/answers/*.json, the app source | run/findings/ai.jsonl, run/ai/merge-log.json, run/findings/ (rebuilt), manifest.json (stages ai-answer, ai-merge) |
+| 12 | **ai-merge** Gate and merge AI answers | on demand | static | `mode` | run/ai/answers/*.json, the app source | run/findings/ai.jsonl, run/ai/merge-log.json, run/findings/ (rebuilt), steps/ (rebuilt), manifest.json (stages ai-answer, ai-merge) |
 
 ## Each stage
 
@@ -164,12 +165,12 @@ Start the app under cds.test (records registered handlers), run the generated te
 
 ### after-tests: Fold in what the running app answered
 
-Addons compare measured results with the static facts and update the atlas; the findings stage runs again, so measured findings settle the gaps they answer.
+Addons compare measured results with the static facts and update the atlas; the findings stage runs again, so measured findings settle the gaps they answer; the step products are rebuilt with the test results.
 
 - **When:** needs the running app (cap-discovery test, CI) · **method:** measured · **switch:** always on · **walkthrough:** piece 11, 13
 - **Code:** `bin/after-tests.js`, `addons/*/index.js afterTests()`
 - **Reads:** `jest-generated.json`, `run/runtime.json`, `run/measured/`
-- **Writes:** `atlas-data.json`, `atlas/`, `run/findings/`, `manifest.json`
+- **Writes:** `atlas-data.json`, `atlas/`, `run/findings/`, `steps/`, `manifest.json`
 
 ### ai-answer: Answer the requests
 
@@ -188,7 +189,7 @@ Rebuild the findings in mode static+ai: accept an AI finding only when the gap i
 - **When:** on demand · **method:** static · **switch:** mode · **walkthrough:** piece 12, 13
 - **Code:** `bin/ai-merge.js`, `lib/ai/gate.js`, `lib/evidence.js`
 - **Reads:** `run/ai/answers/*.json`, `the app source`
-- **Writes:** `run/findings/ai.jsonl`, `run/ai/merge-log.json`, `run/findings/ (rebuilt)`, `manifest.json (stages ai-answer, ai-merge)`
+- **Writes:** `run/findings/ai.jsonl`, `run/ai/merge-log.json`, `run/findings/ (rebuilt)`, `steps/ (rebuilt)`, `manifest.json (stages ai-answer, ai-merge)`
 
 ## The three layers of a finished run
 

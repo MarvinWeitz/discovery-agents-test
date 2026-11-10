@@ -7,6 +7,7 @@
 //   findings     out/run/findings/   the middle layer: findings.jsonl + gaps.jsonl (JSON Schema), README.md
 //   tests        out/run/tests/generated/
 //   atlas        out/atlas/          README.md, topics/*.md, images/*.png, index.html
+//   products     out/steps/          one product per step: summary.json, README.md card, views, explorers, data
 //   ai-requests  out/run/ai/         (mode static+ai only) one request per open gap an AI can settle
 //   validate     schemas and references of everything above
 // Every stage is recorded in out/manifest.json (status, time, outputs with sha256).
@@ -60,6 +61,7 @@ step('facts', 'atlas-facts.js', [run, facts, ...(opt('--base') ? ['--base', path
 if (stageOn('findings')) step('findings', 'findings.js', [out, '--mode', mode]); else skip('findings', 'off', 'stages.findings is false or DISCOVERY_STAGES_OFF names it')
 step('tests', 'gen-tests.js', [run])
 step('atlas', 'atlas.js', [facts, path.join(out, 'atlas')])
+if (stageOn('products')) step('products', 'products.js', [out], { optional: true }); else skip('products', 'off', 'stages.products is false or DISCOVERY_STAGES_OFF names it')
 if (mode !== 'static+ai') skip('ai-requests', 'off', `mode ${mode}`)
 else if (!stageOn('findings')) skip('ai-requests', 'skipped', 'needs the findings stage')
 else step('ai-requests', 'ai-requests.js', [out])

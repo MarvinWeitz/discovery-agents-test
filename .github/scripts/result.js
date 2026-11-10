@@ -32,6 +32,7 @@ const r = {
   title: atlas?.META?.title || e.RUN_SLUG,
   curated: Boolean(e.RUN_CURATED),
   atlas: Boolean(atlas),
+  steps: fs.existsSync(path.join(out, appDir, "steps", "index.html")),
   kpis: (atlas?.KPIS || []).map(([v, l]) => ({ label: l, value: v })),
   startup,
   tests: jest ? { passed: jest.numPassedTests, failed: jest.numFailedTests, skipped: jest.numPendingTests, total: jest.numTotalTests } : null

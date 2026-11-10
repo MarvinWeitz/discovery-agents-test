@@ -259,6 +259,11 @@ jobs:
             cp "$dir/$slug"/run/tests/generated/* "site/$slug/tests/" 2>/dev/null || true
             cp "$dir"/jest-*.json "site/$slug/tests/" 2>/dev/null || true
             [ -d "$dir/$slug/docs" ] && cp -r "$dir/$slug/docs" "site/$slug/docs"
+            # step products (steps/index.html): their "atlas" link points at ../atlas/, which is the run's root here
+            if [ -d "$dir/$slug/steps" ]; then
+              cp -r "$dir/$slug/steps" "site/$slug/steps"
+              mkdir -p "site/$slug/atlas" && printf '<!doctype html><meta http-equiv="refresh" content="0; url=../">' > "site/$slug/atlas/index.html"
+            fi
             added+=("$r")
           done
           if [ ${#added[@]} -eq 0 ]; then echo "count=0" >> "$GITHUB_OUTPUT"; echo "Nothing to publish."; exit 0; fi

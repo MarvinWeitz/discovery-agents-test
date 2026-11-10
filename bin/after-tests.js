@@ -34,6 +34,15 @@ if (stageOn('findings')) {
     if (M) manifest.record(M, { id: 'findings', status: 'ran', started: new Date(t1).toISOString(), seconds: +((Date.now() - t1) / 1000).toFixed(1), said, outputs: manifest.outputs(out, 'findings') })
   } catch (e) { ok = false; if (M) manifest.record(M, { id: 'findings', status: 'failed', said: String(e.message).split('\n')[0] }) }
 }
+// step products again, now with the test results (optional: never fails the stage)
+if (stageOn('products')) {
+  const t2 = Date.now()
+  try {
+    const said = node('products.js', out, ...(opt('--generated') ? ['--generated', path.resolve(opt('--generated'))] : []))
+    console.log(`[products] ${said}`)
+    if (M) manifest.record(M, { id: 'products', status: 'ran', started: new Date(t2).toISOString(), seconds: +((Date.now() - t2) / 1000).toFixed(1), said, outputs: manifest.outputs(out, 'products') })
+  } catch (e) { console.error(`[products] failed: ${String(e.message).split('\n')[0]}`); if (M) manifest.record(M, { id: 'products', status: 'failed', said: String(e.message).split('\n')[0] }) }
+}
 if (M) manifest.save(out, M)
 try { console.log(`[validate] ${node('validate.js', out)}`) } catch { ok = false }
 if (!ok) process.exit(1)

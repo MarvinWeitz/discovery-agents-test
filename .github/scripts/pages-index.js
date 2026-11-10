@@ -19,8 +19,8 @@ const repoUrl = r => `https://github.com/${r.repo}`
 
 const md = ['# Discovery runs', '',
   `${runs.length} app${runs.length === 1 ? '' : 's'}, latest run of each. Every atlas has a Markdown version (README.md and topics/) next to its HTML page.`, '',
-  '| App | Repo | Run | Generated tests | Atlas |', '| --- | --- | --- | --- | --- |',
-  ...runs.map(r => `| ${r.title} | [${r.repo}](${repoUrl(r)})${r.ref ? ` @ ${r.ref}` : ''} | [${r.date.slice(0, 10)}](${r.run_url}) · \`${String(r.commit).slice(0, 7)}\` | ${tests(r)} | [HTML](${r.slug}/) · [Markdown](${r.slug}/README.md) |`),
+  '| App | Repo | Run | Generated tests | Atlas | Step products |', '| --- | --- | --- | --- | --- | --- |',
+  ...runs.map(r => `| ${r.title} | [${r.repo}](${repoUrl(r)})${r.ref ? ` @ ${r.ref}` : ''} | [${r.date.slice(0, 10)}](${r.run_url}) · \`${String(r.commit).slice(0, 7)}\` | ${tests(r)} | [HTML](${r.slug}/) · [Markdown](${r.slug}/README.md) | ${r.steps ? `[HTML](${r.slug}/steps/) · [Markdown](${r.slug}/steps/index.md)` : ''} |`),
   '']
 fs.writeFileSync(path.join(site, 'index.md'), md.join('\n'))
 
@@ -35,7 +35,7 @@ const rows = runs.map(r => `<tr>
   <td class="n">${esc(kpi(r, /entities/i))}</td>
   <td>${badge(r)}</td>
   <td><a href="${esc(r.run_url)}">${esc(r.date.slice(0, 10))}</a><div class="s"><code>${esc(String(r.commit).slice(0, 7))}</code></div></td>
-  <td><a href="${esc(r.slug)}/">HTML</a> · <a href="${esc(r.slug)}/README.md">Markdown</a></td>
+  <td><a href="${esc(r.slug)}/">HTML</a> · <a href="${esc(r.slug)}/README.md">Markdown</a>${r.steps ? `<div class="s"><a href="${esc(r.slug)}/steps/">step products</a></div>` : ''}</td>
 </tr>`).join('\n')
 
 fs.writeFileSync(path.join(site, 'index.html'), `<!doctype html>

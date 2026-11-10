@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Model and impact explorer</title>
+<style>
+:root{--bg:#f6f8fa;--panel:#fff;--ink:#1f2328;--mute:#59636e;--line:#d1d9e0;--accent:#0f6c8c;--sel:#c2414b}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1117;--panel:#161b22;--ink:#e6edf3;--mute:#9198a1;--line:#30363d;--accent:#4fb3d4;--sel:#ec7880;color-scheme:dark}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;display:grid;grid-template-rows:auto 1fr}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{font-size:15px;margin:0 8px 0 0}header a{color:var(--accent)}
+select,input,button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.seg button{border:0;border-radius:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+main{display:grid;grid-template-columns:1fr 360px;min-height:0}
+#cy{min-height:420px}
+aside{border-left:1px solid var(--line);background:var(--panel);overflow:auto;padding:12px 16px}
+aside h2{font-size:15px;margin:4px 0 6px}aside h3{font-size:13px;margin:14px 0 4px;display:flex;align-items:center;gap:6px}
+aside ul{margin:0;padding-left:18px}aside li{margin:2px 0}aside code{font-size:11.5px;color:var(--mute)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.chip{border:1px solid var(--line);border-radius:99px;padding:1px 8px;font-size:12px}
+.hint{color:var(--mute);font-size:12.5px}
+button.copy{margin-top:10px}
+@media (max-width:760px){main{grid-template-columns:1fr;grid-template-rows:60vh auto}aside{border-left:0;border-top:1px solid var(--line)}}
+</style></head><body>
+<header>
+  <h1>Model and impact explorer</h1>
+  <label for="q" class="hint">change</label><input id="q" list="names" size="26" placeholder="entity, service entity, handler">
+  <datalist id="names"></datalist>
+  <div class="seg" role="group" aria-label="View"><button data-v="tree" aria-pressed="true">Tree</button><button data-v="rings" aria-pressed="false">Rings</button><button data-v="layers" aria-pressed="false">Layers</button></div>
+  <label class="hint" for="depth">depth</label><select id="depth"><option>1</option><option>2</option><option selected>3</option><option>4</option></select>
+  <label class="hint"><input type="checkbox" id="assoc"> follow associations</label>
+  <label class="hint"><input type="checkbox" id="ctx"> show surroundings</label>
+  <label class="hint"><input type="checkbox" id="nogroup"> one node per handler</label>
+  <a href="README.md" class="hint">card (Markdown)</a>
+</header>
+<main><div id="cy" role="img" aria-label="Model graph"></div><aside id="side"></aside></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+<script>
+const G=__GRAPH__, L=__LAYERS__, R=__RULES__
+const N=new Map(G.nodes.map(n=>[n.id,n])), A=new Set(R.A), B=new Set(R.B), STOP=new Set(R.STOP)
+const dark=matchMedia('(prefers-color-scheme: dark)').matches, ink=dark?'#e6edf3':'#1f2328', mute=dark?'#3d444d':'#d1d9e0'
+function impact(start,depth,assoc){const dist=new Map([[start,0]]),via=new Map();let f=[start]
+  for(let d=1;d<=depth&&f.length;d++){const fs=new Set(f),nx=[]
+    for(const [a,r,b] of G.edges){if((A.has(r)||(assoc&&r==='associates'))&&fs.has(b)&&!dist.has(a)){dist.set(a,d);via.set(a,[b,r]);nx.push(a)}
+      if(B.has(r)&&fs.has(a)&&!dist.has(b)){dist.set(b,d);via.set(b,[a,r]);nx.push(b)}}
+    f=nx.filter(i=>!STOP.has(N.get(i).type))}
+  return {dist,via}}
+const dl=document.getElementById('names');G.nodes.filter(n=>['Entity','ServiceEntity','Handler','Action'].includes(n.type)).forEach(n=>{const o=document.createElement('option');o.value=n.label;o.label=n.type;dl.appendChild(o)})
+// Only what the change reaches is drawn: the start, everything within the depth, and the path that
+// connects them (a tree). Siblings with the same parent, type and label are drawn as one node "label ×n";
+// the side panel still lists each one. "show surroundings" adds the untouched neighbours, faint.
+const cy=cytoscape({container:document.getElementById('cy'),wheelSensitivity:.3,
+  style:[{selector:'node',style:{'background-color':e=>L.colors[e.data('layer')]||'#888','label':'data(label)','font-size':11,'color':ink,'text-valign':'center','text-halign':'right','text-margin-x':5,'width':12,'height':12,'text-wrap':'ellipsis','text-max-width':180}},
+    {selector:'node[type="Entity"]',style:{'shape':'round-rectangle','width':18,'height':14,'font-weight':600}},
+    {selector:'node[n>1]',style:{'width':16,'height':16,'border-width':2,'border-color':ink}},
+    {selector:'edge',style:{'width':1.4,'line-color':dark?'#4fb3d4':'#0f6c8c','curve-style':'taxi','taxi-direction':'downward','taxi-turn':'100%','source-endpoint':'0% 50%','target-endpoint':'-50% 0%','target-arrow-shape':'triangle','target-arrow-color':dark?'#4fb3d4':'#0f6c8c','arrow-scale':.6,'opacity':.75}},
+    {selector:'.ctx',style:{'opacity':.25,'font-size':9}},{selector:'edge.ctx',style:{'line-style':'dashed','curve-style':'bezier','target-arrow-shape':'none'}},
+    {selector:'.start',style:{'background-color':dark?'#ec7880':'#c2414b','width':22,'height':22,'font-size':14,'font-weight':700}}]})
+let view='tree',start=(G.nodes.find(n=>n.type==='Entity'&&/(^|\.)Travel$/.test(n.label))||G.nodes.find(n=>n.type==='Entity')).id
+function run(){
+  const depth=+document.getElementById('depth').value,assoc=document.getElementById('assoc').checked,ctx=document.getElementById('ctx').checked,group=!document.getElementById('nogroup').checked
+  const {dist,via}=impact(start,depth,assoc)
+  // collapse siblings: same (drawn) parent, type and label
+  const rep=new Map([[start,start]]),cnt=new Map([[start,1]]),key=new Map()
+  for(const id of [...dist.keys()].filter(i=>i!==start).sort((a,b)=>dist.get(a)-dist.get(b))){
+    const p=rep.get(via.get(id)[0]),n=N.get(id),k=p+'|'+n.type+'|'+n.label
+    if(group&&key.has(k)){const r=key.get(k);rep.set(id,r);cnt.set(r,cnt.get(r)+1)}else{key.set(k,id);rep.set(id,id);cnt.set(id,1)}}
+  const drawn=[...cnt.keys()]
+  const els=drawn.map(id=>{const n=N.get(id),c=cnt.get(id);return {data:{id,label:c>1?`${n.label} ×${c}`:n.label,layer:n.layer,type:n.type,n:c,d:dist.get(id)},classes:id===start?'start':''}})
+  for(const id of drawn)if(id!==start)els.push({data:{id:'p'+id,source:rep.get(via.get(id)[0]),target:id}})
+  if(ctx){const on=new Set(drawn),seen=new Set()
+    for(const [a,r,b] of G.edges){const x=on.has(a)&&!dist.has(b)?b:on.has(b)&&!dist.has(a)?a:null;if(!x||seen.has(x)||!N.get(x))continue;seen.add(x)
+      els.push({data:{id:x,label:N.get(x).label,layer:N.get(x).layer,type:N.get(x).type,n:1,d:depth+1},classes:'ctx'},{data:{id:'c'+x,source:on.has(a)?a:b,target:x},classes:'ctx'})}}
+  cy.elements().remove();cy.add(els)
+  if(view==='tree'){
+    // tidy tree, left to right: one row per leaf (children grouped by layer), each parent centred on its children
+    const kids=new Map(),order=Object.keys(L.names),pos=new Map();let row=0
+    for(const id of drawn)if(id!==start){const p=rep.get(via.get(id)[0]);(kids.get(p)||kids.set(p,[]).get(p)).push(id)}
+    const place=(id,d)=>{const k=(kids.get(id)||[]).sort((a,b)=>order.indexOf(N.get(a).layer)-order.indexOf(N.get(b).layer)||N.get(a).label.localeCompare(N.get(b).label))
+      const y=k.length?(k.map(c=>place(c,d+1)).reduce((a,b)=>a+b,0)/k.length):row++*24;pos.set(id,{x:d*250,y});return y}
+    place(start,0);cy.nodes().forEach(n=>n.position(pos.get(n.id())||{x:(depth+1)*250,y:row++*24}))
+    cy.layout({name:'preset',fit:false}).run()}
+  else if(view==='rings')cy.layout({name:'concentric',animate:false,concentric:n=>10-n.data('d'),levelWidth:()=>1,minNodeSpacing:30}).run()
+  else{const cols=Object.keys(L.names),c={};cy.nodes().forEach(n=>{const l=n.id()===start?'start':n.data('layer');c[l]=(c[l]||0)+1;n.position({x:l==='start'?-220:cols.indexOf(l)*230,y:(c[l]-1)*30})});cy.edges().style('curve-style','bezier')}
+  cy.fit(cy.nodes(),30);if(cy.zoom()<.75){cy.zoom(.75);const p=cy.getElementById(start).renderedPosition();cy.panBy({x:40-p.x,y:cy.height()/2-p.y})}
+  side(dist,via,depth,drawn.length)}
+function side(dist,via,depth,drawn){const s=N.get(start),by={};for(const [id,d] of dist)if(d>0)(by[N.get(id).layer]||=[]).push([id,d])
+  let h=`<h2>${esc(s.label)}</h2><div class="hint">${s.type} · <code>${esc(s.ev)}</code></div><div class="chips">`
+  for(const l in L.names)if(by[l])h+=`<span class="chip"><span class="dot" style="background:${L.colors[l]}"></span> ${L.names[l]} ${by[l].length}</span>`
+  h+=`</div><div class="hint">${dist.size-1} things within ${depth} steps. Drawn as ${drawn} nodes (repeats grouped). Click any node to start from it; nothing outside this set is drawn.</div>`
+  for(const l in L.names)if(by[l]){h+=`<h3><span class="dot" style="background:${L.colors[l]}"></span>${L.names[l]}</h3><ul>`
+    for(const [id,d] of by[l].sort((a,b)=>a[1]-b[1]))h+=`<li>${esc(N.get(id).label)} <span class="hint">${d} · via ${via.get(id)[1]}</span><br><code>${esc(N.get(id).ev)}</code></li>`;h+='</ul>'}
+  h+='<button class="copy" id="copy">Copy as Markdown</button>'
+  const el=document.getElementById('side');el.innerHTML=h
+  document.getElementById('copy').onclick=()=>{let md=`## Impact: change ${s.type} \`${s.label}\`\n`;for(const l in L.names)if(by[l])md+=`\n### ${L.names[l]}\n`+by[l].map(([id,d])=>`- ${N.get(id).label} (${d} away) \`${N.get(id).ev}\``).join('\n')+'\n';navigator.clipboard.writeText(md).catch(()=>{})}}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+cy.on('tap','node',e=>{start=e.target.id();if(!N.get(start))return;document.getElementById('q').value=N.get(start).label;run()})
+document.getElementById('q').onchange=e=>{const v=e.target.value.toLowerCase();const n=G.nodes.find(n=>n.label.toLowerCase()===v)||G.nodes.find(n=>n.label.toLowerCase().includes(v));if(n){start=n.id;run()}}
+document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{view=b.dataset.v;document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',x===b));run()})
+for(const i of ['depth','assoc','ctx','nogroup'])document.getElementById(i).onchange=run
+document.getElementById('q').value=N.get(start).label;run()
+</script></body></html>
