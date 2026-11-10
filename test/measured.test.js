@@ -54,3 +54,16 @@ test('findings: the same operation in two services settles the gap of its own se
   findings({ finding: f => out.push(f), gap: () => {} }, { D })
   assert.deepEqual(out.map(f => f.resolves), [[gapId('authz-unclear', `Admin|${op}`)], []])
 })
+
+test('findings: a measured row resolves no gap the static stage did not raise (own-rows rows raise none; run 14 failed validation)', () => {
+  const { findings } = require('../addons/measured')
+  const { Book, gapId } = require('../lib/findings/book')
+  const op = 'Orders READ'
+  const D = { AUTH: [{ op, svc: 'Svc', ev: 's.cds:1', c: ['y', { v: 'a' }] }] }
+  D.MEASURED = { authz: compareAuthz(D, { users: ['u1', 'u2'], results: [{ row: 0, op, cells: [{ user: 'u1', v: 'y', status: 200 }, { user: 'u2', v: 'a', status: 200 }] }] }) }
+  const none = new Book(); findings(none, { D })
+  assert.deepEqual([...none.findings.values()].map(f => f.resolves || []), [[]])
+  const raised = new Book(); raised.gap({ kind: 'authz-unclear', key: `Svc|${op}`, question: 'q', why: 'w', priority: 'medium', resolvableBy: ['measured'] })
+  findings(raised, { D })
+  assert.deepEqual([...raised.findings.values()].map(f => f.resolves), [[gapId('authz-unclear', `Svc|${op}`)]])
+})

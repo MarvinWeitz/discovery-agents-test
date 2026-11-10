@@ -22,8 +22,20 @@ function scaleApp(dir, { entities = 60, services = 12, roles = 15 } = {}) {
   files['package.json'] = JSON.stringify({
     name: 'scale-app', version: '1.0.0', private: true, description: 'Synthetic large CAP app for discovery regression tests',
     dependencies: { '@sap/cds': '^9' },
-    cds: { requires: { auth: { kind: 'mocked', users: { alice: { password: '', roles: [R[0]] }, bob: { password: '', roles: [R[0], R[1]] } } }, '[production]': { auth: 'xsuaa' } } }
+    cds: { requires: {
+      auth: { kind: 'mocked', users: { alice: { password: '', roles: [R[0]] }, bob: { password: '', roles: [R[0], R[1]] } } }, '[production]': { auth: 'xsuaa' },
+      // a messaging plugin that needs a cloud binding to start (smart-core run 13: an event mesh plugin)
+      messaging: { impl: './srv/lib/mesh.js', vcap: { name: 'bus-message-client' } },
+    } }
   }, null, 2)
+  files['srv/lib/mesh.js'] = `const cds = require('@sap/cds')
+module.exports = class Mesh extends cds.MessagingService {
+  async init() {
+    if (!this.options.credentials?.messaging) throw new Error('Missing or malformed credentials for the message bus. Ensure the service binding for "bus-message-client" is present.')
+    return super.init()
+  }
+}
+`
   files['xs-security.json'] = JSON.stringify({
     xsappname: 'scale-app', 'tenant-mode': 'dedicated',
     scopes: R.map(r => ({ name: `$XSAPPNAME.${r}`, description: r })),
