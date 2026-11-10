@@ -2,7 +2,7 @@
 product: findings
 step: Findings and gaps
 status: warn
-generated: 2026-11-10T19:15Z
+generated: 2026-11-10T19:37Z
 ---
 
 # Evidence ledger

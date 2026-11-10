@@ -1,0 +1,49 @@
+{
+ "blocks": [],
+ "id": "risk",
+ "title": "Risk list",
+ "step": "History × findings × tests",
+ "layer": "code",
+ "status": "warn",
+ "why": null,
+ "kpis": [
+  {
+   "label": "files ranked",
+   "value": 73
+  },
+  {
+   "label": "riskiest: travel-service.ts",
+   "value": 2.17
+  },
+  {
+   "label": "score ≥ 1 (source)",
+   "value": 3,
+   "tone": "warn"
+  },
+  {
+   "label": "rules never run",
+   "value": 2
+  }
+ ],
+ "from": [
+  "git log",
+  "run/findings/findings.jsonl",
+  "run/graph/ (Rule)",
+  "atlas-data.json MEASURED.rules (CI)"
+ ],
+ "views": [
+  "views/files.svg"
+ ],
+ "pages": [
+  "browse.html"
+ ],
+ "data": [
+  "data/risk.json",
+  "data/lists/files.json"
+ ],
+ "lists": {
+  "files": 73
+ },
+ "dropped": [],
+ "changes": null
+}

@@ -27,16 +27,16 @@
  },
  "rows": [
   {
-   "file": "authorization.test.js",
-   "passed": 8,
-   "failed": 0,
-   "skipped": 4
-  },
-  {
    "file": "ui-vs-server-rules.test.js",
    "passed": 4,
    "failed": 0,
    "skipped": 3
+  },
+  {
+   "file": "authorization.test.js",
+   "passed": 8,
+   "failed": 0,
+   "skipped": 4
   }
  ]
 }

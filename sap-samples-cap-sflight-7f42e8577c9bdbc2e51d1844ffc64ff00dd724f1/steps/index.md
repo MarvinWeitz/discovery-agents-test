@@ -1,6 +1,6 @@
 # Step products
 
-@capire/sflight @ 7f42e85 · mode static · 2026-11-10T19:15Z
+@capire/sflight @ 7f42e85 · mode static · 2026-11-10T19:37Z
 
 Each step of the run publishes its own product: `summary.json` (numbers), `README.md` (card with pictures), explorers (`*.html`) and `data/` (standard formats). Read a card, then drill down. Why each view, list and file is there: [reasoning.md](reasoning.md).
 
@@ -8,7 +8,7 @@ Each step of the run publishes its own product: `summary.json` (numbers), `READM
 
 | Product | Step | Status | Numbers |
 | --- | --- | --- | --- |
-| [Run timeline](run/README.md) | The run itself | results | 8 stages ran · 0 failed · 427 seconds · static mode |
+| [Run timeline](run/README.md) | The run itself | results | 8 stages ran · 0 failed · 436 seconds · static mode |
 | [Project passport](project/README.md) | Probe and intake | results | 2 services · 14 model files · 5 plugins · 1 without own code |
 | [Evidence ledger](findings/README.md) | Findings and gaps | needs a look | 142 findings · 13 measured · 0 AI (gated) · 19 open questions |
 | [AI ledger](ai/README.md) | AI gap pass | not run here | 19 AI could answer |
@@ -21,12 +21,14 @@ Each step of the run publishes its own product: `summary.json` (numbers), `READM
 | [API surface](api/README.md) | EDMX, OpenAPI, AsyncAPI | results | 2 services · 23 entity sets · 137 OpenAPI paths · 20 open without role |
 | [Behaviour matrix](behaviour/README.md) | Handler AST | results | 13 handlers · 11 rules · 6 rejections · 2 helpers |
 | [Screen map](screens/README.md) | UI5 and Fiori annotations | needs a look | 2 apps · 5 pages · 21 UI promises · 7 UI only |
+| [Error messages](errors/README.md) | Handler AST and model validations | needs a look | 18 messages · 6 from code · 6 inline text · 1 never triggered |
 | [Access map](access/README.md) | Authorization | needs a look | 13 operations · 6 users · 4 open without role · 0 measured cells differ |
 
 ## Where it is fragile
 
 | Product | Step | Status | Numbers |
 | --- | --- | --- | --- |
+| [Risk list](risk/README.md) | History × findings × tests | needs a look | 73 files ranked · 2.17 riskiest: travel-service.ts · 3 score ≥ 1 (source) · 2 rules never run |
 | [Code findings](checks/README.md) | Lint, Opengrep, rules | problems | 71 findings · 21 files · 4 critical · 32 warnings |
 | [Hotspots and change coupling](history/README.md) | Git history | results | 1238 commits · 113 files changed · 83 hottest: package.json · 39 coupled pairs |
 

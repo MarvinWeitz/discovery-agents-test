@@ -1,0 +1,49 @@
+{
+ "blocks": [],
+ "id": "errors",
+ "title": "Error messages",
+ "step": "Handler AST and model validations",
+ "layer": "ui",
+ "status": "warn",
+ "why": null,
+ "kpis": [
+  {
+   "label": "messages",
+   "value": 18
+  },
+  {
+   "label": "from code",
+   "value": 6
+  },
+  {
+   "label": "inline text",
+   "value": 6,
+   "tone": "warn"
+  },
+  {
+   "label": "never triggered",
+   "value": 1,
+   "tone": "bad"
+  }
+ ],
+ "from": [
+  "run/graph/ (Rule, Handler, Route)",
+  "run/csn.json",
+  "@sap/cds _i18n/messages",
+  "app _i18n bundles",
+  "atlas-data.json MEASURED.rules (CI)"
+ ],
+ "views": [],
+ "pages": [
+  "browse.html"
+ ],
+ "data": [
+  "data/messages.json",
+  "data/lists/messages.json"
+ ],
+ "lists": {
+  "messages": 18
+ },
+ "dropped": [],
+ "changes": null
+}

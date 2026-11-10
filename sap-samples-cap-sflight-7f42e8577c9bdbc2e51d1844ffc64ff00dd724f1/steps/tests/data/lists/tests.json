@@ -37,10 +37,66 @@
  },
  "rows": [
   {
+   "name": "UI vs server rules (generated) today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
+   "status": "passed",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 62,
+   "message": "",
+   "rank": 0
+  },
+  {
+   "name": "UI vs server rules (generated) spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+   "status": "skipped",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 0,
+   "message": "",
+   "rank": 1
+  },
+  {
+   "name": "UI vs server rules (generated) today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
+   "status": "passed",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 9,
+   "message": "",
+   "rank": 0
+  },
+  {
+   "name": "UI vs server rules (generated) spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection",
+   "status": "skipped",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 0,
+   "message": "",
+   "rank": 1
+  },
+  {
+   "name": "UI vs server rules (generated) today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
+   "status": "passed",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 13,
+   "message": "",
+   "rank": 0
+  },
+  {
+   "name": "UI vs server rules (generated) spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+   "status": "skipped",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 0,
+   "message": "",
+   "rank": 1
+  },
+  {
+   "name": "UI vs server rules (generated) today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
+   "status": "passed",
+   "file": "ui-vs-server-rules.test.js",
+   "ms": 21,
+   "message": "",
+   "rank": 0
+  },
+  {
    "name": "Authorization (generated) today: GET /analytics/TravelAgency as rose → 200",
    "status": "passed",
    "file": "authorization.test.js",
-   "ms": 35,
+   "ms": 41,
    "message": "",
    "rank": 0
   },
@@ -56,7 +112,7 @@
    "name": "Authorization (generated) today: GET /analytics/Passenger as rose → 200",
    "status": "passed",
    "file": "authorization.test.js",
-   "ms": 9,
+   "ms": 13,
    "message": "",
    "rank": 0
   },
@@ -72,7 +128,7 @@
    "name": "Authorization (generated) today: GET /processor/Travel as anonymous → 401",
    "status": "passed",
    "file": "authorization.test.js",
-   "ms": 9,
+   "ms": 10,
    "message": "",
    "rank": 0
   },
@@ -104,7 +160,7 @@
    "name": "Authorization (generated) today: GET /processor/TravelAgency as amy → 200",
    "status": "passed",
    "file": "authorization.test.js",
-   "ms": 5,
+   "ms": 4,
    "message": "",
    "rank": 0
   },
@@ -112,7 +168,7 @@
    "name": "Authorization (generated) today: GET /processor/Passenger as rose → 200",
    "status": "passed",
    "file": "authorization.test.js",
-   "ms": 6,
+   "ms": 4,
    "message": "",
    "rank": 0
   },
@@ -128,63 +184,7 @@
    "name": "Authorization (generated) today: GET /processor/Passenger as amy → 200",
    "status": "passed",
    "file": "authorization.test.js",
-   "ms": 6,
-   "message": "",
-   "rank": 0
-  },
-  {
-   "name": "UI vs server rules (generated) today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
-   "status": "passed",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 37,
-   "message": "",
-   "rank": 0
-  },
-  {
-   "name": "UI vs server rules (generated) spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection",
-   "status": "skipped",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 0,
-   "message": "",
-   "rank": 1
-  },
-  {
-   "name": "UI vs server rules (generated) today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
-   "status": "passed",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 6,
-   "message": "",
-   "rank": 0
-  },
-  {
-   "name": "UI vs server rules (generated) spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection",
-   "status": "skipped",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 0,
-   "message": "",
-   "rank": 1
-  },
-  {
-   "name": "UI vs server rules (generated) today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
-   "status": "passed",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 10,
-   "message": "",
-   "rank": 0
-  },
-  {
-   "name": "UI vs server rules (generated) spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection",
-   "status": "skipped",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 0,
-   "message": "",
-   "rank": 1
-  },
-  {
-   "name": "UI vs server rules (generated) today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
-   "status": "passed",
-   "file": "ui-vs-server-rules.test.js",
-   "ms": 20,
+   "ms": 4,
    "message": "",
    "rank": 0
   }

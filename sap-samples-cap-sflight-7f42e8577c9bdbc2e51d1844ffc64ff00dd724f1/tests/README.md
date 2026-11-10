@@ -1,6 +1,6 @@
 # Generated cds.test suites
 
-Run 2026-11-10T19:07Z, app @capire/sflight, commit 7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1.
+Run 2026-11-10T19:29Z, app @capire/sflight, commit 7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1.
 
 | File | Category | Tests |
 | --- | --- | --- |

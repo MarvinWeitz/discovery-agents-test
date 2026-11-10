@@ -1,0 +1,362 @@
+{
+ "title": "Error messages",
+ "columns": [
+  {
+   "key": "message",
+   "label": "Message"
+  },
+  {
+   "key": "status",
+   "label": "Status",
+   "facet": true
+  },
+  {
+   "key": "entity",
+   "label": "Entity",
+   "facet": true
+  },
+  {
+   "key": "field",
+   "label": "Field"
+  },
+  {
+   "key": "when",
+   "label": "When"
+  },
+  {
+   "key": "origin",
+   "label": "From",
+   "facet": true
+  },
+  {
+   "key": "translation",
+   "label": "Translation"
+  },
+  {
+   "key": "tested",
+   "label": "Tested",
+   "facet": true
+  },
+  {
+   "key": "screens",
+   "label": "Screens",
+   "facet": true
+  },
+  {
+   "key": "where",
+   "label": "Where"
+  },
+  {
+   "key": "rank",
+   "label": "Attention",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "rank",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "message": "Begin Date must not be before today.",
+   "status": 400,
+   "origin": "code",
+   "kind": "error",
+   "entity": "Travel",
+   "field": "BeginDate",
+   "when": "BeginDate < today()",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "inline text",
+   "tested": "triggered by a test",
+   "where": "srv/travel-service.ts:36",
+   "dynamic": "no",
+   "rank": 3
+  },
+  {
+   "message": "End Date must be after Begin Date.",
+   "status": 400,
+   "origin": "code",
+   "kind": "error",
+   "entity": "Travel",
+   "field": "EndDate",
+   "when": "BeginDate > EndDate",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "inline text",
+   "tested": "triggered by a test",
+   "where": "srv/travel-service.ts:37",
+   "dynamic": "no",
+   "rank": 3
+  },
+  {
+   "message": "The travel is locked by ${existingDraft.InProcessByUser}.",
+   "status": 423,
+   "origin": "code",
+   "kind": "reject",
+   "entity": "Travel",
+   "field": "",
+   "when": "!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "inline text",
+   "tested": "triggered by a test",
+   "where": "srv/travel-service.ts:93",
+   "dynamic": "yes",
+   "rank": 3
+  },
+  {
+   "message": "Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+   "status": 404,
+   "origin": "code",
+   "kind": "reject",
+   "entity": "Travel",
+   "field": "",
+   "when": "!succeeded && !travel",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "inline text",
+   "tested": "triggered by a test",
+   "where": "srv/travel-service.ts:105",
+   "dynamic": "yes",
+   "rank": 3
+  },
+  {
+   "message": "Travel \"${travel.ID}\" has been approved already.",
+   "status": 400,
+   "origin": "code",
+   "kind": "reject",
+   "entity": "Travel",
+   "field": "",
+   "when": "!succeeded && travel.status === TravelStatusCode.Accepted",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "inline text",
+   "tested": "triggered by a test",
+   "where": "srv/travel-service.ts:106",
+   "dynamic": "yes",
+   "rank": 3
+  },
+  {
+   "message": "No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+   "status": 404,
+   "origin": "code",
+   "kind": "reject",
+   "entity": "Travel",
+   "field": "",
+   "when": "!succeeded && travel.BookingFee == null",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "inline text",
+   "tested": "never triggered",
+   "where": "srv/travel-service.ts:107",
+   "dynamic": "yes",
+   "rank": 7
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Travel",
+   "field": "BeginDate",
+   "when": "value missing",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:15",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Travel",
+   "field": "EndDate",
+   "when": "value missing",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:16",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Travel",
+   "field": "to_Agency",
+   "when": "value missing",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:22",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Travel",
+   "field": "to_Customer",
+   "when": "value missing",
+   "screens": [
+    "TravelList",
+    "TravelObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:23",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Booking",
+   "field": "ConnectionID",
+   "when": "value missing",
+   "screens": [
+    "BookingObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:37",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Booking",
+   "field": "FlightDate",
+   "when": "value missing",
+   "screens": [
+    "BookingObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:38",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Booking",
+   "field": "FlightPrice",
+   "when": "value missing",
+   "screens": [
+    "BookingObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:39",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Booking",
+   "field": "BookingStatus",
+   "when": "value missing",
+   "screens": [
+    "BookingObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:41",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Booking",
+   "field": "to_Carrier",
+   "when": "value missing",
+   "screens": [
+    "BookingObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:43",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "Booking",
+   "field": "to_Customer",
+   "when": "value missing",
+   "screens": [
+    "BookingObjectPage"
+   ],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:44",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "BookingSupplement",
+   "field": "Price",
+   "when": "value missing",
+   "screens": [],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:54",
+   "rank": 0
+  },
+  {
+   "message": "Provide the missing value.",
+   "status": 400,
+   "origin": "model",
+   "kind": "@mandatory",
+   "entity": "BookingSupplement",
+   "field": "to_Supplement",
+   "when": "value missing",
+   "screens": [],
+   "translation": "CAP standard ASSERT_MANDATORY · 35 languages",
+   "tested": "not measured",
+   "where": "db/schema.cds:58",
+   "rank": 0
+  }
+ ]
+}

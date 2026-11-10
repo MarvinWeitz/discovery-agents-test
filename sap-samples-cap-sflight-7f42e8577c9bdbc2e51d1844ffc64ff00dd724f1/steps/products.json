@@ -18,7 +18,7 @@
    },
    {
     "label": "seconds",
-    "value": 427
+    "value": 436
    },
    {
     "label": "mode",
@@ -42,6 +42,7 @@
    "stages": 9
   },
   "dropped": [],
+  "changes": null,
   "does": "Which stages ran, in which mode, how long each took and what it reported."
  },
  {
@@ -91,6 +92,7 @@
    "services": 2
   },
   "dropped": [],
+  "changes": null,
   "does": "How CAP sees the project: profiles, database, auth and messaging per profile, plugins, model files, services and their implementations."
  },
  {
@@ -157,6 +159,7 @@
    "projections": 23
   },
   "dropped": [],
+  "changes": null,
   "does": "Entities, compositions, associations and the projection chain from database to service, plus what depends on each entity when it changes."
  },
  {
@@ -212,6 +215,7 @@
    "services": 2
   },
   "dropped": [],
+  "changes": null,
   "does": "Every service, entity set, operation and action as standard API documents (OData EDMX, OpenAPI 3, AsyncAPI), with the guard on each."
  },
  {
@@ -261,6 +265,7 @@
    "handlers": 13
   },
   "dropped": [],
+  "changes": null,
   "does": "Which code runs for which entity, event and phase, which rules it applies and which helpers it calls."
  },
  {
@@ -310,7 +315,58 @@
    "promises": 21
   },
   "dropped": [],
+  "changes": null,
   "does": "Apps, pages and the entities they show, and every UI promise with the server verdict (does the backend enforce what the UI shows?)."
+ },
+ {
+  "blocks": [],
+  "id": "errors",
+  "title": "Error messages",
+  "step": "Handler AST and model validations",
+  "layer": "ui",
+  "status": "warn",
+  "why": null,
+  "kpis": [
+   {
+    "label": "messages",
+    "value": 18
+   },
+   {
+    "label": "from code",
+    "value": 6
+   },
+   {
+    "label": "inline text",
+    "value": 6,
+    "tone": "warn"
+   },
+   {
+    "label": "never triggered",
+    "value": 1,
+    "tone": "bad"
+   }
+  ],
+  "from": [
+   "run/graph/ (Rule, Handler, Route)",
+   "run/csn.json",
+   "@sap/cds _i18n/messages",
+   "app _i18n bundles",
+   "atlas-data.json MEASURED.rules (CI)"
+  ],
+  "views": [],
+  "pages": [
+   "browse.html"
+  ],
+  "data": [
+   "data/messages.json",
+   "data/lists/messages.json"
+  ],
+  "lists": {
+   "messages": 18
+  },
+  "dropped": [],
+  "changes": null,
+  "does": "Every message a user can get when the app says no: from handler code and from model validations, with status, field, condition, screens, translation and test status."
  },
  {
   "blocks": [],
@@ -356,6 +412,7 @@
    "matrix": 13
   },
   "dropped": [],
+  "changes": null,
   "does": "Who can do what: operation × user/role, declared in CDS, and measured against the running app when the CI run sent the probe."
  },
  {
@@ -405,6 +462,7 @@
    "findings": 71
   },
   "dropped": [],
+  "changes": null,
   "does": "Every static finding with a code location in one standard format (SARIF), by file and by rule."
  },
  {
@@ -454,7 +512,58 @@
    "coupling": 39
   },
   "dropped": [],
+  "changes": null,
   "does": "Where the code changes most, which files change in the same commits, and how many people touch each file."
+ },
+ {
+  "blocks": [],
+  "id": "risk",
+  "title": "Risk list",
+  "step": "History × findings × tests",
+  "layer": "code",
+  "status": "warn",
+  "why": null,
+  "kpis": [
+   {
+    "label": "files ranked",
+    "value": 73
+   },
+   {
+    "label": "riskiest: travel-service.ts",
+    "value": 2.17
+   },
+   {
+    "label": "score ≥ 1 (source)",
+    "value": 3,
+    "tone": "warn"
+   },
+   {
+    "label": "rules never run",
+    "value": 2
+   }
+  ],
+  "from": [
+   "git log",
+   "run/findings/findings.jsonl",
+   "run/graph/ (Rule)",
+   "atlas-data.json MEASURED.rules (CI)"
+  ],
+  "views": [
+   "views/files.svg"
+  ],
+  "pages": [
+   "browse.html"
+  ],
+  "data": [
+   "data/risk.json",
+   "data/lists/files.json"
+  ],
+  "lists": {
+   "files": 73
+  },
+  "dropped": [],
+  "changes": null,
+  "does": "One ranking per file joining how often it changes, what was found in it, and which of its rules no test runs."
  },
  {
   "blocks": [],
@@ -506,6 +615,7 @@
    "findings": 142
   },
   "dropped": [],
+  "changes": null,
   "does": "Every claim with how it was found (static, measured, AI, human), its status and evidence, and every open question with who can answer it."
  },
  {
@@ -531,6 +641,7 @@
   "data": [],
   "lists": {},
   "dropped": [],
+  "changes": null,
   "does": "Questions handed to an AI, its answers, and what the evidence gate accepted or rejected, with the reason."
  },
  {
@@ -582,6 +693,7 @@
    "classes": 122
   },
   "dropped": [],
+  "changes": null,
   "does": "Equivalence classes per category (authorization, UI promises, status transitions, handler rules, …) and the pairwise rows that cover the combinations."
  },
  {
@@ -635,6 +747,7 @@
    "requests": 15
   },
   "dropped": [],
+  "changes": null,
   "does": "The generated tests, and after a CI run their results (CTRF) and the requests they sent."
  },
  {
@@ -684,6 +797,7 @@
    "never": 2
   },
   "dropped": [],
+  "changes": null,
   "does": "Which business cases are tested (per equivalence class), and which handler rules a test executed in CI."
  },
  {
@@ -709,6 +823,7 @@
   "data": [],
   "lists": {},
   "dropped": [],
+  "changes": null,
   "does": "Which small code changes the tests notice (killed) and which go unnoticed (survived), per file and per business class."
  }
 ]

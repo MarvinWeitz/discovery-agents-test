@@ -105,6 +105,20 @@ _UI5 and Fiori annotations_ · [card](screens/README.md)
 | `ui-promises.json` | Every UI promise with UI rule, server rule and verdict. |
 | `lists/` | All rows of each list as plain JSON, the same as browse.html shows, for agents and scripts. |
 
+## Error messages
+
+_Handler AST and model validations_ · [card](errors/README.md)
+
+| Shows | Question | Why it matters | Why this form | Next |
+| --- | --- | --- | --- | --- |
+| messages | What does a user read when the app says no? | Error messages are the part of the app users meet when things go wrong; an untranslated, vague or untested message is a support ticket waiting to happen, and the list doubles as the catalogue of business rules in words. | One row per message, those no test triggers and those in one language only first; model validations carry CAP's standard text. | Move inline texts into the i18n bundle, write a test that triggers each untested message, and check that each one tells the user what to do. |
+
+| File | Why it is there |
+| --- | --- |
+| `browse.html` | Every list of this product with search, filters, sort and copy as Markdown or CSV; cards only show the top rows. |
+| `messages.json` | Every message with status, entity, field, condition, translation and test status, for UX review and translation tools. |
+| `lists/` | All rows of each list as plain JSON, the same as browse.html shows, for agents and scripts. |
+
 ## Access map
 
 _Authorization_ · [card](access/README.md)
@@ -148,6 +162,20 @@ _Git history_ · [card](history/README.md)
 | `browse.html` | Every list of this product with search, filters, sort and copy as Markdown or CSV; cards only show the top rows. |
 | `hotspots.json` | Commits, lines, authors and last change per file. |
 | `coupling.json` | Coupled file pairs with shared commits and coupling degree. |
+| `lists/` | All rows of each list as plain JSON, the same as browse.html shows, for agents and scripts. |
+
+## Risk list
+
+_History × findings × tests_ · [card](risk/README.md)
+
+| Shows | Question | Why it matters | Why this form | Next |
+| --- | --- | --- | --- | --- |
+| files | Which files are most likely to break unnoticed when changed? | A file that changes often, already has findings and has rules no test runs combines the three reasons bugs ship; each signal alone over- or under-rates it. | Stacked bars per file: each signal scaled to 0-1 against the file with the most of it, so the bar (0-3) shows the score and what drives it; riskiest first. | Before changing a top file, add the missing tests for its rules; filter "Kind: code" to skip UI and test files. |
+
+| File | Why it is there |
+| --- | --- |
+| `browse.html` | Every list of this product with search, filters, sort and copy as Markdown or CSV; cards only show the top rows. |
+| `risk.json` | The ranking with every signal per file, for the PR comment and trends. |
 | `lists/` | All rows of each list as plain JSON, the same as browse.html shows, for agents and scripts. |
 
 ## Evidence ledger
