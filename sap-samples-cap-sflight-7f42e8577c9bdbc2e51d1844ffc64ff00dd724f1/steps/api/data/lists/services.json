@@ -1,0 +1,40 @@
+{
+ "title": "Services and their API documents",
+ "columns": [
+  {
+   "key": "service",
+   "label": "Service"
+  },
+  {
+   "key": "path",
+   "label": "Path"
+  },
+  {
+   "key": "sets",
+   "label": "Entity sets",
+   "num": true
+  },
+  {
+   "key": "docs",
+   "label": "Documents"
+  }
+ ],
+ "sort": {
+  "key": "sets",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "service": "AnalyticsService",
+   "path": "`/analytics`",
+   "sets": 10,
+   "docs": "[edmx](data/edmx/AnalyticsService.xml) · [openapi](data/openapi/AnalyticsService.json) · [Redoc](openapi-AnalyticsService.html)"
+  },
+  {
+   "service": "TravelService",
+   "path": "`/processor`",
+   "sets": 13,
+   "docs": "[edmx](data/edmx/TravelService.xml) · [openapi](data/openapi/TravelService.json) · [Redoc](openapi-TravelService.html)"
+  }
+ ]
+}

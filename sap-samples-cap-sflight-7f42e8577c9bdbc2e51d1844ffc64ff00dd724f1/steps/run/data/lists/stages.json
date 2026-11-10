@@ -1,0 +1,112 @@
+{
+ "title": "Stages",
+ "columns": [
+  {
+   "key": "id",
+   "label": "Stage"
+  },
+  {
+   "key": "status",
+   "label": "Status",
+   "facet": true
+  },
+  {
+   "key": "method",
+   "label": "Method",
+   "facet": true
+  },
+  {
+   "key": "seconds",
+   "label": "Seconds",
+   "num": true
+  },
+  {
+   "key": "said",
+   "label": "Said"
+  },
+  {
+   "key": "order",
+   "label": "Order",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "order",
+  "dir": "asc"
+ },
+ "rows": [
+  {
+   "id": "discover",
+   "status": "ran",
+   "method": "static",
+   "seconds": 393.8,
+   "said": "@capire/sflight: 261 nodes, 406 edges, 1 slices, coverage 99%, 8 diagrams rendered",
+   "order": 0
+  },
+  {
+   "id": "facts",
+   "status": "ran",
+   "method": "static",
+   "seconds": 3.6,
+   "said": "atlas facts written: /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/atlas-data.json (14 sections; ARC generated, DAT generated, DEP generated, FLW generated, STA generated, AUT generated, PAT generated, UIS generated, TST generated, API generated, RSK generated + agent, COV generated, RLS generated (rules library), UIT generated; 15 risks, 32 patterns, 122 classes)",
+   "order": 1
+  },
+  {
+   "id": "findings",
+   "status": "ran",
+   "method": "static",
+   "seconds": 0.3,
+   "said": "findings (static): 129 findings (126 static, 3 human), 21 open gaps of 21 → /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/run/findings",
+   "order": 2
+  },
+  {
+   "id": "tests",
+   "status": "ran",
+   "method": "static",
+   "seconds": 0.7,
+   "said": "generated 19 tests in 2 files → /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/run/tests/generated (syntax OK)",
+   "order": 3
+  },
+  {
+   "id": "atlas",
+   "status": "ran",
+   "method": "static",
+   "seconds": 24.6,
+   "said": "atlas written to /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/atlas: 15 topics, 37 images",
+   "order": 4
+  },
+  {
+   "id": "products",
+   "status": "ran",
+   "method": "static",
+   "seconds": 3.5,
+   "said": "15 step products → /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/steps (12 with results, 3 not run here, 0 failed)",
+   "order": 5
+  },
+  {
+   "id": "ai-requests",
+   "status": "off",
+   "method": "static",
+   "seconds": "",
+   "said": "mode static",
+   "order": 6
+  },
+  {
+   "id": "validate",
+   "status": "ran",
+   "method": "static",
+   "seconds": 0.1,
+   "said": "valid (mode static; 129 findings, 21 gaps, manifest with 7 stages)",
+   "order": 7
+  },
+  {
+   "id": "run-tests",
+   "status": "ran",
+   "method": "measured",
+   "seconds": "",
+   "said": "startup success, generated tests success",
+   "order": 8
+  }
+ ]
+}

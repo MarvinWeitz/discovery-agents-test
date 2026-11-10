@@ -3,8 +3,8 @@
   "method": "static",
   "id": "discover",
   "status": "ran",
-  "started": "2026-11-10T15:37:42.490Z",
-  "seconds": 574.8,
+  "started": "2026-11-10T19:07:29.525Z",
+  "seconds": 393.8,
   "said": "@capire/sflight: 261 nodes, 406 edges, 1 slices, coverage 99%, 8 diagrams rendered",
   "outputs": [
    {
@@ -25,12 +25,12 @@
    {
     "path": "run/graph/nodes.jsonl",
     "bytes": 101025,
-    "sha256": "697f3bc09a8d2c44aea487ddaa6bb8f0a5bb3d0c400809b4d3f2bc0c1c983653"
+    "sha256": "d7c6ca820b82763a2f5f426d2aacbfbfceecef28314c69e41933eecf866e1ffb"
    },
    {
     "path": "run/graph/edges.jsonl",
     "bytes": 104362,
-    "sha256": "28995396112c44d8ce7d8396a0104b55d911f6dd018f6104e783900efced1b3c"
+    "sha256": "db9fdd02ad1fdea3b3aefe173c346b18a6ef2340223a001900f75a6e07408ee5"
    },
    {
     "path": "run/slices/catalog.json",
@@ -44,13 +44,13 @@
    },
    {
     "path": "run/metrics.json",
-    "bytes": 2331,
-    "sha256": "087c54beaa003c0c9cce98b7bf02d38450369d4886447067425d161974a0ee43"
+    "bytes": 2329,
+    "sha256": "9a3e3d00292262ece1965698f76f0b460bc15a4a80e6eb954dded82586373cd5"
    },
    {
     "path": "run/discovery-report.md",
     "bytes": 24668,
-    "sha256": "2551698a60e01fa9232a4e5280208c61f04f5ba35a14b65ddc6698f94e71be64"
+    "sha256": "ed6d3c35b4995005c054ba1aa3cd7ff612c894eab4564b05841c36ecb07e555b"
    }
   ]
  },
@@ -58,8 +58,8 @@
   "method": "static",
   "id": "facts",
   "status": "ran",
-  "started": "2026-11-10T15:47:17.267Z",
-  "seconds": 5.4,
+  "started": "2026-11-10T19:14:03.350Z",
+  "seconds": 3.6,
   "said": "atlas facts written: /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/atlas-data.json (14 sections; ARC generated, DAT generated, DEP generated, FLW generated, STA generated, AUT generated, PAT generated, UIS generated, TST generated, API generated, RSK generated + agent, COV generated, RLS generated (rules library), UIT generated; 15 risks, 32 patterns, 122 classes)",
   "outputs": [
    {
@@ -83,8 +83,8 @@
   "method": "static",
   "id": "findings",
   "status": "ran",
-  "started": "2026-11-10T15:47:22.623Z",
-  "seconds": 0.5,
+  "started": "2026-11-10T19:14:06.959Z",
+  "seconds": 0.3,
   "said": "findings (static): 129 findings (126 static, 3 human), 21 open gaps of 21 → /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/run/findings",
   "outputs": [
    {
@@ -118,8 +118,8 @@
   "method": "static",
   "id": "tests",
   "status": "ran",
-  "started": "2026-11-10T15:47:23.127Z",
-  "seconds": 1.1,
+  "started": "2026-11-10T19:14:07.274Z",
+  "seconds": 0.7,
   "said": "generated 19 tests in 2 files → /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/run/tests/generated (syntax OK)",
   "outputs": [
    {
@@ -130,7 +130,7 @@
    {
     "path": "run/tests/generated/manifest.json",
     "bytes": 5778,
-    "sha256": "89cb78e8eee0f7fb4abea59f61dfc0ffc958d219bb1e9afa4168fd182177036b"
+    "sha256": "3b64911ef8316e692fbdc2ccd3bcd633c440c2b222c841cb25b65ceac7439d2c"
    }
   ]
  },
@@ -138,8 +138,8 @@
   "method": "static",
   "id": "atlas",
   "status": "ran",
-  "started": "2026-11-10T15:47:24.223Z",
-  "seconds": 27.4,
+  "started": "2026-11-10T19:14:07.970Z",
+  "seconds": 24.6,
   "said": "atlas written to /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/atlas: 15 topics, 37 images",
   "outputs": [
    {
@@ -155,7 +155,7 @@
    {
     "path": "atlas/images/",
     "files": 37,
-    "bytes": 9048284
+    "bytes": 9048880
    },
    {
     "path": "atlas/index.html",
@@ -168,29 +168,29 @@
   "method": "static",
   "id": "products",
   "status": "ran",
-  "started": "2026-11-10T15:47:51.589Z",
-  "seconds": 4.7,
+  "started": "2026-11-10T19:14:32.622Z",
+  "seconds": 3.5,
   "said": "15 step products → /home/runner/work/discovery-agents-test/discovery-agents-test/out/sap-samples-cap-sflight-7f42e8577c9bdbc2e51d1844ffc64ff00dd724f1/steps (12 with results, 3 not run here, 0 failed)",
   "outputs": [
    {
     "path": "steps/index.html",
-    "bytes": 13884,
-    "sha256": "d5ce46ff71e843c690c9fe5b0cf95349e69b37d41e9e93f5f6b708cc529262d4"
+    "bytes": 14005,
+    "sha256": "ee36094f8245bffec10d7e49dd57225eb6987cb4811fe99387e6eafed91d4e05"
    },
    {
     "path": "steps/index.md",
-    "bytes": 2782,
-    "sha256": "78dacdb70882fccad29638858f0d5c20bc1942956e7f4593ac41a2f25141b422"
+    "bytes": 2851,
+    "sha256": "7bfdac773b5014843d687f27edd05d6cd60c4e6fe6dc0d7dde87183ca930d77e"
    },
    {
     "path": "steps/products.json",
-    "bytes": 12059,
-    "sha256": "89b68a15b93c44fe864c03df8d46d48bd45f34a90660a476e34f6ea602439f34"
+    "bytes": 12875,
+    "sha256": "0f64be3c613191d1984d7513431b977f0cbad52f6bb68cb72096f9421993b932"
    },
    {
     "path": "steps/",
-    "files": 131,
-    "bytes": 2580981
+    "files": 138,
+    "bytes": 2680326
    }
   ]
  },
@@ -204,7 +204,7 @@
   "method": "static",
   "id": "validate",
   "status": "ran",
-  "started": "2026-11-10T15:47:56.335Z",
+  "started": "2026-11-10T19:14:36.124Z",
   "seconds": 0.1,
   "said": "valid (mode static; 129 findings, 21 gaps, manifest with 7 stages)",
   "outputs": []
@@ -213,7 +213,7 @@
   "method": "measured",
   "id": "run-tests",
   "status": "ran",
-  "started": "2026-11-10T15:48:37.423Z",
+  "started": "2026-11-10T19:15:01.045Z",
   "said": "startup success, generated tests success",
   "outputs": [
    {

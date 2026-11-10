@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "project",
  "title": "Project passport",
  "step": "Probe and intake",
@@ -34,9 +35,14 @@
  ],
  "data": [
   "data/project.json",
+  "data/lists/plugins.json",
+  "data/lists/problems.json",
   "data/lists/services.json"
  ],
  "lists": {
+  "plugins": 5,
+  "problems": 0,
   "services": 2
- }
+ },
+ "dropped": []
 }

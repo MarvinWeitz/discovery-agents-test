@@ -1,0 +1,30 @@
+{
+ "title": "Plugins",
+ "columns": [
+  {
+   "key": "name",
+   "label": "Plugin"
+  }
+ ],
+ "sort": {
+  "key": "name",
+  "dir": "asc"
+ },
+ "rows": [
+  {
+   "name": "`@cap-js/sqlite`"
+  },
+  {
+   "name": "`@sap/cds-fiori`"
+  },
+  {
+   "name": "`@cap-js/hana`"
+  },
+  {
+   "name": "`@cap-js/cds-typer`"
+  },
+  {
+   "name": "`cds-plugin-ui5`"
+  }
+ ]
+}

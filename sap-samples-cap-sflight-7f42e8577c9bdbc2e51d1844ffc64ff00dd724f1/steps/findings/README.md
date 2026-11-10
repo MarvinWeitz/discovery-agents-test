@@ -2,7 +2,7 @@
 product: findings
 step: Findings and gaps
 status: warn
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Evidence ledger
@@ -13,21 +13,25 @@ _Findings and gaps_ · Every claim with how it was found (static, measured, AI, 
 
 142 findings (13 measured, 126 static, 3 human, 0 AI) · 21 questions, **19 open**.
 
-![confidence ladder](views/ladder.svg)
+### How much of what the run claims is proven?
 
-![severity by layer](views/severity.svg)
+_A measured finding was seen in the running app; a static one is read from code; an AI one is a suspicion until a test confirms it. Decisions should weigh them differently._ **Next:** Prefer measured findings for decisions; send suspected ones to the gap list below.
 
-### Open questions by who can answer them
+![How much of what the run claims is proven?](views/ladder.svg)
 
-**measured** (11): Does anything on the server enforce "TravelStatus != A" for Travel.acceptTravel: another h? · Does anything on the server enforce "5 fields controlled by TravelStatus.fieldControl" for? · Does anything on the server enforce "TravelStatus != X" for Travel.rejectTravel: another h? · Does anything on the server enforce "hidden when [object Object]" for Booking: another han? · Does anything on the server enforce "6 fields controlled by to_Travel.TravelStatus.fieldCo? · Does anything on the server enforce "hidden when [object Object]" for Booking: another han? · … 5 more
+### Which layer holds the severe findings?
 
-**ai** (2): Slice S01 Travel in AnalyticsService, TravelService: answer the 10 fixed questions (entry ? · Which entities and fields does this SQL read and write, and under which condition?
+_Severe findings in access or service layers reach users directly; the same count in tests matters less._ **Next:** Work the red row from the left.
 
-**human** (6): How critical is AnalyticsService for the business (1 to 5)? · How critical is TravelService for the business (1 to 5)? · Is the draft rule hard-coded-currency right here (srv/analytics-service.cds:24), and shoul? · Is the draft rule null-deref-in-guard right here (srv/travel-service.ts:105), and should i? · Is the draft rule commented-out-grant right here (srv/analytics-service.cds:5), and should? · Is the draft rule max-plus-one-id right here (srv/travel-service.ts:18), and should it be ?
+![Which layer holds the severe findings?](views/severity.svg)
 
-### All questions
+### Open questions
 
-Open ones first.
+19 open: 11 for a measurement, 2 for an AI pass, 6 for a person.
+
+### What could the run not decide, and who can?
+
+_An open question is a blind spot in every product; naming who can close it (a measurement, an AI pass, a person) turns it into a task._ **Next:** Run CI for "measured", static+ai for "ai", and ask the owner for "human".
 
 | Gap | Question | Kind | Priority | Status | Can answer |
 | --- | --- | --- | --- | --- | --- |
@@ -44,7 +48,9 @@ Open ones first.
 
 **Top 10 of 21 questions** by open first. [Browse all 21 with filters](browse.html#gaps) · [gaps.json](data/lists/gaps.json)
 
-### All findings
+### What does the run claim, how was it found, and how sure is it?
+
+_The evidence behind every claim must be checkable, or the claim is an opinion._ **Next:** Check the evidence of anything you act on.
 
 | Severity | Kind | Found by | Status | Layer | Title | Where |
 | --- | --- | --- | --- | --- | --- | --- |

@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "history",
  "title": "Hotspots and change coupling",
  "step": "Git history",
@@ -42,5 +43,6 @@
  "lists": {
   "hotspots": 113,
   "coupling": 39
- }
+ },
+ "dropped": []
 }

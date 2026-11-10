@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "api",
  "title": "API surface",
  "step": "EDMX, OpenAPI, AsyncAPI",
@@ -42,9 +43,12 @@
   "data/edmx/TravelService.xml",
   "data/openapi/AnalyticsService.json",
   "data/openapi/TravelService.json",
-  "data/lists/surface.json"
+  "data/lists/surface.json",
+  "data/lists/services.json"
  ],
  "lists": {
-  "surface": 23
- }
+  "surface": 23,
+  "services": 2
+ },
+ "dropped": []
 }

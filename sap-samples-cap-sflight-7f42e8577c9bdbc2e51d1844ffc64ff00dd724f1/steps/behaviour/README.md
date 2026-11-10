@@ -2,7 +2,7 @@
 product: behaviour
 step: Handler AST
 status: ok
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Behaviour matrix
@@ -12,6 +12,10 @@ _Handler AST_ · Which code runs for which entity, event and phase, which rules 
 
 
 13 handlers on 3 entities · 11 rules (4 derivation, 6 rejection, 1 conditional-write) · 2 helpers.
+
+### Where does custom code run: for which entity, phase and event?
+
+_Everything without a handler is generic CAP behaviour; the code that differs from it is where bugs and business rules live._ **Next:** Read the handlers of the busiest cells first; give each rule a test.
 
 ![Entity × phase and event (n handlers · r rules)](views/matrix.svg)
 
@@ -23,9 +27,9 @@ _Handler AST_ · Which code runs for which entity, event and phase, which rules 
 
 _3 entities_ · [browse with filters](browse.html#matrix) · [matrix.json](data/lists/matrix.json)
 
-### Handlers
+### Which handler does what, and where is it?
 
-Handlers with the most rules first.
+_Reviews and tests need the exact code location and the rules inside each handler._ **Next:** Filter by entity before changing it; every rule here should have a test in Coverage.
 
 | Phase | Events | Entity | Rules | Where |
 | --- | --- | --- | --- | --- |
@@ -42,7 +46,9 @@ Handlers with the most rules first.
 
 **Top 10 of 13 handlers** by rule count. [Browse all 13 with filters](browse.html#handlers) · [handlers.json](data/lists/handlers.json)
 
-### Request lifecycle: Travel
+### In which order does code run for the busiest entity?
+
+_Before, on and after handlers run in a fixed order; a value set in one phase and overwritten in another is a common surprise._ **Next:** Check that no later phase undoes what an earlier one enforced.
 
 ```mermaid
 sequenceDiagram

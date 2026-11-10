@@ -1,4 +1,7 @@
 {
+ "blocks": [
+  "er"
+ ],
  "id": "model",
  "title": "Model map",
  "step": "cds compile (CSN)",
@@ -57,5 +60,6 @@
  "lists": {
   "entities": 13,
   "projections": 23
- }
+ },
+ "dropped": []
 }

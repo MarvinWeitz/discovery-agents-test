@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "coverage",
  "title": "Coverage by class",
  "step": "Coverage",
@@ -42,5 +43,6 @@
  "lists": {
   "next": 15,
   "never": 2
- }
+ },
+ "dropped": []
 }

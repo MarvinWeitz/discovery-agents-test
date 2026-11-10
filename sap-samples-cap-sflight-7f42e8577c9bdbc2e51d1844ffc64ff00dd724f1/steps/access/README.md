@@ -2,7 +2,7 @@
 product: access
 step: Authorization
 status: warn
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Access map
@@ -14,6 +14,10 @@ _Authorization_ · Who can do what: operation × user/role, declared in CDS, and
 13 operations × 6 users. 4 operations are open to users without a role. **Measured in CI:** 61 cells agree, 0 differ, 5 were unclear and are now settled.
 
 First the operations that need attention (measured differs, then open without a role).
+
+### Who may do what, and does the running app agree?
+
+_Authorization mistakes are the costliest bugs here; the model says what should happen, CI measures what does._ **Next:** Fix every ≠ cell; confirm every "r" (no role needed) is meant to be open.
 
 ![Operation × user](views/matrix.svg)
 

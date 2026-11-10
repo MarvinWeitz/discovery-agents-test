@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "access",
  "title": "Access map",
  "step": "Authorization",
@@ -39,5 +40,6 @@
  ],
  "lists": {
   "matrix": 13
- }
+ },
+ "dropped": []
 }

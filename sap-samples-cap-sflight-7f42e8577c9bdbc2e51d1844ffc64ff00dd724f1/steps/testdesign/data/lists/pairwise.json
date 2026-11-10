@@ -1,0 +1,194 @@
+{
+ "title": "Pairwise: deductDiscount",
+ "columns": [
+  {
+   "key": "f0",
+   "label": "percent",
+   "facet": true
+  },
+  {
+   "key": "f1",
+   "label": "TravelStatus",
+   "facet": true
+  },
+  {
+   "key": "f2",
+   "label": "BookingFee",
+   "facet": true
+  },
+  {
+   "key": "f3",
+   "label": "target",
+   "facet": true
+  },
+  {
+   "key": "f4",
+   "label": "repeat",
+   "facet": true
+  },
+  {
+   "key": "row",
+   "label": "Row",
+   "num": true,
+   "hide": true
+  }
+ ],
+ "sort": {
+  "key": "row",
+  "dir": "asc"
+ },
+ "rows": [
+  {
+   "f0": "1",
+   "f1": "A",
+   "f2": "> 0",
+   "f3": "active",
+   "f4": "first",
+   "row": 1
+  },
+  {
+   "f0": "0",
+   "f1": "X",
+   "f2": "null",
+   "f3": "draft",
+   "f4": "again",
+   "row": 2
+  },
+  {
+   "f0": "101",
+   "f1": "O",
+   "f2": "> 0",
+   "f3": "draft",
+   "f4": "again",
+   "row": 3
+  },
+  {
+   "f0": "null",
+   "f1": "X",
+   "f2": "> 0",
+   "f3": "active",
+   "f4": "again",
+   "row": 4
+  },
+  {
+   "f0": "51",
+   "f1": "A",
+   "f2": "0",
+   "f3": "draft",
+   "f4": "again",
+   "row": 5
+  },
+  {
+   "f0": "100",
+   "f1": "O",
+   "f2": "0",
+   "f3": "active",
+   "f4": "first",
+   "row": 6
+  },
+  {
+   "f0": "100",
+   "f1": "A",
+   "f2": "null",
+   "f3": "draft",
+   "f4": "again",
+   "row": 7
+  },
+  {
+   "f0": "101",
+   "f1": "X",
+   "f2": "null",
+   "f3": "active",
+   "f4": "first",
+   "row": 8
+  },
+  {
+   "f0": "0",
+   "f1": "A",
+   "f2": "0",
+   "f3": "draft",
+   "f4": "first",
+   "row": 9
+  },
+  {
+   "f0": "1",
+   "f1": "O",
+   "f2": "null",
+   "f3": "draft",
+   "f4": "again",
+   "row": 10
+  },
+  {
+   "f0": "null",
+   "f1": "O",
+   "f2": "null",
+   "f3": "draft",
+   "f4": "first",
+   "row": 11
+  },
+  {
+   "f0": "51",
+   "f1": "X",
+   "f2": "0",
+   "f3": "active",
+   "f4": "first",
+   "row": 12
+  },
+  {
+   "f0": "0",
+   "f1": "O",
+   "f2": "> 0",
+   "f3": "active",
+   "f4": "first",
+   "row": 13
+  },
+  {
+   "f0": "1",
+   "f1": "X",
+   "f2": "0",
+   "f3": "active",
+   "f4": "first",
+   "row": 14
+  },
+  {
+   "f0": "100",
+   "f1": "X",
+   "f2": "> 0",
+   "f3": "active",
+   "f4": "first",
+   "row": 15
+  },
+  {
+   "f0": "101",
+   "f1": "A",
+   "f2": "0",
+   "f3": "active",
+   "f4": "first",
+   "row": 16
+  },
+  {
+   "f0": "51",
+   "f1": "O",
+   "f2": "> 0",
+   "f3": "active",
+   "f4": "first",
+   "row": 17
+  },
+  {
+   "f0": "null",
+   "f1": "A",
+   "f2": "0",
+   "f3": "active",
+   "f4": "first",
+   "row": 18
+  },
+  {
+   "f0": "51",
+   "f1": "X",
+   "f2": "null",
+   "f3": "active",
+   "f4": "first",
+   "row": 19
+  }
+ ]
+}

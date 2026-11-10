@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "screens",
  "title": "Screen map",
  "step": "UI5 and Fiori annotations",
@@ -42,5 +43,6 @@
  "lists": {
   "screens": 5,
   "promises": 21
- }
+ },
+ "dropped": []
 }

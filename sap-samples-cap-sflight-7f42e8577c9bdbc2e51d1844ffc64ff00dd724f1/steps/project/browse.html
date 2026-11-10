@@ -14,7 +14,7 @@ header h1{font-size:16px;margin:0}header span{color:var(--mute);font-size:13px}
 .tabs button[aria-selected=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tabs small{opacity:.75;margin-left:4px}
 main{max-width:1280px;margin:0 auto;padding:0 16px 60px}
-.what{color:var(--mute);margin:10px 0 6px;max-width:80ch}
+.what{color:var(--mute);margin:10px 0 8px;max-width:90ch}.what b{color:var(--ink);font-size:15px;display:block;margin-bottom:2px}.what i{font-style:normal;color:var(--ink)}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;position:sticky;top:0;z-index:2}
 .bar label{display:flex;flex-direction:column;font-size:11.5px;color:var(--mute);gap:2px}
 input,select,button{font:inherit;font-size:13.5px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px;max-width:100%}
@@ -43,7 +43,7 @@ td code{font-size:12px}
 <header><h1>Project passport · SFlight</h1><span><a href="index.html">card</a> · <a href="README.md">Markdown</a> · <a href="../index.html">all products</a></span></header>
 <div class="tabs" role="tablist" id="tabs"></div>
 <main>
-  <p class="what" id="what"></p>
+  <div class="what" id="what"></div>
   <div class="bar" id="bar"></div>
   <div class="count" id="count"></div>
   <div class="chart" id="chart"></div>
@@ -263,7 +263,7 @@ const sortLabel = L => { const k = L.sort?.key; const c = L.columns.find(x => x.
 
 module.exports = { facets, apply, chart, table, markdown, csv, liveCols, sortLabel, plain }
 ;return module.exports})({exports:{}})</script>
-<script type="application/json" id="data">{"services":{"title":"Services","noun":"services","what":"Every service CAP serves, its endpoints and the file that implements it.","columns":[{"key":"name","label":"Service"},{"key":"protocols","label":"Protocols","facet":true},{"key":"endpoints","label":"Endpoints"},{"key":"code","label":"Own code","facet":true},{"key":"impl","label":"Implementation"}],"rows":[{"name":"AnalyticsService","protocols":["odata"],"endpoints":"odata /analytics","code":"no","impl":"none (generic CAP)"},{"name":"TravelService","protocols":["odata"],"endpoints":"odata /processor","code":"yes","impl":"srv/travel-service.ts"}],"sort":{"key":"name","dir":"asc"}}}</script>
+<script type="application/json" id="data">{"plugins":{"title":"Plugins","noun":"plugins","columns":[{"key":"name","label":"Plugin"}],"rows":[{"name":"`@cap-js/sqlite`"},{"name":"`@sap/cds-fiori`"},{"name":"`@cap-js/hana`"},{"name":"`@cap-js/cds-typer`"},{"name":"`cds-plugin-ui5`"}],"sort":{"key":"name","dir":"asc"},"empty":"_none_","reason":{"q":"Which CAP plugins change behaviour without code in this repository?","cause":"Plugins add handlers, protocols or database behaviour that no source file shows.","form":"Plain list: plugins are few.","then":"Read the plugin docs for anything the Behaviour matrix cannot explain."}},"problems":{"title":"Probe problems","noun":"problems","columns":[{"key":"problem","label":"Problem"}],"rows":[],"reason":{"q":"Which questions could CAP not answer about the project?","cause":"Every unanswered probe question is a gap in all later products.","form":"Plain list of the probe errors as CAP reported them.","then":"Fix the setup (install, profile, credentials) and rerun."}},"services":{"title":"Services","noun":"services","what":"Every service CAP serves, its endpoints and the file that implements it.","columns":[{"key":"name","label":"Service"},{"key":"protocols","label":"Protocols","facet":true},{"key":"endpoints","label":"Endpoints"},{"key":"code","label":"Own code","facet":true},{"key":"impl","label":"Implementation"}],"rows":[{"name":"AnalyticsService","protocols":["odata"],"endpoints":"odata /analytics","code":"no","impl":"none (generic CAP)"},{"name":"TravelService","protocols":["odata"],"endpoints":"odata /processor","code":"yes","impl":"srv/travel-service.ts"}],"sort":{"key":"name","dir":"asc"},"reason":{"q":"Which services exist, where are they served, and which have their own code?","cause":"A service without its own code is generic CAP: its behaviour comes from the model alone, so tests and review focus elsewhere.","form":"One row per service, sorted by name; filter \"own code\" to see the generic ones.","then":"Open the Behaviour matrix for services with code, the API surface for the others."}}}</script>
 <script>
 const LISTS=JSON.parse(document.getElementById('data').textContent), IDS=Object.keys(LISTS)
 const $=id=>document.getElementById(id)
@@ -296,7 +296,7 @@ function bar(){const L=LISTS[cur],F=LV.facets(L),cols=L.chart?.cols||[]
   if($('allCols'))$('allCols').onclick=()=>{st.pick=null;bar();draw()}
   $('reset').onclick=()=>{st={f:{}};limit=200;bar();draw()}}
 function draw(full){const L=LISTS[cur];if(full){tabs();bar()}
-  $('what').textContent=L.what||''
+  const R=L.reason;$('what').innerHTML=R?`<b>${esc(R.q)}</b>${esc(R.cause)} <i>Next:</i> ${esc(R.then)}<br><span class="hint">Form: ${esc(R.form||'')}</span>`:esc(L.what||'')
   const rows=LV.apply(L,st),n=rows.length,top=st.top==='all'?n:+(st.top||25)
   const sortC=L.columns.find(c=>c.key===(st.sort||L.sort?.key))
   $('count').innerHTML=`<b>${n}</b> of ${L.rows.length} ${esc(L.noun||'rows')}${n&&L.chart?` · picture: ${Math.min(n,top)} by ${esc(sortC?.label.toLowerCase()||'order')}`:''}`

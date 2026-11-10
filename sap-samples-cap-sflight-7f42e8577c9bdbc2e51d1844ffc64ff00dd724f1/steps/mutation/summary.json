@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "mutation",
  "title": "Test strength",
  "step": "Mutation testing",
@@ -18,5 +19,6 @@
  "views": [],
  "pages": [],
  "data": [],
- "lists": {}
+ "lists": {},
+ "dropped": []
 }

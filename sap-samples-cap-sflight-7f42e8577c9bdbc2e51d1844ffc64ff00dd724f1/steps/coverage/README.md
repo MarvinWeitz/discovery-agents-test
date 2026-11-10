@@ -2,7 +2,7 @@
 product: coverage
 step: Coverage
 status: warn
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Coverage by class
@@ -13,9 +13,15 @@ _Coverage_ · Which business cases are tested (per equivalence class), and which
 
 **16 of 122 classes tested (13%)**. Handler rules reached by any test: **9 of 11**.
 
-![coverage by class](views/classes.svg)
+### How much of each category is tested, and how?
 
-### Test next
+_Line coverage says which code ran; class coverage says which business cases are checked, which is what matters for a change._ **Next:** Pick from the largest grey part.
+
+![How much of each category is tested, and how?](views/classes.svg)
+
+### Which untested case should be tested next?
+
+_Effort goes furthest on cases that are both risky and valuable._ **Next:** Write or generate the test; rerun to see the class turn green.
 
 | Class | Category | Status | Score |
 | --- | --- | --- | --- |
@@ -32,7 +38,9 @@ _Coverage_ · Which business cases are tested (per equivalence class), and which
 
 **Top 10 of 15 classes** by score. [Browse all 15 with filters](browse.html#next) · [next.json](data/lists/next.json)
 
-### Rules no test reaches
+### Which handler rules does no test ever run?
+
+_A rule no test runs can break silently._ **Next:** Write a test that triggers each rule.
 
 | Rule | Kind | Guard | Where |
 | --- | --- | --- | --- |

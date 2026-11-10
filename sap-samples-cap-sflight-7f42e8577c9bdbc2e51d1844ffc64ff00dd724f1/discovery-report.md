@@ -1,6 +1,6 @@
 # Phase 1 discovery report: @capire/sflight
 
-Run 2026-11-10T15:37Z on commit `7f42e8577c`. Everything below was extracted by tools; no LLM was used. Facts from static code analysis are marked medium confidence and still need review.
+Run 2026-11-10T19:07Z on commit `7f42e8577c`. Everything below was extracted by tools; no LLM was used. Facts from static code analysis are marked medium confidence and still need review.
 
 ## Headline
 

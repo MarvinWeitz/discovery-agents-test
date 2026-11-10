@@ -2,7 +2,7 @@
 product: screens
 step: UI5 and Fiori annotations
 status: warn
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Screen map
@@ -13,11 +13,15 @@ _UI5 and Fiori annotations_ · Apps, pages and the entities they show, and every
 
 2 apps · 5 pages · 21 UI promises, **7 only in the UI** (an OData client can bypass them).
 
-![verdicts](views/verdicts.svg)
+### How many UI promises does the server not enforce?
 
-### Pages
+_A field the UI hides or locks but the server accepts can be changed by any OData client: the UI is not a security boundary._ **Next:** Fix the red ones on the server (@readonly, @mandatory, a before handler, a restriction).
 
-Pages with the most UI-only promises first.
+![How many UI promises does the server not enforce?](views/verdicts.svg)
+
+### Which page shows which entity, and where are the UI-only promises?
+
+_A UI-only promise matters most on a page users actually use; this connects the verdict to a screen._ **Next:** Open the page, then its promises below.
 
 ![App → page → entity](views/screens.svg)
 
@@ -31,9 +35,9 @@ Pages with the most UI-only promises first.
 
 _5 pages_ · [browse with filters](browse.html#screens) · [screens.json](data/lists/screens.json)
 
-### UI promises
+### What exactly does each UI promise say, and what does the server do?
 
-UI-only first.
+_To fix or test a promise you need the field, the UI rule and the server behaviour side by side._ **Next:** Turn each UI-only promise into a server rule or a test that pins today's behaviour.
 
 | Entity | Promise | UI says | Server | Verdict | Where |
 | --- | --- | --- | --- | --- | --- |

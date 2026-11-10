@@ -1,14 +1,14 @@
 # Step products
 
-@capire/sflight @ 7f42e85 · mode static · 2026-11-10T15:49Z
+@capire/sflight @ 7f42e85 · mode static · 2026-11-10T19:15Z
 
-Each step of the run publishes its own product: `summary.json` (numbers), `README.md` (card with pictures), explorers (`*.html`) and `data/` (standard formats). Read a card, then drill down.
+Each step of the run publishes its own product: `summary.json` (numbers), `README.md` (card with pictures), explorers (`*.html`) and `data/` (standard formats). Read a card, then drill down. Why each view, list and file is there: [reasoning.md](reasoning.md).
 
 ## How the run went
 
 | Product | Step | Status | Numbers |
 | --- | --- | --- | --- |
-| [Run timeline](run/README.md) | The run itself | results | 8 stages ran · 0 failed · 614 seconds · static mode |
+| [Run timeline](run/README.md) | The run itself | results | 8 stages ran · 0 failed · 427 seconds · static mode |
 | [Project passport](project/README.md) | Probe and intake | results | 2 services · 14 model files · 5 plugins · 1 without own code |
 | [Evidence ledger](findings/README.md) | Findings and gaps | needs a look | 142 findings · 13 measured · 0 AI (gated) · 19 open questions |
 | [AI ledger](ai/README.md) | AI gap pass | not run here | 19 AI could answer |

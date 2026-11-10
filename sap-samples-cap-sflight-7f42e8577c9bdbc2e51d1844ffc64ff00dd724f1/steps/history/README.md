@@ -2,7 +2,7 @@
 product: history
 step: Git history
 status: ok
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Hotspots and change coupling
@@ -13,7 +13,9 @@ _Git history_ · Where the code changes most, which files change in the same com
 
 1238 commits · 113 source files · 47 authors · last change 2026-10-14.
 
-### Most changed
+### Where does the code change most?
+
+_Files that change often and a lot are where new bugs appear; with the findings they show where to invest first._ **Next:** Review and test hotspots first, especially those with findings.
 
 ![Hotspots: size = lines changed, colour = number of commits](views/hotspots.svg)
 
@@ -32,9 +34,9 @@ _Git history_ · Where the code changes most, which files change in the same com
 
 **Top 10 of 113 files** by commits. [Browse all 113 with filters](browse.html#hotspots) · [hotspots.json](data/lists/hotspots.json)
 
-### Change together
+### Which files change together?
 
-This is impact from history, next to the impact from the model.
+_If two files almost always change in the same commit, a change to one usually needs the other: impact from history, next to impact from the model._ **Next:** When you change file A, check file B; if the model shows no link between them, look for a hidden one.
 
 ![Change coupling (share of commits together)](views/coupling.svg)
 

@@ -1,0 +1,82 @@
+{
+ "title": "Categories",
+ "columns": [
+  {
+   "key": "n",
+   "label": "Category"
+  },
+  {
+   "key": "k",
+   "label": "Technique"
+  },
+  {
+   "key": "cls",
+   "label": "Classes",
+   "num": true
+  },
+  {
+   "key": "cov",
+   "label": "Covered today",
+   "num": true
+  },
+  {
+   "key": "why",
+   "label": "Why"
+  }
+ ],
+ "sort": {
+  "key": "cls",
+  "dir": "desc"
+ },
+ "rows": [
+  {
+   "n": "Authorization",
+   "k": "role × operation",
+   "cls": 25,
+   "cov": 6,
+   "why": "13 operations × 6 users, grouped by outcome"
+  },
+  {
+   "n": "UI vs server rules",
+   "k": "reflexion",
+   "cls": 22,
+   "cov": 3,
+   "why": "one class per UI promise; ui-only and partial ones are negative tests"
+  },
+  {
+   "n": "Status transitions",
+   "k": "state machine",
+   "cls": 9,
+   "cov": 1,
+   "why": "each action from each state"
+  },
+  {
+   "n": "Handler rules",
+   "k": "decision table",
+   "cls": 18,
+   "cov": 1,
+   "why": "each rejection: guard true and false; each derivation and conditional write: condition true and false"
+  },
+  {
+   "n": "Framework constraints",
+   "k": "boundary",
+   "cls": 26,
+   "cov": 0,
+   "why": "@mandatory missing/present, @readonly ignored, @assert.range below/min/max/above"
+  },
+  {
+   "n": "Draft lifecycle",
+   "k": "state × user",
+   "cls": 3,
+   "cov": 1,
+   "why": "new → activate, edit → discard, edit while another user holds the draft"
+  },
+  {
+   "n": "deductDiscount combinations",
+   "k": "combinatorial",
+   "cls": 19,
+   "cov": 0,
+   "why": "all pairs over 5 factors (216 full)"
+  }
+ ]
+}

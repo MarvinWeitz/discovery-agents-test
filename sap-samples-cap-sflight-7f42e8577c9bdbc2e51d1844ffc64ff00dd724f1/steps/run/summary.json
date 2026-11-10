@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "run",
  "title": "Run timeline",
  "step": "The run itself",
@@ -16,7 +17,7 @@
   },
   {
    "label": "seconds",
-   "value": 614
+   "value": 427
   },
   {
    "label": "mode",
@@ -29,9 +30,15 @@
  "views": [
   "views/timeline.svg"
  ],
- "pages": [],
- "data": [
-  "data/stages.json"
+ "pages": [
+  "browse.html"
  ],
- "lists": {}
+ "data": [
+  "data/stages.json",
+  "data/lists/stages.json"
+ ],
+ "lists": {
+  "stages": 9
+ },
+ "dropped": []
 }

@@ -1,4 +1,5 @@
 {
+ "blocks": [],
  "id": "checks",
  "title": "Code findings",
  "step": "Lint, Opengrep, rules",
@@ -29,7 +30,6 @@
   "run/findings/findings.jsonl"
  ],
  "views": [
-  "views/kinds.svg",
   "views/files.svg"
  ],
  "pages": [
@@ -43,5 +43,6 @@
  "lists": {
   "files": 21,
   "findings": 71
- }
+ },
+ "dropped": []
 }

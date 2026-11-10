@@ -2,7 +2,7 @@
 product: checks
 step: Lint, Opengrep, rules
 status: bad
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Code findings
@@ -13,9 +13,9 @@ _Lint, Opengrep, rules_ · Every static finding with a code location in one stan
 
 71 findings in 21 files · 36 critical or warning. Full list as SARIF: [checks.sarif](data/checks.sarif) (open it in VS Code's SARIF Viewer or upload it to code scanning).
 
-![by kind](views/kinds.svg)
+### In which files do findings pile up?
 
-### Hotspot files
+_Findings concentrate; fixing the worst few files removes most of the noise and risk._ **Next:** Start with red, then large amber tiles.
 
 ![Findings by file (red has a critical, amber a warning)](views/files.svg)
 
@@ -34,7 +34,9 @@ _Lint, Opengrep, rules_ · Every static finding with a code location in one stan
 
 **Top 10 of 21 files** by findings. [Browse all 21 with filters](browse.html#files) · [files.json](data/lists/files.json)
 
-### Findings
+### What exactly was found, and where?
+
+_Each finding needs a location and a kind before someone can fix or dismiss it._ **Next:** Open the location; dismissals go into the rules library so they do not come back.
 
 | Severity | Kind | Title | Where | Folder |
 | --- | --- | --- | --- | --- |

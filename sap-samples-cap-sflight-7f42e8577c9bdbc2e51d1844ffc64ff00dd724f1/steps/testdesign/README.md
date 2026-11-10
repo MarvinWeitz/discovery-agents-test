@@ -2,7 +2,7 @@
 product: testdesign
 step: Test design
 status: ok
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Classification tree
@@ -13,21 +13,35 @@ _Test design_ · Equivalence classes per category (authorization, UI promises, s
 
 122 equivalence classes in 7 categories; 12 covered by a test today.
 
-![classification tree](views/tree.svg)
+### How were the tests designed for each category?
+
+_Each category uses a known technique (decision table, state transition, pairwise, …); seeing it explains why these classes and not others._ **Next:** Challenge a technique that does not fit; add a category that is missing.
+
+![How were the tests designed for each category?](views/tree.svg)
+
+### How many classes does each category have, and how many are covered today?
+
+_A category with many classes and no coverage is a whole kind of behaviour nobody tests._ **Next:** Start with the largest uncovered category in Coverage.
 
 | Category | Technique | Classes | Covered today | Why |
 | --- | --- | --- | --- | --- |
+| Framework constraints | boundary | 26 | 0 | @mandatory missing/present, @readonly ignored, @assert.range below/min/max/above |
 | Authorization | role × operation | 25 | 6 | 13 operations × 6 users, grouped by outcome |
 | UI vs server rules | reflexion | 22 | 3 | one class per UI promise; ui-only and partial ones are negative tests |
-| Status transitions | state machine | 9 | 1 | each action from each state |
-| Handler rules | decision table | 18 | 1 | each rejection: guard true and false; each derivation and conditional write: condition true and false |
-| Framework constraints | boundary | 26 | 0 | @mandatory missing/present, @readonly ignored, @assert.range below/min/max/above |
-| Draft lifecycle | state × user | 3 | 1 | new → activate, edit → discard, edit while another user holds the draft |
 | deductDiscount combinations | combinatorial | 19 | 0 | all pairs over 5 factors (216 full) |
+| Handler rules | decision table | 18 | 1 | each rejection: guard true and false; each derivation and conditional write: condition true and false |
+| Status transitions | state machine | 9 | 1 | each action from each state |
+| Draft lifecycle | state × user | 3 | 1 | new → activate, edit → discard, edit while another user holds the draft |
+
+_7 categories_ · [browse with filters](browse.html#categories) · [categories.json](data/lists/categories.json)
 
 ### Pairwise: deductDiscount
 
 5 factors, 216 full combinations, **19 pairwise rows** cover every pair.
+
+### Which input combinations must be tested for the action with most factors?
+
+_Testing every combination explodes; pairwise covers every pair of values with a few rows and finds most interaction bugs._ **Next:** Use each row as a test case.
 
 | percent | TravelStatus | BookingFee | target | repeat |
 | --- | --- | --- | --- | --- |
@@ -51,7 +65,11 @@ _Test design_ · Equivalence classes per category (authorization, UI promises, s
 | null | A | 0 | active | first |
 | 51 | X | null | active | first |
 
-### All classes
+_19 rows_ · [browse with filters](browse.html#pairwise) · [pairwise.json](data/lists/pairwise.json)
+
+### Which equivalence classes exist, with input and expected outcome?
+
+_An equivalence class is one test worth writing; the list is the test backlog._ **Next:** Pick untested classes from Coverage → Test next.
 
 | Category | Class | Input | Expected | Today |
 | --- | --- | --- | --- | --- |

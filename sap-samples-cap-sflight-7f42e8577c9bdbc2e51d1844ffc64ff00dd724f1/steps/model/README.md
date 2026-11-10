@@ -2,7 +2,7 @@
 product: model
 step: cds compile (CSN)
 status: ok
-generated: 2026-11-10T15:49Z
+generated: 2026-11-10T19:15Z
 ---
 
 # Model map
@@ -15,7 +15,9 @@ _cds compile (CSN)_ · Entities, compositions, associations and the projection c
 
 **Explore it:** [interactive model and impact explorer](explorer.html) (pick any entity, see what it affects; graph, rings or layers).
 
-### What depends on each entity
+### Which entities spread a change furthest?
+
+_Changing a widely used entity touches projections, handlers, screens and tests at once; knowing the reach before a change is cheaper than finding it after._ **Next:** Open "impact" for the entity, or the explorer to walk it, before changing it.
 
 ![What depends on each entity (3 steps)](views/entities.svg)
 
@@ -34,7 +36,9 @@ _cds compile (CSN)_ · Entities, compositions, associations and the projection c
 
 **Top 10 of 13 entities** by depends on it. [Browse all 13 with filters](browse.html#entities) · [entities.json](data/lists/entities.json)
 
-### Projection chain
+### Which service entities change when a database entity changes?
+
+_A field added or removed on the database entity shows up (or breaks) in every projection on it._ **Next:** Check each projection on the right when you change the entity on the left.
 
 ![Projection chain: database entity → service entities](views/projections.svg)
 
@@ -53,7 +57,9 @@ _cds compile (CSN)_ · Entities, compositions, associations and the projection c
 
 **Top 10 of 23 projections** by database entity (ascending). [Browse all 23 with filters](browse.html#projections) · [projections.json](data/lists/projections.json)
 
-### Entity relationships
+### How are the entities related?
+
+_Compositions delete and deep-insert together; associations only refer. That decides what a change or a delete takes with it._ **Next:** Treat a composition parent and its children as one unit in changes and tests.
 
 ```mermaid
 erDiagram

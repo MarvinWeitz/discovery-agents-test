@@ -1,4 +1,7 @@
 {
+ "blocks": [
+  "sequence"
+ ],
  "id": "behaviour",
  "title": "Behaviour matrix",
  "step": "Handler AST",
@@ -40,5 +43,6 @@
  "lists": {
   "matrix": 3,
   "handlers": 13
- }
+ },
+ "dropped": []
 }
