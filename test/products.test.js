@@ -57,6 +57,11 @@ test('lists: filter, facet, sort; matrix drops empty columns; columns chart buil
   assert.match(LV.chart({ ...L, chart: { kind: 'columns' } }, L.rows, svg), /A\.Notes/)
 })
 
+test('every reason names question, cause, form and next step (or says who reads a file)', () => {
+  const R = require('../lib/products/reasons')
+  for (const [id, items] of Object.entries(R)) for (const [k, r] of Object.entries(items)) assert.ok(r.data || r.page || (r.q && r.cause && r.form && r.then), `${id}/${k} is incomplete`)
+})
+
 test('a large app: cards stay short (top rows + browse link), browse.html carries every row', () => {
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'big-'))
   const N = 400, nodes = [], edges = []
@@ -102,7 +107,12 @@ test('a run publishes every step product in the same shape; query answers; CI re
     for (const f of [...s.views, ...s.data, ...s.pages]) assert.ok(fs.existsSync(path.join(out, 'steps', s.id, f)), `${s.id}: listed ${f} exists`)
     for (const v of s.views) assert.match(fs.readFileSync(path.join(out, 'steps', s.id, v), 'utf8'), /^<svg[^>]*xmlns/)
   }
-  for (const f of ['index.md', 'index.html']) assert.ok(fs.existsSync(path.join(out, 'steps', f)))
+  for (const f of ['index.md', 'index.html', 'reasoning.md']) assert.ok(fs.existsSync(path.join(out, 'steps', f)))
+  // every view, list and block has a reason (none dropped), and every data file and page says why it is there
+  for (const s of list) assert.deepStrictEqual(s.dropped, [], `${s.id}: shown without a reason`)
+  const reasoning = fs.readFileSync(path.join(out, 'steps/reasoning.md'), 'utf8')
+  assert.ok(!/no reason/.test(reasoning), reasoning.split('\n').filter(l => /no reason/.test(l)).join('\n'))
+  assert.match(fs.readFileSync(path.join(out, 'steps/model/README.md'), 'utf8'), /### Which entities spread a change furthest\?\n\n_.+_ \*\*Next:\*\*/)
   const by = Object.fromEntries(list.map(s => [s.id, s]))
   assert.strictEqual(by.model.status, 'ok')
   assert.ok(by.model.pages.includes('explorer.html'))

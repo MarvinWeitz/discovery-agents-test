@@ -14,7 +14,7 @@ header h1{font-size:16px;margin:0}header span{color:var(--mute);font-size:13px}
 .tabs button[aria-selected=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
 .tabs small{opacity:.75;margin-left:4px}
 main{max-width:1280px;margin:0 auto;padding:0 16px 60px}
-.what{color:var(--mute);margin:10px 0 6px;max-width:80ch}
+.what{color:var(--mute);margin:10px 0 8px;max-width:90ch}.what b{color:var(--ink);font-size:15px;display:block;margin-bottom:2px}.what i{font-style:normal;color:var(--ink)}
 .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;position:sticky;top:0;z-index:2}
 .bar label{display:flex;flex-direction:column;font-size:11.5px;color:var(--mute);gap:2px}
 input,select,button{font:inherit;font-size:13.5px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px;max-width:100%}
@@ -43,7 +43,7 @@ td code{font-size:12px}
 <header><h1>__TITLE__</h1><span><a href="index.html">card</a> · <a href="README.md">Markdown</a> · <a href="../index.html">all products</a></span></header>
 <div class="tabs" role="tablist" id="tabs"></div>
 <main>
-  <p class="what" id="what"></p>
+  <div class="what" id="what"></div>
   <div class="bar" id="bar"></div>
   <div class="count" id="count"></div>
   <div class="chart" id="chart"></div>
@@ -86,7 +86,7 @@ function bar(){const L=LISTS[cur],F=LV.facets(L),cols=L.chart?.cols||[]
   if($('allCols'))$('allCols').onclick=()=>{st.pick=null;bar();draw()}
   $('reset').onclick=()=>{st={f:{}};limit=200;bar();draw()}}
 function draw(full){const L=LISTS[cur];if(full){tabs();bar()}
-  $('what').textContent=L.what||''
+  const R=L.reason;$('what').innerHTML=R?`<b>${esc(R.q)}</b>${esc(R.cause)} <i>Next:</i> ${esc(R.then)}<br><span class="hint">Form: ${esc(R.form||'')}</span>`:esc(L.what||'')
   const rows=LV.apply(L,st),n=rows.length,top=st.top==='all'?n:+(st.top||25)
   const sortC=L.columns.find(c=>c.key===(st.sort||L.sort?.key))
   $('count').innerHTML=`<b>${n}</b> of ${L.rows.length} ${esc(L.noun||'rows')}${n&&L.chart?` · picture: ${Math.min(n,top)} by ${esc(sortC?.label.toLowerCase()||'order')}`:''}`

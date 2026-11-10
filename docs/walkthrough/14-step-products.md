@@ -14,6 +14,12 @@ The atlas is one big result at the end. Each step of the run already knows somet
 | L2 | `steps/<id>/*.html` | `browse.html` (every list, filterable) and an explorer: a proven viewer where one exists, our own only where none does |
 | L3 | `steps/<id>/data/` | the full data, in a standard format where one exists |
 
+## Every view has a reason
+
+Rule (2026-11-10): a picture, list or diagram is shown only when it answers a question someone has. `lib/products/reasons.js` holds, for each item, the **question** (it becomes the heading on the card), the **cause** (the risk, decision or cost behind it), the **form** (why this chart type, order and cut) and the **next step**. Each card prints the question as heading and the cause and next step under it; `browse.html` shows all four; `<out>/steps/reasoning.md` collects them with a line for every data file and page (who reads it and why that format). The builder drops anything without a reason and lists it in `summary.json` `dropped`; the tests fail on any drop or any file without a reason. Dropped on this rule: "findings by kind" bars (the file treemap and the kind filter answer it) and the open-questions board (the gap list with its "can answer" filter does).
+
+Use cases across documentation, testing, information and experience, and the gaps they show: [step products: use cases](https://claude.ai/artifact/Y3uLjbJ13hzxQUeoVdtwVa).
+
 ## Large apps: nothing on a card grows with the app
 
 A card shows only what has a fixed size: numbers, charts over a fixed set of categories (stage timeline, profile matrix, severity × layer, findings by kind, verdicts, gate funnel, coverage per test category). Everything that grows with the app (entities, projections, entity sets, operations × users, handlers, pages, UI promises, files, findings, questions, classes, tests, requests) is a **list**:
@@ -22,7 +28,7 @@ A card shows only what has a fixed size: numbers, charts over a fixed set of cat
 - In `browse.html`: every row, with search, one filter per facet column (service, folder, severity, verdict, …), sort by any column, how many rows the picture draws, a column picker for wide matrices, and the current view in the link. Copy as Markdown or download CSV gives exactly the filtered rows.
 - In `data/lists/<id>.json`: the same rows as plain JSON, for agents.
 
-`"products": { "inline": 12, "preview": 10 }` in `discovery.config.json`; `preview: 0` keeps only the link. The Mermaid ER diagram is drawn up to 15 entities, the request sequence up to 12 handlers; past that the card links to the explorer or the filtered list. The model explorer draws only the part around the chosen entity once the graph has more than 300 nodes.
+`"products": { "inline": 12, "preview": 10 }` in `discovery.config.json`; `preview: 0` keeps only the link. The Mermaid ER diagram is drawn up to 15 entities, the request sequence up to 12 handlers; past that the card links to the explorer or the filtered list. The model explorer draws only what the change reaches (nothing greyed out), as a left-to-right tree with one row per item; siblings with the same parent, type and label become one node "on approve ×8" (the side panel still lists each). "show surroundings" adds the untouched neighbours, faint; "one node per handler" switches the grouping off.
 
 Measured on a synthetic app with 240 entities, 12 services and 1,167 operations: the longest card is about 100 lines, the largest `browse.html` 1.2 MB (access, all 1,167 operations × 10 users).
 
