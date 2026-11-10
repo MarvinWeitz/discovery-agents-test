@@ -1,0 +1,3586 @@
+{
+ "classes": {
+  "ran": true,
+  "counts": {
+   "tested": 16,
+   "gen": 0,
+   "spec": 7,
+   "likely": 41,
+   "fail": 0,
+   "none": 58
+  },
+  "total": 122,
+  "tested": 16,
+  "pct": 13,
+  "cats": [
+   {
+    "n": "Authorization",
+    "tested": 8,
+    "gen": 0,
+    "spec": 4,
+    "likely": 2,
+    "fail": 0,
+    "none": 11
+   },
+   {
+    "n": "UI vs server rules",
+    "tested": 1,
+    "gen": 0,
+    "spec": 3,
+    "likely": 1,
+    "fail": 0,
+    "none": 17
+   },
+   {
+    "n": "Status transitions",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 6,
+    "fail": 0,
+    "none": 3
+   },
+   {
+    "n": "Handler rules",
+    "tested": 7,
+    "gen": 0,
+    "spec": 0,
+    "likely": 6,
+    "fail": 0,
+    "none": 5
+   },
+   {
+    "n": "Framework constraints",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 4,
+    "fail": 0,
+    "none": 22
+   },
+   {
+    "n": "Draft lifecycle",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 3,
+    "fail": 0,
+    "none": 0
+   },
+   {
+    "n": "deductDiscount combinations",
+    "tested": 0,
+    "gen": 0,
+    "spec": 0,
+    "likely": 19,
+    "fail": 0,
+    "none": 0
+   }
+  ],
+  "next": [
+   {
+    "id": "AUT:/analytics: 8 other entities READ:a",
+    "name": "/analytics: 8 other entities READ as anonymous",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:/analytics: 8 other entities READ:y",
+    "name": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:a",
+    "name": "/processor: 8 other entities READ as anonymous",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:y",
+    "name": "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel acceptTravel:n",
+    "name": "Travel acceptTravel as anonymous/rose",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel acceptTravel:y",
+    "name": "Travel acceptTravel as martha/amy/admin/alice",
+    "cat": "Authorization",
+    "st": "likely",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel create / edit / delete:n",
+    "name": "Travel create / edit / delete as anonymous/rose/martha",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:a",
+    "name": "Travel createTravelByTemplate as amy/admin/alice",
+    "cat": "Authorization",
+    "st": "likely",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:n",
+    "name": "Travel createTravelByTemplate as anonymous/rose/martha",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel deductDiscount:n",
+    "name": "Travel deductDiscount as anonymous/rose",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "AUT:Travel rejectTravel:n",
+    "name": "Travel rejectTravel as anonymous/rose",
+    "cat": "Authorization",
+    "st": "none",
+    "score": 45
+   },
+   {
+    "id": "STA:acceptTravel:A",
+    "name": "acceptTravel from A",
+    "cat": "Status transitions",
+    "st": "none",
+    "score": 42
+   },
+   {
+    "id": "STA:acceptTravel:O",
+    "name": "acceptTravel from O",
+    "cat": "Status transitions",
+    "st": "none",
+    "score": 42
+   },
+   {
+    "id": "STA:acceptTravel:X",
+    "name": "acceptTravel from X",
+    "cat": "Status transitions",
+    "st": "none",
+    "score": 42
+   },
+   {
+    "id": "STA:deductDiscount:A",
+    "name": "deductDiscount from A",
+    "cat": "Status transitions",
+    "st": "likely",
+    "score": 42
+   }
+  ],
+  "heat": {
+   "rows": [
+    "/analytics · READ",
+    "/processor · READ",
+    "Booking · CREATE",
+    "Booking · CreateHidden",
+    "Booking · DeleteHidden",
+    "Booking · NEW",
+    "Booking · field-control",
+    "Booking · mandatory",
+    "BookingSupplement · NEW",
+    "BookingSupplement · field-control",
+    "BookingSupplement · mandatory",
+    "Bookings · capabilities",
+    "Bookings · computed",
+    "Bookings · create",
+    "Bookings · delete",
+    "Bookings · readonly",
+    "Bookings · update",
+    "Passenger · READ",
+    "Travel · CREATE",
+    "Travel · READ",
+    "Travel · SAVE",
+    "Travel · acceptTravel",
+    "Travel · acceptTravel/rejectTravel",
+    "Travel · assert.range",
+    "Travel · computed",
+    "Travel · createTravelByTemplate",
+    "Travel · deductDiscount",
+    "Travel · draft",
+    "Travel · field-control",
+    "Travel · mandatory",
+    "Travel · readonly",
+    "Travel · rejectTravel",
+    "Travel · side-effects",
+    "TravelAgency · READ",
+    "Travels · capabilities",
+    "Travels · computed",
+    "Travels · create",
+    "Travels · delete",
+    "Travels · readonly",
+    "Travels · update"
+   ],
+   "cols": [
+    "A",
+    "O",
+    "X",
+    "edit-discard",
+    "foreign-lock",
+    "new-activate",
+    "any"
+   ],
+   "cells": [
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:/analytics: 8 other entities READ:a",
+      "AUT:/analytics: 8 other entities READ:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:/processor: 8 other entities READ:a",
+      "AUT:/processor: 8 other entities READ:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Booking / BookingSupplement (via Travel draft):n",
+      "AUT:Booking / BookingSupplement (via Travel draft):a",
+      "AUT:Booking / BookingSupplement (via Travel draft):y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:CreateHidden:Booking"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:DeleteHidden:Booking"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:23:t",
+      "RUL:rule:srv/travel-service.ts:24:t"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:field-control:Booking"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:mandatory:Booking:14",
+      "FW:TravelService.Booking:ConnectionID",
+      "FW:TravelService.Booking:FlightDate",
+      "FW:TravelService.Booking:FlightPrice",
+      "FW:TravelService.Booking:BookingStatus",
+      "FW:TravelService.Booking:to_Carrier",
+      "FW:TravelService.Booking:to_Customer"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:29:t"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:field-control:BookingSupplement"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:mandatory:BookingSupplement:16",
+      "FW:TravelService.BookingSupplement:Price",
+      "FW:TravelService.BookingSupplement:to_Supplement"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:capabilities:Bookings:17"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:computed:Bookings:18"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Bookings:no-create"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Bookings:no-delete"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Bookings:computed"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Bookings:no-update"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+      "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+      "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel create / edit / delete:n",
+      "AUT:Travel create / edit / delete:y",
+      "RUL:rule:srv/travel-service.ts:18:t"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel READ:n",
+      "AUT:Travel READ:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:36:t",
+      "RUL:rule:srv/travel-service.ts:36:f",
+      "RUL:rule:srv/travel-service.ts:37:t",
+      "RUL:rule:srv/travel-service.ts:37:f"
+     ]
+    ],
+    [
+     [
+      "UIS:acceptTravel:A",
+      "STA:acceptTravel:A"
+     ],
+     [
+      "STA:acceptTravel:O"
+     ],
+     [
+      "STA:acceptTravel:X"
+     ],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel acceptTravel:n",
+      "AUT:Travel acceptTravel:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "RUL:rule:srv/travel-service.ts:93:t",
+      "RUL:rule:srv/travel-service.ts:93:f"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:assert.range:Travel:8"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:computed:Travel:21"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel createTravelByTemplate:n",
+      "AUT:Travel createTravelByTemplate:a"
+     ]
+    ],
+    [
+     [
+      "UIS:deductDiscount:A",
+      "STA:deductDiscount:A",
+      "CMB:deductDiscount:1",
+      "CMB:deductDiscount:5",
+      "CMB:deductDiscount:7",
+      "CMB:deductDiscount:9",
+      "CMB:deductDiscount:16",
+      "CMB:deductDiscount:18"
+     ],
+     [
+      "STA:deductDiscount:O",
+      "CMB:deductDiscount:3",
+      "CMB:deductDiscount:6",
+      "CMB:deductDiscount:10",
+      "CMB:deductDiscount:11",
+      "CMB:deductDiscount:13",
+      "CMB:deductDiscount:17"
+     ],
+     [
+      "UIS:deductDiscount:X",
+      "STA:deductDiscount:X",
+      "CMB:deductDiscount:2",
+      "CMB:deductDiscount:4",
+      "CMB:deductDiscount:8",
+      "CMB:deductDiscount:12",
+      "CMB:deductDiscount:14",
+      "CMB:deductDiscount:15",
+      "CMB:deductDiscount:19"
+     ],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel deductDiscount:n",
+      "AUT:Travel deductDiscount:y",
+      "RUL:rule:srv/travel-service.ts:99:t",
+      "RUL:rule:srv/travel-service.ts:99:f",
+      "RUL:rule:srv/travel-service.ts:105:t",
+      "RUL:rule:srv/travel-service.ts:105:f",
+      "RUL:rule:srv/travel-service.ts:106:t",
+      "RUL:rule:srv/travel-service.ts:106:f",
+      "RUL:rule:srv/travel-service.ts:107:t",
+      "RUL:rule:srv/travel-service.ts:107:f",
+      "FW:deductDiscount:below min",
+      "FW:deductDiscount:min",
+      "FW:deductDiscount:max",
+      "FW:deductDiscount:above max"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [
+      "DRF:TravelService.Travel:edit-discard"
+     ],
+     [
+      "DRF:TravelService.Travel:foreign-lock"
+     ],
+     [
+      "DRF:TravelService.Travel:new-activate"
+     ],
+     []
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:field-control:Travel"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:mandatory:Travel:10",
+      "FW:TravelService.Travel:BeginDate",
+      "FW:TravelService.Travel:EndDate",
+      "FW:TravelService.Travel:to_Agency",
+      "FW:TravelService.Travel:to_Customer"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:readonly:Travel:9",
+      "FW:TravelService.Travel:ro",
+      "FW:TravelService.Travel:computed"
+     ]
+    ],
+    [
+     [
+      "STA:rejectTravel:A"
+     ],
+     [
+      "STA:rejectTravel:O"
+     ],
+     [
+      "UIS:rejectTravel:X",
+      "STA:rejectTravel:X"
+     ],
+     [],
+     [],
+     [],
+     [
+      "AUT:Travel rejectTravel:n",
+      "AUT:Travel rejectTravel:y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:side-effects:Travel:5",
+      "UIS:side-effects:Travel:6",
+      "UIS:side-effects:Travel:7"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+      "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+      "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:capabilities:Travels:19"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "UIS:computed:Travels:20"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Travels:no-create"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Travels:no-delete"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Travels:computed"
+     ]
+    ],
+    [
+     [],
+     [],
+     [],
+     [],
+     [],
+     [],
+     [
+      "FW:AnalyticsService.Travels:no-update"
+     ]
+    ]
+   ]
+  },
+  "label": {
+   "tested": "tested",
+   "gen": "generated, not run yet",
+   "spec": "spec only (today pinned)",
+   "likely": "likely (approximate match)",
+   "fail": "test fails",
+   "none": "untested"
+  },
+  "classes": [
+   {
+    "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+    "cat": "Authorization",
+    "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha/amy/admin/alice",
+    "entity": "TravelAgency",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose",
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": null
+   },
+   {
+    "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+    "cat": "Authorization",
+    "name": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha/amy/admin/alice",
+    "entity": "Passenger",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose",
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Passenger READ (PII: FirstName, LastName, Street, …)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData supports $value requests"
+     ]
+    }
+   },
+   {
+    "id": "AUT:/analytics: 8 other entities READ:a",
+    "cat": "Authorization",
+    "name": "/analytics: 8 other entities READ as anonymous",
+    "entity": "/analytics",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/analytics: 8 other entities READ",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:/analytics: 8 other entities READ:y",
+    "cat": "Authorization",
+    "name": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+    "entity": "/analytics",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "rose",
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/analytics: 8 other entities READ",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel READ:n",
+    "cat": "Authorization",
+    "name": "Travel READ as anonymous",
+    "entity": "Travel",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel READ",
+    "tests": [
+     {
+      "title": "today: GET /processor/Travel as anonymous → 401",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel READ:y",
+    "cat": "Authorization",
+    "name": "Travel READ as rose/martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "rose",
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:52",
+     "test/odata.test.ts:76",
+     "test/odata.test.ts:85"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel READ",
+    "tests": [
+     {
+      "title": "today: GET /processor/Travel as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested",
+    "measured": {
+     "n": 16,
+     "tests": [
+      "Basic OData GET /processor/Travel",
+      "Basic OData supports $select",
+      "Basic OData supports $expand"
+     ]
+    }
+   },
+   {
+    "id": "AUT:Travel create / edit / delete:n",
+    "cat": "Authorization",
+    "name": "Travel create / edit / delete as anonymous/rose/martha",
+    "entity": "Travel",
+    "op": "CREATE",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose",
+     "martha"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel create / edit / delete",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel create / edit / delete:y",
+    "cat": "Authorization",
+    "name": "Travel create / edit / delete as amy/admin/alice",
+    "entity": "Travel",
+    "op": "CREATE",
+    "state": null,
+    "users": [
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117",
+     "test/odata.test.ts:121",
+     "test/odata.test.ts:148"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel create / edit / delete",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 6,
+     "tests": [
+      "Basic OData new draft has initial key, key is auto incremented upon activation",
+      "Basic OData re-calculates totals after booking fee changed",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:n",
+    "cat": "Authorization",
+    "name": "Travel createTravelByTemplate as anonymous/rose/martha",
+    "entity": "Travel",
+    "op": "createTravelByTemplate",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose",
+     "martha"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel createTravelByTemplate",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel createTravelByTemplate:a",
+    "cat": "Authorization",
+    "name": "Travel createTravelByTemplate as amy/admin/alice",
+    "entity": "Travel",
+    "op": "createTravelByTemplate",
+    "state": null,
+    "users": [
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel createTravelByTemplate",
+    "tests": [],
+    "st": "likely",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel rejectTravel:n",
+    "cat": "Authorization",
+    "name": "Travel rejectTravel as anonymous/rose",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel rejectTravel",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel rejectTravel:y",
+    "cat": "Authorization",
+    "name": "Travel rejectTravel as martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": null,
+    "users": [
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel rejectTravel",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed"
+     ]
+    }
+   },
+   {
+    "id": "AUT:Travel acceptTravel:n",
+    "cat": "Authorization",
+    "name": "Travel acceptTravel as anonymous/rose",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel acceptTravel",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel acceptTravel:y",
+    "cat": "Authorization",
+    "name": "Travel acceptTravel as martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": null,
+    "users": [
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel acceptTravel",
+    "tests": [],
+    "st": "likely",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel deductDiscount:n",
+    "cat": "Authorization",
+    "name": "Travel deductDiscount as anonymous/rose",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Travel deductDiscount",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Travel deductDiscount:y",
+    "cat": "Authorization",
+    "name": "Travel deductDiscount as martha/amy/admin/alice",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": [
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "existing test (same user + entity)",
+    "fact": "auth:Travel deductDiscount",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "AUT:Booking / BookingSupplement (via Travel draft):n",
+    "cat": "Authorization",
+    "name": "Booking / BookingSupplement (via Travel draft) as anonymous",
+    "entity": "Booking",
+    "op": "CREATE",
+    "state": null,
+    "users": [
+     "anonymous"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Booking / BookingSupplement (via Travel draft)",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Booking / BookingSupplement (via Travel draft):a",
+    "cat": "Authorization",
+    "name": "Booking / BookingSupplement (via Travel draft) as rose/martha",
+    "entity": "Booking",
+    "op": "CREATE",
+    "state": null,
+    "users": [
+     "rose",
+     "martha"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Booking / BookingSupplement (via Travel draft)",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:Booking / BookingSupplement (via Travel draft):y",
+    "cat": "Authorization",
+    "name": "Booking / BookingSupplement (via Travel draft) as amy/admin/alice",
+    "entity": "Booking",
+    "op": "CREATE",
+    "state": null,
+    "users": [
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:155"
+    ],
+    "name_match": null,
+    "fact": "auth:Booking / BookingSupplement (via Travel draft)",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed"
+     ]
+    }
+   },
+   {
+    "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+    "cat": "Authorization",
+    "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha",
+    "entity": "TravelAgency",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose",
+     "martha"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/TravelAgency as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/TravelAgency as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": null
+   },
+   {
+    "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y",
+    "cat": "Authorization",
+    "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as amy/admin/alice",
+    "entity": "TravelAgency",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "tests": [
+     {
+      "title": "today: GET /processor/TravelAgency as amy → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested",
+    "measured": null
+   },
+   {
+    "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+    "cat": "Authorization",
+    "name": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha",
+    "entity": "Passenger",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous",
+     "rose",
+     "martha"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Passenger READ (PII: FirstName, LastName, Street, …)",
+    "tests": [
+     {
+      "title": "today: GET /analytics/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /analytics/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     },
+     {
+      "title": "today: GET /processor/Passenger as rose → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: GET /processor/Passenger as rose → 403",
+      "file": "authorization.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": null
+   },
+   {
+    "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y",
+    "cat": "Authorization",
+    "name": "Passenger READ (PII: FirstName, LastName, Street, …) as amy/admin/alice",
+    "entity": "Passenger",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": true,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:Passenger READ (PII: FirstName, LastName, Street, …)",
+    "tests": [
+     {
+      "title": "today: GET /processor/Passenger as amy → 200",
+      "file": "authorization.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData supports $value requests"
+     ]
+    }
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:a",
+    "cat": "Authorization",
+    "name": "/processor: 8 other entities READ as anonymous",
+    "entity": "/processor",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "anonymous"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/processor: 8 other entities READ",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "AUT:/processor: 8 other entities READ:y",
+    "cat": "Authorization",
+    "name": "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+    "entity": "/processor",
+    "op": "READ",
+    "state": null,
+    "users": [
+     "rose",
+     "martha",
+     "amy",
+     "admin",
+     "alice"
+    ],
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "auth:/processor: 8 other entities READ",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:rejectTravel:X",
+    "cat": "UI vs server rules",
+    "name": "rejectTravel on TravelStatus = X (UI hides it)",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "X",
+    "users": null,
+    "req": true,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [
+     {
+      "title": "today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed"
+     ]
+    }
+   },
+   {
+    "id": "UIS:acceptTravel:A",
+    "cat": "UI vs server rules",
+    "name": "acceptTravel on TravelStatus = A (UI hides it)",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "A",
+    "users": null,
+    "req": true,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [
+     {
+      "title": "today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": null
+   },
+   {
+    "id": "UIS:deductDiscount:X",
+    "cat": "UI vs server rules",
+    "name": "deductDiscount on TravelStatus = X (UI hides it)",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": true,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [
+     {
+      "title": "today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     },
+     {
+      "title": "spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "spec",
+      "status": "pending"
+     }
+    ],
+    "st": "spec",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "UIS:deductDiscount:A",
+    "cat": "UI vs server rules",
+    "name": "deductDiscount on TravelStatus = A (UI hides it)",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": true,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [
+     {
+      "title": "today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
+      "file": "ui-vs-server-rules.test.js",
+      "kind": "today",
+      "status": "passed"
+     }
+    ],
+    "st": "tested",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "UIS:field-control:Travel",
+    "cat": "UI vs server rules",
+    "name": "Travel: 5 fields controlled by TravelStatus.fieldControl — bypass via OData",
+    "entity": "Travel",
+    "op": "field-control",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:fieldcontrol:TravelStatus.fieldControl",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:side-effects:Travel:5",
+    "cat": "UI vs server rules",
+    "name": "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "side-effects",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": "test/odata.test.ts: \"re-calculates totals after booking fee changed\"",
+    "fact": "uirule:TravelService.Travel:sideeffects",
+    "tests": [],
+    "st": "likely",
+    "measured": null
+   },
+   {
+    "id": "UIS:side-effects:Travel:6",
+    "cat": "UI vs server rules",
+    "name": "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "side-effects",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:sideeffects#GoGreen",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:side-effects:Travel:7",
+    "cat": "UI vs server rules",
+    "name": "Travel: to_Booking → re-read TotalPrice",
+    "entity": "Travel",
+    "op": "side-effects",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:assert.range:Travel:8",
+    "cat": "UI vs server rules",
+    "name": "Travel: percent in [1, 100]",
+    "entity": "Travel",
+    "op": "assert.range",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:readonly:Travel:9",
+    "cat": "UI vs server rules",
+    "name": "Travel: TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "readonly",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:readonly",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:mandatory:Travel:10",
+    "cat": "UI vs server rules",
+    "name": "Travel: BeginDate, EndDate, to_Agency, to_Customer",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:field-control:Booking",
+    "cat": "UI vs server rules",
+    "name": "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+    "entity": "Booking",
+    "op": "field-control",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:CreateHidden:Booking",
+    "cat": "UI vs server rules",
+    "name": "Booking: hidden when [object Object] — bypass via OData",
+    "entity": "Booking",
+    "op": "CreateHidden",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:CreateHidden",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:DeleteHidden:Booking",
+    "cat": "UI vs server rules",
+    "name": "Booking: hidden when [object Object] — bypass via OData",
+    "entity": "Booking",
+    "op": "DeleteHidden",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:DeleteHidden",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:mandatory:Booking:14",
+    "cat": "UI vs server rules",
+    "name": "Booking: ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:field-control:BookingSupplement",
+    "cat": "UI vs server rules",
+    "name": "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+    "entity": "BookingSupplement",
+    "op": "field-control",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:mandatory:BookingSupplement:16",
+    "cat": "UI vs server rules",
+    "name": "BookingSupplement: Price, to_Supplement",
+    "entity": "BookingSupplement",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:capabilities:Bookings:17",
+    "cat": "UI vs server rules",
+    "name": "Bookings: no create / update / delete",
+    "entity": "Bookings",
+    "op": "capabilities",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Bookings:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:computed:Bookings:18",
+    "cat": "UI vs server rules",
+    "name": "Bookings: TravelID, BookingID, CombinedID, CurrencyCode_code",
+    "entity": "Bookings",
+    "op": "computed",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Bookings:computed",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:capabilities:Travels:19",
+    "cat": "UI vs server rules",
+    "name": "Travels: no create / update / delete",
+    "entity": "Travels",
+    "op": "capabilities",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Travels:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:computed:Travels:20",
+    "cat": "UI vs server rules",
+    "name": "Travels: TravelID, TotalPrice, TravelStatus_code, GreenFee, TreesPlanted, CustomerName",
+    "entity": "Travels",
+    "op": "computed",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Travels:computed",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "UIS:computed:Travel:21",
+    "cat": "UI vs server rules",
+    "name": "Travel: TravelStatus_code",
+    "entity": "Travel",
+    "op": "computed",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:computed",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "STA:rejectTravel:X",
+    "cat": "Status transitions",
+    "name": "rejectTravel from X",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed"
+     ]
+    }
+   },
+   {
+    "id": "STA:rejectTravel:A",
+    "cat": "Status transitions",
+    "name": "rejectTravel from A",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed"
+     ]
+    }
+   },
+   {
+    "id": "STA:rejectTravel:O",
+    "cat": "Status transitions",
+    "name": "rejectTravel from O",
+    "entity": "Travel",
+    "op": "rejectTravel",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:147"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.rejectTravel:available",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed"
+     ]
+    }
+   },
+   {
+    "id": "STA:acceptTravel:X",
+    "cat": "Status transitions",
+    "name": "acceptTravel from X",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "STA:acceptTravel:A",
+    "cat": "Status transitions",
+    "name": "acceptTravel from A",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "STA:acceptTravel:O",
+    "cat": "Status transitions",
+    "name": "acceptTravel from O",
+    "entity": "Travel",
+    "op": "acceptTravel",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.acceptTravel:available",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "STA:deductDiscount:X",
+    "cat": "Status transitions",
+    "name": "deductDiscount from X",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "STA:deductDiscount:A",
+    "cat": "Status transitions",
+    "name": "deductDiscount from A",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "STA:deductDiscount:O",
+    "cat": "Status transitions",
+    "name": "deductDiscount from O",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"deduct discount multiple times does not end up in error\"",
+    "fact": "uirule:TravelService.Travel.deductDiscount:available",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:18:t",
+    "cat": "Handler rules",
+    "name": "before CREATE Travel: derive TravelID",
+    "entity": "Travel",
+    "op": "CREATE",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117",
+     "test/odata.test.ts:121",
+     "test/odata.test.ts:148"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:18",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 6,
+     "tests": [
+      "Basic OData new draft has initial key, key is auto incremented upon activation",
+      "Basic OData re-calculates totals after booking fee changed",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:23:t",
+    "cat": "Handler rules",
+    "name": "before NEW Booking: derive BookingID",
+    "entity": "Booking",
+    "op": "NEW",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:23",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:24:t",
+    "cat": "Handler rules",
+    "name": "before NEW Booking: derive BookingDate",
+    "entity": "Booking",
+    "op": "NEW",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:24",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:29:t",
+    "cat": "Handler rules",
+    "name": "before NEW BookingSupplement: derive BookingSupplementID",
+    "entity": "BookingSupplement",
+    "op": "NEW",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:29",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:36:t",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: Begin Date must not be before today.",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:36",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData new draft has initial key, key is auto incremented upon activation"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:36:f",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: guard false",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:36",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData new draft has initial key, key is auto incremented upon activation"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:37:t",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: End Date must be after Begin Date.",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:37",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData new draft has initial key, key is auto incremented upon activation"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:37:f",
+    "cat": "Handler rules",
+    "name": "before SAVE Travel: guard false",
+    "entity": "Travel",
+    "op": "SAVE",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:117"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:37",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 1,
+     "tests": [
+      "Basic OData new draft has initial key, key is auto incremented upon activation"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:93:t",
+    "cat": "Handler rules",
+    "name": "before acceptTravel/rejectTravel Travel: The travel is locked by ${existingDraft.InProcessByUser}.",
+    "entity": "Travel",
+    "op": "acceptTravel/rejectTravel",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:93",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:93:f",
+    "cat": "Handler rules",
+    "name": "before acceptTravel/rejectTravel Travel: guard false",
+    "entity": "Travel",
+    "op": "acceptTravel/rejectTravel",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:93",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:99:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: write when TravelStatus.code != 'A' and BookingFee != null",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": "test/odata.test.ts: \"GET /processor/Travel\"",
+    "fact": "rule:srv/travel-service.ts:99",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:99:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: no write",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:99",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:105:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:105",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:105:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: guard false",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:105",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:106:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: Travel \"${travel.ID}\" has been approved already.",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:106",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:106:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: guard false",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:106",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:107:t",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": true,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:107",
+    "tests": [],
+    "st": "tested",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "RUL:rule:srv/travel-service.ts:107:f",
+    "cat": "Handler rules",
+    "name": "on deductDiscount Travel: guard false",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "rule:srv/travel-service.ts:107",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "FW:deductDiscount:below min",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent below min",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "FW:deductDiscount:min",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent min",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "FW:deductDiscount:max",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent max",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "FW:deductDiscount:above max",
+    "cat": "Framework constraints",
+    "name": "deductDiscount: percent above max",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "FW:TravelService.Travel:ro",
+    "cat": "Framework constraints",
+    "name": "Travel: write TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+    "entity": "Travel",
+    "op": "readonly",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:readonly",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Travel:BeginDate",
+    "cat": "Framework constraints",
+    "name": "Travel: save without BeginDate",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Travel:EndDate",
+    "cat": "Framework constraints",
+    "name": "Travel: save without EndDate",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Travel:to_Agency",
+    "cat": "Framework constraints",
+    "name": "Travel: save without to_Agency",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Travel:to_Customer",
+    "cat": "Framework constraints",
+    "name": "Travel: save without to_Customer",
+    "entity": "Travel",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Booking:ConnectionID",
+    "cat": "Framework constraints",
+    "name": "Booking: save without ConnectionID",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Booking:FlightDate",
+    "cat": "Framework constraints",
+    "name": "Booking: save without FlightDate",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Booking:FlightPrice",
+    "cat": "Framework constraints",
+    "name": "Booking: save without FlightPrice",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Booking:BookingStatus",
+    "cat": "Framework constraints",
+    "name": "Booking: save without BookingStatus",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Booking:to_Carrier",
+    "cat": "Framework constraints",
+    "name": "Booking: save without to_Carrier",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Booking:to_Customer",
+    "cat": "Framework constraints",
+    "name": "Booking: save without to_Customer",
+    "entity": "Booking",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Booking:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.BookingSupplement:Price",
+    "cat": "Framework constraints",
+    "name": "BookingSupplement: save without Price",
+    "entity": "BookingSupplement",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.BookingSupplement:to_Supplement",
+    "cat": "Framework constraints",
+    "name": "BookingSupplement: save without to_Supplement",
+    "entity": "BookingSupplement",
+    "op": "mandatory",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.BookingSupplement:mandatory",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Bookings:no-create",
+    "cat": "Framework constraints",
+    "name": "Bookings: create although $metadata forbids it",
+    "entity": "Bookings",
+    "op": "create",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Bookings:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Bookings:no-update",
+    "cat": "Framework constraints",
+    "name": "Bookings: update although $metadata forbids it",
+    "entity": "Bookings",
+    "op": "update",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Bookings:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Bookings:no-delete",
+    "cat": "Framework constraints",
+    "name": "Bookings: delete although $metadata forbids it",
+    "entity": "Bookings",
+    "op": "delete",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Bookings:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Bookings:computed",
+    "cat": "Framework constraints",
+    "name": "Bookings: write computed TravelID, BookingID, CombinedID, …",
+    "entity": "Bookings",
+    "op": "readonly",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Bookings:computed",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Travels:no-create",
+    "cat": "Framework constraints",
+    "name": "Travels: create although $metadata forbids it",
+    "entity": "Travels",
+    "op": "create",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Travels:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Travels:no-update",
+    "cat": "Framework constraints",
+    "name": "Travels: update although $metadata forbids it",
+    "entity": "Travels",
+    "op": "update",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Travels:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Travels:no-delete",
+    "cat": "Framework constraints",
+    "name": "Travels: delete although $metadata forbids it",
+    "entity": "Travels",
+    "op": "delete",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Travels:capabilities",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:AnalyticsService.Travels:computed",
+    "cat": "Framework constraints",
+    "name": "Travels: write computed TravelID, TotalPrice, TravelStatus_code, …",
+    "entity": "Travels",
+    "op": "readonly",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:AnalyticsService.Travels:computed",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "FW:TravelService.Travel:computed",
+    "cat": "Framework constraints",
+    "name": "Travel: write computed TravelStatus_code",
+    "entity": "Travel",
+    "op": "readonly",
+    "state": null,
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "uirule:TravelService.Travel:computed",
+    "tests": [],
+    "st": "none",
+    "measured": null
+   },
+   {
+    "id": "DRF:TravelService.Travel:new-activate",
+    "cat": "Draft lifecycle",
+    "name": "Travel: new → activate",
+    "entity": "Travel",
+    "op": "draft",
+    "state": "new-activate",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": "test/odata.test.ts: \"new draft has initial key, key is auto incremented upon activation\"",
+    "fact": "svcentity:TravelService.Travel",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 2,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "DRF:TravelService.Travel:edit-discard",
+    "cat": "Draft lifecycle",
+    "name": "Travel: edit → discard",
+    "entity": "Travel",
+    "op": "draft",
+    "state": "edit-discard",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "svcentity:TravelService.Travel",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 2,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "DRF:TravelService.Travel:foreign-lock",
+    "cat": "Draft lifecycle",
+    "name": "Travel: foreign → lock",
+    "entity": "Travel",
+    "op": "draft",
+    "state": "foreign-lock",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [],
+    "name_match": null,
+    "fact": "svcentity:TravelService.Travel",
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 2,
+     "tests": [
+      "Basic OData re-calculates totals after booking fee changed",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:1",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=A, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:2",
+    "cat": "deductDiscount combinations",
+    "name": "percent=0, TravelStatus=X, BookingFee=null, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:3",
+    "cat": "deductDiscount combinations",
+    "name": "percent=101, TravelStatus=O, BookingFee=> 0, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:4",
+    "cat": "deductDiscount combinations",
+    "name": "percent=null, TravelStatus=X, BookingFee=> 0, target=active, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:5",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:6",
+    "cat": "deductDiscount combinations",
+    "name": "percent=100, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:7",
+    "cat": "deductDiscount combinations",
+    "name": "percent=100, TravelStatus=A, BookingFee=null, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:8",
+    "cat": "deductDiscount combinations",
+    "name": "percent=101, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:9",
+    "cat": "deductDiscount combinations",
+    "name": "percent=0, TravelStatus=A, BookingFee=0, target=draft, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:10",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=O, BookingFee=null, target=draft, repeat=again",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:11",
+    "cat": "deductDiscount combinations",
+    "name": "percent=null, TravelStatus=O, BookingFee=null, target=draft, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:12",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=X, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:13",
+    "cat": "deductDiscount combinations",
+    "name": "percent=0, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:14",
+    "cat": "deductDiscount combinations",
+    "name": "percent=1, TravelStatus=X, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:15",
+    "cat": "deductDiscount combinations",
+    "name": "percent=100, TravelStatus=X, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:16",
+    "cat": "deductDiscount combinations",
+    "name": "percent=101, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:17",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "O",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:18",
+    "cat": "deductDiscount combinations",
+    "name": "percent=null, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "A",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   },
+   {
+    "id": "CMB:deductDiscount:19",
+    "cat": "deductDiscount combinations",
+    "name": "percent=51, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+    "entity": "Travel",
+    "op": "deductDiscount",
+    "state": "X",
+    "users": null,
+    "req": false,
+    "exact": false,
+    "request": [
+     "test/odata.test.ts:214"
+    ],
+    "name_match": null,
+    "fact": null,
+    "tests": [],
+    "st": "likely",
+    "measured": {
+     "n": 4,
+     "tests": [
+      "Basic OData deduct discount multiple times does not end up in error",
+      "Basic OData allows deducting discounts on drafts as well"
+     ]
+    }
+   }
+  ]
+ },
+ "rules": {
+  "total": 11,
+  "measured": 11,
+  "reached": 9,
+  "never": [
+   {
+    "id": "rule:srv/travel-service.ts:29",
+    "ev": "srv/travel-service.ts:29",
+    "kind": "derivation",
+    "guard": "BookingSupplementID",
+    "reached": false
+   },
+   {
+    "id": "rule:srv/travel-service.ts:107",
+    "ev": "srv/travel-service.ts:107",
+    "kind": "rejection",
+    "guard": "!succeeded && travel.BookingFee == null",
+    "reached": false
+   }
+  ],
+  "files": 4
+ }
+}

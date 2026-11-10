@@ -1,0 +1,41 @@
+{
+ "id": "findings",
+ "title": "Evidence ledger",
+ "step": "Findings and gaps",
+ "layer": "run",
+ "status": "warn",
+ "why": null,
+ "kpis": [
+  {
+   "label": "findings",
+   "value": 142
+  },
+  {
+   "label": "measured",
+   "value": 13,
+   "tone": "ok"
+  },
+  {
+   "label": "AI (gated)",
+   "value": 0
+  },
+  {
+   "label": "open questions",
+   "value": 19,
+   "tone": "warn"
+  }
+ ],
+ "from": [
+  "run/findings/findings.jsonl",
+  "run/findings/gaps.jsonl"
+ ],
+ "views": [
+  "views/ladder.svg",
+  "views/severity.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/findings.jsonl",
+  "data/gaps.jsonl"
+ ]
+}

@@ -1,0 +1,149 @@
+[
+ {
+  "id": "entity:sap.fe.cap.travel.Travel",
+  "label": "Travel",
+  "ev": "db/schema.cds:12",
+  "total": 53,
+  "by": {
+   "model": 2,
+   "service": 11,
+   "access": 4,
+   "code": 20,
+   "ui": 13,
+   "tests": 3
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.Booking",
+  "label": "Booking",
+  "ev": "db/schema.cds:33",
+  "total": 45,
+  "by": {
+   "model": 2,
+   "service": 11,
+   "code": 15,
+   "ui": 10,
+   "tests": 3,
+   "access": 4
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.BookingSupplement",
+  "label": "BookingSupplement",
+  "ev": "db/schema.cds:51",
+  "total": 26,
+  "by": {
+   "model": 2,
+   "service": 7,
+   "code": 8,
+   "tests": 2,
+   "ui": 7
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.BookingStatus",
+  "label": "BookingStatus",
+  "ev": "db/schema.cds:72",
+  "total": 9,
+  "by": {
+   "model": 1,
+   "service": 6,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.TravelStatus",
+  "label": "TravelStatus",
+  "ev": "db/schema.cds:82",
+  "total": 9,
+  "by": {
+   "model": 1,
+   "service": 6,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.Flight",
+  "label": "Flight",
+  "ev": "db/master-data.cds:33",
+  "total": 8,
+  "by": {
+   "service": 4,
+   "tests": 2,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.Supplement",
+  "label": "Supplement",
+  "ev": "db/master-data.cds:25",
+  "total": 7,
+  "by": {
+   "model": 1,
+   "service": 3,
+   "tests": 2,
+   "ui": 1
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.Airline",
+  "label": "Airline",
+  "ev": "db/master-data.cds:9",
+  "total": 6,
+  "by": {
+   "service": 4,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.Airport",
+  "label": "Airport",
+  "ev": "db/master-data.cds:17",
+  "total": 6,
+  "by": {
+   "service": 4,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.FlightConnection",
+  "label": "FlightConnection",
+  "ev": "db/master-data.cds:53",
+  "total": 6,
+  "by": {
+   "service": 4,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.Passenger",
+  "label": "Passenger",
+  "ev": "db/master-data.cds:73",
+  "total": 6,
+  "by": {
+   "service": 4,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.TravelAgency",
+  "label": "TravelAgency",
+  "ev": "db/master-data.cds:86",
+  "total": 6,
+  "by": {
+   "service": 4,
+   "ui": 2
+  }
+ },
+ {
+  "id": "entity:sap.fe.cap.travel.SupplementType",
+  "label": "SupplementType",
+  "ev": "db/master-data.cds:103",
+  "total": 5,
+  "by": {
+   "model": 1,
+   "service": 3,
+   "ui": 1
+  }
+ }
+]

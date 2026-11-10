@@ -1,0 +1,574 @@
+[
+ {
+  "id": "run",
+  "title": "Run timeline",
+  "step": "The run itself",
+  "layer": "run",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "stages ran",
+    "value": 8
+   },
+   {
+    "label": "failed",
+    "value": 0
+   },
+   {
+    "label": "seconds",
+    "value": 315
+   },
+   {
+    "label": "mode",
+    "value": "static"
+   }
+  ],
+  "from": [
+   "manifest.json"
+  ],
+  "views": [
+   "views/timeline.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/stages.json"
+  ],
+  "does": "Which stages ran, in which mode, how long each took and what it reported."
+ },
+ {
+  "id": "project",
+  "title": "Project passport",
+  "step": "Probe and intake",
+  "layer": "run",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "services",
+    "value": 2
+   },
+   {
+    "label": "model files",
+    "value": 14
+   },
+   {
+    "label": "plugins",
+    "value": 5
+   },
+   {
+    "label": "without own code",
+    "value": 1
+   }
+  ],
+  "from": [
+   "run/project.json"
+  ],
+  "views": [
+   "views/profiles.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/project.json"
+  ],
+  "does": "How CAP sees the project: profiles, database, auth and messaging per profile, plugins, model files, services and their implementations."
+ },
+ {
+  "id": "model",
+  "title": "Model map",
+  "step": "cds compile (CSN)",
+  "layer": "model",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "entities",
+    "value": 13
+   },
+   {
+    "label": "service entities",
+    "value": 29
+   },
+   {
+    "label": "compositions",
+    "value": 6
+   },
+   {
+    "label": "things depend on Travel",
+    "value": 53
+   }
+  ],
+  "from": [
+   "run/csn.json",
+   "run/graph/"
+  ],
+  "views": [
+   "views/blast-radius.svg",
+   "views/projections.svg"
+  ],
+  "pages": [
+   "explorer.html"
+  ],
+  "data": [
+   "data/model-graph.json",
+   "data/impact.json",
+   "data/impact/Travel.md",
+   "data/impact/Booking.md",
+   "data/impact/BookingSupplement.md",
+   "data/impact/BookingStatus.md",
+   "data/impact/TravelStatus.md",
+   "data/impact/Flight.md",
+   "data/impact/Supplement.md",
+   "data/impact/Airline.md",
+   "data/impact/Airport.md",
+   "data/impact/FlightConnection.md",
+   "data/impact/Passenger.md",
+   "data/impact/TravelAgency.md",
+   "data/impact/SupplementType.md"
+  ],
+  "does": "Entities, compositions, associations and the projection chain from database to service, plus what depends on each entity when it changes."
+ },
+ {
+  "id": "api",
+  "title": "API surface",
+  "step": "EDMX, OpenAPI, AsyncAPI",
+  "layer": "service",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "services",
+    "value": 2
+   },
+   {
+    "label": "entity sets",
+    "value": 23
+   },
+   {
+    "label": "OpenAPI paths",
+    "value": 137
+   },
+   {
+    "label": "open without role",
+    "value": 20,
+    "tone": "warn"
+   }
+  ],
+  "from": [
+   "run/csn.json",
+   "run/edmx/",
+   "atlas-data.json API"
+  ],
+  "views": [
+   "views/surface.svg"
+  ],
+  "pages": [
+   "openapi-AnalyticsService.html",
+   "openapi-TravelService.html"
+  ],
+  "data": [
+   "data/edmx/AnalyticsService.xml",
+   "data/edmx/TravelService.xml",
+   "data/openapi/AnalyticsService.json",
+   "data/openapi/TravelService.json"
+  ],
+  "does": "Every service, entity set, operation and action as standard API documents (OData EDMX, OpenAPI 3, AsyncAPI), with the guard on each."
+ },
+ {
+  "id": "behaviour",
+  "title": "Behaviour matrix",
+  "step": "Handler AST",
+  "layer": "code",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "handlers",
+    "value": 13
+   },
+   {
+    "label": "rules",
+    "value": 11
+   },
+   {
+    "label": "rejections",
+    "value": 6
+   },
+   {
+    "label": "helpers",
+    "value": 2
+   }
+  ],
+  "from": [
+   "run/graph/ (Handler, Rule, Helper)"
+  ],
+  "views": [
+   "views/matrix.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/handlers.json"
+  ],
+  "does": "Which code runs for which entity, event and phase, which rules it applies and which helpers it calls."
+ },
+ {
+  "id": "screens",
+  "title": "Screen map",
+  "step": "UI5 and Fiori annotations",
+  "layer": "ui",
+  "status": "warn",
+  "why": null,
+  "kpis": [
+   {
+    "label": "apps",
+    "value": 2
+   },
+   {
+    "label": "pages",
+    "value": 5
+   },
+   {
+    "label": "UI promises",
+    "value": 21
+   },
+   {
+    "label": "UI only",
+    "value": 7,
+    "tone": "bad"
+   }
+  ],
+  "from": [
+   "run/graph/ (UI5App, Route, UiRule)"
+  ],
+  "views": [
+   "views/screens.svg",
+   "views/verdicts.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/ui-promises.json"
+  ],
+  "does": "Apps, pages and the entities they show, and every UI promise with the server verdict (does the backend enforce what the UI shows?)."
+ },
+ {
+  "id": "access",
+  "title": "Access map",
+  "step": "Authorization",
+  "layer": "access",
+  "status": "warn",
+  "why": null,
+  "kpis": [
+   {
+    "label": "operations",
+    "value": 13
+   },
+   {
+    "label": "users",
+    "value": 6
+   },
+   {
+    "label": "open without role",
+    "value": 4,
+    "tone": "warn"
+   },
+   {
+    "label": "measured cells differ",
+    "value": 0
+   }
+  ],
+  "from": [
+   "atlas-data.json AUTH, ROLES, MEASURED"
+  ],
+  "views": [
+   "views/matrix.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/access.json"
+  ],
+  "does": "Who can do what: operation × user/role, declared in CDS, and measured against the running app when the CI run sent the probe."
+ },
+ {
+  "id": "checks",
+  "title": "Code findings",
+  "step": "Lint, Opengrep, rules",
+  "layer": "code",
+  "status": "bad",
+  "why": null,
+  "kpis": [
+   {
+    "label": "findings",
+    "value": 71
+   },
+   {
+    "label": "files",
+    "value": 21
+   },
+   {
+    "label": "critical",
+    "value": 4,
+    "tone": "bad"
+   },
+   {
+    "label": "warnings",
+    "value": 32,
+    "tone": "warn"
+   }
+  ],
+  "from": [
+   "run/findings/findings.jsonl"
+  ],
+  "views": [
+   "views/hotspots.svg",
+   "views/kinds.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/checks.sarif"
+  ],
+  "does": "Every static finding with a code location in one standard format (SARIF), by file and by rule."
+ },
+ {
+  "id": "history",
+  "title": "Hotspots and change coupling",
+  "step": "Git history",
+  "layer": "run",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "commits",
+    "value": 1238
+   },
+   {
+    "label": "files changed",
+    "value": 113
+   },
+   {
+    "label": "hottest: package.json",
+    "value": 83
+   },
+   {
+    "label": "coupled pairs",
+    "value": 39
+   }
+  ],
+  "from": [
+   "git log of the app checkout"
+  ],
+  "views": [
+   "views/hotspots.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/hotspots.json",
+   "data/coupling.json"
+  ],
+  "does": "Where the code changes most, which files change in the same commits, and how many people touch each file."
+ },
+ {
+  "id": "findings",
+  "title": "Evidence ledger",
+  "step": "Findings and gaps",
+  "layer": "run",
+  "status": "warn",
+  "why": null,
+  "kpis": [
+   {
+    "label": "findings",
+    "value": 142
+   },
+   {
+    "label": "measured",
+    "value": 13,
+    "tone": "ok"
+   },
+   {
+    "label": "AI (gated)",
+    "value": 0
+   },
+   {
+    "label": "open questions",
+    "value": 19,
+    "tone": "warn"
+   }
+  ],
+  "from": [
+   "run/findings/findings.jsonl",
+   "run/findings/gaps.jsonl"
+  ],
+  "views": [
+   "views/ladder.svg",
+   "views/severity.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/findings.jsonl",
+   "data/gaps.jsonl"
+  ],
+  "does": "Every claim with how it was found (static, measured, AI, human), its status and evidence, and every open question with who can answer it."
+ },
+ {
+  "id": "ai",
+  "title": "AI ledger",
+  "step": "AI gap pass",
+  "layer": "run",
+  "status": "not-run",
+  "why": "mode static: no AI requests in this run (19 open questions an AI could answer; run with --mode static+ai)",
+  "kpis": [
+   {
+    "label": "AI could answer",
+    "value": 19
+   }
+  ],
+  "from": [
+   "run/ai/requests/index.json",
+   "run/ai/merge-log.json"
+  ],
+  "views": [],
+  "pages": [],
+  "data": [],
+  "does": "Questions handed to an AI, its answers, and what the evidence gate accepted or rejected, with the reason."
+ },
+ {
+  "id": "testdesign",
+  "title": "Classification tree",
+  "step": "Test design",
+  "layer": "tests",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "classes",
+    "value": 122
+   },
+   {
+    "label": "categories",
+    "value": 7
+   },
+   {
+    "label": "covered today",
+    "value": 12
+   },
+   {
+    "label": "pairwise rows",
+    "value": 19
+   }
+  ],
+  "from": [
+   "atlas-data.json TESTCATS, CLASSES, DD",
+   "run/tests/class-seeds.json"
+  ],
+  "views": [
+   "views/tree.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/classes.json",
+   "data/class-seeds.json"
+  ],
+  "does": "Equivalence classes per category (authorization, UI promises, status transitions, handler rules, …) and the pairwise rows that cover the combinations."
+ },
+ {
+  "id": "tests",
+  "title": "Test results",
+  "step": "Generated tests and test run",
+  "layer": "tests",
+  "status": "ok",
+  "why": null,
+  "kpis": [
+   {
+    "label": "passed",
+    "value": 12,
+    "tone": "ok"
+   },
+   {
+    "label": "failed",
+    "value": 0
+   },
+   {
+    "label": "skipped",
+    "value": 7
+   },
+   {
+    "label": "requests recorded",
+    "value": 110
+   }
+  ],
+  "from": [
+   "run/tests/generated/manifest.json",
+   "jest-generated.json (CI)",
+   "atlas-data.json MEASURED.requests (CI)"
+  ],
+  "views": [
+   "views/results.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/results.ctrf.json",
+   "data/generated.json"
+  ],
+  "does": "The generated tests, and after a CI run their results (CTRF) and the requests they sent."
+ },
+ {
+  "id": "coverage",
+  "title": "Coverage by class",
+  "step": "Coverage",
+  "layer": "tests",
+  "status": "warn",
+  "why": null,
+  "kpis": [
+   {
+    "label": "classes tested",
+    "value": "13%",
+    "tone": "warn"
+   },
+   {
+    "label": "untested",
+    "value": 58
+   },
+   {
+    "label": "failing",
+    "value": 0
+   },
+   {
+    "label": "rules reached",
+    "value": "9/11"
+   }
+  ],
+  "from": [
+   "atlas-data.json COVERAGE",
+   "atlas-data.json MEASURED.rules (CI)"
+  ],
+  "views": [
+   "views/classes.svg"
+  ],
+  "pages": [],
+  "data": [
+   "data/coverage.json"
+  ],
+  "does": "Which business cases are tested (per equivalence class), and which handler rules a test executed in CI."
+ },
+ {
+  "id": "mutation",
+  "title": "Test strength",
+  "step": "Mutation testing",
+  "layer": "tests",
+  "status": "not-run",
+  "why": "mutation testing runs in its own nightly workflow (mutation.yml); no report next to this run",
+  "kpis": [
+   {
+    "label": "score",
+    "value": "nightly"
+   }
+  ],
+  "from": [
+   "mutation-summary.json",
+   "mutation.json (Stryker report)"
+  ],
+  "views": [],
+  "pages": [],
+  "data": [],
+  "does": "Which small code changes the tests notice (killed) and which go unnoticed (survived), per file and per business class."
+ }
+]

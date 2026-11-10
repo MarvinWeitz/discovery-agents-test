@@ -1,0 +1,36 @@
+{
+ "id": "project",
+ "title": "Project passport",
+ "step": "Probe and intake",
+ "layer": "run",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "services",
+   "value": 2
+  },
+  {
+   "label": "model files",
+   "value": 14
+  },
+  {
+   "label": "plugins",
+   "value": 5
+  },
+  {
+   "label": "without own code",
+   "value": 1
+  }
+ ],
+ "from": [
+  "run/project.json"
+ ],
+ "views": [
+  "views/profiles.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/project.json"
+ ]
+}

@@ -1,0 +1,489 @@
+[
+ {
+  "id": "handler:srv/travel-service.ts:16",
+  "phase": "before",
+  "events": [
+   "CREATE"
+  ],
+  "target": "TravelService.Travel",
+  "targets": [
+   "TravelService.Travel"
+  ],
+  "drafts": false,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 16,
+  "async": true,
+  "fields": null,
+  "evidence": "srv/travel-service.ts:16",
+  "rules": [
+   {
+    "id": "rule:srv/travel-service.ts:18",
+    "kind": "derivation",
+    "field": "TravelID",
+    "expr": "++maxID",
+    "guard": null,
+    "handler": "handler:srv/travel-service.ts:16",
+    "evidence": "srv/travel-service.ts:18"
+   }
+  ]
+ },
+ {
+  "id": "handler:srv/travel-service.ts:21",
+  "phase": "before",
+  "events": [
+   "NEW"
+  ],
+  "target": "TravelService.Booking",
+  "targets": [
+   "TravelService.Booking"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 21,
+  "async": true,
+  "fields": null,
+  "evidence": "srv/travel-service.ts:21",
+  "rules": [
+   {
+    "id": "rule:srv/travel-service.ts:23",
+    "kind": "derivation",
+    "field": "BookingID",
+    "expr": "++maxID",
+    "guard": null,
+    "handler": "handler:srv/travel-service.ts:21",
+    "evidence": "srv/travel-service.ts:23"
+   },
+   {
+    "id": "rule:srv/travel-service.ts:24",
+    "kind": "derivation",
+    "field": "BookingDate",
+    "expr": "today()",
+    "guard": null,
+    "handler": "handler:srv/travel-service.ts:21",
+    "evidence": "srv/travel-service.ts:24"
+   }
+  ]
+ },
+ {
+  "id": "handler:srv/travel-service.ts:27",
+  "phase": "before",
+  "events": [
+   "NEW"
+  ],
+  "target": "TravelService.BookingSupplement",
+  "targets": [
+   "TravelService.BookingSupplement"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 27,
+  "async": true,
+  "fields": null,
+  "evidence": "srv/travel-service.ts:27",
+  "rules": [
+   {
+    "id": "rule:srv/travel-service.ts:29",
+    "kind": "derivation",
+    "field": "BookingSupplementID",
+    "expr": "++maxID",
+    "guard": null,
+    "handler": "handler:srv/travel-service.ts:27",
+    "evidence": "srv/travel-service.ts:29"
+   }
+  ]
+ },
+ {
+  "id": "handler:srv/travel-service.ts:34",
+  "phase": "before",
+  "events": [
+   "SAVE"
+  ],
+  "target": "TravelService.Travel",
+  "targets": [
+   "TravelService.Travel"
+  ],
+  "drafts": false,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 34,
+  "async": false,
+  "fields": null,
+  "evidence": "srv/travel-service.ts:34",
+  "rules": [
+   {
+    "id": "rule:srv/travel-service.ts:36",
+    "kind": "rejection",
+    "severity": "error",
+    "status": 400,
+    "guard": "BeginDate < today()",
+    "conds": [
+     {
+      "lhs": "BeginDate",
+      "op": "<",
+      "rhs": "today()",
+      "literal": false
+     }
+    ],
+    "message": "Begin Date must not be before today.",
+    "target": "in/BeginDate",
+    "handler": "handler:srv/travel-service.ts:34",
+    "evidence": "srv/travel-service.ts:36"
+   },
+   {
+    "id": "rule:srv/travel-service.ts:37",
+    "kind": "rejection",
+    "severity": "error",
+    "status": 400,
+    "guard": "BeginDate > EndDate",
+    "conds": [
+     {
+      "lhs": "BeginDate",
+      "op": ">",
+      "rhs": "EndDate",
+      "literal": false
+     }
+    ],
+    "message": "End Date must be after Begin Date.",
+    "target": "in/EndDate",
+    "handler": "handler:srv/travel-service.ts:34",
+    "evidence": "srv/travel-service.ts:37"
+   }
+  ]
+ },
+ {
+  "id": "handler:srv/travel-service.ts:45",
+  "phase": "on",
+  "events": [
+   "UPDATE"
+  ],
+  "target": "TravelService.Travel",
+  "targets": [
+   "TravelService.Travel"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 45,
+  "async": false,
+  "fields": [
+   "BookingFee",
+   "GoGreen"
+  ],
+  "nativeSql": [
+   {
+    "line": 57,
+    "sql": "UPDATE ${Travel.drafts} SET TotalPrice = coalesce (BookingFee,0) + coalesce(GreenFee,0) + ( SELECT coalesce (sum(FlightPrice),0) from ${Booking.drafts} where to",
+    "hanaOnly": false
+   }
+  ],
+  "evidence": "srv/travel-service.ts:45",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:46",
+  "phase": "on",
+  "events": [
+   "UPDATE"
+  ],
+  "target": "TravelService.Booking",
+  "targets": [
+   "TravelService.Booking"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 46,
+  "async": false,
+  "fields": [
+   "FlightPrice"
+  ],
+  "nativeSql": [
+   {
+    "line": 57,
+    "sql": "UPDATE ${Travel.drafts} SET TotalPrice = coalesce (BookingFee,0) + coalesce(GreenFee,0) + ( SELECT coalesce (sum(FlightPrice),0) from ${Booking.drafts} where to",
+    "hanaOnly": false
+   }
+  ],
+  "evidence": "srv/travel-service.ts:46",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:47",
+  "phase": "on",
+  "events": [
+   "UPDATE"
+  ],
+  "target": "TravelService.BookingSupplement",
+  "targets": [
+   "TravelService.BookingSupplement"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 47,
+  "async": false,
+  "fields": [
+   "Price"
+  ],
+  "nativeSql": [
+   {
+    "line": 57,
+    "sql": "UPDATE ${Travel.drafts} SET TotalPrice = coalesce (BookingFee,0) + coalesce(GreenFee,0) + ( SELECT coalesce (sum(FlightPrice),0) from ${Booking.drafts} where to",
+    "hanaOnly": false
+   }
+  ],
+  "evidence": "srv/travel-service.ts:47",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:48",
+  "phase": "on",
+  "events": [
+   "DELETE"
+  ],
+  "target": "TravelService.Booking",
+  "targets": [
+   "TravelService.Booking"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 48,
+  "async": false,
+  "fields": null,
+  "nativeSql": [
+   {
+    "line": 57,
+    "sql": "UPDATE ${Travel.drafts} SET TotalPrice = coalesce (BookingFee,0) + coalesce(GreenFee,0) + ( SELECT coalesce (sum(FlightPrice),0) from ${Booking.drafts} where to",
+    "hanaOnly": false
+   }
+  ],
+  "evidence": "srv/travel-service.ts:48",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:49",
+  "phase": "on",
+  "events": [
+   "DELETE"
+  ],
+  "target": "TravelService.BookingSupplement",
+  "targets": [
+   "TravelService.BookingSupplement"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": true,
+  "file": "srv/travel-service.ts",
+  "line": 49,
+  "async": false,
+  "fields": null,
+  "nativeSql": [
+   {
+    "line": 57,
+    "sql": "UPDATE ${Travel.drafts} SET TotalPrice = coalesce (BookingFee,0) + coalesce(GreenFee,0) + ( SELECT coalesce (sum(FlightPrice),0) from ${Booking.drafts} where to",
+    "hanaOnly": false
+   }
+  ],
+  "evidence": "srv/travel-service.ts:49",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:86",
+  "phase": "before",
+  "events": [
+   "acceptTravel",
+   "rejectTravel"
+  ],
+  "target": "TravelService.Travel",
+  "targets": [
+   "TravelService.Travel"
+  ],
+  "drafts": true,
+  "service": "TravelService",
+  "crud": false,
+  "file": "srv/travel-service.ts",
+  "line": 86,
+  "async": true,
+  "fields": null,
+  "exprEvents": [
+   "acceptTravel",
+   "rejectTravel"
+  ],
+  "evidence": "srv/travel-service.ts:86",
+  "rules": [
+   {
+    "id": "rule:srv/travel-service.ts:93",
+    "kind": "rejection",
+    "severity": "reject",
+    "status": 423,
+    "guard": "!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id",
+    "conds": [
+     {
+      "lhs": "existingDraft?.InProcessByUser",
+      "op": "!=",
+      "rhs": "req.user.id",
+      "literal": false
+     }
+    ],
+    "message": "The travel is locked by ${existingDraft.InProcessByUser}.",
+    "target": null,
+    "handler": "handler:srv/travel-service.ts:86",
+    "evidence": "srv/travel-service.ts:93"
+   }
+  ]
+ },
+ {
+  "id": "handler:srv/travel-service.ts:95",
+  "phase": "on",
+  "events": [
+   "acceptTravel"
+  ],
+  "target": null,
+  "targets": [],
+  "drafts": false,
+  "service": "TravelService",
+  "crud": false,
+  "file": "srv/travel-service.ts",
+  "line": 95,
+  "async": false,
+  "fields": null,
+  "exprEvents": [
+   "acceptTravel"
+  ],
+  "evidence": "srv/travel-service.ts:95",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:96",
+  "phase": "on",
+  "events": [
+   "rejectTravel"
+  ],
+  "target": null,
+  "targets": [],
+  "drafts": false,
+  "service": "TravelService",
+  "crud": false,
+  "file": "srv/travel-service.ts",
+  "line": 96,
+  "async": false,
+  "fields": null,
+  "exprEvents": [
+   "rejectTravel"
+  ],
+  "evidence": "srv/travel-service.ts:96",
+  "rules": []
+ },
+ {
+  "id": "handler:srv/travel-service.ts:97",
+  "phase": "on",
+  "events": [
+   "deductDiscount"
+  ],
+  "target": null,
+  "targets": [],
+  "drafts": false,
+  "service": "TravelService",
+  "crud": false,
+  "file": "srv/travel-service.ts",
+  "line": 97,
+  "async": true,
+  "fields": null,
+  "exprEvents": [
+   "deductDiscount"
+  ],
+  "evidence": "srv/travel-service.ts:97",
+  "rules": [
+   {
+    "id": "rule:srv/travel-service.ts:99",
+    "kind": "conditional-write",
+    "guard": "TravelStatus.code != 'A' and BookingFee != null",
+    "conds": [
+     {
+      "lhs": "TravelStatus.code",
+      "ref": [
+       "TravelStatus",
+       "code"
+      ],
+      "op": "!=",
+      "rhs": "A",
+      "literal": true
+     },
+     {
+      "lhs": "BookingFee",
+      "ref": [
+       "BookingFee"
+      ],
+      "op": "!=",
+      "rhs": null,
+      "literal": true
+     }
+    ],
+    "handler": "handler:srv/travel-service.ts:97",
+    "target": "TravelService.Travel",
+    "evidence": "srv/travel-service.ts:99"
+   },
+   {
+    "id": "rule:srv/travel-service.ts:105",
+    "kind": "rejection",
+    "severity": "reject",
+    "status": 404,
+    "guard": "!succeeded && !travel",
+    "message": "Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+    "target": null,
+    "handler": "handler:srv/travel-service.ts:97",
+    "evidence": "srv/travel-service.ts:105"
+   },
+   {
+    "id": "rule:srv/travel-service.ts:106",
+    "kind": "rejection",
+    "severity": "reject",
+    "status": 400,
+    "guard": "!succeeded && travel.status === TravelStatusCode.Accepted",
+    "conds": [
+     {
+      "lhs": "travel.status",
+      "op": "=",
+      "rhs": "TravelStatusCode.Accepted",
+      "literal": false
+     }
+    ],
+    "message": "Travel \"${travel.ID}\" has been approved already.",
+    "target": null,
+    "handler": "handler:srv/travel-service.ts:97",
+    "evidence": "srv/travel-service.ts:106"
+   },
+   {
+    "id": "rule:srv/travel-service.ts:107",
+    "kind": "rejection",
+    "severity": "reject",
+    "status": 404,
+    "guard": "!succeeded && travel.BookingFee == null",
+    "conds": [
+     {
+      "lhs": "travel.BookingFee",
+      "op": "=",
+      "rhs": null,
+      "literal": true
+     }
+    ],
+    "message": "No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+    "target": null,
+    "handler": "handler:srv/travel-service.ts:97",
+    "evidence": "srv/travel-service.ts:107"
+   }
+  ]
+ }
+]

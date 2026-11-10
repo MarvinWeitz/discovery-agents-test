@@ -1,0 +1,1250 @@
+[
+ {
+  "on": "element:sap.fe.cap.travel.Airline.AirlineID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:10",
+  "classes": [
+   {
+    "name": "AirlineID length = 3",
+    "kind": "boundary",
+    "example": 3
+   },
+   {
+    "name": "AirlineID length = 4",
+    "kind": "invalid",
+    "example": 4
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Airline.Name",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:11",
+  "classes": [
+   {
+    "name": "Name length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "Name length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Airport.AirportID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:18",
+  "classes": [
+   {
+    "name": "AirportID length = 3",
+    "kind": "boundary",
+    "example": 3
+   },
+   {
+    "name": "AirportID length = 4",
+    "kind": "invalid",
+    "example": 4
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Airport.Name",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:19",
+  "classes": [
+   {
+    "name": "Name length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "Name length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Airport.City",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:20",
+  "classes": [
+   {
+    "name": "City length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "City length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Supplement.SupplementID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:26",
+  "classes": [
+   {
+    "name": "SupplementID length = 10",
+    "kind": "boundary",
+    "example": 10
+   },
+   {
+    "name": "SupplementID length = 11",
+    "kind": "invalid",
+    "example": 11
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Supplement.Description",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:29",
+  "classes": [
+   {
+    "name": "Description length = 1024",
+    "kind": "boundary",
+    "example": 1024
+   },
+   {
+    "name": "Description length = 1025",
+    "kind": "invalid",
+    "example": 1025
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Flight.AirlineID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:38",
+  "classes": [
+   {
+    "name": "AirlineID length = 3",
+    "kind": "boundary",
+    "example": 3
+   },
+   {
+    "name": "AirlineID length = 4",
+    "kind": "invalid",
+    "example": 4
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Flight.ConnectionID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:40",
+  "classes": [
+   {
+    "name": "ConnectionID length = 4",
+    "kind": "boundary",
+    "example": 4
+   },
+   {
+    "name": "ConnectionID length = 5",
+    "kind": "invalid",
+    "example": 5
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Flight.PlaneType",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:44",
+  "classes": [
+   {
+    "name": "PlaneType length = 10",
+    "kind": "boundary",
+    "example": 10
+   },
+   {
+    "name": "PlaneType length = 11",
+    "kind": "invalid",
+    "example": 11
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.FlightConnection.ConnectionID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:58",
+  "classes": [
+   {
+    "name": "ConnectionID length = 4",
+    "kind": "boundary",
+    "example": 4
+   },
+   {
+    "name": "ConnectionID length = 5",
+    "kind": "invalid",
+    "example": 5
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.FlightConnection.AirlineID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:59",
+  "classes": [
+   {
+    "name": "AirlineID length = 3",
+    "kind": "boundary",
+    "example": 3
+   },
+   {
+    "name": "AirlineID length = 4",
+    "kind": "invalid",
+    "example": 4
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.FlightConnection.DistanceUnit",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:65",
+  "classes": [
+   {
+    "name": "DistanceUnit length = 3",
+    "kind": "boundary",
+    "example": 3
+   },
+   {
+    "name": "DistanceUnit length = 4",
+    "kind": "invalid",
+    "example": 4
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.CustomerID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:74",
+  "classes": [
+   {
+    "name": "CustomerID length = 6",
+    "kind": "boundary",
+    "example": 6
+   },
+   {
+    "name": "CustomerID length = 7",
+    "kind": "invalid",
+    "example": 7
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.FirstName",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:75",
+  "classes": [
+   {
+    "name": "FirstName length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "FirstName length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.LastName",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:76",
+  "classes": [
+   {
+    "name": "LastName length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "LastName length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.Title",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:77",
+  "classes": [
+   {
+    "name": "Title length = 10",
+    "kind": "boundary",
+    "example": 10
+   },
+   {
+    "name": "Title length = 11",
+    "kind": "invalid",
+    "example": 11
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.Street",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:78",
+  "classes": [
+   {
+    "name": "Street length = 60",
+    "kind": "boundary",
+    "example": 60
+   },
+   {
+    "name": "Street length = 61",
+    "kind": "invalid",
+    "example": 61
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.PostalCode",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:79",
+  "classes": [
+   {
+    "name": "PostalCode length = 10",
+    "kind": "boundary",
+    "example": 10
+   },
+   {
+    "name": "PostalCode length = 11",
+    "kind": "invalid",
+    "example": 11
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.City",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:80",
+  "classes": [
+   {
+    "name": "City length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "City length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.PhoneNumber",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:82",
+  "classes": [
+   {
+    "name": "PhoneNumber length = 30",
+    "kind": "boundary",
+    "example": 30
+   },
+   {
+    "name": "PhoneNumber length = 31",
+    "kind": "invalid",
+    "example": 31
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Passenger.EMailAddress",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:83",
+  "classes": [
+   {
+    "name": "EMailAddress length = 256",
+    "kind": "boundary",
+    "example": 256
+   },
+   {
+    "name": "EMailAddress length = 257",
+    "kind": "invalid",
+    "example": 257
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.AgencyID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:87",
+  "classes": [
+   {
+    "name": "AgencyID length = 6",
+    "kind": "boundary",
+    "example": 6
+   },
+   {
+    "name": "AgencyID length = 7",
+    "kind": "invalid",
+    "example": 7
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.Name",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:88",
+  "classes": [
+   {
+    "name": "Name length = 80",
+    "kind": "boundary",
+    "example": 80
+   },
+   {
+    "name": "Name length = 81",
+    "kind": "invalid",
+    "example": 81
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.Street",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:89",
+  "classes": [
+   {
+    "name": "Street length = 60",
+    "kind": "boundary",
+    "example": 60
+   },
+   {
+    "name": "Street length = 61",
+    "kind": "invalid",
+    "example": 61
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.PostalCode",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:90",
+  "classes": [
+   {
+    "name": "PostalCode length = 10",
+    "kind": "boundary",
+    "example": 10
+   },
+   {
+    "name": "PostalCode length = 11",
+    "kind": "invalid",
+    "example": 11
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.City",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:91",
+  "classes": [
+   {
+    "name": "City length = 40",
+    "kind": "boundary",
+    "example": 40
+   },
+   {
+    "name": "City length = 41",
+    "kind": "invalid",
+    "example": 41
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.PhoneNumber",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:93",
+  "classes": [
+   {
+    "name": "PhoneNumber length = 30",
+    "kind": "boundary",
+    "example": 30
+   },
+   {
+    "name": "PhoneNumber length = 31",
+    "kind": "invalid",
+    "example": 31
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.EMailAddress",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:94",
+  "classes": [
+   {
+    "name": "EMailAddress length = 256",
+    "kind": "boundary",
+    "example": 256
+   },
+   {
+    "name": "EMailAddress length = 257",
+    "kind": "invalid",
+    "example": 257
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelAgency.WebAddress",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:95",
+  "classes": [
+   {
+    "name": "WebAddress length = 256",
+    "kind": "boundary",
+    "example": 256
+   },
+   {
+    "name": "WebAddress length = 257",
+    "kind": "invalid",
+    "example": 257
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.SupplementType.code",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/master-data.cds:104",
+  "classes": [
+   {
+    "name": "code = Beverage",
+    "kind": "valid",
+    "example": "BV"
+   },
+   {
+    "name": "code = Meal",
+    "kind": "valid",
+    "example": "ML"
+   },
+   {
+    "name": "code = Luggage",
+    "kind": "valid",
+    "example": "LU"
+   },
+   {
+    "name": "code = Extra",
+    "kind": "valid",
+    "example": "EX"
+   },
+   {
+    "name": "code not in enum",
+    "kind": "invalid",
+    "example": "X"
+   },
+   {
+    "name": "code length = 2",
+    "kind": "boundary",
+    "example": 2
+   },
+   {
+    "name": "code length = 3",
+    "kind": "invalid",
+    "example": 3
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.TravelID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:14",
+  "classes": [
+   {
+    "name": "TravelID omitted -> default 0",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "TravelID given explicitly",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "TravelID written by client is ignored",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.BeginDate",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:15",
+  "classes": [
+   {
+    "name": "BeginDate missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.EndDate",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:16",
+  "classes": [
+   {
+    "name": "EndDate missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.BookingFee",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:17",
+  "classes": [
+   {
+    "name": "BookingFee omitted -> default 0",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "BookingFee given explicitly",
+    "kind": "valid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.TotalPrice",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:18",
+  "classes": [
+   {
+    "name": "TotalPrice written by client is ignored",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.CurrencyCode",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:19",
+  "classes": [
+   {
+    "name": "CurrencyCode omitted -> default \"EUR\"",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "CurrencyCode given explicitly",
+    "kind": "valid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.Description",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:20",
+  "classes": [
+   {
+    "name": "Description length = 1024",
+    "kind": "boundary",
+    "example": 1024
+   },
+   {
+    "name": "Description length = 1025",
+    "kind": "invalid",
+    "example": 1025
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.TravelStatus",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:21",
+  "classes": [
+   {
+    "name": "TravelStatus omitted -> default \"O\"",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "TravelStatus given explicitly",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "TravelStatus written by client is ignored",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.to_Agency",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:22",
+  "classes": [
+   {
+    "name": "to_Agency missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.to_Customer",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:23",
+  "classes": [
+   {
+    "name": "to_Customer missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.GoGreen",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:87",
+  "classes": [
+   {
+    "name": "GoGreen omitted -> default false",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "GoGreen given explicitly",
+    "kind": "valid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.GreenFee",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:88",
+  "classes": [
+   {
+    "name": "GreenFee written by client is ignored",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Travel.TreesPlanted",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:89",
+  "classes": [
+   {
+    "name": "TreesPlanted written by client is ignored",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Booking.ConnectionID",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:37",
+  "classes": [
+   {
+    "name": "ConnectionID length = 4",
+    "kind": "boundary",
+    "example": 4
+   },
+   {
+    "name": "ConnectionID length = 5",
+    "kind": "invalid",
+    "example": 5
+   },
+   {
+    "name": "ConnectionID missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Booking.FlightDate",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:38",
+  "classes": [
+   {
+    "name": "FlightDate missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Booking.FlightPrice",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:39",
+  "classes": [
+   {
+    "name": "FlightPrice missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Booking.BookingStatus",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:41",
+  "classes": [
+   {
+    "name": "BookingStatus omitted -> default \"N\"",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "BookingStatus given explicitly",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "BookingStatus missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Booking.to_Carrier",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:43",
+  "classes": [
+   {
+    "name": "to_Carrier missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.Booking.to_Customer",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:44",
+  "classes": [
+   {
+    "name": "to_Customer missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.BookingSupplement.Price",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:54",
+  "classes": [
+   {
+    "name": "Price missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.BookingSupplement.to_Supplement",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:58",
+  "classes": [
+   {
+    "name": "to_Supplement missing",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.BookingStatus.code",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:73",
+  "classes": [
+   {
+    "name": "code = New",
+    "kind": "valid",
+    "example": "N"
+   },
+   {
+    "name": "code = Booked",
+    "kind": "valid",
+    "example": "B"
+   },
+   {
+    "name": "code = Canceled",
+    "kind": "valid",
+    "example": "X"
+   },
+   {
+    "name": "code not in enum",
+    "kind": "invalid",
+    "example": "X"
+   },
+   {
+    "name": "code length = 1",
+    "kind": "boundary",
+    "example": 1
+   },
+   {
+    "name": "code length = 2",
+    "kind": "invalid",
+    "example": 2
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelStatus.code",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "db/schema.cds:83",
+  "classes": [
+   {
+    "name": "code = Open",
+    "kind": "valid",
+    "example": "O"
+   },
+   {
+    "name": "code = Accepted",
+    "kind": "valid",
+    "example": "A"
+   },
+   {
+    "name": "code = Canceled",
+    "kind": "valid",
+    "example": "X"
+   },
+   {
+    "name": "code not in enum",
+    "kind": "invalid",
+    "example": "X"
+   },
+   {
+    "name": "code length = 1",
+    "kind": "boundary",
+    "example": 1
+   },
+   {
+    "name": "code length = 2",
+    "kind": "invalid",
+    "example": 2
+   }
+  ]
+ },
+ {
+  "on": "element:sap.fe.cap.travel.TravelStatus.fieldControl",
+  "technique": "equivalence partitioning + boundaries",
+  "evidence": "app/travel_processor/field-control.cds:14",
+  "classes": [
+   {
+    "name": "fieldControl = Inapplicable",
+    "kind": "valid",
+    "example": 0
+   },
+   {
+    "name": "fieldControl = ReadOnly",
+    "kind": "valid",
+    "example": 1
+   },
+   {
+    "name": "fieldControl = Optional",
+    "kind": "valid",
+    "example": 3
+   },
+   {
+    "name": "fieldControl = Mandatory",
+    "kind": "valid",
+    "example": 7
+   },
+   {
+    "name": "fieldControl not in enum",
+    "kind": "invalid",
+    "example": "X"
+   },
+   {
+    "name": "fieldControl computed from inputs",
+    "kind": "valid",
+    "example": null
+   },
+   {
+    "name": "fieldControl written by client is ignored",
+    "kind": "invalid",
+    "example": null
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:18",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:18",
+  "classes": [
+   {
+    "name": "TravelID always derived by the server",
+    "kind": "valid"
+   },
+   {
+    "name": "TravelID sent by client is overwritten",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:23",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:23",
+  "classes": [
+   {
+    "name": "BookingID always derived by the server",
+    "kind": "valid"
+   },
+   {
+    "name": "BookingID sent by client is overwritten",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:24",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:24",
+  "classes": [
+   {
+    "name": "BookingDate always derived by the server",
+    "kind": "valid"
+   },
+   {
+    "name": "BookingDate sent by client is overwritten",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:29",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:29",
+  "classes": [
+   {
+    "name": "BookingSupplementID always derived by the server",
+    "kind": "valid"
+   },
+   {
+    "name": "BookingSupplementID sent by client is overwritten",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:36",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:36",
+  "classes": [
+   {
+    "name": "BeginDate < today() is true -> rejected: Begin Date must not be before today.",
+    "kind": "invalid"
+   },
+   {
+    "name": "BeginDate < today() is false -> accepted",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:37",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:37",
+  "classes": [
+   {
+    "name": "BeginDate > EndDate is true -> rejected: End Date must be after Begin Date.",
+    "kind": "invalid"
+   },
+   {
+    "name": "BeginDate > EndDate is false -> accepted",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:93",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:93",
+  "classes": [
+   {
+    "name": "!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id is true -> rejected: The travel is locked by ${existingDraft.InProcessByUser}.",
+    "kind": "invalid"
+   },
+   {
+    "name": "!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id is false -> accepted",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:99",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:99",
+  "classes": [
+   {
+    "name": "TravelStatus.code != 'A' and BookingFee != null is true -> undefined derived",
+    "kind": "valid"
+   },
+   {
+    "name": "TravelStatus.code != 'A' and BookingFee != null is false -> undefined unchanged",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:105",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:105",
+  "classes": [
+   {
+    "name": "!succeeded && !travel is true -> rejected: Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+    "kind": "invalid"
+   },
+   {
+    "name": "!succeeded && !travel is false -> accepted",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:106",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:106",
+  "classes": [
+   {
+    "name": "!succeeded && travel.status === TravelStatusCode.Accepted is true -> rejected: Travel \"${travel.ID}\" has been approved already.",
+    "kind": "invalid"
+   },
+   {
+    "name": "!succeeded && travel.status === TravelStatusCode.Accepted is false -> accepted",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "rule:srv/travel-service.ts:107",
+  "technique": "decision table (guard true/false)",
+  "evidence": "srv/travel-service.ts:107",
+  "classes": [
+   {
+    "name": "!succeeded && travel.BookingFee == null is true -> rejected: No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+    "kind": "invalid"
+   },
+   {
+    "name": "!succeeded && travel.BookingFee == null is false -> accepted",
+    "kind": "valid"
+   }
+  ]
+ },
+ {
+  "on": "svcentity:TravelService.Travel",
+  "technique": "role x operation matrix",
+  "evidence": "srv/travel-service.cds:11",
+  "classes": [
+   {
+    "name": "user with role authenticated-user -> READ allowed",
+    "kind": "valid"
+   },
+   {
+    "name": "user without role authenticated-user -> 403",
+    "kind": "invalid"
+   },
+   {
+    "name": "anonymous user -> 401",
+    "kind": "invalid"
+   }
+  ]
+ },
+ {
+  "on": "svcentity:TravelService.Travel",
+  "technique": "role x operation matrix",
+  "evidence": "srv/travel-service.cds:11",
+  "classes": [
+   {
+    "name": "user with role reviewer -> rejectTravel,acceptTravel,deductDiscount allowed",
+    "kind": "valid"
+   },
+   {
+    "name": "user without role reviewer -> 403",
+    "kind": "invalid"
+   },
+   {
+    "name": "anonymous user -> 401",
+    "kind": "invalid"
+   }
+  ]
+ },
+ {
+  "on": "svcentity:TravelService.Travel",
+  "technique": "role x operation matrix",
+  "evidence": "srv/travel-service.cds:11",
+  "classes": [
+   {
+    "name": "user with role processor -> * allowed",
+    "kind": "valid"
+   },
+   {
+    "name": "user without role processor -> 403",
+    "kind": "invalid"
+   },
+   {
+    "name": "anonymous user -> 401",
+    "kind": "invalid"
+   }
+  ]
+ },
+ {
+  "on": "svcentity:TravelService.Travel",
+  "technique": "role x operation matrix",
+  "evidence": "srv/travel-service.cds:11",
+  "classes": [
+   {
+    "name": "user with role admin -> * allowed",
+    "kind": "valid"
+   },
+   {
+    "name": "user without role admin -> 403",
+    "kind": "invalid"
+   },
+   {
+    "name": "anonymous user -> 401",
+    "kind": "invalid"
+   }
+  ]
+ },
+ {
+  "on": "svcentity:TravelService.Travel",
+  "technique": "state transitions (draft)",
+  "evidence": "srv/travel-service.cds:11",
+  "classes": [
+   {
+    "name": "new -> draft created",
+    "kind": "valid"
+   },
+   {
+    "name": "draft -> activate (save)",
+    "kind": "valid"
+   },
+   {
+    "name": "active -> edit -> draft",
+    "kind": "valid"
+   },
+   {
+    "name": "draft -> discard",
+    "kind": "valid"
+   },
+   {
+    "name": "edit while another user holds the draft",
+    "kind": "invalid"
+   }
+  ]
+ }
+]

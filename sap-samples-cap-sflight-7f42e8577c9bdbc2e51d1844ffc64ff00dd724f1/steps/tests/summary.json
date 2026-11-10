@@ -1,0 +1,40 @@
+{
+ "id": "tests",
+ "title": "Test results",
+ "step": "Generated tests and test run",
+ "layer": "tests",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "passed",
+   "value": 12,
+   "tone": "ok"
+  },
+  {
+   "label": "failed",
+   "value": 0
+  },
+  {
+   "label": "skipped",
+   "value": 7
+  },
+  {
+   "label": "requests recorded",
+   "value": 110
+  }
+ ],
+ "from": [
+  "run/tests/generated/manifest.json",
+  "jest-generated.json (CI)",
+  "atlas-data.json MEASURED.requests (CI)"
+ ],
+ "views": [
+  "views/results.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/results.ctrf.json",
+  "data/generated.json"
+ ]
+}

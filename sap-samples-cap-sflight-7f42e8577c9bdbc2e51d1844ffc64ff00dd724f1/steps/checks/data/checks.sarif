@@ -1,0 +1,1976 @@
+{
+ "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+ "version": "2.1.0",
+ "runs": [
+  {
+   "tool": {
+    "driver": {
+     "name": "cap-discovery",
+     "version": "1.0.0",
+     "informationUri": "https://github.com/MarvinWeitz/discovery-agents-test",
+     "rules": [
+      {
+       "id": "action-without-handler",
+       "shortDescription": {
+        "text": "action-without-handler"
+       }
+      },
+      {
+       "id": "agent-risk",
+       "shortDescription": {
+        "text": "agent-risk"
+       }
+      },
+      {
+       "id": "layer-violation",
+       "shortDescription": {
+        "text": "layer-violation"
+       }
+      },
+      {
+       "id": "lint:no-deprecated-api",
+       "shortDescription": {
+        "text": "lint:no-deprecated-api"
+       }
+      },
+      {
+       "id": "lint:no-outdated-manifest-version",
+       "shortDescription": {
+        "text": "lint:no-outdated-manifest-version"
+       }
+      },
+      {
+       "id": "lint:prefer-test-starter",
+       "shortDescription": {
+        "text": "lint:prefer-test-starter"
+       }
+      },
+      {
+       "id": "lint:csp-unsafe-inline-script",
+       "shortDescription": {
+        "text": "lint:csp-unsafe-inline-script"
+       }
+      },
+      {
+       "id": "native-sql",
+       "shortDescription": {
+        "text": "native-sql"
+       }
+      },
+      {
+       "id": "pattern",
+       "shortDescription": {
+        "text": "pattern"
+       }
+      },
+      {
+       "id": "risk",
+       "shortDescription": {
+        "text": "risk"
+       }
+      },
+      {
+       "id": "rule-hit:commented-out-grant",
+       "shortDescription": {
+        "text": "rule-hit:commented-out-grant"
+       }
+      },
+      {
+       "id": "rule-hit:null-deref-in-guard",
+       "shortDescription": {
+        "text": "rule-hit:null-deref-in-guard"
+       }
+      },
+      {
+       "id": "rule-hit:max-plus-one-id",
+       "shortDescription": {
+        "text": "rule-hit:max-plus-one-id"
+       }
+      },
+      {
+       "id": "rule-hit:hard-coded-currency",
+       "shortDescription": {
+        "text": "rule-hit:hard-coded-currency"
+       }
+      },
+      {
+       "id": "state-transition",
+       "shortDescription": {
+        "text": "state-transition"
+       }
+      }
+     ]
+    }
+   },
+   "results": [
+    {
+     "ruleId": "action-without-handler",
+     "level": "warning",
+     "message": {
+      "text": "createTravelByTemplate: no handler found. Bound action createTravelByTemplate has no srv.on handler the parser can see; CAP answers 501 unless something registers one at runtime."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.cds"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-action-without-handler-3b1610d87f",
+      "method": "static",
+      "status": "suspected",
+      "confidence": "medium",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "agent-risk",
+     "level": "note",
+     "message": {
+      "text": "deductDiscount 404 path crashes. When the travel is gone, the error message reads travel.ID from undefined: a TypeError and a 500 instead of a 404."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 105
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-agent-risk-12855e0ebb",
+      "method": "human",
+      "status": "confirmed",
+      "confidence": "medium",
+      "layer": "Node"
+     }
+    },
+    {
+     "ruleId": "agent-risk",
+     "level": "note",
+     "message": {
+      "text": "TravelID = max + 1 race. max(TravelID) is read and incremented on CREATE. Two parallel activations can get the same ID."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 17
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-agent-risk-918d17878c",
+      "method": "human",
+      "status": "confirmed",
+      "confidence": "medium",
+      "layer": "Node"
+     }
+    },
+    {
+     "ruleId": "agent-risk",
+     "level": "note",
+     "message": {
+      "text": "Hard-coded USD in analytics. All FlightPrices are summed as USD regardless of their currency."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/analytics-service.cds"
+        },
+        "region": {
+         "startLine": 24
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-agent-risk-b044f453dd",
+      "method": "human",
+      "status": "confirmed",
+      "confidence": "medium",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "layer-violation",
+     "level": "warning",
+     "message": {
+      "text": "srv/analytics-service.cds annotates sap.fe.cap.travel.FlightConnection. annotates domain FlightConnection."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/analytics-service.cds"
+        },
+        "region": {
+         "startLine": 77
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-layer-violation-28f42da1b2",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations"
+     }
+    },
+    {
+     "ruleId": "layer-violation",
+     "level": "warning",
+     "message": {
+      "text": "app/travel_processor/field-control.cds extends sap.fe.cap.travel.TravelStatus. extends domain TravelStatus."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-layer-violation-3c78e2f722",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations"
+     }
+    },
+    {
+     "ruleId": "layer-violation",
+     "level": "warning",
+     "message": {
+      "text": "app/common.cds annotates cds.UUID. annotates built-in cds.UUID for the whole model."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/common.cds"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-layer-violation-6718091ec2",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations"
+     }
+    },
+    {
+     "ruleId": "layer-violation",
+     "level": "warning",
+     "message": {
+      "text": "srv/analytics-service.cds annotates sap.fe.cap.travel.Airport. annotates domain Airport."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/analytics-service.cds"
+        },
+        "region": {
+         "startLine": 76
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-layer-violation-e99b9f7fd2",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Bootstrap parameter 'data-sap-ui-animation' should be replaced with 'data-sap-ui-animation-mode'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-0bb1826c9d",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Usage of deprecated parameter 'synchronizationMode' of constructor 'sap/ui/model/odata/v4/ODataModel'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/manifest.json"
+        },
+        "region": {
+         "startLine": 97
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-30a68ce648",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Use of deprecated property 'sap.ui5/resources/js'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/manifest.json"
+        },
+        "region": {
+         "startLine": 70
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-3b62b42c48",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-outdated-manifest-version",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-outdated-manifest-version. manifest.json must be migrated to Version 2"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/manifest.json"
+        },
+        "region": {
+         "startLine": 2
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-3baeef1d5e",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Missing bootstrap parameter 'data-sap-ui-async'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 9
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-3ec27bb996",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Bootstrap parameter 'data-sap-ui-animation' should be replaced with 'data-sap-ui-animation-mode'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-85218c0dd5",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Usage of deprecated parameter 'synchronizationMode' of constructor 'sap/ui/model/odata/v4/ODataModel'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/manifest.json"
+        },
+        "region": {
+         "startLine": 99
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-be445cbcc0",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Missing bootstrap parameter 'data-sap-ui-async'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 9
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-c86385f816",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-outdated-manifest-version",
+     "level": "warning",
+     "message": {
+      "text": "ui5-lint no-outdated-manifest-version. manifest.json must be migrated to Version 2"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/manifest.json"
+        },
+        "region": {
+         "startLine": 2
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-dd9e16d44f",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-compatVersion'; should be written as 'data-sap-ui-compat-version'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/index.html"
+        },
+        "region": {
+         "startLine": 23
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-036c86e58e",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-flexibilityServices'; should be written as 'data-sap-ui-flexibility-services'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/index.html"
+        },
+        "region": {
+         "startLine": 26
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-0454b7a97a",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-oninit'; should be written as 'data-sap-ui-on-init'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/index.html"
+        },
+        "region": {
+         "startLine": 21
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-125bf964ec",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/integration/Opa.qunit.js"
+        },
+        "region": {
+         "startLine": 10
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-145967903e",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-compatVersion'; should be written as 'data-sap-ui-compat-version'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 13
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-1d6745995c",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-resourceroots'; should be written as 'data-sap-ui-resource-roots'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/flpSandbox.html"
+        },
+        "region": {
+         "startLine": 72
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-25c5bf2166",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/testsuite.qunit.html"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-2eabe00c9e",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/integration/Opa.qunit.js"
+        },
+        "region": {
+         "startLine": 8
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-325089e13a",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-flexibilityServices'; should be written as 'data-sap-ui-flexibility-services'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/index.html"
+        },
+        "region": {
+         "startLine": 26
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-3b46f99a02",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-frameOptions'; should be written as 'data-sap-ui-frame-options'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/index.html"
+        },
+        "region": {
+         "startLine": 27
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-3caf5c659b",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/testsuite.qunit.js"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-4260dabebc",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-resourceroots'; should be written as 'data-sap-ui-resource-roots'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/index.html"
+        },
+        "region": {
+         "startLine": 22
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-43e47376d6",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-oninit'; should be written as 'data-sap-ui-on-init'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/index.html"
+        },
+        "region": {
+         "startLine": 21
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-4f5c231904",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-compatVersion'; should be written as 'data-sap-ui-compat-version'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/index.html"
+        },
+        "region": {
+         "startLine": 23
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-55c60fdaf3",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-resourceroots'; should be written as 'data-sap-ui-resource-roots'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 14
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-67640bb732",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-compatVersion'; should be written as 'data-sap-ui-compat-version'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/flpSandbox.html"
+        },
+        "region": {
+         "startLine": 70
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-6ccc3cbf30",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/testsuite.qunit.html"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-7e6ae443d1",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 9
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-84c18c3539",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-resourceroots'; should be written as 'data-sap-ui-resource-roots'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 14
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-8a603b2fcb",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-frameOptions'; should be written as 'data-sap-ui-frame-options'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/flpSandbox.html"
+        },
+        "region": {
+         "startLine": 73
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-95b95888bc",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-compatVersion'; should be written as 'data-sap-ui-compat-version'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 13
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-9a4da81d93",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:no-deprecated-api",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint no-deprecated-api. Outdated spelling of bootstrap parameter: 'data-sap-ui-resourceroots'; should be written as 'data-sap-ui-resource-roots'"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/index.html"
+        },
+        "region": {
+         "startLine": 22
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-b766a31736",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:csp-unsafe-inline-script",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint csp-unsafe-inline-script. Use of unsafe inline script"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/flpSandbox.html"
+        },
+        "region": {
+         "startLine": 78
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-da4a310110",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:csp-unsafe-inline-script",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint csp-unsafe-inline-script. Use of unsafe inline script"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/flpSandbox.html"
+        },
+        "region": {
+         "startLine": 25
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-ec5f8e9050",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/testsuite.qunit.js"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-f78046173c",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "lint:prefer-test-starter",
+     "level": "note",
+     "message": {
+      "text": "ui5-lint prefer-test-starter. To save boilerplate code and ensure compliance with UI5 2.x best practices, please migrate to the Test Starter concept"
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/test/integration/Opa.qunit.html"
+        },
+        "region": {
+         "startLine": 9
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-lint-ff76eb0da0",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high"
+     }
+    },
+    {
+     "ruleId": "native-sql",
+     "level": "note",
+     "message": {
+      "text": "SQL string in travel-service.ts. Runs \"UPDATE ${Travel.drafts} SET TotalPrice = coalesce (BookingFee,0) + coalesce(GreenFee,0) + ( SELECT coalesce (sum(Flight…\" as a string, outside CQL; the parser does not read which entities it touches."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 57
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-native-sql-2e94e34c28",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Node"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "error",
+     "message": {
+      "text": "Auto-exposed master data. @cds.autoexpose on 10 entities. also exposes personal data (Passenger, TravelAgency)."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "db/master-data.cds"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-25bede50a2",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "DB"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "error",
+     "message": {
+      "text": "Annotations placed outside their layer. annotates built-in cds.UUID for the whole model; extends domain TravelStatus; annotates domain Airport; annotates domain FlightConnection. changes a model another layer owns."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/common.cds"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-ec5b2daedd",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations, DB"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "warning",
+     "message": {
+      "text": "Declarative authorization (@requires / @restrict). 4 grants on 1 targets. AnalyticsService without any grant."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.cds"
+        },
+        "region": {
+         "startLine": 11
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-445e403c22",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "warning",
+     "message": {
+      "text": "Raw SQL via cds.run. Travel, Booking, BookingSupplement. bypasses CQL and draft handling; check projections."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 57
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-4dc74e076b",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Node"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "warning",
+     "message": {
+      "text": "Bound actions. createTravelByTemplate, rejectTravel, acceptTravel, deductDiscount. createTravelByTemplate has no handler."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.cds"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-76cd842bc4",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service, Node"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "warning",
+     "message": {
+      "text": "Service tests (cds.test). test/odata.test.ts. all as alice."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "test/odata.test.ts"
+        },
+        "region": {
+         "startLine": 1
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-e61b67845e",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Node, Config"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "warning",
+     "message": {
+      "text": "State rules in UI annotations. OperationAvailable · FieldControl · Create/DeleteHidden. 7 not enforced by the server."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 37
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-e8bb5b2128",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations"
+     }
+    },
+    {
+     "ruleId": "pattern",
+     "level": "warning",
+     "message": {
+      "text": "UI annotations directly on domain entities. 11 domain entities annotated from app/. bypasses the service layer."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/labels.cds"
+        },
+        "region": {
+         "startLine": 7
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-pattern-eedbe5c94d",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Annotations, DB"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "error",
+     "message": {
+      "text": "Passenger personal data open to any caller. /analytics/Passenger and /processor/Passenger return FirstName, LastName, Street, PhoneNumber, EMailAddress without a role check; with no service-level @requires this may include unauthenticated calls (verify behind the approuter)."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "db/master-data.cds"
+        },
+        "region": {
+         "startLine": 73
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-2457a6e7d6",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Model"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "error",
+     "message": {
+      "text": "TravelAgency personal data open to any caller. /analytics/TravelAgency and /processor/TravelAgency return Street, PhoneNumber, EMailAddress without a role check; with no service-level @requires this may include unauthenticated calls (verify behind the approuter)."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "db/master-data.cds"
+        },
+        "region": {
+         "startLine": 86
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-864efc1695",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Model"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "warning",
+     "message": {
+      "text": "rejectTravel, acceptTravel callable in states the UI hides. @Core.OperationAvailable hides rejectTravel when TravelStatus != X; acceptTravel when TravelStatus != A, but no handler checks the status, so a direct POST still changes it."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 37
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-4e47ef2db9",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Node"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "warning",
+     "message": {
+      "text": "Read-only and hidden-create rules exist only in the UI (5). Travel: 5 fields controlled by TravelStatus.fieldControl; Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl; Booking: hidden when [object Object]; Booking: hidden when [object Object]; BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl. OData clients can still PATCH, POST or DELETE."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 29
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-1ef81abe05",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "UI"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "warning",
+     "message": {
+      "text": "Tests run as one user only (alice). 4 grants exist, but no existing test runs as a user who should be denied, so a broken @restrict would pass."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "test/odata.test.ts"
+        },
+        "region": {
+         "startLine": 1
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-517a50ec95",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Tests"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "warning",
+     "message": {
+      "text": "deductDiscount enforced only partly. UI: TravelStatus = O. Server: allows TravelStatus in {X, O}; also X. The server lets X through."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 45
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-bb43a32b6c",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Node"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "warning",
+     "message": {
+      "text": "AnalyticsService has no @requires or @restrict. Every entity under /analytics is readable by any caller (CAP default restrict_all_services: false)."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/analytics-service.cds"
+        },
+        "region": {
+         "startLine": 3
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-ea358c5a56",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "note",
+     "message": {
+      "text": "createTravelByTemplate declared and granted, no handler. The action is in the service and reachable through OData, but no Node handler implements it; CAP answers with an error at runtime."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.cds"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-21281ff029",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "note",
+     "message": {
+      "text": "Global annotation on built-in cds.UUID. app/common.cds annotates built-in cds.UUID for the whole model: every element of that type in every service changes, including ones the author never saw."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/common.cds"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-a804f0425f",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Model"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "note",
+     "message": {
+      "text": "9 UI5 lint errors. no-outdated-manifest-version, no-deprecated-api. These break with the next UI5 major release."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_analytics/webapp/manifest.json"
+        },
+        "region": {
+         "startLine": 2
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-1e0c262a40",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "UI"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "note",
+     "message": {
+      "text": "Booking / BookingSupplement: access inherited from the draft root. Composition children carry no own @restrict. Access through the root is checked; direct requests to the child set need a test."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.cds"
+        },
+        "region": {
+         "startLine": 11
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-296270eb9a",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "risk",
+     "level": "note",
+     "message": {
+      "text": "3 CDS files change models of another layer. app/travel_processor/field-control.cds: extends domain TravelStatus; srv/analytics-service.cds: annotates domain Airport; srv/analytics-service.cds: annotates domain FlightConnection."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 12
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-risk-3f7cd7013c",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Model"
+     }
+    },
+    {
+     "ruleId": "rule-hit:commented-out-grant",
+     "level": "warning",
+     "message": {
+      "text": "Commented-out authorization. srv/analytics-service.cds:5: Authorization in a comment: `@(restrict: [`. Whatever it was meant to protect runs with the remaining grants only."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/analytics-service.cds"
+        },
+        "region": {
+         "startLine": 5
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-rule-hit-7224f08ad0",
+      "method": "static",
+      "status": "suspected",
+      "confidence": "medium"
+     }
+    },
+    {
+     "ruleId": "rule-hit:null-deref-in-guard",
+     "level": "warning",
+     "message": {
+      "text": "travel.$P read where travel is missing. srv/travel-service.ts:105: `if (!travel)` then reads `travel.$P`. travel is null or undefined on that path, so the request fails with a TypeError (HTTP 500) instead of the intended error."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 105
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-rule-hit-7aaf532730",
+      "method": "static",
+      "status": "suspected",
+      "confidence": "medium"
+     }
+    },
+    {
+     "ruleId": "rule-hit:max-plus-one-id",
+     "level": "warning",
+     "message": {
+      "text": "req.data.TravelID assigned as max + 1. srv/travel-service.ts:18: req.data.TravelID is set from a max() query + 1 in a shared code path. Two requests that read max() before either commits get the same value; without a unique constraint both rows are stored."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 18
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-rule-hit-995b156a68",
+      "method": "static",
+      "status": "suspected",
+      "confidence": "medium"
+     }
+    },
+    {
+     "ruleId": "rule-hit:hard-coded-currency",
+     "level": "warning",
+     "message": {
+      "text": "'USD' hard-coded as currency. srv/analytics-service.cds:24: The literal 'USD' is used as the currency. Amounts in other currencies are then labelled (and summed) as USD."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/analytics-service.cds"
+        },
+        "region": {
+         "startLine": 24
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-rule-hit-ed327f7f3d",
+      "method": "static",
+      "status": "suspected",
+      "confidence": "medium"
+     }
+    },
+    {
+     "ruleId": "state-transition",
+     "level": "warning",
+     "message": {
+      "text": "acceptTravel in state A: UI hides it, server accepts. In state A, acceptTravel (→ A) is hidden by the UI and accepted by the Node server."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 41
+        }
+       }
+      },
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 86
+        }
+       }
+      },
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 95
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-state-transition-4719abcbd6",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "state-transition",
+     "level": "warning",
+     "message": {
+      "text": "rejectTravel in state X: UI hides it, server accepts. In state X, rejectTravel (→ X) is hidden by the UI and accepted by the Node server."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 37
+        }
+       }
+      },
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 86
+        }
+       }
+      },
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 96
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-state-transition-7d16d2d8b8",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    },
+    {
+     "ruleId": "state-transition",
+     "level": "warning",
+     "message": {
+      "text": "deductDiscount in state X: UI hides it, server accepts. In state X, deductDiscount (→ X) is hidden by the UI and accepted by the Node server."
+     },
+     "locations": [
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "app/travel_processor/field-control.cds"
+        },
+        "region": {
+         "startLine": 45
+        }
+       }
+      },
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 99
+        }
+       }
+      },
+      {
+       "physicalLocation": {
+        "artifactLocation": {
+         "uri": "srv/travel-service.ts"
+        },
+        "region": {
+         "startLine": 97
+        }
+       }
+      }
+     ],
+     "properties": {
+      "id": "F-state-transition-edd9841389",
+      "method": "static",
+      "status": "detected",
+      "confidence": "high",
+      "layer": "Service"
+     }
+    }
+   ]
+  }
+ ]
+}

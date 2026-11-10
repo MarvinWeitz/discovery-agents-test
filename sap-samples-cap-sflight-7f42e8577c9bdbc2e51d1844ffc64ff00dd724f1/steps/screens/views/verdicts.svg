@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 104" width="640" height="104" role="img" aria-label="UI promises by server verdict">
+<style>
+text{font:12px system-ui,-apple-system,"Segoe UI",sans-serif;fill:#24292f}
+.m{fill:#57606a}.s{font-size:11px}.b{font-weight:600}.h{font-size:13px;font-weight:600}
+.g{stroke:#d0d7de}.bg{fill:#f6f8fa}
+@media (prefers-color-scheme: dark){text{fill:#e6edf3}.m{fill:#9198a1}.g{stroke:#3d444d}.bg{fill:#161b22}}
+</style>
+<title>UI promises by server verdict</title><text x="323.2" y="22" text-anchor="end">ui-only: UI only: the server does not check it</text><rect x="331.2" y="11" width="238.8" height="14" rx="3" class="bg"/><rect x="331.2" y="11" width="167.2" height="14" rx="3" fill="#c2414b"/><text x="504.36" y="22" class="m s">7</text><text x="323.2" y="44" text-anchor="end">partial: partly checked</text><rect x="331.2" y="33" width="238.8" height="14" rx="3" class="bg"/><rect x="331.2" y="33" width="23.9" height="14" rx="3" fill="#c27c0e"/><text x="361.08" y="44" class="m s">1</text><text x="323.2" y="66" text-anchor="end">consistent: server checks it too</text><rect x="331.2" y="55" width="238.8" height="14" rx="3" class="bg"/><rect x="331.2" y="55" width="71.6" height="14" rx="3" fill="#2f8a3a"/><text x="408.84" y="66" class="m s">3</text><text x="323.2" y="88" text-anchor="end">framework: CAP enforces it</text><rect x="331.2" y="77" width="238.8" height="14" rx="3" class="bg"/><rect x="331.2" y="77" width="238.8" height="14" rx="3" fill="#3f7fbf"/><text x="576" y="88" class="m s">10</text></svg>

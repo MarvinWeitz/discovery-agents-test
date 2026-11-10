@@ -1,0 +1,800 @@
+{
+ "users": [
+  [
+   "anonymous",
+   "anonymous"
+  ],
+  [
+   "rose",
+   "rose · no role"
+  ],
+  [
+   "martha",
+   "martha · reviewer"
+  ],
+  [
+   "amy",
+   "amy · processor"
+  ],
+  [
+   "admin",
+   "admin · admin"
+  ],
+  [
+   "alice",
+   "alice · admin · tests"
+  ]
+ ],
+ "rows": [
+  {
+   "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "svc": "AnalyticsService",
+   "ev": "db/master-data.cds:86",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "r",
+    "r",
+    "r"
+   ]
+  },
+  {
+   "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+   "svc": "AnalyticsService",
+   "ev": "db/master-data.cds:73",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "r",
+    "r",
+    "r"
+   ]
+  },
+  {
+   "op": "/analytics: 8 other entities READ",
+   "svc": "AnalyticsService",
+   "ev": "srv/analytics-service.cds:9",
+   "c": [
+    "a",
+    "y",
+    "y",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "Travel READ",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "y",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel create / edit / delete",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "n",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel createTravelByTemplate",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": "granted, not implemented",
+   "c": [
+    "n",
+    "n",
+    "n",
+    "a",
+    "a",
+    {
+     "v": "a",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel rejectTravel",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel acceptTravel",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Travel deductDiscount",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": null,
+   "c": [
+    "n",
+    "n",
+    "y",
+    "y",
+    "y",
+    {
+     "v": "y",
+     "t": 1
+    }
+   ]
+  },
+  {
+   "op": "Booking / BookingSupplement (via Travel draft)",
+   "svc": "TravelService",
+   "ev": "srv/travel-service.cds:11",
+   "note": "inherits from the draft root? verify",
+   "c": [
+    "n",
+    "a",
+    "a",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+   "svc": "TravelService",
+   "ev": "db/master-data.cds:86",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+   "svc": "TravelService",
+   "ev": "db/master-data.cds:73",
+   "c": [
+    "r",
+    "r",
+    "r",
+    "y",
+    "y",
+    "y"
+   ]
+  },
+  {
+   "op": "/processor: 8 other entities READ",
+   "svc": "TravelService",
+   "ev": "db/schema.cds:82",
+   "c": [
+    "a",
+    "y",
+    "y",
+    "y",
+    "y",
+    "y"
+   ]
+  }
+ ],
+ "measured": {
+  "users": [
+   "anonymous",
+   "rose",
+   "martha",
+   "amy",
+   "admin",
+   "alice"
+  ],
+  "rows": [
+   {
+    "row": 0,
+    "svc": "AnalyticsService",
+    "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "method": "GET",
+    "url": "/analytics/TravelAgency?$top=1",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 1,
+    "svc": "AnalyticsService",
+    "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+    "method": "GET",
+    "url": "/analytics/Passenger?$top=1",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 3,
+    "svc": "TravelService",
+    "op": "Travel READ",
+    "method": "GET",
+    "url": "/processor/Travel?$top=1",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 10,
+    "svc": "TravelService",
+    "op": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress)",
+    "method": "GET",
+    "url": "/processor/TravelAgency?$top=1",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 11,
+    "svc": "TravelService",
+    "op": "Passenger READ (PII: FirstName, LastName, Street, …)",
+    "method": "GET",
+    "url": "/processor/Passenger?$top=1",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "r",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 200,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 4,
+    "svc": "TravelService",
+    "op": "Travel create / edit / delete",
+    "method": "POST",
+    "url": "/processor/Travel",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 201,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 201,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 201,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 5,
+    "svc": "TravelService",
+    "op": "Travel createTravelByTemplate",
+    "method": "POST",
+    "url": "/processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.createTravelByTemplate",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "a",
+      "measured": "y",
+      "status": 501,
+      "st": "measured"
+     },
+     {
+      "user": "admin",
+      "static": "a",
+      "measured": "y",
+      "status": 501,
+      "st": "measured"
+     },
+     {
+      "user": "alice",
+      "static": "a",
+      "measured": "y",
+      "status": 501,
+      "st": "measured"
+     }
+    ]
+   },
+   {
+    "row": 6,
+    "svc": "TravelService",
+    "op": "Travel rejectTravel",
+    "method": "POST",
+    "url": "/processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.rejectTravel",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 7,
+    "svc": "TravelService",
+    "op": "Travel acceptTravel",
+    "method": "POST",
+    "url": "/processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.acceptTravel",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 204,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 8,
+    "svc": "TravelService",
+    "op": "Travel deductDiscount",
+    "method": "POST",
+    "url": "/processor/Travel(TravelUUID=52657221A8E4645C17002DF03754AB66,IsActiveEntity=true)/TravelService.deductDiscount",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "n",
+      "measured": "n",
+      "status": 403,
+      "st": "agree"
+     },
+     {
+      "user": "martha",
+      "static": "y",
+      "measured": "y",
+      "status": 400,
+      "st": "agree"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 400,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 400,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 400,
+      "st": "agree"
+     }
+    ]
+   },
+   {
+    "row": 9,
+    "svc": "TravelService",
+    "op": "Booking / BookingSupplement (via Travel draft)",
+    "method": "POST",
+    "url": "/processor/Booking",
+    "cells": [
+     {
+      "user": "anonymous",
+      "static": "n",
+      "measured": "n",
+      "status": 401,
+      "st": "agree"
+     },
+     {
+      "user": "rose",
+      "static": "a",
+      "measured": "n",
+      "status": 403,
+      "st": "measured"
+     },
+     {
+      "user": "martha",
+      "static": "a",
+      "measured": "n",
+      "status": 403,
+      "st": "measured"
+     },
+     {
+      "user": "amy",
+      "static": "y",
+      "measured": "y",
+      "status": 422,
+      "st": "agree"
+     },
+     {
+      "user": "admin",
+      "static": "y",
+      "measured": "y",
+      "status": 422,
+      "st": "agree"
+     },
+     {
+      "user": "alice",
+      "static": "y",
+      "measured": "y",
+      "status": 422,
+      "st": "agree"
+     }
+    ]
+   }
+  ],
+  "agree": 61,
+  "differ": 0,
+  "unclear": 5
+ }
+}

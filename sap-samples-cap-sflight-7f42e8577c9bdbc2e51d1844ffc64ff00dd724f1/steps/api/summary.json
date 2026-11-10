@@ -1,0 +1,45 @@
+{
+ "id": "api",
+ "title": "API surface",
+ "step": "EDMX, OpenAPI, AsyncAPI",
+ "layer": "service",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "services",
+   "value": 2
+  },
+  {
+   "label": "entity sets",
+   "value": 23
+  },
+  {
+   "label": "OpenAPI paths",
+   "value": 137
+  },
+  {
+   "label": "open without role",
+   "value": 20,
+   "tone": "warn"
+  }
+ ],
+ "from": [
+  "run/csn.json",
+  "run/edmx/",
+  "atlas-data.json API"
+ ],
+ "views": [
+  "views/surface.svg"
+ ],
+ "pages": [
+  "openapi-AnalyticsService.html",
+  "openapi-TravelService.html"
+ ],
+ "data": [
+  "data/edmx/AnalyticsService.xml",
+  "data/edmx/TravelService.xml",
+  "data/openapi/AnalyticsService.json",
+  "data/openapi/TravelService.json"
+ ]
+}

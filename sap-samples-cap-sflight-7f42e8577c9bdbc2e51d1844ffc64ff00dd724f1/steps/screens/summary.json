@@ -1,0 +1,38 @@
+{
+ "id": "screens",
+ "title": "Screen map",
+ "step": "UI5 and Fiori annotations",
+ "layer": "ui",
+ "status": "warn",
+ "why": null,
+ "kpis": [
+  {
+   "label": "apps",
+   "value": 2
+  },
+  {
+   "label": "pages",
+   "value": 5
+  },
+  {
+   "label": "UI promises",
+   "value": 21
+  },
+  {
+   "label": "UI only",
+   "value": 7,
+   "tone": "bad"
+  }
+ ],
+ "from": [
+  "run/graph/ (UI5App, Route, UiRule)"
+ ],
+ "views": [
+  "views/screens.svg",
+  "views/verdicts.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/ui-promises.json"
+ ]
+}

@@ -1,0 +1,38 @@
+{
+ "id": "testdesign",
+ "title": "Classification tree",
+ "step": "Test design",
+ "layer": "tests",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "classes",
+   "value": 122
+  },
+  {
+   "label": "categories",
+   "value": 7
+  },
+  {
+   "label": "covered today",
+   "value": 12
+  },
+  {
+   "label": "pairwise rows",
+   "value": 19
+  }
+ ],
+ "from": [
+  "atlas-data.json TESTCATS, CLASSES, DD",
+  "run/tests/class-seeds.json"
+ ],
+ "views": [
+  "views/tree.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/classes.json",
+  "data/class-seeds.json"
+ ]
+}

@@ -1,0 +1,154 @@
+{
+ "reportFormat": "CTRF",
+ "specVersion": "0.0.0",
+ "results": {
+  "tool": {
+   "name": "jest"
+  },
+  "summary": {
+   "tests": 19,
+   "passed": 12,
+   "failed": 0,
+   "skipped": 7,
+   "pending": 0,
+   "other": 0,
+   "start": 1794322772859,
+   "stop": 1794322773038
+  },
+  "tests": [
+   {
+    "name": "Authorization (generated) today: GET /analytics/TravelAgency as rose → 200",
+    "status": "passed",
+    "duration": 32,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) spec: GET /analytics/TravelAgency as rose → 403",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /analytics/Passenger as rose → 200",
+    "status": "passed",
+    "duration": 7,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) spec: GET /analytics/Passenger as rose → 403",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /processor/Travel as anonymous → 401",
+    "status": "passed",
+    "duration": 10,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /processor/Travel as rose → 200",
+    "status": "passed",
+    "duration": 8,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /processor/TravelAgency as rose → 200",
+    "status": "passed",
+    "duration": 4,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) spec: GET /processor/TravelAgency as rose → 403",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /processor/TravelAgency as amy → 200",
+    "status": "passed",
+    "duration": 5,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /processor/Passenger as rose → 200",
+    "status": "passed",
+    "duration": 4,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) spec: GET /processor/Passenger as rose → 403",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "Authorization (generated) today: GET /processor/Passenger as amy → 200",
+    "status": "passed",
+    "duration": 6,
+    "suite": "Authorization (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/authorization.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) today: rejectTravel on TravelStatus = X (UI hides it) as martha → success",
+    "status": "passed",
+    "duration": 58,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) spec: rejectTravel on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) today: acceptTravel on TravelStatus = A (UI hides it) as martha → success",
+    "status": "passed",
+    "duration": 10,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) spec: acceptTravel on TravelStatus = A (UI hides it) as martha → 4xx rejection",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) today: deductDiscount on TravelStatus = X (UI hides it) as martha → success",
+    "status": "passed",
+    "duration": 13,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) spec: deductDiscount on TravelStatus = X (UI hides it) as martha → 4xx rejection",
+    "status": "skipped",
+    "duration": 0,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   },
+   {
+    "name": "UI vs server rules (generated) today: deductDiscount on TravelStatus = A (UI hides it) as martha → error",
+    "status": "passed",
+    "duration": 22,
+    "suite": "UI vs server rules (generated)",
+    "filePath": "/home/runner/work/discovery-agents-test/targets/cap-sflight/test/generated/ui-vs-server-rules.test.js"
+   }
+  ]
+ }
+}

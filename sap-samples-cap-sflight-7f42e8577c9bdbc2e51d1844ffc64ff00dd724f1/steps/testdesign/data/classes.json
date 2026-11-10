@@ -1,0 +1,978 @@
+[
+ {
+  "category": "Authorization",
+  "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+  "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha/amy/admin/alice",
+  "input": "user rose",
+  "expected": "403 (today 200: open)",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+  "name": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha/amy/admin/alice",
+  "input": "user rose",
+  "expected": "403 (today 200: open)",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:/analytics: 8 other entities READ:a",
+  "name": "/analytics: 8 other entities READ as anonymous",
+  "input": "user anonymous",
+  "expected": "verify",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:/analytics: 8 other entities READ:y",
+  "name": "/analytics: 8 other entities READ as rose/martha/amy/admin/alice",
+  "input": "user rose",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel READ:n",
+  "name": "Travel READ as anonymous",
+  "input": "user anonymous",
+  "expected": "401",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel READ:y",
+  "name": "Travel READ as rose/martha/amy/admin/alice",
+  "input": "user rose",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel create / edit / delete:n",
+  "name": "Travel create / edit / delete as anonymous/rose/martha",
+  "input": "user rose",
+  "expected": "403",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel create / edit / delete:y",
+  "name": "Travel create / edit / delete as amy/admin/alice",
+  "input": "user amy",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel createTravelByTemplate:n",
+  "name": "Travel createTravelByTemplate as anonymous/rose/martha",
+  "input": "user rose",
+  "expected": "403",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel createTravelByTemplate:a",
+  "name": "Travel createTravelByTemplate as amy/admin/alice",
+  "input": "user amy",
+  "expected": "verify",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel rejectTravel:n",
+  "name": "Travel rejectTravel as anonymous/rose",
+  "input": "user rose",
+  "expected": "403",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel rejectTravel:y",
+  "name": "Travel rejectTravel as martha/amy/admin/alice",
+  "input": "user martha",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel acceptTravel:n",
+  "name": "Travel acceptTravel as anonymous/rose",
+  "input": "user rose",
+  "expected": "403",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel acceptTravel:y",
+  "name": "Travel acceptTravel as martha/amy/admin/alice",
+  "input": "user martha",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel deductDiscount:n",
+  "name": "Travel deductDiscount as anonymous/rose",
+  "input": "user rose",
+  "expected": "403",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Travel deductDiscount:y",
+  "name": "Travel deductDiscount as martha/amy/admin/alice",
+  "input": "user martha",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Booking / BookingSupplement (via Travel draft):n",
+  "name": "Booking / BookingSupplement (via Travel draft) as anonymous",
+  "input": "user anonymous",
+  "expected": "401",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Booking / BookingSupplement (via Travel draft):a",
+  "name": "Booking / BookingSupplement (via Travel draft) as rose/martha",
+  "input": "user rose",
+  "expected": "verify",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Booking / BookingSupplement (via Travel draft):y",
+  "name": "Booking / BookingSupplement (via Travel draft) as amy/admin/alice",
+  "input": "user amy",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):r",
+  "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as anonymous/rose/martha",
+  "input": "user rose",
+  "expected": "403 (today 200: open)",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:TravelAgency READ (PII: Street, PhoneNumber, EMailAddress):y",
+  "name": "TravelAgency READ (PII: Street, PhoneNumber, EMailAddress) as amy/admin/alice",
+  "input": "user amy",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):r",
+  "name": "Passenger READ (PII: FirstName, LastName, Street, …) as anonymous/rose/martha",
+  "input": "user rose",
+  "expected": "403 (today 200: open)",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:Passenger READ (PII: FirstName, LastName, Street, …):y",
+  "name": "Passenger READ (PII: FirstName, LastName, Street, …) as amy/admin/alice",
+  "input": "user amy",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:/processor: 8 other entities READ:a",
+  "name": "/processor: 8 other entities READ as anonymous",
+  "input": "user anonymous",
+  "expected": "verify",
+  "today": ""
+ },
+ {
+  "category": "Authorization",
+  "id": "AUT:/processor: 8 other entities READ:y",
+  "name": "/processor: 8 other entities READ as rose/martha/amy/admin/alice",
+  "input": "user rose",
+  "expected": "200",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:rejectTravel:X",
+  "name": "rejectTravel on TravelStatus = X (UI hides it)",
+  "input": "Travel \"56657221A8E4645C17002DF03754AB66\"",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:acceptTravel:A",
+  "name": "acceptTravel on TravelStatus = A (UI hides it)",
+  "input": "Travel \"59657221A8E4645C17002DF03754AB66\"",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:deductDiscount:X",
+  "name": "deductDiscount on TravelStatus = X (UI hides it)",
+  "input": "Travel \"56657221A8E4645C17002DF03754AB66\"",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:deductDiscount:A",
+  "name": "deductDiscount on TravelStatus = A (UI hides it)",
+  "input": "Travel \"59657221A8E4645C17002DF03754AB66\"",
+  "expected": "4xx rejection",
+  "today": "rejected"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:field-control:Travel",
+  "name": "Travel: 5 fields controlled by TravelStatus.fieldControl — bypass via OData",
+  "input": "PATCH/POST on a non-open instance",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:side-effects:Travel:5",
+  "name": "Travel: BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+  "input": "side-effects",
+  "expected": "targets recomputed",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:side-effects:Travel:6",
+  "name": "Travel: GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+  "input": "side-effects",
+  "expected": "targets recomputed",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:side-effects:Travel:7",
+  "name": "Travel: to_Booking → re-read TotalPrice",
+  "input": "side-effects",
+  "expected": "targets recomputed",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:assert.range:Travel:8",
+  "name": "Travel: percent in [1, 100]",
+  "input": "assert.range",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:readonly:Travel:9",
+  "name": "Travel: TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+  "input": "readonly",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:mandatory:Travel:10",
+  "name": "Travel: BeginDate, EndDate, to_Agency, to_Customer",
+  "input": "mandatory",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:field-control:Booking",
+  "name": "Booking: 6 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+  "input": "PATCH/POST on a non-open instance",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:CreateHidden:Booking",
+  "name": "Booking: hidden when [object Object] — bypass via OData",
+  "input": "PATCH/POST on a non-open instance",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:DeleteHidden:Booking",
+  "name": "Booking: hidden when [object Object] — bypass via OData",
+  "input": "PATCH/POST on a non-open instance",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:mandatory:Booking:14",
+  "name": "Booking: ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+  "input": "mandatory",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:field-control:BookingSupplement",
+  "name": "BookingSupplement: 4 fields controlled by to_Travel.TravelStatus.fieldControl — bypass via OData",
+  "input": "PATCH/POST on a non-open instance",
+  "expected": "4xx rejection",
+  "today": "accepted (UI-only rule)"
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:mandatory:BookingSupplement:16",
+  "name": "BookingSupplement: Price, to_Supplement",
+  "input": "mandatory",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:capabilities:Bookings:17",
+  "name": "Bookings: no create / update / delete",
+  "input": "capabilities",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:computed:Bookings:18",
+  "name": "Bookings: TravelID, BookingID, CombinedID, CurrencyCode_code",
+  "input": "computed",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:capabilities:Travels:19",
+  "name": "Travels: no create / update / delete",
+  "input": "capabilities",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:computed:Travels:20",
+  "name": "Travels: TravelID, TotalPrice, TravelStatus_code, GreenFee, TreesPlanted, CustomerName",
+  "input": "computed",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "UI vs server rules",
+  "id": "UIS:computed:Travel:21",
+  "name": "Travel: TravelStatus_code",
+  "input": "computed",
+  "expected": "CAP rejects / ignores",
+  "today": ""
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:rejectTravel:X",
+  "name": "rejectTravel from X",
+  "input": "TravelStatus=X",
+  "expected": "rejected",
+  "today": "→ X"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:rejectTravel:A",
+  "name": "rejectTravel from A",
+  "input": "TravelStatus=A",
+  "expected": "→ X",
+  "today": "→ X"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:rejectTravel:O",
+  "name": "rejectTravel from O",
+  "input": "TravelStatus=O",
+  "expected": "→ X",
+  "today": "→ X"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:acceptTravel:X",
+  "name": "acceptTravel from X",
+  "input": "TravelStatus=X",
+  "expected": "→ A",
+  "today": "→ A"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:acceptTravel:A",
+  "name": "acceptTravel from A",
+  "input": "TravelStatus=A",
+  "expected": "rejected",
+  "today": "→ A"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:acceptTravel:O",
+  "name": "acceptTravel from O",
+  "input": "TravelStatus=O",
+  "expected": "→ A",
+  "today": "→ A"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:deductDiscount:X",
+  "name": "deductDiscount from X",
+  "input": "TravelStatus=X",
+  "expected": "rejected",
+  "today": "→ X"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:deductDiscount:A",
+  "name": "deductDiscount from A",
+  "input": "TravelStatus=A",
+  "expected": "rejected",
+  "today": "rejected"
+ },
+ {
+  "category": "Status transitions",
+  "id": "STA:deductDiscount:O",
+  "name": "deductDiscount from O",
+  "input": "TravelStatus=O",
+  "expected": "→ O",
+  "today": "→ O"
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:18:t",
+  "name": "before CREATE Travel: derive TravelID",
+  "input": "always",
+  "expected": "TravelID = ++maxID",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:23:t",
+  "name": "before NEW Booking: derive BookingID",
+  "input": "always",
+  "expected": "BookingID = ++maxID",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:24:t",
+  "name": "before NEW Booking: derive BookingDate",
+  "input": "always",
+  "expected": "BookingDate = today()",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:29:t",
+  "name": "before NEW BookingSupplement: derive BookingSupplementID",
+  "input": "always",
+  "expected": "BookingSupplementID = ++maxID",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:36:t",
+  "name": "before SAVE Travel: Begin Date must not be before today.",
+  "input": "BeginDate < today()",
+  "expected": "400 \"Begin Date must not be before today.\"",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:36:f",
+  "name": "before SAVE Travel: guard false",
+  "input": "!(BeginDate < today())",
+  "expected": "passes",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:37:t",
+  "name": "before SAVE Travel: End Date must be after Begin Date.",
+  "input": "BeginDate > EndDate",
+  "expected": "400 \"End Date must be after Begin Date.\"",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:37:f",
+  "name": "before SAVE Travel: guard false",
+  "input": "!(BeginDate > EndDate)",
+  "expected": "passes",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:93:t",
+  "name": "before acceptTravel/rejectTravel Travel: The travel is locked by ${existingDraft.InProcessByUser}.",
+  "input": "!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id",
+  "expected": "423 \"The travel is locked by ${existingDraft.InProcessByUser}.\"",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:93:f",
+  "name": "before acceptTravel/rejectTravel Travel: guard false",
+  "input": "!(!isDraft && existingDraft || isDraft && existingDraft?.InProcessByUser !== req.user.id)",
+  "expected": "passes",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:99:t",
+  "name": "on deductDiscount Travel: write when TravelStatus.code != 'A' and BookingFee != null",
+  "input": "TravelStatus.code != 'A' and BookingFee != null",
+  "expected": "row updated",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:99:f",
+  "name": "on deductDiscount Travel: no write",
+  "input": "!(TravelStatus.code != 'A' and BookingFee != null)",
+  "expected": "nothing updated, error explains why",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:105:t",
+  "name": "on deductDiscount Travel: Travel \"${travel.ID}\" does not exist; may have been deleted meanwhile.",
+  "input": "!succeeded && !travel",
+  "expected": "404 \"Travel \"${travel.ID}\" does not exist; may have been deleted \"",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:105:f",
+  "name": "on deductDiscount Travel: guard false",
+  "input": "!(!succeeded && !travel)",
+  "expected": "passes",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:106:t",
+  "name": "on deductDiscount Travel: Travel \"${travel.ID}\" has been approved already.",
+  "input": "!succeeded && travel.status === TravelStatusCode.Accepted",
+  "expected": "400 \"Travel \"${travel.ID}\" has been approved already.\"",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:106:f",
+  "name": "on deductDiscount Travel: guard false",
+  "input": "!(!succeeded && travel.status === TravelStatusCode.Accepted)",
+  "expected": "passes",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:107:t",
+  "name": "on deductDiscount Travel: No discount possible, as travel \"${travel.ID}\" does not yet have a booking fee added.",
+  "input": "!succeeded && travel.BookingFee == null",
+  "expected": "404 \"No discount possible, as travel \"${travel.ID}\" does not yet \"",
+  "today": ""
+ },
+ {
+  "category": "Handler rules",
+  "id": "RUL:rule:srv/travel-service.ts:107:f",
+  "name": "on deductDiscount Travel: guard false",
+  "input": "!(!succeeded && travel.BookingFee == null)",
+  "expected": "passes",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:deductDiscount:below min",
+  "name": "deductDiscount: percent below min",
+  "input": "below min",
+  "expected": "400 out of range",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:deductDiscount:min",
+  "name": "deductDiscount: percent min",
+  "input": "min",
+  "expected": "accepted",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:deductDiscount:max",
+  "name": "deductDiscount: percent max",
+  "input": "max",
+  "expected": "accepted",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:deductDiscount:above max",
+  "name": "deductDiscount: percent above max",
+  "input": "above max",
+  "expected": "400 out of range",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Travel:ro",
+  "name": "Travel: write TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+  "input": "client sends read-only fields",
+  "expected": "values ignored",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Travel:BeginDate",
+  "name": "Travel: save without BeginDate",
+  "input": "BeginDate missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Travel:EndDate",
+  "name": "Travel: save without EndDate",
+  "input": "EndDate missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Travel:to_Agency",
+  "name": "Travel: save without to_Agency",
+  "input": "to_Agency missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Travel:to_Customer",
+  "name": "Travel: save without to_Customer",
+  "input": "to_Customer missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Booking:ConnectionID",
+  "name": "Booking: save without ConnectionID",
+  "input": "ConnectionID missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Booking:FlightDate",
+  "name": "Booking: save without FlightDate",
+  "input": "FlightDate missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Booking:FlightPrice",
+  "name": "Booking: save without FlightPrice",
+  "input": "FlightPrice missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Booking:BookingStatus",
+  "name": "Booking: save without BookingStatus",
+  "input": "BookingStatus missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Booking:to_Carrier",
+  "name": "Booking: save without to_Carrier",
+  "input": "to_Carrier missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Booking:to_Customer",
+  "name": "Booking: save without to_Customer",
+  "input": "to_Customer missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.BookingSupplement:Price",
+  "name": "BookingSupplement: save without Price",
+  "input": "Price missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.BookingSupplement:to_Supplement",
+  "name": "BookingSupplement: save without to_Supplement",
+  "input": "to_Supplement missing",
+  "expected": "400 on activate",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Bookings:no-create",
+  "name": "Bookings: create although $metadata forbids it",
+  "input": "create",
+  "expected": "405 not allowed",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Bookings:no-update",
+  "name": "Bookings: update although $metadata forbids it",
+  "input": "update",
+  "expected": "405 not allowed",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Bookings:no-delete",
+  "name": "Bookings: delete although $metadata forbids it",
+  "input": "delete",
+  "expected": "405 not allowed",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Bookings:computed",
+  "name": "Bookings: write computed TravelID, BookingID, CombinedID, …",
+  "input": "client sends computed fields",
+  "expected": "values ignored",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Travels:no-create",
+  "name": "Travels: create although $metadata forbids it",
+  "input": "create",
+  "expected": "405 not allowed",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Travels:no-update",
+  "name": "Travels: update although $metadata forbids it",
+  "input": "update",
+  "expected": "405 not allowed",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Travels:no-delete",
+  "name": "Travels: delete although $metadata forbids it",
+  "input": "delete",
+  "expected": "405 not allowed",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:AnalyticsService.Travels:computed",
+  "name": "Travels: write computed TravelID, TotalPrice, TravelStatus_code, …",
+  "input": "client sends computed fields",
+  "expected": "values ignored",
+  "today": ""
+ },
+ {
+  "category": "Framework constraints",
+  "id": "FW:TravelService.Travel:computed",
+  "name": "Travel: write computed TravelStatus_code",
+  "input": "client sends computed fields",
+  "expected": "values ignored",
+  "today": ""
+ },
+ {
+  "category": "Draft lifecycle",
+  "id": "DRF:TravelService.Travel:new-activate",
+  "name": "Travel: new → activate",
+  "input": "new-activate",
+  "expected": "active row created",
+  "today": ""
+ },
+ {
+  "category": "Draft lifecycle",
+  "id": "DRF:TravelService.Travel:edit-discard",
+  "name": "Travel: edit → discard",
+  "input": "edit-discard",
+  "expected": "active row unchanged",
+  "today": ""
+ },
+ {
+  "category": "Draft lifecycle",
+  "id": "DRF:TravelService.Travel:foreign-lock",
+  "name": "Travel: foreign → lock",
+  "input": "foreign-lock",
+  "expected": "423 / locked",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:1",
+  "name": "percent=1, TravelStatus=A, BookingFee=> 0, target=active, repeat=first",
+  "input": "percent=1, TravelStatus=A, BookingFee=> 0, target=active, repeat=first",
+  "expected": "rejected (status)",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:2",
+  "name": "percent=0, TravelStatus=X, BookingFee=null, target=draft, repeat=again",
+  "input": "percent=0, TravelStatus=X, BookingFee=null, target=draft, repeat=again",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:3",
+  "name": "percent=101, TravelStatus=O, BookingFee=> 0, target=draft, repeat=again",
+  "input": "percent=101, TravelStatus=O, BookingFee=> 0, target=draft, repeat=again",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:4",
+  "name": "percent=null, TravelStatus=X, BookingFee=> 0, target=active, repeat=again",
+  "input": "percent=null, TravelStatus=X, BookingFee=> 0, target=active, repeat=again",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:5",
+  "name": "percent=51, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+  "input": "percent=51, TravelStatus=A, BookingFee=0, target=draft, repeat=again",
+  "expected": "rejected (status)",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:6",
+  "name": "percent=100, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+  "input": "percent=100, TravelStatus=O, BookingFee=0, target=active, repeat=first",
+  "expected": "success",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:7",
+  "name": "percent=100, TravelStatus=A, BookingFee=null, target=draft, repeat=again",
+  "input": "percent=100, TravelStatus=A, BookingFee=null, target=draft, repeat=again",
+  "expected": "rejected (status)",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:8",
+  "name": "percent=101, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+  "input": "percent=101, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:9",
+  "name": "percent=0, TravelStatus=A, BookingFee=0, target=draft, repeat=first",
+  "input": "percent=0, TravelStatus=A, BookingFee=0, target=draft, repeat=first",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:10",
+  "name": "percent=1, TravelStatus=O, BookingFee=null, target=draft, repeat=again",
+  "input": "percent=1, TravelStatus=O, BookingFee=null, target=draft, repeat=again",
+  "expected": "4xx precondition",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:11",
+  "name": "percent=null, TravelStatus=O, BookingFee=null, target=draft, repeat=first",
+  "input": "percent=null, TravelStatus=O, BookingFee=null, target=draft, repeat=first",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:12",
+  "name": "percent=51, TravelStatus=X, BookingFee=0, target=active, repeat=first",
+  "input": "percent=51, TravelStatus=X, BookingFee=0, target=active, repeat=first",
+  "expected": "accepted today; UI hides it",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:13",
+  "name": "percent=0, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+  "input": "percent=0, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:14",
+  "name": "percent=1, TravelStatus=X, BookingFee=0, target=active, repeat=first",
+  "input": "percent=1, TravelStatus=X, BookingFee=0, target=active, repeat=first",
+  "expected": "accepted today; UI hides it",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:15",
+  "name": "percent=100, TravelStatus=X, BookingFee=> 0, target=active, repeat=first",
+  "input": "percent=100, TravelStatus=X, BookingFee=> 0, target=active, repeat=first",
+  "expected": "accepted today; UI hides it",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:16",
+  "name": "percent=101, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+  "input": "percent=101, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:17",
+  "name": "percent=51, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+  "input": "percent=51, TravelStatus=O, BookingFee=> 0, target=active, repeat=first",
+  "expected": "success",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:18",
+  "name": "percent=null, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+  "input": "percent=null, TravelStatus=A, BookingFee=0, target=active, repeat=first",
+  "expected": "400 invalid parameter",
+  "today": ""
+ },
+ {
+  "category": "deductDiscount combinations",
+  "id": "CMB:deductDiscount:19",
+  "name": "percent=51, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+  "input": "percent=51, TravelStatus=X, BookingFee=null, target=active, repeat=first",
+  "expected": "4xx precondition",
+  "today": ""
+ }
+]

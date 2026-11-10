@@ -1,0 +1,36 @@
+{
+ "id": "behaviour",
+ "title": "Behaviour matrix",
+ "step": "Handler AST",
+ "layer": "code",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "handlers",
+   "value": 13
+  },
+  {
+   "label": "rules",
+   "value": 11
+  },
+  {
+   "label": "rejections",
+   "value": 6
+  },
+  {
+   "label": "helpers",
+   "value": 2
+  }
+ ],
+ "from": [
+  "run/graph/ (Handler, Rule, Helper)"
+ ],
+ "views": [
+  "views/matrix.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/handlers.json"
+ ]
+}

@@ -1,0 +1,2186 @@
+{
+ "ns": "sap.fe.cap.travel",
+ "nodes": [
+  {
+   "id": "entity:sap.fe.cap.travel.Airline",
+   "type": "Entity",
+   "label": "Airline",
+   "layer": "model",
+   "ev": "db/master-data.cds:9"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Airport",
+   "type": "Entity",
+   "label": "Airport",
+   "layer": "model",
+   "ev": "db/master-data.cds:17"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Supplement",
+   "type": "Entity",
+   "label": "Supplement",
+   "layer": "model",
+   "ev": "db/master-data.cds:25"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Flight",
+   "type": "Entity",
+   "label": "Flight",
+   "layer": "model",
+   "ev": "db/master-data.cds:33"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.FlightConnection",
+   "type": "Entity",
+   "label": "FlightConnection",
+   "layer": "model",
+   "ev": "db/master-data.cds:53"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Passenger",
+   "type": "Entity",
+   "label": "Passenger",
+   "layer": "model",
+   "ev": "db/master-data.cds:73"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.TravelAgency",
+   "type": "Entity",
+   "label": "TravelAgency",
+   "layer": "model",
+   "ev": "db/master-data.cds:86"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.SupplementType",
+   "type": "Entity",
+   "label": "SupplementType",
+   "layer": "model",
+   "ev": "db/master-data.cds:103"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Travel",
+   "type": "Entity",
+   "label": "Travel",
+   "layer": "model",
+   "ev": "db/schema.cds:12"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Booking",
+   "type": "Entity",
+   "label": "Booking",
+   "layer": "model",
+   "ev": "db/schema.cds:33"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.BookingSupplement",
+   "type": "Entity",
+   "label": "BookingSupplement",
+   "layer": "model",
+   "ev": "db/schema.cds:51"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.BookingStatus",
+   "type": "Entity",
+   "label": "BookingStatus",
+   "layer": "model",
+   "ev": "db/schema.cds:72"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.TravelStatus",
+   "type": "Entity",
+   "label": "TravelStatus",
+   "layer": "model",
+   "ev": "db/schema.cds:82"
+  },
+  {
+   "id": "service:AnalyticsService",
+   "type": "Service",
+   "label": "AnalyticsService",
+   "layer": "service",
+   "ev": "srv/analytics-service.cds:3"
+  },
+  {
+   "id": "svcentity:AnalyticsService.Bookings",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.Bookings",
+   "layer": "service",
+   "ev": "srv/analytics-service.cds:9"
+  },
+  {
+   "id": "svcentity:AnalyticsService.BookingStatus",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.BookingStatus",
+   "layer": "service",
+   "ev": "srv/analytics-service.cds:63"
+  },
+  {
+   "id": "svcentity:AnalyticsService.Travels",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.Travels",
+   "layer": "service",
+   "ev": "srv/analytics-service.cds:68"
+  },
+  {
+   "id": "service:TravelService",
+   "type": "Service",
+   "label": "TravelService",
+   "layer": "service",
+   "ev": "srv/travel-service.cds:3"
+  },
+  {
+   "id": "svcentity:TravelService.Travel",
+   "type": "ServiceEntity",
+   "label": "TravelService.Travel",
+   "layer": "service",
+   "ev": "srv/travel-service.cds:11"
+  },
+  {
+   "id": "role:authenticated-user",
+   "type": "Role",
+   "label": "authenticated-user",
+   "layer": "access",
+   "ev": ""
+  },
+  {
+   "id": "role:reviewer",
+   "type": "Role",
+   "label": "reviewer",
+   "layer": "access",
+   "ev": ""
+  },
+  {
+   "id": "role:processor",
+   "type": "Role",
+   "label": "processor",
+   "layer": "access",
+   "ev": ""
+  },
+  {
+   "id": "role:admin",
+   "type": "Role",
+   "label": "admin",
+   "layer": "access",
+   "ev": ""
+  },
+  {
+   "id": "action:TravelService.Travel.createTravelByTemplate",
+   "type": "Action",
+   "label": "createTravelByTemplate",
+   "layer": "service",
+   "ev": "srv/travel-service.cds:12"
+  },
+  {
+   "id": "action:TravelService.Travel.rejectTravel",
+   "type": "Action",
+   "label": "rejectTravel",
+   "layer": "service",
+   "ev": "srv/travel-service.cds:13"
+  },
+  {
+   "id": "action:TravelService.Travel.acceptTravel",
+   "type": "Action",
+   "label": "acceptTravel",
+   "layer": "service",
+   "ev": "srv/travel-service.cds:14"
+  },
+  {
+   "id": "action:TravelService.Travel.deductDiscount",
+   "type": "Action",
+   "label": "deductDiscount",
+   "layer": "service",
+   "ev": "srv/travel-service.cds:15"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.Supplement.texts",
+   "type": "Entity",
+   "label": "Supplement.texts",
+   "layer": "model",
+   "ev": "db/master-data.cds:25"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.SupplementType.texts",
+   "type": "Entity",
+   "label": "SupplementType.texts",
+   "layer": "model",
+   "ev": "db/master-data.cds:103"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.BookingStatus.texts",
+   "type": "Entity",
+   "label": "BookingStatus.texts",
+   "layer": "model",
+   "ev": "db/schema.cds:72"
+  },
+  {
+   "id": "entity:sap.fe.cap.travel.TravelStatus.texts",
+   "type": "Entity",
+   "label": "TravelStatus.texts",
+   "layer": "model",
+   "ev": "db/schema.cds:82"
+  },
+  {
+   "id": "svcentity:AnalyticsService.Airline",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.Airline",
+   "layer": "service",
+   "ev": "db/master-data.cds:9"
+  },
+  {
+   "id": "svcentity:AnalyticsService.Flight",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.Flight",
+   "layer": "service",
+   "ev": "db/master-data.cds:33"
+  },
+  {
+   "id": "svcentity:AnalyticsService.BookingStatus.texts",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.BookingStatus.texts",
+   "layer": "service",
+   "ev": "db/schema.cds:72"
+  },
+  {
+   "id": "svcentity:AnalyticsService.TravelStatus",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.TravelStatus",
+   "layer": "service",
+   "ev": "db/schema.cds:82"
+  },
+  {
+   "id": "svcentity:AnalyticsService.TravelAgency",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.TravelAgency",
+   "layer": "service",
+   "ev": "db/master-data.cds:86"
+  },
+  {
+   "id": "svcentity:AnalyticsService.Passenger",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.Passenger",
+   "layer": "service",
+   "ev": "db/master-data.cds:73"
+  },
+  {
+   "id": "svcentity:TravelService.TravelStatus",
+   "type": "ServiceEntity",
+   "label": "TravelService.TravelStatus",
+   "layer": "service",
+   "ev": "db/schema.cds:82"
+  },
+  {
+   "id": "svcentity:TravelService.TravelAgency",
+   "type": "ServiceEntity",
+   "label": "TravelService.TravelAgency",
+   "layer": "service",
+   "ev": "db/master-data.cds:86"
+  },
+  {
+   "id": "svcentity:TravelService.Passenger",
+   "type": "ServiceEntity",
+   "label": "TravelService.Passenger",
+   "layer": "service",
+   "ev": "db/master-data.cds:73"
+  },
+  {
+   "id": "svcentity:TravelService.Booking",
+   "type": "ServiceEntity",
+   "label": "TravelService.Booking",
+   "layer": "service",
+   "ev": "db/schema.cds:33"
+  },
+  {
+   "id": "svcentity:AnalyticsService.FlightConnection",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.FlightConnection",
+   "layer": "service",
+   "ev": "db/master-data.cds:53"
+  },
+  {
+   "id": "svcentity:AnalyticsService.TravelStatus.texts",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.TravelStatus.texts",
+   "layer": "service",
+   "ev": "db/schema.cds:82"
+  },
+  {
+   "id": "svcentity:TravelService.TravelStatus.texts",
+   "type": "ServiceEntity",
+   "label": "TravelService.TravelStatus.texts",
+   "layer": "service",
+   "ev": "db/schema.cds:82"
+  },
+  {
+   "id": "svcentity:TravelService.BookingStatus",
+   "type": "ServiceEntity",
+   "label": "TravelService.BookingStatus",
+   "layer": "service",
+   "ev": "db/schema.cds:72"
+  },
+  {
+   "id": "svcentity:TravelService.BookingSupplement",
+   "type": "ServiceEntity",
+   "label": "TravelService.BookingSupplement",
+   "layer": "service",
+   "ev": "db/schema.cds:51"
+  },
+  {
+   "id": "svcentity:TravelService.Airline",
+   "type": "ServiceEntity",
+   "label": "TravelService.Airline",
+   "layer": "service",
+   "ev": "db/master-data.cds:9"
+  },
+  {
+   "id": "svcentity:TravelService.Flight",
+   "type": "ServiceEntity",
+   "label": "TravelService.Flight",
+   "layer": "service",
+   "ev": "db/master-data.cds:33"
+  },
+  {
+   "id": "svcentity:AnalyticsService.Airport",
+   "type": "ServiceEntity",
+   "label": "AnalyticsService.Airport",
+   "layer": "service",
+   "ev": "db/master-data.cds:17"
+  },
+  {
+   "id": "svcentity:TravelService.BookingStatus.texts",
+   "type": "ServiceEntity",
+   "label": "TravelService.BookingStatus.texts",
+   "layer": "service",
+   "ev": "db/schema.cds:72"
+  },
+  {
+   "id": "svcentity:TravelService.Supplement",
+   "type": "ServiceEntity",
+   "label": "TravelService.Supplement",
+   "layer": "service",
+   "ev": "db/master-data.cds:25"
+  },
+  {
+   "id": "svcentity:TravelService.FlightConnection",
+   "type": "ServiceEntity",
+   "label": "TravelService.FlightConnection",
+   "layer": "service",
+   "ev": "db/master-data.cds:53"
+  },
+  {
+   "id": "svcentity:TravelService.SupplementType",
+   "type": "ServiceEntity",
+   "label": "TravelService.SupplementType",
+   "layer": "service",
+   "ev": "db/master-data.cds:103"
+  },
+  {
+   "id": "svcentity:TravelService.Supplement.texts",
+   "type": "ServiceEntity",
+   "label": "TravelService.Supplement.texts",
+   "layer": "service",
+   "ev": "db/master-data.cds:25"
+  },
+  {
+   "id": "svcentity:TravelService.Airport",
+   "type": "ServiceEntity",
+   "label": "TravelService.Airport",
+   "layer": "service",
+   "ev": "db/master-data.cds:17"
+  },
+  {
+   "id": "svcentity:TravelService.SupplementType.texts",
+   "type": "ServiceEntity",
+   "label": "TravelService.SupplementType.texts",
+   "layer": "service",
+   "ev": "db/master-data.cds:103"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:16",
+   "type": "Handler",
+   "label": "before CREATE Travel",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:16"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:18",
+   "type": "Rule",
+   "label": "derivation TravelID",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:18"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:21",
+   "type": "Handler",
+   "label": "before NEW Booking",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:21"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:23",
+   "type": "Rule",
+   "label": "derivation BookingID",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:23"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:24",
+   "type": "Rule",
+   "label": "derivation BookingDate",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:24"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:27",
+   "type": "Handler",
+   "label": "before NEW BookingSupplement",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:27"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:29",
+   "type": "Rule",
+   "label": "derivation BookingSupplementID",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:29"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:34",
+   "type": "Handler",
+   "label": "before SAVE Travel",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:34"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:36",
+   "type": "Rule",
+   "label": "rejection @36",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:36"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:37",
+   "type": "Rule",
+   "label": "rejection @37",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:37"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:45",
+   "type": "Handler",
+   "label": "on UPDATE Travel",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:45"
+  },
+  {
+   "id": "helper:srv/travel-service.ts:52",
+   "type": "Helper",
+   "label": "update_totals",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:52"
+  },
+  {
+   "id": "helper:srv/travel-service.ts:67",
+   "type": "Helper",
+   "label": "update_totalsGreen",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:67"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:46",
+   "type": "Handler",
+   "label": "on UPDATE Booking",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:46"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:47",
+   "type": "Handler",
+   "label": "on UPDATE BookingSupplement",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:47"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:48",
+   "type": "Handler",
+   "label": "on DELETE Booking",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:48"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:49",
+   "type": "Handler",
+   "label": "on DELETE BookingSupplement",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:49"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:86",
+   "type": "Handler",
+   "label": "before acceptTravel/rejectTravel Travel",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:86"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:93",
+   "type": "Rule",
+   "label": "rejection @93",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:93"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:95",
+   "type": "Handler",
+   "label": "on acceptTravel",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:95"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:96",
+   "type": "Handler",
+   "label": "on rejectTravel",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:96"
+  },
+  {
+   "id": "handler:srv/travel-service.ts:97",
+   "type": "Handler",
+   "label": "on deductDiscount",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:97"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:99",
+   "type": "Rule",
+   "label": "conditional-write @99",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:99"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:105",
+   "type": "Rule",
+   "label": "rejection @105",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:105"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:106",
+   "type": "Rule",
+   "label": "rejection @106",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:106"
+  },
+  {
+   "id": "rule:srv/travel-service.ts:107",
+   "type": "Rule",
+   "label": "rejection @107",
+   "layer": "code",
+   "ev": "srv/travel-service.ts:107"
+  },
+  {
+   "id": "uirule:TravelService.Travel.rejectTravel:available",
+   "type": "UiRule",
+   "label": "rejectTravel · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:37"
+  },
+  {
+   "id": "uirule:TravelService.Travel.acceptTravel:available",
+   "type": "UiRule",
+   "label": "acceptTravel · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:41"
+  },
+  {
+   "id": "uirule:TravelService.Travel.deductDiscount:available",
+   "type": "UiRule",
+   "label": "deductDiscount · partial",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:45"
+  },
+  {
+   "id": "uirule:TravelService.Travel:fieldcontrol:TravelStatus.fieldControl",
+   "type": "UiRule",
+   "label": "field-control · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:29"
+  },
+  {
+   "id": "uirule:TravelService.Travel:sideeffects",
+   "type": "UiRule",
+   "label": "side-effects · consistent",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:20"
+  },
+  {
+   "id": "uirule:TravelService.Travel:sideeffects#GoGreen",
+   "type": "UiRule",
+   "label": "side-effects · consistent",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:20"
+  },
+  {
+   "id": "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+   "type": "UiRule",
+   "label": "side-effects · consistent",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:51"
+  },
+  {
+   "id": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+   "type": "UiRule",
+   "label": "deductDiscount · framework",
+   "layer": "ui",
+   "ev": "srv/travel-service.cds:20"
+  },
+  {
+   "id": "uirule:TravelService.Travel:readonly",
+   "type": "UiRule",
+   "label": "readonly · framework",
+   "layer": "ui",
+   "ev": "db/schema.cds:14"
+  },
+  {
+   "id": "uirule:TravelService.Travel:mandatory",
+   "type": "UiRule",
+   "label": "mandatory · framework",
+   "layer": "ui",
+   "ev": "db/schema.cds:15"
+  },
+  {
+   "id": "uirule:TravelService.Booking:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+   "type": "UiRule",
+   "label": "field-control · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:65"
+  },
+  {
+   "id": "uirule:TravelService.Booking:CreateHidden",
+   "type": "UiRule",
+   "label": "CreateHidden · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:60"
+  },
+  {
+   "id": "uirule:TravelService.Booking:DeleteHidden",
+   "type": "UiRule",
+   "label": "DeleteHidden · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:61"
+  },
+  {
+   "id": "uirule:TravelService.Booking:mandatory",
+   "type": "UiRule",
+   "label": "mandatory · framework",
+   "layer": "ui",
+   "ev": "db/schema.cds:37"
+  },
+  {
+   "id": "uirule:TravelService.BookingSupplement:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+   "type": "UiRule",
+   "label": "field-control · ui-only",
+   "layer": "ui",
+   "ev": "app/travel_processor/field-control.cds:29"
+  },
+  {
+   "id": "uirule:TravelService.BookingSupplement:mandatory",
+   "type": "UiRule",
+   "label": "mandatory · framework",
+   "layer": "ui",
+   "ev": "db/schema.cds:22"
+  },
+  {
+   "id": "uirule:AnalyticsService.Bookings:capabilities",
+   "type": "UiRule",
+   "label": "capabilities · framework",
+   "layer": "ui",
+   "ev": "srv/analytics-service.cds:9"
+  },
+  {
+   "id": "uirule:AnalyticsService.Bookings:computed",
+   "type": "UiRule",
+   "label": "computed · framework",
+   "layer": "ui",
+   "ev": "srv/analytics-service.cds:9"
+  },
+  {
+   "id": "uirule:AnalyticsService.Travels:capabilities",
+   "type": "UiRule",
+   "label": "capabilities · framework",
+   "layer": "ui",
+   "ev": "srv/analytics-service.cds:68"
+  },
+  {
+   "id": "uirule:AnalyticsService.Travels:computed",
+   "type": "UiRule",
+   "label": "computed · framework",
+   "layer": "ui",
+   "ev": "srv/analytics-service.cds:68"
+  },
+  {
+   "id": "uirule:TravelService.Travel:computed",
+   "type": "UiRule",
+   "label": "computed · framework",
+   "layer": "ui",
+   "ev": "srv/travel-service.cds:11"
+  },
+  {
+   "id": "ui5app:sap.fe.cap.travel_analytics",
+   "type": "UI5App",
+   "label": "sap.fe.cap.travel_analytics",
+   "layer": "ui",
+   "ev": "app/travel_analytics/webapp/manifest.json:1"
+  },
+  {
+   "id": "route:sap.fe.cap.travel_analytics/BookingsList",
+   "type": "Route",
+   "label": "BookingsList",
+   "layer": "ui",
+   "ev": "app/travel_analytics/webapp/manifest.json:118"
+  },
+  {
+   "id": "route:sap.fe.cap.travel_analytics/BookingsObjectPage",
+   "type": "Route",
+   "label": "BookingsObjectPage",
+   "layer": "ui",
+   "ev": "app/travel_analytics/webapp/manifest.json:123"
+  },
+  {
+   "id": "ui5app:sap.fe.cap.travel",
+   "type": "UI5App",
+   "label": "sap.fe.cap.travel",
+   "layer": "ui",
+   "ev": "app/travel_processor/webapp/manifest.json:1"
+  },
+  {
+   "id": "route:sap.fe.cap.travel/TravelList",
+   "type": "Route",
+   "label": "TravelList",
+   "layer": "ui",
+   "ev": "app/travel_processor/webapp/manifest.json:112"
+  },
+  {
+   "id": "route:sap.fe.cap.travel/TravelObjectPage",
+   "type": "Route",
+   "label": "TravelObjectPage",
+   "layer": "ui",
+   "ev": "app/travel_processor/webapp/manifest.json:117"
+  },
+  {
+   "id": "route:sap.fe.cap.travel/BookingObjectPage",
+   "type": "Route",
+   "label": "BookingObjectPage",
+   "layer": "ui",
+   "ev": "app/travel_processor/webapp/manifest.json:122"
+  },
+  {
+   "id": "view:app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml",
+   "type": "View",
+   "label": "app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml",
+   "layer": "ui",
+   "ev": "app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml:1"
+  },
+  {
+   "id": "view:app/travel_processor/webapp/ext/fragment/Trees4Tickets.fragment.xml",
+   "type": "View",
+   "label": "app/travel_processor/webapp/ext/fragment/Trees4Tickets.fragment.xml",
+   "layer": "ui",
+   "ev": "app/travel_processor/webapp/ext/fragment/Trees4Tickets.fragment.xml:1"
+  },
+  {
+   "id": "user:rose",
+   "type": "MockUser",
+   "label": "rose",
+   "layer": "access",
+   "ev": "package.json:62"
+  },
+  {
+   "id": "user:martha",
+   "type": "MockUser",
+   "label": "martha",
+   "layer": "access",
+   "ev": "package.json:65"
+  },
+  {
+   "id": "user:amy",
+   "type": "MockUser",
+   "label": "amy",
+   "layer": "access",
+   "ev": "package.json:70"
+  },
+  {
+   "id": "user:admin",
+   "type": "MockUser",
+   "label": "admin",
+   "layer": "access",
+   "ev": "package.json:75"
+  },
+  {
+   "id": "user:alice",
+   "type": "MockUser",
+   "label": "alice",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:bob",
+   "type": "MockUser",
+   "label": "bob",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:carol",
+   "type": "MockUser",
+   "label": "carol",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:dave",
+   "type": "MockUser",
+   "label": "dave",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:erin",
+   "type": "MockUser",
+   "label": "erin",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:fred",
+   "type": "MockUser",
+   "label": "fred",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:me",
+   "type": "MockUser",
+   "label": "me",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "user:yves",
+   "type": "MockUser",
+   "label": "yves",
+   "layer": "access",
+   "ev": "@sap/cds defaults"
+  },
+  {
+   "id": "test:test/odata.test.ts",
+   "type": "ExistingTest",
+   "label": "odata.test.ts",
+   "layer": "tests",
+   "ev": "test/odata.test.ts:1"
+  },
+  {
+   "id": "test:app/travel_analytics/webapp/test/integration/OpaJourney.js",
+   "type": "ExistingTest",
+   "label": "OpaJourney.js (travel_analytics)",
+   "layer": "tests",
+   "ev": "app/travel_analytics/webapp/test/integration/OpaJourney.js:1"
+  },
+  {
+   "id": "test:app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "type": "ExistingTest",
+   "label": "OpaJourney.js (travel_processor)",
+   "layer": "tests",
+   "ev": "app/travel_processor/webapp/test/integration/OpaJourney.js:1"
+  }
+ ],
+ "edges": [
+  [
+   "entity:sap.fe.cap.travel.Supplement",
+   "associates",
+   "entity:sap.fe.cap.travel.SupplementType"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Supplement",
+   "composes",
+   "entity:sap.fe.cap.travel.Supplement.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Supplement",
+   "associates",
+   "entity:sap.fe.cap.travel.Supplement.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Flight",
+   "associates",
+   "entity:sap.fe.cap.travel.Airline"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Flight",
+   "associates",
+   "entity:sap.fe.cap.travel.FlightConnection"
+  ],
+  [
+   "entity:sap.fe.cap.travel.FlightConnection",
+   "associates",
+   "entity:sap.fe.cap.travel.Airport"
+  ],
+  [
+   "entity:sap.fe.cap.travel.FlightConnection",
+   "associates",
+   "entity:sap.fe.cap.travel.Airport"
+  ],
+  [
+   "entity:sap.fe.cap.travel.FlightConnection",
+   "associates",
+   "entity:sap.fe.cap.travel.Airline"
+  ],
+  [
+   "entity:sap.fe.cap.travel.SupplementType",
+   "composes",
+   "entity:sap.fe.cap.travel.SupplementType.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.SupplementType",
+   "associates",
+   "entity:sap.fe.cap.travel.SupplementType.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Travel",
+   "associates",
+   "entity:sap.fe.cap.travel.TravelStatus"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Travel",
+   "associates",
+   "entity:sap.fe.cap.travel.TravelAgency"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Travel",
+   "associates",
+   "entity:sap.fe.cap.travel.Passenger"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Travel",
+   "composes",
+   "entity:sap.fe.cap.travel.Booking"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Booking",
+   "associates",
+   "entity:sap.fe.cap.travel.BookingStatus"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Booking",
+   "composes",
+   "entity:sap.fe.cap.travel.BookingSupplement"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Booking",
+   "associates",
+   "entity:sap.fe.cap.travel.Airline"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Booking",
+   "associates",
+   "entity:sap.fe.cap.travel.Passenger"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Booking",
+   "associates",
+   "entity:sap.fe.cap.travel.Travel"
+  ],
+  [
+   "entity:sap.fe.cap.travel.Booking",
+   "associates",
+   "entity:sap.fe.cap.travel.Flight"
+  ],
+  [
+   "entity:sap.fe.cap.travel.BookingSupplement",
+   "associates",
+   "entity:sap.fe.cap.travel.Booking"
+  ],
+  [
+   "entity:sap.fe.cap.travel.BookingSupplement",
+   "associates",
+   "entity:sap.fe.cap.travel.Travel"
+  ],
+  [
+   "entity:sap.fe.cap.travel.BookingSupplement",
+   "associates",
+   "entity:sap.fe.cap.travel.Supplement"
+  ],
+  [
+   "entity:sap.fe.cap.travel.BookingStatus",
+   "composes",
+   "entity:sap.fe.cap.travel.BookingStatus.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.BookingStatus",
+   "associates",
+   "entity:sap.fe.cap.travel.BookingStatus.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.TravelStatus",
+   "composes",
+   "entity:sap.fe.cap.travel.TravelStatus.texts"
+  ],
+  [
+   "entity:sap.fe.cap.travel.TravelStatus",
+   "associates",
+   "entity:sap.fe.cap.travel.TravelStatus.texts"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.Bookings"
+  ],
+  [
+   "svcentity:AnalyticsService.Bookings",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Booking"
+  ],
+  [
+   "svcentity:AnalyticsService.Bookings",
+   "associates",
+   "svcentity:AnalyticsService.Travels"
+  ],
+  [
+   "svcentity:AnalyticsService.Bookings",
+   "associates",
+   "svcentity:AnalyticsService.Airline"
+  ],
+  [
+   "svcentity:AnalyticsService.Bookings",
+   "associates",
+   "svcentity:AnalyticsService.Flight"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.BookingStatus"
+  ],
+  [
+   "svcentity:AnalyticsService.BookingStatus",
+   "projects_on",
+   "entity:sap.fe.cap.travel.BookingStatus"
+  ],
+  [
+   "svcentity:AnalyticsService.BookingStatus",
+   "composes",
+   "svcentity:AnalyticsService.BookingStatus.texts"
+  ],
+  [
+   "svcentity:AnalyticsService.BookingStatus",
+   "associates",
+   "svcentity:AnalyticsService.BookingStatus.texts"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.Travels"
+  ],
+  [
+   "svcentity:AnalyticsService.Travels",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Travel"
+  ],
+  [
+   "svcentity:AnalyticsService.Travels",
+   "associates",
+   "svcentity:AnalyticsService.TravelStatus"
+  ],
+  [
+   "svcentity:AnalyticsService.Travels",
+   "associates",
+   "svcentity:AnalyticsService.TravelAgency"
+  ],
+  [
+   "svcentity:AnalyticsService.Travels",
+   "associates",
+   "svcentity:AnalyticsService.Passenger"
+  ],
+  [
+   "svcentity:AnalyticsService.Travels",
+   "composes",
+   "svcentity:AnalyticsService.Bookings"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Travel"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "requires",
+   "role:authenticated-user"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "requires",
+   "role:reviewer"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "requires",
+   "role:processor"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "requires",
+   "role:admin"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "associates",
+   "svcentity:TravelService.TravelStatus"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "associates",
+   "svcentity:TravelService.TravelAgency"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "associates",
+   "svcentity:TravelService.Passenger"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "composes",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "has_action",
+   "action:TravelService.Travel.createTravelByTemplate"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "has_action",
+   "action:TravelService.Travel.rejectTravel"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "has_action",
+   "action:TravelService.Travel.acceptTravel"
+  ],
+  [
+   "svcentity:TravelService.Travel",
+   "has_action",
+   "action:TravelService.Travel.deductDiscount"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.Airline"
+  ],
+  [
+   "svcentity:AnalyticsService.Airline",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Airline"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.Flight"
+  ],
+  [
+   "svcentity:AnalyticsService.Flight",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Flight"
+  ],
+  [
+   "svcentity:AnalyticsService.Flight",
+   "associates",
+   "svcentity:AnalyticsService.Airline"
+  ],
+  [
+   "svcentity:AnalyticsService.Flight",
+   "associates",
+   "svcentity:AnalyticsService.FlightConnection"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.BookingStatus.texts"
+  ],
+  [
+   "svcentity:AnalyticsService.BookingStatus.texts",
+   "projects_on",
+   "entity:sap.fe.cap.travel.BookingStatus.texts"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.TravelStatus"
+  ],
+  [
+   "svcentity:AnalyticsService.TravelStatus",
+   "projects_on",
+   "entity:sap.fe.cap.travel.TravelStatus"
+  ],
+  [
+   "svcentity:AnalyticsService.TravelStatus",
+   "composes",
+   "svcentity:AnalyticsService.TravelStatus.texts"
+  ],
+  [
+   "svcentity:AnalyticsService.TravelStatus",
+   "associates",
+   "svcentity:AnalyticsService.TravelStatus.texts"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.TravelAgency"
+  ],
+  [
+   "svcentity:AnalyticsService.TravelAgency",
+   "projects_on",
+   "entity:sap.fe.cap.travel.TravelAgency"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.Passenger"
+  ],
+  [
+   "svcentity:AnalyticsService.Passenger",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Passenger"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.TravelStatus"
+  ],
+  [
+   "svcentity:TravelService.TravelStatus",
+   "projects_on",
+   "entity:sap.fe.cap.travel.TravelStatus"
+  ],
+  [
+   "svcentity:TravelService.TravelStatus",
+   "composes",
+   "svcentity:TravelService.TravelStatus.texts"
+  ],
+  [
+   "svcentity:TravelService.TravelStatus",
+   "associates",
+   "svcentity:TravelService.TravelStatus.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.TravelAgency"
+  ],
+  [
+   "svcentity:TravelService.TravelAgency",
+   "projects_on",
+   "entity:sap.fe.cap.travel.TravelAgency"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Passenger"
+  ],
+  [
+   "svcentity:TravelService.Passenger",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Passenger"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Booking"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "associates",
+   "svcentity:TravelService.BookingStatus"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "composes",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "associates",
+   "svcentity:TravelService.Airline"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "associates",
+   "svcentity:TravelService.Passenger"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "associates",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "svcentity:TravelService.Booking",
+   "associates",
+   "svcentity:TravelService.Flight"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.FlightConnection"
+  ],
+  [
+   "svcentity:AnalyticsService.FlightConnection",
+   "projects_on",
+   "entity:sap.fe.cap.travel.FlightConnection"
+  ],
+  [
+   "svcentity:AnalyticsService.FlightConnection",
+   "associates",
+   "svcentity:AnalyticsService.Airport"
+  ],
+  [
+   "svcentity:AnalyticsService.FlightConnection",
+   "associates",
+   "svcentity:AnalyticsService.Airport"
+  ],
+  [
+   "svcentity:AnalyticsService.FlightConnection",
+   "associates",
+   "svcentity:AnalyticsService.Airline"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.TravelStatus.texts"
+  ],
+  [
+   "svcentity:AnalyticsService.TravelStatus.texts",
+   "projects_on",
+   "entity:sap.fe.cap.travel.TravelStatus.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.TravelStatus.texts"
+  ],
+  [
+   "svcentity:TravelService.TravelStatus.texts",
+   "projects_on",
+   "entity:sap.fe.cap.travel.TravelStatus.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.BookingStatus"
+  ],
+  [
+   "svcentity:TravelService.BookingStatus",
+   "projects_on",
+   "entity:sap.fe.cap.travel.BookingStatus"
+  ],
+  [
+   "svcentity:TravelService.BookingStatus",
+   "composes",
+   "svcentity:TravelService.BookingStatus.texts"
+  ],
+  [
+   "svcentity:TravelService.BookingStatus",
+   "associates",
+   "svcentity:TravelService.BookingStatus.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "svcentity:TravelService.BookingSupplement",
+   "projects_on",
+   "entity:sap.fe.cap.travel.BookingSupplement"
+  ],
+  [
+   "svcentity:TravelService.BookingSupplement",
+   "associates",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "svcentity:TravelService.BookingSupplement",
+   "associates",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "svcentity:TravelService.BookingSupplement",
+   "associates",
+   "svcentity:TravelService.Supplement"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Airline"
+  ],
+  [
+   "svcentity:TravelService.Airline",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Airline"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Flight"
+  ],
+  [
+   "svcentity:TravelService.Flight",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Flight"
+  ],
+  [
+   "svcentity:TravelService.Flight",
+   "associates",
+   "svcentity:TravelService.Airline"
+  ],
+  [
+   "svcentity:TravelService.Flight",
+   "associates",
+   "svcentity:TravelService.FlightConnection"
+  ],
+  [
+   "service:AnalyticsService",
+   "exposes",
+   "svcentity:AnalyticsService.Airport"
+  ],
+  [
+   "svcentity:AnalyticsService.Airport",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Airport"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.BookingStatus.texts"
+  ],
+  [
+   "svcentity:TravelService.BookingStatus.texts",
+   "projects_on",
+   "entity:sap.fe.cap.travel.BookingStatus.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Supplement"
+  ],
+  [
+   "svcentity:TravelService.Supplement",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Supplement"
+  ],
+  [
+   "svcentity:TravelService.Supplement",
+   "associates",
+   "svcentity:TravelService.SupplementType"
+  ],
+  [
+   "svcentity:TravelService.Supplement",
+   "composes",
+   "svcentity:TravelService.Supplement.texts"
+  ],
+  [
+   "svcentity:TravelService.Supplement",
+   "associates",
+   "svcentity:TravelService.Supplement.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.FlightConnection"
+  ],
+  [
+   "svcentity:TravelService.FlightConnection",
+   "projects_on",
+   "entity:sap.fe.cap.travel.FlightConnection"
+  ],
+  [
+   "svcentity:TravelService.FlightConnection",
+   "associates",
+   "svcentity:TravelService.Airport"
+  ],
+  [
+   "svcentity:TravelService.FlightConnection",
+   "associates",
+   "svcentity:TravelService.Airport"
+  ],
+  [
+   "svcentity:TravelService.FlightConnection",
+   "associates",
+   "svcentity:TravelService.Airline"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.SupplementType"
+  ],
+  [
+   "svcentity:TravelService.SupplementType",
+   "projects_on",
+   "entity:sap.fe.cap.travel.SupplementType"
+  ],
+  [
+   "svcentity:TravelService.SupplementType",
+   "composes",
+   "svcentity:TravelService.SupplementType.texts"
+  ],
+  [
+   "svcentity:TravelService.SupplementType",
+   "associates",
+   "svcentity:TravelService.SupplementType.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Supplement.texts"
+  ],
+  [
+   "svcentity:TravelService.Supplement.texts",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Supplement.texts"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.Airport"
+  ],
+  [
+   "svcentity:TravelService.Airport",
+   "projects_on",
+   "entity:sap.fe.cap.travel.Airport"
+  ],
+  [
+   "service:TravelService",
+   "exposes",
+   "svcentity:TravelService.SupplementType.texts"
+  ],
+  [
+   "svcentity:TravelService.SupplementType.texts",
+   "projects_on",
+   "entity:sap.fe.cap.travel.SupplementType.texts"
+  ],
+  [
+   "handler:srv/travel-service.ts:16",
+   "handles",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:16",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:16",
+   "enforces",
+   "rule:srv/travel-service.ts:18"
+  ],
+  [
+   "handler:srv/travel-service.ts:21",
+   "handles",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:21",
+   "reads",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:21",
+   "enforces",
+   "rule:srv/travel-service.ts:23"
+  ],
+  [
+   "handler:srv/travel-service.ts:21",
+   "enforces",
+   "rule:srv/travel-service.ts:24"
+  ],
+  [
+   "handler:srv/travel-service.ts:27",
+   "handles",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:27",
+   "reads",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:27",
+   "enforces",
+   "rule:srv/travel-service.ts:29"
+  ],
+  [
+   "handler:srv/travel-service.ts:34",
+   "handles",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:34",
+   "enforces",
+   "rule:srv/travel-service.ts:36"
+  ],
+  [
+   "handler:srv/travel-service.ts:34",
+   "enforces",
+   "rule:srv/travel-service.ts:37"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "handles",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "calls",
+   "helper:srv/travel-service.ts:52"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "calls",
+   "helper:srv/travel-service.ts:67"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "reads",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:45",
+   "reads",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "handles",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "calls",
+   "helper:srv/travel-service.ts:52"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "calls",
+   "helper:srv/travel-service.ts:67"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "reads",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:46",
+   "reads",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "handles",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "calls",
+   "helper:srv/travel-service.ts:52"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "calls",
+   "helper:srv/travel-service.ts:67"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "reads",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:47",
+   "reads",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "handles",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "calls",
+   "helper:srv/travel-service.ts:52"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "calls",
+   "helper:srv/travel-service.ts:67"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "reads",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:48",
+   "reads",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "handles",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "calls",
+   "helper:srv/travel-service.ts:52"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "calls",
+   "helper:srv/travel-service.ts:67"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "reads",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "handler:srv/travel-service.ts:49",
+   "reads",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "handler:srv/travel-service.ts:86",
+   "handles",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:86",
+   "handles",
+   "action:TravelService.Travel.acceptTravel"
+  ],
+  [
+   "handler:srv/travel-service.ts:86",
+   "handles",
+   "action:TravelService.Travel.rejectTravel"
+  ],
+  [
+   "handler:srv/travel-service.ts:86",
+   "enforces",
+   "rule:srv/travel-service.ts:93"
+  ],
+  [
+   "handler:srv/travel-service.ts:95",
+   "handles",
+   "action:TravelService.Travel.acceptTravel"
+  ],
+  [
+   "handler:srv/travel-service.ts:95",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:96",
+   "handles",
+   "action:TravelService.Travel.rejectTravel"
+  ],
+  [
+   "handler:srv/travel-service.ts:96",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "handles",
+   "action:TravelService.Travel.deductDiscount"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "writes",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "enforces",
+   "rule:srv/travel-service.ts:99"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "reads",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "enforces",
+   "rule:srv/travel-service.ts:105"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "enforces",
+   "rule:srv/travel-service.ts:106"
+  ],
+  [
+   "handler:srv/travel-service.ts:97",
+   "enforces",
+   "rule:srv/travel-service.ts:107"
+  ],
+  [
+   "uirule:TravelService.Travel.rejectTravel:available",
+   "checked_in",
+   "handler:srv/travel-service.ts:86"
+  ],
+  [
+   "uirule:TravelService.Travel.rejectTravel:available",
+   "checked_in",
+   "handler:srv/travel-service.ts:96"
+  ],
+  [
+   "uirule:TravelService.Travel.acceptTravel:available",
+   "checked_in",
+   "handler:srv/travel-service.ts:86"
+  ],
+  [
+   "uirule:TravelService.Travel.acceptTravel:available",
+   "checked_in",
+   "handler:srv/travel-service.ts:95"
+  ],
+  [
+   "uirule:TravelService.Travel.deductDiscount:available",
+   "checked_in",
+   "handler:srv/travel-service.ts:97"
+  ],
+  [
+   "uirule:TravelService.Travel.deductDiscount:available",
+   "enforced_by",
+   "rule:srv/travel-service.ts:99"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects",
+   "enforced_by",
+   "handler:srv/travel-service.ts:45"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects",
+   "enforced_by",
+   "handler:srv/travel-service.ts:48"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects",
+   "enforced_by",
+   "handler:srv/travel-service.ts:49"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#GoGreen",
+   "enforced_by",
+   "handler:srv/travel-service.ts:45"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#GoGreen",
+   "enforced_by",
+   "handler:srv/travel-service.ts:48"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#GoGreen",
+   "enforced_by",
+   "handler:srv/travel-service.ts:49"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+   "enforced_by",
+   "handler:srv/travel-service.ts:45"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+   "enforced_by",
+   "handler:srv/travel-service.ts:46"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+   "enforced_by",
+   "handler:srv/travel-service.ts:47"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+   "enforced_by",
+   "handler:srv/travel-service.ts:48"
+  ],
+  [
+   "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+   "enforced_by",
+   "handler:srv/travel-service.ts:49"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel_analytics",
+   "uses",
+   "service:AnalyticsService"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel_analytics",
+   "has_route",
+   "route:sap.fe.cap.travel_analytics/BookingsList"
+  ],
+  [
+   "route:sap.fe.cap.travel_analytics/BookingsList",
+   "shows",
+   "svcentity:AnalyticsService.Bookings"
+  ],
+  [
+   "route:sap.fe.cap.travel_analytics/BookingsList",
+   "navigates_to",
+   "route:sap.fe.cap.travel_analytics/BookingsObjectPage"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel_analytics",
+   "has_route",
+   "route:sap.fe.cap.travel_analytics/BookingsObjectPage"
+  ],
+  [
+   "route:sap.fe.cap.travel_analytics/BookingsObjectPage",
+   "shows",
+   "svcentity:AnalyticsService.Bookings"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel",
+   "uses",
+   "service:TravelService"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel",
+   "has_route",
+   "route:sap.fe.cap.travel/TravelList"
+  ],
+  [
+   "route:sap.fe.cap.travel/TravelList",
+   "shows",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "route:sap.fe.cap.travel/TravelList",
+   "navigates_to",
+   "route:sap.fe.cap.travel/TravelObjectPage"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel",
+   "has_route",
+   "route:sap.fe.cap.travel/TravelObjectPage"
+  ],
+  [
+   "route:sap.fe.cap.travel/TravelObjectPage",
+   "shows",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "route:sap.fe.cap.travel/TravelObjectPage",
+   "navigates_to",
+   "route:sap.fe.cap.travel/BookingObjectPage"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel",
+   "has_route",
+   "route:sap.fe.cap.travel/BookingObjectPage"
+  ],
+  [
+   "route:sap.fe.cap.travel/BookingObjectPage",
+   "shows",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel",
+   "has_view",
+   "view:app/travel_processor/webapp/ext/fragment/CustomSection.fragment.xml"
+  ],
+  [
+   "ui5app:sap.fe.cap.travel",
+   "has_view",
+   "view:app/travel_processor/webapp/ext/fragment/Trees4Tickets.fragment.xml"
+  ],
+  [
+   "user:martha",
+   "has_role",
+   "role:reviewer"
+  ],
+  [
+   "user:amy",
+   "has_role",
+   "role:processor"
+  ],
+  [
+   "user:admin",
+   "has_role",
+   "role:admin"
+  ],
+  [
+   "user:alice",
+   "has_role",
+   "role:admin"
+  ],
+  [
+   "user:carol",
+   "has_role",
+   "role:admin"
+  ],
+  [
+   "user:dave",
+   "has_role",
+   "role:admin"
+  ],
+  [
+   "user:erin",
+   "has_role",
+   "role:admin"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "runs_as",
+   "user:alice"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "mentions",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "mentions",
+   "svcentity:AnalyticsService.Flight"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "mentions",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "mentions",
+   "svcentity:TravelService.BookingSupplement"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "mentions",
+   "svcentity:TravelService.Flight"
+  ],
+  [
+   "test:test/odata.test.ts",
+   "mentions",
+   "svcentity:TravelService.Supplement"
+  ],
+  [
+   "test:app/travel_analytics/webapp/test/integration/OpaJourney.js",
+   "mentions",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "test:app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "mentions",
+   "svcentity:TravelService.Travel"
+  ],
+  [
+   "test:app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "mentions",
+   "svcentity:AnalyticsService.Flight"
+  ],
+  [
+   "test:app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "mentions",
+   "svcentity:TravelService.Booking"
+  ],
+  [
+   "test:app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "mentions",
+   "svcentity:TravelService.Flight"
+  ],
+  [
+   "test:app/travel_processor/webapp/test/integration/OpaJourney.js",
+   "mentions",
+   "svcentity:TravelService.Supplement"
+  ]
+ ]
+}

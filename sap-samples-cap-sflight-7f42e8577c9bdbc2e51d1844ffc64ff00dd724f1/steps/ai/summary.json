@@ -1,0 +1,21 @@
+{
+ "id": "ai",
+ "title": "AI ledger",
+ "step": "AI gap pass",
+ "layer": "run",
+ "status": "not-run",
+ "why": "mode static: no AI requests in this run (19 open questions an AI could answer; run with --mode static+ai)",
+ "kpis": [
+  {
+   "label": "AI could answer",
+   "value": 19
+  }
+ ],
+ "from": [
+  "run/ai/requests/index.json",
+  "run/ai/merge-log.json"
+ ],
+ "views": [],
+ "pages": [],
+ "data": []
+}

@@ -1,0 +1,21 @@
+{
+ "id": "mutation",
+ "title": "Test strength",
+ "step": "Mutation testing",
+ "layer": "tests",
+ "status": "not-run",
+ "why": "mutation testing runs in its own nightly workflow (mutation.yml); no report next to this run",
+ "kpis": [
+  {
+   "label": "score",
+   "value": "nightly"
+  }
+ ],
+ "from": [
+  "mutation-summary.json",
+  "mutation.json (Stryker report)"
+ ],
+ "views": [],
+ "pages": [],
+ "data": []
+}

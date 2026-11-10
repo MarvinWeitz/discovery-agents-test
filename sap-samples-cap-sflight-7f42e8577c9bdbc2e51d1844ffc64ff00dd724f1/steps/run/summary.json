@@ -1,0 +1,36 @@
+{
+ "id": "run",
+ "title": "Run timeline",
+ "step": "The run itself",
+ "layer": "run",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "stages ran",
+   "value": 8
+  },
+  {
+   "label": "failed",
+   "value": 0
+  },
+  {
+   "label": "seconds",
+   "value": 315
+  },
+  {
+   "label": "mode",
+   "value": "static"
+  }
+ ],
+ "from": [
+  "manifest.json"
+ ],
+ "views": [
+  "views/timeline.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/stages.json"
+ ]
+}

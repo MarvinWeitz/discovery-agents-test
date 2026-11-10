@@ -1,0 +1,39 @@
+{
+ "id": "checks",
+ "title": "Code findings",
+ "step": "Lint, Opengrep, rules",
+ "layer": "code",
+ "status": "bad",
+ "why": null,
+ "kpis": [
+  {
+   "label": "findings",
+   "value": 71
+  },
+  {
+   "label": "files",
+   "value": 21
+  },
+  {
+   "label": "critical",
+   "value": 4,
+   "tone": "bad"
+  },
+  {
+   "label": "warnings",
+   "value": 32,
+   "tone": "warn"
+  }
+ ],
+ "from": [
+  "run/findings/findings.jsonl"
+ ],
+ "views": [
+  "views/hotspots.svg",
+  "views/kinds.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/checks.sarif"
+ ]
+}

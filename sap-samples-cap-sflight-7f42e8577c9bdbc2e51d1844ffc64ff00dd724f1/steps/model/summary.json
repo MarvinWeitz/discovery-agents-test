@@ -1,0 +1,54 @@
+{
+ "id": "model",
+ "title": "Model map",
+ "step": "cds compile (CSN)",
+ "layer": "model",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "entities",
+   "value": 13
+  },
+  {
+   "label": "service entities",
+   "value": 29
+  },
+  {
+   "label": "compositions",
+   "value": 6
+  },
+  {
+   "label": "things depend on Travel",
+   "value": 53
+  }
+ ],
+ "from": [
+  "run/csn.json",
+  "run/graph/"
+ ],
+ "views": [
+  "views/blast-radius.svg",
+  "views/projections.svg"
+ ],
+ "pages": [
+  "explorer.html"
+ ],
+ "data": [
+  "data/model-graph.json",
+  "data/impact.json",
+  "data/impact/Travel.md",
+  "data/impact/Booking.md",
+  "data/impact/BookingSupplement.md",
+  "data/impact/BookingStatus.md",
+  "data/impact/TravelStatus.md",
+  "data/impact/Flight.md",
+  "data/impact/Supplement.md",
+  "data/impact/Airline.md",
+  "data/impact/Airport.md",
+  "data/impact/FlightConnection.md",
+  "data/impact/Passenger.md",
+  "data/impact/TravelAgency.md",
+  "data/impact/SupplementType.md"
+ ]
+}

@@ -1,0 +1,37 @@
+{
+ "id": "history",
+ "title": "Hotspots and change coupling",
+ "step": "Git history",
+ "layer": "run",
+ "status": "ok",
+ "why": null,
+ "kpis": [
+  {
+   "label": "commits",
+   "value": 1238
+  },
+  {
+   "label": "files changed",
+   "value": 113
+  },
+  {
+   "label": "hottest: package.json",
+   "value": 83
+  },
+  {
+   "label": "coupled pairs",
+   "value": 39
+  }
+ ],
+ "from": [
+  "git log of the app checkout"
+ ],
+ "views": [
+  "views/hotspots.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/hotspots.json",
+  "data/coupling.json"
+ ]
+}

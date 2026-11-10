@@ -1,0 +1,557 @@
+{
+ "cds": {
+  "version": "10.1.0",
+  "from": "app",
+  "home": "node_modules/@sap/cds"
+ },
+ "profiles": [
+  "java",
+  "development"
+ ],
+ "folders": {
+  "db": "db/",
+  "srv": "srv/",
+  "app": "app/",
+  "apps": "app/*"
+ },
+ "roots": [
+  "db/",
+  "srv/",
+  "app/",
+  "app/*",
+  "schema",
+  "services"
+ ],
+ "requires": {
+  "middlewares": true,
+  "queue": {
+   "model": "@sap/cds/srv/outbox",
+   "maxAttempts": 10,
+   "timeout": "1h",
+   "legacyLocking": false,
+   "chunkSize": 10,
+   "parallel": true,
+   "_ignoredContext": [
+    "user",
+    "http",
+    "model",
+    "timestamp",
+    "_locale",
+    "_features"
+   ],
+   "kind": "persistent-queue"
+  },
+  "scheduling": {
+   "impl": "@sap/cds/libx/queue/SchedulingService.js",
+   "queued": true,
+   "silent": true,
+   "markerInterval": "1h",
+   "flushInterval": "1h",
+   "_optimisticMarkers": true
+  },
+  "auth": {
+   "restrict_all_services": false,
+   "kind": "mocked",
+   "users": {
+    "alice": {
+     "tenant": "t1",
+     "roles": [
+      "admin"
+     ]
+    },
+    "bob": {
+     "tenant": "t1",
+     "roles": [
+      "cds.ExtensionDeveloper"
+     ]
+    },
+    "carol": {
+     "tenant": "t1",
+     "roles": [
+      "admin",
+      "cds.ExtensionDeveloper"
+     ]
+    },
+    "dave": {
+     "tenant": "t1",
+     "roles": [
+      "admin"
+     ],
+     "features": []
+    },
+    "erin": {
+     "tenant": "t2",
+     "roles": [
+      "admin",
+      "cds.ExtensionDeveloper"
+     ]
+    },
+    "fred": {
+     "tenant": "t2",
+     "features": [
+      "isbn"
+     ]
+    },
+    "me": {
+     "tenant": "t1",
+     "features": [
+      "*"
+     ]
+    },
+    "yves": {
+     "roles": [
+      "internal-user"
+     ]
+    },
+    "*": true,
+    "rose": {
+     "roles": []
+    },
+    "martha": {
+     "roles": [
+      "reviewer"
+     ]
+    },
+    "amy": {
+     "roles": [
+      "processor"
+     ]
+    },
+    "admin": {
+     "password": "admin",
+     "roles": [
+      "admin"
+     ]
+    }
+   },
+   "tenants": {
+    "t1": {
+     "features": [
+      "isbn"
+     ]
+    },
+    "t2": {
+     "features": "*"
+    }
+   }
+  },
+  "db": {
+   "impl": "@cap-js/sqlite",
+   "data": [
+    "db/data",
+    "db/csv",
+    "test/data"
+   ],
+   "pool": {
+    "evictionRunIntervalMillis": 0,
+    "min": 1,
+    "max": 1
+   },
+   "kind": "sqlite",
+   "credentials": [
+    "url"
+   ]
+  }
+ },
+ "production": {
+  "profiles": [
+   "production",
+   "java"
+  ],
+  "requires": {
+   "middlewares": true,
+   "queue": {
+    "model": "@sap/cds/srv/outbox",
+    "maxAttempts": 10,
+    "timeout": "1h",
+    "legacyLocking": false,
+    "chunkSize": 10,
+    "parallel": true,
+    "_ignoredContext": [
+     "user",
+     "http",
+     "model",
+     "timestamp",
+     "_locale",
+     "_features"
+    ],
+    "kind": "persistent-queue"
+   },
+   "scheduling": {
+    "impl": "@sap/cds/libx/queue/SchedulingService.js",
+    "queued": true,
+    "silent": true,
+    "markerInterval": "1h",
+    "flushInterval": "1h",
+    "_optimisticMarkers": true
+   },
+   "auth": {
+    "vcap": {
+     "label": "xsuaa"
+    },
+    "kind": "xsuaa"
+   },
+   "db": {
+    "impl": "@cap-js/hana",
+    "data": [
+     "db/data",
+     "db/csv"
+    ],
+    "pool": {
+     "min": 0,
+     "max": 10,
+     "acquireTimeoutMillis": 1000,
+     "idleTimeoutMillis": 60000,
+     "evictionRunIntervalMillis": 100000,
+     "numTestsPerEvictionRun": 10,
+     "testOnBorrow": true,
+     "fifo": false
+    },
+    "kind": "hana"
+   }
+  }
+ },
+ "test": {
+  "profiles": [
+   "test",
+   "java",
+   "development"
+  ],
+  "requires": {
+   "middlewares": true,
+   "queue": {
+    "model": "@sap/cds/srv/outbox",
+    "maxAttempts": 10,
+    "timeout": "1h",
+    "legacyLocking": false,
+    "chunkSize": 10,
+    "parallel": true,
+    "_ignoredContext": [
+     "user",
+     "http",
+     "model",
+     "timestamp",
+     "_locale",
+     "_features"
+    ],
+    "kind": "persistent-queue"
+   },
+   "scheduling": {
+    "impl": "@sap/cds/libx/queue/SchedulingService.js",
+    "queued": true,
+    "silent": true,
+    "markerInterval": "1h",
+    "flushInterval": "1h",
+    "_optimisticMarkers": true
+   },
+   "auth": {
+    "restrict_all_services": false,
+    "kind": "mocked",
+    "users": {
+     "alice": {
+      "tenant": "t1",
+      "roles": [
+       "admin"
+      ]
+     },
+     "bob": {
+      "tenant": "t1",
+      "roles": [
+       "cds.ExtensionDeveloper"
+      ]
+     },
+     "carol": {
+      "tenant": "t1",
+      "roles": [
+       "admin",
+       "cds.ExtensionDeveloper"
+      ]
+     },
+     "dave": {
+      "tenant": "t1",
+      "roles": [
+       "admin"
+      ],
+      "features": []
+     },
+     "erin": {
+      "tenant": "t2",
+      "roles": [
+       "admin",
+       "cds.ExtensionDeveloper"
+      ]
+     },
+     "fred": {
+      "tenant": "t2",
+      "features": [
+       "isbn"
+      ]
+     },
+     "me": {
+      "tenant": "t1",
+      "features": [
+       "*"
+      ]
+     },
+     "yves": {
+      "roles": [
+       "internal-user"
+      ]
+     },
+     "*": true,
+     "rose": {
+      "roles": []
+     },
+     "martha": {
+      "roles": [
+       "reviewer"
+      ]
+     },
+     "amy": {
+      "roles": [
+       "processor"
+      ]
+     },
+     "admin": {
+      "password": "admin",
+      "roles": [
+       "admin"
+      ]
+     }
+    },
+    "tenants": {
+     "t1": {
+      "features": [
+       "isbn"
+      ]
+     },
+     "t2": {
+      "features": "*"
+     }
+    }
+   },
+   "db": {
+    "impl": "@cap-js/sqlite",
+    "data": [
+     "db/data",
+     "db/csv",
+     "test/data"
+    ],
+    "pool": {
+     "evictionRunIntervalMillis": 0,
+     "min": 1,
+     "max": 1
+    },
+    "kind": "sqlite",
+    "credentials": [
+     "url"
+    ]
+   }
+  }
+ },
+ "plugins": [
+  "@cap-js/sqlite",
+  "@sap/cds-fiori",
+  "@cap-js/hana",
+  "@cap-js/cds-typer",
+  "cds-plugin-ui5"
+ ],
+ "pluginImpls": {
+  "@cap-js/sqlite": "node_modules/@cap-js/sqlite/cds-plugin.js",
+  "@sap/cds-fiori": "node_modules/@sap/cds-fiori/cds-plugin.js",
+  "@cap-js/hana": "node_modules/@cap-js/hana/cds-plugin.js",
+  "@cap-js/cds-typer": "node_modules/@cap-js/cds-typer/cds-plugin.js",
+  "cds-plugin-ui5": "node_modules/cds-plugin-ui5/cds-plugin.js"
+ },
+ "db": {
+  "development": {
+   "kind": "sqlite",
+   "model": null,
+   "impl": "@cap-js/sqlite"
+  },
+  "production": {
+   "kind": "hana",
+   "model": null,
+   "impl": "@cap-js/hana"
+  },
+  "test": {
+   "kind": "sqlite",
+   "model": null,
+   "impl": "@cap-js/sqlite"
+  },
+  "node!": {
+   "kind": "sqlite",
+   "model": null,
+   "impl": "@cap-js/sqlite"
+  },
+  "java": {
+   "kind": "sqlite",
+   "model": null,
+   "impl": "@cap-js/sqlite"
+  },
+  "hana": {
+   "kind": "sqlite",
+   "model": null,
+   "impl": "@cap-js/sqlite"
+  }
+ },
+ "typescript": true,
+ "model": {
+  "files": [
+   "db/common.cds",
+   "db/master-data.cds",
+   "db/schema.cds",
+   "srv/analytics-service.cds",
+   "srv/travel-service.cds",
+   "app/common.cds",
+   "app/labels.cds",
+   "app/services.cds",
+   "app/value-helps.cds",
+   "app/travel_analytics/annotations.cds",
+   "app/travel_processor/capabilities.cds",
+   "app/travel_processor/field-control.cds",
+   "app/travel_processor/layouts.cds",
+   "node_modules/@sap/cds/srv/outbox.cds"
+  ],
+  "sources": [
+   "app/value-helps.cds",
+   "app/services.cds",
+   "app/labels.cds",
+   "app/common.cds",
+   "app/travel_processor/layouts.cds",
+   "app/travel_processor/field-control.cds",
+   "app/travel_processor/capabilities.cds",
+   "app/travel_analytics/annotations.cds",
+   "srv/travel-service.cds",
+   "srv/analytics-service.cds",
+   "db/schema.cds",
+   "db/master-data.cds",
+   "db/common.cds",
+   "node_modules/@sap/cds/common.cds"
+  ],
+  "compiler": "7.1.1"
+ },
+ "edmx": [
+  "AnalyticsService",
+  "TravelService"
+ ],
+ "services": [
+  {
+   "name": "AnalyticsService",
+   "endpoints": [
+    {
+     "kind": "odata",
+     "path": "/analytics"
+    }
+   ]
+  },
+  {
+   "name": "TravelService",
+   "endpoints": [
+    {
+     "kind": "odata",
+     "path": "/processor"
+    }
+   ]
+  }
+ ],
+ "sqlNames": {
+  "mode": "plain",
+  "names": {
+   "sap.fe.cap.travel.Airline": "SAP_FE_CAP_TRAVEL_AIRLINE",
+   "sap.fe.cap.travel.Airport": "SAP_FE_CAP_TRAVEL_AIRPORT",
+   "sap.fe.cap.travel.Supplement": "SAP_FE_CAP_TRAVEL_SUPPLEMENT",
+   "sap.fe.cap.travel.Flight": "SAP_FE_CAP_TRAVEL_FLIGHT",
+   "sap.fe.cap.travel.FlightConnection": "SAP_FE_CAP_TRAVEL_FLIGHTCONNECTION",
+   "sap.fe.cap.travel.Passenger": "SAP_FE_CAP_TRAVEL_PASSENGER",
+   "sap.fe.cap.travel.TravelAgency": "SAP_FE_CAP_TRAVEL_TRAVELAGENCY",
+   "sap.fe.cap.travel.Travel": "SAP_FE_CAP_TRAVEL_TRAVEL",
+   "sap.fe.cap.travel.Booking": "SAP_FE_CAP_TRAVEL_BOOKING",
+   "sap.fe.cap.travel.BookingSupplement": "SAP_FE_CAP_TRAVEL_BOOKINGSUPPLEMENT",
+   "AnalyticsService.Bookings": "ANALYTICSSERVICE_BOOKINGS",
+   "AnalyticsService.Travels": "ANALYTICSSERVICE_TRAVELS",
+   "TravelService.Travel": "TRAVELSERVICE_TRAVEL",
+   "cds.outbox.Messages": "CDS_OUTBOX_MESSAGES",
+   "sap.fe.cap.travel.Supplement.texts": "SAP_FE_CAP_TRAVEL_SUPPLEMENT_TEXTS",
+   "sap.fe.cap.travel.SupplementType.texts": "SAP_FE_CAP_TRAVEL_SUPPLEMENTTYPE_TEXTS",
+   "sap.fe.cap.travel.BookingStatus.texts": "SAP_FE_CAP_TRAVEL_BOOKINGSTATUS_TEXTS",
+   "sap.fe.cap.travel.TravelStatus.texts": "SAP_FE_CAP_TRAVEL_TRAVELSTATUS_TEXTS",
+   "AnalyticsService.Airline": "ANALYTICSSERVICE_AIRLINE",
+   "AnalyticsService.Flight": "ANALYTICSSERVICE_FLIGHT",
+   "AnalyticsService.BookingStatus.texts": "ANALYTICSSERVICE_BOOKINGSTATUS_TEXTS",
+   "sap.common.Currencies.texts": "SAP_COMMON_CURRENCIES_TEXTS",
+   "AnalyticsService.TravelAgency": "ANALYTICSSERVICE_TRAVELAGENCY",
+   "AnalyticsService.Passenger": "ANALYTICSSERVICE_PASSENGER",
+   "TravelService.TravelAgency": "TRAVELSERVICE_TRAVELAGENCY",
+   "TravelService.Passenger": "TRAVELSERVICE_PASSENGER",
+   "TravelService.Booking": "TRAVELSERVICE_BOOKING",
+   "sap.common.Languages.texts": "SAP_COMMON_LANGUAGES_TEXTS",
+   "sap.common.Countries.texts": "SAP_COMMON_COUNTRIES_TEXTS",
+   "sap.common.Timezones.texts": "SAP_COMMON_TIMEZONES_TEXTS",
+   "AnalyticsService.FlightConnection": "ANALYTICSSERVICE_FLIGHTCONNECTION",
+   "AnalyticsService.Currencies.texts": "ANALYTICSSERVICE_CURRENCIES_TEXTS",
+   "AnalyticsService.TravelStatus.texts": "ANALYTICSSERVICE_TRAVELSTATUS_TEXTS",
+   "TravelService.Currencies.texts": "TRAVELSERVICE_CURRENCIES_TEXTS",
+   "TravelService.TravelStatus.texts": "TRAVELSERVICE_TRAVELSTATUS_TEXTS",
+   "TravelService.BookingSupplement": "TRAVELSERVICE_BOOKINGSUPPLEMENT",
+   "TravelService.Airline": "TRAVELSERVICE_AIRLINE",
+   "TravelService.Flight": "TRAVELSERVICE_FLIGHT",
+   "AnalyticsService.Airport": "ANALYTICSSERVICE_AIRPORT",
+   "AnalyticsService.Countries.texts": "ANALYTICSSERVICE_COUNTRIES_TEXTS",
+   "TravelService.Countries.texts": "TRAVELSERVICE_COUNTRIES_TEXTS",
+   "TravelService.BookingStatus.texts": "TRAVELSERVICE_BOOKINGSTATUS_TEXTS",
+   "TravelService.Supplement": "TRAVELSERVICE_SUPPLEMENT",
+   "TravelService.FlightConnection": "TRAVELSERVICE_FLIGHTCONNECTION",
+   "TravelService.Supplement.texts": "TRAVELSERVICE_SUPPLEMENT_TEXTS",
+   "TravelService.Airport": "TRAVELSERVICE_AIRPORT",
+   "TravelService.SupplementType.texts": "TRAVELSERVICE_SUPPLEMENTTYPE_TEXTS"
+  }
+ },
+ "impls": {
+  "AnalyticsService": null,
+  "TravelService": {
+   "file": "srv/travel-service.ts",
+   "rule": "sibling"
+  }
+ },
+ "seed": {
+  "db/data/sap.common-Countries.csv": "sap.common.Countries",
+  "db/data/sap.common-Countries.texts.csv": "sap.common.Countries.texts",
+  "db/data/sap.common-Currencies.csv": "sap.common.Currencies",
+  "db/data/sap.common-Currencies.texts.csv": "sap.common.Currencies.texts",
+  "db/data/sap.fe.cap.travel-Airline.csv": "sap.fe.cap.travel.Airline",
+  "db/data/sap.fe.cap.travel-Airport.csv": "sap.fe.cap.travel.Airport",
+  "db/data/sap.fe.cap.travel-Booking.csv": "sap.fe.cap.travel.Booking",
+  "db/data/sap.fe.cap.travel-BookingStatus.csv": "sap.fe.cap.travel.BookingStatus",
+  "db/data/sap.fe.cap.travel-BookingStatus.texts.csv": "sap.fe.cap.travel.BookingStatus.texts",
+  "db/data/sap.fe.cap.travel-BookingSupplement.csv": "sap.fe.cap.travel.BookingSupplement",
+  "db/data/sap.fe.cap.travel-Flight.csv": "sap.fe.cap.travel.Flight",
+  "db/data/sap.fe.cap.travel-FlightConnection.csv": "sap.fe.cap.travel.FlightConnection",
+  "db/data/sap.fe.cap.travel-Passenger.csv": "sap.fe.cap.travel.Passenger",
+  "db/data/sap.fe.cap.travel-Supplement.csv": "sap.fe.cap.travel.Supplement",
+  "db/data/sap.fe.cap.travel-Supplement.texts.csv": "sap.fe.cap.travel.Supplement.texts",
+  "db/data/sap.fe.cap.travel-SupplementType.csv": "sap.fe.cap.travel.SupplementType",
+  "db/data/sap.fe.cap.travel-Travel.csv": "sap.fe.cap.travel.Travel",
+  "db/data/sap.fe.cap.travel-TravelAgency.csv": "sap.fe.cap.travel.TravelAgency",
+  "db/data/sap.fe.cap.travel-TravelStatus.csv": "sap.fe.cap.travel.TravelStatus",
+  "db/data/sap.fe.cap.travel-TravelStatus.texts.csv": "sap.fe.cap.travel.TravelStatus.texts"
+ },
+ "server": null,
+ "errors": [],
+ "ok": true,
+ "ownSources": [
+  "app/value-helps.cds",
+  "app/services.cds",
+  "app/labels.cds",
+  "app/common.cds",
+  "app/travel_processor/layouts.cds",
+  "app/travel_processor/field-control.cds",
+  "app/travel_processor/capabilities.cds",
+  "app/travel_analytics/annotations.cds",
+  "srv/travel-service.cds",
+  "srv/analytics-service.cds",
+  "db/schema.cds",
+  "db/master-data.cds",
+  "db/common.cds"
+ ]
+}

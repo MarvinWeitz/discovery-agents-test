@@ -1,0 +1,37 @@
+{
+ "id": "access",
+ "title": "Access map",
+ "step": "Authorization",
+ "layer": "access",
+ "status": "warn",
+ "why": null,
+ "kpis": [
+  {
+   "label": "operations",
+   "value": 13
+  },
+  {
+   "label": "users",
+   "value": 6
+  },
+  {
+   "label": "open without role",
+   "value": 4,
+   "tone": "warn"
+  },
+  {
+   "label": "measured cells differ",
+   "value": 0
+  }
+ ],
+ "from": [
+  "atlas-data.json AUTH, ROLES, MEASURED"
+ ],
+ "views": [
+  "views/matrix.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/access.json"
+ ]
+}

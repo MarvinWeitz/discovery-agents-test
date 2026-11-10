@@ -1,0 +1,38 @@
+{
+ "id": "coverage",
+ "title": "Coverage by class",
+ "step": "Coverage",
+ "layer": "tests",
+ "status": "warn",
+ "why": null,
+ "kpis": [
+  {
+   "label": "classes tested",
+   "value": "13%",
+   "tone": "warn"
+  },
+  {
+   "label": "untested",
+   "value": 58
+  },
+  {
+   "label": "failing",
+   "value": 0
+  },
+  {
+   "label": "rules reached",
+   "value": "9/11"
+  }
+ ],
+ "from": [
+  "atlas-data.json COVERAGE",
+  "atlas-data.json MEASURED.rules (CI)"
+ ],
+ "views": [
+  "views/classes.svg"
+ ],
+ "pages": [],
+ "data": [
+  "data/coverage.json"
+ ]
+}

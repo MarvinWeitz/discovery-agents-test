@@ -1,0 +1,357 @@
+[
+ {
+  "id": "uirule:TravelService.Travel.rejectTravel:available",
+  "kind": "operation-available",
+  "entity": "TravelService.Travel",
+  "action": "rejectTravel",
+  "field": "TravelStatus",
+  "ui": "TravelStatus != X",
+  "domain": [
+   "X",
+   "A",
+   "O"
+  ],
+  "uiAllowed": [
+   "A",
+   "O"
+  ],
+  "srvAllowed": [
+   "X",
+   "A",
+   "O"
+  ],
+  "effect": "X",
+  "server": "no rule on this field",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:37"
+ },
+ {
+  "id": "uirule:TravelService.Travel.acceptTravel:available",
+  "kind": "operation-available",
+  "entity": "TravelService.Travel",
+  "action": "acceptTravel",
+  "field": "TravelStatus",
+  "ui": "TravelStatus != A",
+  "domain": [
+   "X",
+   "A",
+   "O"
+  ],
+  "uiAllowed": [
+   "X",
+   "O"
+  ],
+  "srvAllowed": [
+   "X",
+   "A",
+   "O"
+  ],
+  "effect": "A",
+  "server": "no rule on this field",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:41"
+ },
+ {
+  "id": "uirule:TravelService.Travel:fieldcontrol:TravelStatus.fieldControl",
+  "kind": "field-control",
+  "entity": "TravelService.Travel",
+  "ui": "5 fields controlled by TravelStatus.fieldControl",
+  "fields": [
+   "BeginDate",
+   "EndDate",
+   "BookingFee",
+   "to_Agency",
+   "to_Customer"
+  ],
+  "server": "no update handler checks it",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:29"
+ },
+ {
+  "id": "uirule:TravelService.Booking:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+  "kind": "field-control",
+  "entity": "TravelService.Booking",
+  "ui": "6 fields controlled by to_Travel.TravelStatus.fieldControl",
+  "fields": [
+   "ConnectionID",
+   "FlightDate",
+   "FlightPrice",
+   "BookingStatus",
+   "to_Carrier",
+   "to_Customer"
+  ],
+  "server": "no update handler checks it",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:65"
+ },
+ {
+  "id": "uirule:TravelService.Booking:CreateHidden",
+  "kind": "CreateHidden",
+  "entity": "TravelService.Booking",
+  "ui": "hidden when [object Object]",
+  "server": "no before CREATE/NEW rejection",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:60"
+ },
+ {
+  "id": "uirule:TravelService.Booking:DeleteHidden",
+  "kind": "DeleteHidden",
+  "entity": "TravelService.Booking",
+  "ui": "hidden when [object Object]",
+  "server": "no before DELETE rejection",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:61"
+ },
+ {
+  "id": "uirule:TravelService.BookingSupplement:fieldcontrol:to_Travel.TravelStatus.fieldControl",
+  "kind": "field-control",
+  "entity": "TravelService.BookingSupplement",
+  "ui": "4 fields controlled by to_Travel.TravelStatus.fieldControl",
+  "fields": [
+   "Price",
+   "to_Booking",
+   "to_Travel",
+   "to_Supplement"
+  ],
+  "server": "no update handler checks it",
+  "verdict": "ui-only",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:29"
+ },
+ {
+  "id": "uirule:TravelService.Travel.deductDiscount:available",
+  "kind": "operation-available",
+  "entity": "TravelService.Travel",
+  "action": "deductDiscount",
+  "field": "TravelStatus",
+  "ui": "TravelStatus = O",
+  "domain": [
+   "X",
+   "A",
+   "O"
+  ],
+  "uiAllowed": [
+   "O"
+  ],
+  "srvAllowed": [
+   "X",
+   "O"
+  ],
+  "effect": null,
+  "server": "allows TravelStatus in {X, O}; also X",
+  "verdict": "partial",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:45"
+ },
+ {
+  "id": "uirule:TravelService.Travel:sideeffects",
+  "kind": "side-effects",
+  "entity": "TravelService.Travel",
+  "sources": [
+   "BookingFee"
+  ],
+  "targets": [
+   "TotalPrice",
+   "GreenFee",
+   "TreesPlanted"
+  ],
+  "ui": "BookingFee → re-read TotalPrice, GreenFee, TreesPlanted",
+  "server": "recomputed by 3 handler(s)",
+  "verdict": "consistent",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:20"
+ },
+ {
+  "id": "uirule:TravelService.Travel:sideeffects#GoGreen",
+  "kind": "side-effects",
+  "entity": "TravelService.Travel",
+  "sources": [
+   "GoGreen"
+  ],
+  "targets": [
+   "TotalPrice",
+   "GreenFee",
+   "TreesPlanted"
+  ],
+  "ui": "GoGreen → re-read TotalPrice, GreenFee, TreesPlanted",
+  "server": "recomputed by 3 handler(s)",
+  "verdict": "consistent",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:20"
+ },
+ {
+  "id": "uirule:TravelService.Travel:sideeffects#ReactonItemCreationOrDeletion",
+  "kind": "side-effects",
+  "entity": "TravelService.Travel",
+  "sources": [
+   "to_Booking"
+  ],
+  "targets": [
+   "TotalPrice"
+  ],
+  "ui": "to_Booking → re-read TotalPrice",
+  "server": "recomputed by 5 handler(s)",
+  "verdict": "consistent",
+  "sent": true,
+  "evidence": "app/travel_processor/field-control.cds:51"
+ },
+ {
+  "id": "uirule:TravelService.Travel.deductDiscount:percent:assert.range",
+  "kind": "assert.range",
+  "entity": "TravelService.Travel",
+  "action": "deductDiscount",
+  "ui": "percent in [1, 100]",
+  "server": "CAP generic handler",
+  "verdict": "framework",
+  "evidence": "srv/travel-service.cds:20"
+ },
+ {
+  "id": "uirule:TravelService.Travel:readonly",
+  "kind": "readonly",
+  "entity": "TravelService.Travel",
+  "ui": "TravelID, TotalPrice, TravelStatus, GreenFee, TreesPlanted",
+  "fields": [
+   "TravelID",
+   "TotalPrice",
+   "TravelStatus",
+   "GreenFee",
+   "TreesPlanted"
+  ],
+  "server": "CAP generic handler",
+  "verdict": "framework",
+  "evidence": "db/schema.cds:14"
+ },
+ {
+  "id": "uirule:TravelService.Travel:mandatory",
+  "kind": "mandatory",
+  "entity": "TravelService.Travel",
+  "ui": "BeginDate, EndDate, to_Agency, to_Customer",
+  "fields": [
+   "BeginDate",
+   "EndDate",
+   "to_Agency",
+   "to_Customer"
+  ],
+  "server": "CAP generic handler",
+  "verdict": "framework",
+  "evidence": "db/schema.cds:15"
+ },
+ {
+  "id": "uirule:TravelService.Booking:mandatory",
+  "kind": "mandatory",
+  "entity": "TravelService.Booking",
+  "ui": "ConnectionID, FlightDate, FlightPrice, BookingStatus, to_Carrier, to_Customer",
+  "fields": [
+   "ConnectionID",
+   "FlightDate",
+   "FlightPrice",
+   "BookingStatus",
+   "to_Carrier",
+   "to_Customer"
+  ],
+  "server": "CAP generic handler",
+  "verdict": "framework",
+  "evidence": "db/schema.cds:37"
+ },
+ {
+  "id": "uirule:TravelService.BookingSupplement:mandatory",
+  "kind": "mandatory",
+  "entity": "TravelService.BookingSupplement",
+  "ui": "Price, to_Supplement",
+  "fields": [
+   "Price",
+   "to_Supplement"
+  ],
+  "server": "CAP generic handler",
+  "verdict": "framework",
+  "evidence": "db/schema.cds:22"
+ },
+ {
+  "id": "uirule:AnalyticsService.Bookings:capabilities",
+  "kind": "capabilities",
+  "entity": "AnalyticsService.Bookings",
+  "ui": "no create / update / delete",
+  "fields": [
+   "create",
+   "update",
+   "delete"
+  ],
+  "server": "CAP rejects with 405 (Capabilities)",
+  "verdict": "framework",
+  "sent": true,
+  "metadata": "edmx/AnalyticsService.xml",
+  "evidence": "srv/analytics-service.cds:9"
+ },
+ {
+  "id": "uirule:AnalyticsService.Bookings:computed",
+  "kind": "computed",
+  "entity": "AnalyticsService.Bookings",
+  "ui": "TravelID, BookingID, CombinedID, CurrencyCode_code",
+  "fields": [
+   "TravelID",
+   "BookingID",
+   "CombinedID",
+   "CurrencyCode_code"
+  ],
+  "server": "CAP ignores client values (Core.Computed / Immutable / ReadOnly)",
+  "verdict": "framework",
+  "sent": true,
+  "metadata": "edmx/AnalyticsService.xml",
+  "evidence": "srv/analytics-service.cds:9"
+ },
+ {
+  "id": "uirule:AnalyticsService.Travels:capabilities",
+  "kind": "capabilities",
+  "entity": "AnalyticsService.Travels",
+  "ui": "no create / update / delete",
+  "fields": [
+   "create",
+   "update",
+   "delete"
+  ],
+  "server": "CAP rejects with 405 (Capabilities)",
+  "verdict": "framework",
+  "sent": true,
+  "metadata": "edmx/AnalyticsService.xml",
+  "evidence": "srv/analytics-service.cds:68"
+ },
+ {
+  "id": "uirule:AnalyticsService.Travels:computed",
+  "kind": "computed",
+  "entity": "AnalyticsService.Travels",
+  "ui": "TravelID, TotalPrice, TravelStatus_code, GreenFee, TreesPlanted, CustomerName",
+  "fields": [
+   "TravelID",
+   "TotalPrice",
+   "TravelStatus_code",
+   "GreenFee",
+   "TreesPlanted",
+   "CustomerName"
+  ],
+  "server": "CAP ignores client values (Core.Computed / Immutable / ReadOnly)",
+  "verdict": "framework",
+  "sent": true,
+  "metadata": "edmx/AnalyticsService.xml",
+  "evidence": "srv/analytics-service.cds:68"
+ },
+ {
+  "id": "uirule:TravelService.Travel:computed",
+  "kind": "computed",
+  "entity": "TravelService.Travel",
+  "ui": "TravelStatus_code",
+  "fields": [
+   "TravelStatus_code"
+  ],
+  "server": "CAP ignores client values (Core.Computed / Immutable / ReadOnly)",
+  "verdict": "framework",
+  "sent": true,
+  "metadata": "edmx/TravelService.xml",
+  "evidence": "srv/travel-service.cds:11"
+ }
+]
